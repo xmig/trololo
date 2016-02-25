@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/xmig/trololo.svg?token=iqhoXXX46DetsXmFqciT&branch=production)](https://travis-ci.com/xmig/trololo)
+[![Build Status](https://travis-ci.org/xmig/trololo.svg?branch=production)](https://travis-ci.org/xmig/trololo)
 
 # Trololo
 
