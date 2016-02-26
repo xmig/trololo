@@ -7,6 +7,6 @@ install:
   - pip install -r test_requirements.txt
 # command to run tests
 script:
-  coverage run --source='trololo' trololo/manage.py test
+  coverage run --source='trololo' trololo/manage.py test trololo/
 after_success:
   coveralls
