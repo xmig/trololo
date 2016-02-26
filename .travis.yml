@@ -10,3 +10,7 @@ script:
   coverage run --source='trololo' trololo/manage.py test
 after_success:
   coveralls
+notifications:
+  slack:
+    rooms:
+      - xmig:Do2DjKxRl61PQuxEEjpwLAiM#tracking_system_dev
