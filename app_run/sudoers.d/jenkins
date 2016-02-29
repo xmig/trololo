@@ -1,0 +1,2 @@
+jenkins    ALL=(ALL) NOPASSWD: /usr/bin/supervisorctl*, /usr/sbin/service nginx*
+
