@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -ex
+set -o pipefail
+
 echo "****** Start Jenkins Script Step #1 ******"
 
 echo "*************** USER: ***************"
@@ -26,4 +29,3 @@ echo "*** Restart supervisorctl and nginx ***"
 
 sudo supervisorctl restart trololo
 sudo service nginx reload
-sleep 1
