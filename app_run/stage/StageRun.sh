@@ -20,6 +20,7 @@ echo "-== Install python Packeges ==-"
 pip install -r requirements.txt
 sleep 1
 
+export DJANGO_SETTINGS_MODULE="trololo.settings.stage"
 #echo "#----------------------------------- Collection Static: NUCLEUS -----------------------------------#"
 #cd /home/nucleus/www/Staging/nucleus/NUCLEUS
 #./manage.py collectstatic --noinput
