@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+{% load url from future %}
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Nucleus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link type="text/css" href="{% static "bootstrap/css/bootstrap.css" %}" rel="stylesheet" />
+    <link type="text/css" href="{% static "bootstrap/css/bootstrap-theme.css" %}" rel="stylesheet" />
+    <link type="text/css" href="{% static "css/login.css" %}" rel="stylesheet" />
+
+    <script type="text/javascript" src="{% static "jslib/jquery.js" %}"></script>
+    <script type="text/javascript" src="{% static "bootstrap/js/bootstrap.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/login.js" %}"></script>
+</head>
+<body class="loginForm">
+
+    <div id="nuclLoginForm">
+        <form name="login_form" method="POST" role="form">{% csrf_token %}
+
+            <div class="lfHeader col-xs-12">
+                <img src="{% static "img/logoFragrant.png" %}" alt="Fragrant Jewels" class="img-responsive center-block"/>
+            </div>
+            <input name="kind" type="hidden" value="{{ kind }}"/>
+
+                {% if login_error %}
+                    <div class="loginError col-xs-12">
+                    <span>{{ login_error }}</span>
+                    {% if kind != 'register_form' %}
+                        <button type="submit" class="btn btn-success btn-xs" onclick="set_kind('restore')">Restore</button>
+                    {% endif %}
+                    </div>
+                {% endif %}
+
+            <div class="col-xs-12">
+               <label for="nucUser">Login</label>
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    <input id="nucUser" type="text" name="username" class="form-control" placeholder="Email" />
+                </div>
+            </div>
+
+           <div class="col-xs-12">
+               <label for="nucPass">Password</label>
+                <div class="validPass input-group has-error">
+                    <span class="input-group-addon"><i class="validPass glyphicon glyphicon-lock"></i></span>
+                    <input id="nucPass" type="password" name="password" class="form-control" placeholder="Password" />
+                </div>
+           </div>
+
+                {% if kind == 'register_form' %}
+                   <div class="col-xs-12">
+                       <label for="nucConfirm">Confirm password</label>
+                        <div class="validPass input-group has-error">
+                            <span class="input-group-addon"><i class="validPass glyphicon glyphicon-lock"></i></span>
+                            <input id="nucConfirm" type="password" name="user_password_confirm" class="form-control" placeholder="Confirm password" />
+                        </div>
+                   </div>
+                {% endif %}
+
+                {% if kind != 'register_form' %}
+                    <a href="#" class="login_forgot">Forgot password ?</a>
+                {% endif %}
+
+           <div class="lfFooter col-xs-12">
+                <div class="btn-group col-xs-12">
+                    {% if kind == 'register_form' %}
+                      <button class="btn btn-success col-xs-8" type="submit" onclick="set_kind('back_login')"> Back to log in</button>
+                      <button class="btn btn-primary col-xs-4" type="submit" onclick="set_kind('register')"> Register</button>
+                    {% else %}
+                      <button class="btn btn-success col-xs-12" type="submit" onclick="set_kind('login')"> Log in</button>
+                      <button class="btn btn-default col-xs-12" type="submit" onclick="set_kind('home')"> Home </button>
+                    {% endif %}
+                </div>
+           </div>
+        </form>
+    </div>
+
+</body>
+</html>
