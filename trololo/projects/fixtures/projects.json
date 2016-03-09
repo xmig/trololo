@@ -1,0 +1,52 @@
+[
+  {
+    "model": "projects.TaskStatus",
+    "pk": 1,
+    "fields": {
+      "status": "new",
+      "description": "description 1"
+    }
+  },
+  {
+    "model": "projects.TaskStatus",
+    "pk": 2,
+    "fields": {
+      "status": "done",
+      "description": "description 2"
+    }
+  },
+
+  {
+    "model": "projects.TaskType",
+    "pk": 1,
+    "fields": {
+      "type": "feature",
+      "description": "description 1"
+    }
+  },
+  {
+    "model": "projects.TaskType",
+    "pk": 2,
+    "fields": {
+      "type": "bug",
+      "description": "description 2"
+    }
+  },
+
+  {
+    "model": "projects.TaskLabel",
+    "pk": 1,
+    "fields": {
+      "label": "red",
+      "description": "description 1"
+    }
+  },
+  {
+    "model": "projects.TaskLabel",
+    "pk": 2,
+    "fields": {
+      "label": "green",
+      "description": "description 2"
+    }
+  }
+]
