@@ -33,12 +33,18 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,5 +113,22 @@ LOGIN_URL = '/users/login/'
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated'
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     )
 }
+
+AUTH_USER_MODEL = 'users.TrololoUser'
+# option for registration
+SITE_ID = 1
+
+# email settings
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'jonny.john2017@yandex.ru'
+EMAIL_HOST_PASSWORD = 'uasar3aeK2'
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
