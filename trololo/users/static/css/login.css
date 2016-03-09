@@ -1,0 +1,64 @@
+html {
+    height: 100%;
+}
+
+body.loginForm {
+    background-color: #eee;
+    background-image: linear-gradient(130deg, rgba(231, 231, 231, 0.5) 50%, transparent 50%), linear-gradient(rgba(230, 230, 230, 0.5) 50%, transparent 50%);
+    background-size: 90px 90px;
+    min-height: 100%;
+    position: relative;
+}
+
+img {
+    max-width: 100%;
+}
+
+#nuclLoginForm {
+    background-color: #313131;
+    border: 1px solid #b8b8b8;
+    border-radius: 5px;
+    bottom: 0;
+    box-shadow: 0 0 8px #c2c2c2;
+    max-height: 422px;
+    left: 0;
+    overflow: hidden;
+    margin: auto;
+    max-width: 415px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+form label {
+    color: #7d7d7d;
+    margin: 10px 0 2px 2px;
+}
+
+form .login_forgot {
+    display: inline-block;
+    margin: 20px 15px 0;
+}
+
+.lfHeader,
+.lfFooter {
+    background-color: #fff;
+}
+
+.loginError {
+    background-color: #d63232;
+    color: #fff;
+    padding: 5px 0;
+    text-align: center;
+}
+
+.lfHeader {
+    height: 115px;
+    padding: 15px;
+}
+
+.lfFooter {
+    margin: 15px 0 0;
+    height: 110px;
+    padding: 15px 0;
+}
