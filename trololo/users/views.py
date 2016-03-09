@@ -10,6 +10,8 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework import status
 import requests
 from django.conf import settings
+from django.views.generic import TemplateView
+
 
 from django.core.urlresolvers import reverse
 
@@ -97,7 +99,7 @@ class AccountConfirmEmailView(APIView):
 
     def get(self, request, key):
         r = requests.post(
-            request.build_absolute_uri(reverse('account_confirm_email')),
+            request.build_absolute_uri(reverse('registration:rest_verify_email')),
             # 'http://localhost:{}/rest-auth/registration/verify-email/'.format(settings.SERVER_PORT),
             json={"key": key}
         )
@@ -106,3 +108,7 @@ class AccountConfirmEmailView(APIView):
             return Response({"STATUS": "REGISTRATION COMPLETED"}, status=status.HTTP_200_OK)
         else:
             return Response({"STATUS": r.raw}, status=r.status_code)
+
+
+class MainView(TemplateView):
+    template_name = 'templates/index.html'
