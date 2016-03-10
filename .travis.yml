@@ -8,8 +8,6 @@ install:
 # command to run tests
 script:
   coverage run --source='trololo' trololo/manage.py test trololo/
-after_success:
-  coveralls
 notifications:
   slack:
     rooms:
