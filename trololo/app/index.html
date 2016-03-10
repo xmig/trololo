@@ -1,0 +1,77 @@
+<!doctype html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Trololo</title>
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="/static/css/main.css">
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <!--<script src="/static/bower_components/angular/angular.js"></script>-->
+
+    <!-- Angular Material requires Angular.js Libraries -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-cookies.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular-sanitize.min.js"></script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.min.js"></script>
+    <script src="http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js"></script>
+
+    <!-- Angular Material Library -->
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <script src="http://rawgit.com/daniel-nagy/md-data-table/master/dist/md-data-table.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="/static/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <!--<script src="/static/bower_components/angular-resource/angular-resource.js"></script>-->
+    <!--<script src="/static/bower_components/angular-cookies/angular-cookies.js"></script>-->
+    <!--<script src="/static/bower_components/angular-sanitize/angular-sanitize.js"></script>-->
+    <!--<script src="/static/bower_components/angular-route/angular-route.js"></script>-->
+
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/controllers/main.js"></script>
+    <script src="/static/js/controllers/register.js"></script>
+    <script src="/static/js/controllers/passwordreset.js"></script>
+    <script src="/static/js/controllers/passwordresetconfirm.js"></script>
+    <script src="/static/js/controllers/login.js"></script>
+    <script src="/static/js/controllers/verifyemail.js"></script>
+    <script src="/static/js/controllers/logout.js"></script>
+    <script src="/static/js/controllers/userprofile.js"></script>
+    <script src="/static/js/controllers/passwordchange.js"></script>
+    <script src="/static/js/services/djangoAuth.js"></script>
+    <script src="/static/js/services/validate.js"></script>
+    <script src="/static/js/controllers/master.js"></script>
+    <script src="/static/js/controllers/restricted.js"></script>
+    <script src="/static/js/controllers/authrequired.js"></script>
+
+  </head>
+
+  <body ng-app="angularDjangoRegistrationAuthApp" ng-controller="MasterCtrl">
+    <div class="container">
+        <div class="header">
+          <ul class="nav nav-pills pull-right">
+            <li class="active"><a ng-href="#/">Home</a></li>
+          </ul>
+          <h3 class="text-muted">Angular Django Registration Auth Demo</h3>
+        </div>
+        <div ng-view=""></div>
+    </div>
+
+</body>
+</html>

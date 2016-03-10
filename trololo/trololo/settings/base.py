@@ -59,12 +59,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'trololo.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app'))
+            os.path.abspath(os.path.join(BASE_DIR, os.pardir, 'app'))
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -112,8 +111,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'static')),
-    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'templates')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/authentification', 'static')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/authentification', 'templates')),
 ]
 
 LOGIN_URL = '/users/login/'
