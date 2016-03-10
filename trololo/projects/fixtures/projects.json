@@ -48,5 +48,26 @@
       "label": "green",
       "description": "description 2"
     }
+  },
+
+    {
+    "model": "projects.Project",
+    "id": 2,
+    "fields": {
+      "name": "proj 01",
+      "status": "in_progress",
+      "description": "description of the project 01",
+      "visible_by": "all_users"
+    }
+  },
+  {
+   "model": "projects.Project",
+   "id": 3,
+   "fields": {
+      "name": "proj 02",
+      "status": "finished",
+      "description": "description of the project 02",
+      "visible_by": "members"
+    }
   }
 ]
