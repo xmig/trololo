@@ -10,7 +10,6 @@ angular.module('mainApp', [
         'userApp'
     ])
     .config(function ($routeProvider) {
-
         $routeProvider
             .when('/', {
                 templateUrl: '/static/main/templates/main.html',
@@ -18,7 +17,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/register', {
@@ -26,7 +25,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/passwordReset', {
@@ -34,7 +33,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/passwordResetConfirm/:firstToken/:passwordResetToken', {
@@ -42,7 +41,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/login', {
@@ -50,7 +49,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/verifyEmail/:emailVerificationToken', {
@@ -58,7 +57,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/logout', {
@@ -66,7 +65,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/userProfile', {
@@ -74,7 +73,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/passwordChange', {
@@ -82,7 +81,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/restricted', {
@@ -91,7 +90,7 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus();
-                    }],
+                    }]
                 }
             })
             .when('/authRequired', {
@@ -100,7 +99,16 @@ angular.module('mainApp', [
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);
-                    }],
+                    }]
+                }
+            })
+            .when('/user/:userLocation', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'userCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
                 }
             })
             .otherwise({

@@ -6,7 +6,7 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
     };
 
     $scope.location = $routeParams.userLocation;
-    $scope.partialPath = '/partials/user/templates/' + $routeParams.userLocation + '.html';
+    $scope.partialPath = '/static/user/templates/' + $routeParams.userLocation + '.html';
     $scope.leftSidebarList = [
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},

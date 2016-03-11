@@ -1,0 +1,88 @@
+/* Common styles */
+.text-center {
+	text-align: center;
+}
+
+.md-sidenav-left {
+    width: 272px;
+    min-width: 272px;
+}
+
+.user-content md-content {
+    background-color: #eaebf5 !important;
+}
+
+.user-content {
+    flex-basis: 100%;
+}
+
+/* Tables */
+md-card {
+	margin: 15px;
+}
+
+body, html {
+  background-color: #eaebf5;
+}
+
+body > md-toolbar {
+  z-index: 3;
+}
+
+md-toolbar.md-table-toolbar.alternate {
+  color: #1e88e5;
+  background-color: #e3f2fd;
+}
+
+md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
+  font-size: 16px;
+}
+
+md-card:first-child {
+  padding: 8px 8px 8px 24px;
+}
+
+.checkboxes > md-checkbox {
+  margin: 0;
+  padding: 16px;
+  min-width: 300px;
+  flex: 0 0 auto;
+}
+
+table.md-table.md-row-select td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table.md-row-select th.md-column:nth-child(n+3):nth-last-child(n+2) {
+    padding: 0 26px 0 0;
+}
+
+/* Left sidebar */
+.left-sidebar-list {
+    margin: 0;
+    padding: 20px 0;
+}
+.left-sidebar-list a.md-button {
+    display: block;
+    padding: 0 16px 0 32px;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.left-sidebar-list .md-button.active {
+    background-color: #eaebf5;
+    color: rgb(42, 154, 243);
+}
+.left-sidebar-list .md-button {
+    border-radius: 0;
+    color: white;
+    cursor: pointer;
+    display: block;
+    align-items: inherit;
+    line-height: 40px;
+    margin: 0;
+    max-height: 40px;
+    overflow: hidden;
+    padding: 0px 16px;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    width: 100%;
+    border-bottom: none;
+}
