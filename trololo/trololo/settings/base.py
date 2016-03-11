@@ -38,12 +38,19 @@ REST_FRAMEWORK = {
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
+    'django.contrib.sites',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 
+    'users',
     'projects',
 )
 
@@ -60,33 +67,23 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'trololo.urls'
 
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.request',
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.contrib.messages.context_processors.messages',
-#             ],
-#         },
-#     },
-# ]
-
-
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
-
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
-    os.path.join(BASE_DIR,  'projects/templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app'))
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 WSGI_APPLICATION = 'trololo.wsgi.application'
 
@@ -121,13 +118,33 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = [
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'static')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'templates')),
+]
 
-STATICFILES_DIRS = (
-    # os.path.join(BASE_DIR, 'trololo/static/'),
-    os.path.join(BASE_DIR, 'projects/static/'),
-)
+LOGIN_URL = '/users/login/'
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES' : (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
+    )
+}
 
+AUTH_USER_MODEL = 'users.TrololoUser'
+# option for registration
+# TODO: change to real for production
+SITE_ID = 1
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+# email settings
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'jonny.john2017@yandex.ru'
+EMAIL_HOST_PASSWORD = 'uasar3aeK2'
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
