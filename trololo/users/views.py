@@ -1,14 +1,14 @@
-from django.contrib.auth import get_user_model
 from users.serializers import UserSerializer
-from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication
 from rest_framework import status
 import requests
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
-from rest_framework.parsers import MultiPartParser, FormParser
+# from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+# from rest_framework.authentication import SessionAuthentication
+# from rest_framework import permissions
+# from django.contrib.auth import get_user_model
 
 
 # class UserList(APIView):
@@ -32,10 +32,10 @@ from rest_framework.parsers import MultiPartParser, FormParser
 #         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CsrfExemptSessionAuthentication(SessionAuthentication):
-
-    def enforce_csrf(self, request):
-        return  # To not perform the csrf check previously happening
+# class CsrfExemptSessionAuthentication(SessionAuthentication):
+#
+#     def enforce_csrf(self, request):
+#         return  # To not perform the csrf check previously happening
 
 
 # class SingleUser(APIView):
@@ -61,6 +61,8 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 
 
 class UserProfile(APIView):
+    # parser_classes = (MultiPartParser, FormParser, JSONParser)
+
     def get(self, request):
         u = UserSerializer(request.user)
 
@@ -95,13 +97,3 @@ class AccountConfirmEmailView(APIView):
 
 class MainView(TemplateView):
     template_name = 'templates/index.html'
-
-
-class UserPhotoUploadView(APIView):
-    parser_classes = (MultiPartParser, FormParser)
-
-    def put(self,request):
-        file_obj = request.data['file']
-        request.user.photo = file_obj
-        request.user.save()
-        return Response(status=status.HTTP_201_CREATED)

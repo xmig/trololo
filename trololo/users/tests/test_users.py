@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from users.views import UserProfile
 from PIL import Image
 import tempfile
+import os
 from rest_framework import status
 
 
@@ -29,6 +30,45 @@ class TestUserProfileGet(APITestCase):
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
             }
         )
+
+    def test_get_user_after_update(self):
+        url = reverse('users:user_profile')
+        user = get_user_model().objects.get(username='user')
+
+        factory = APIRequestFactory()
+        image = Image.new('RGB', (100, 100))
+        tmp_file = tempfile.NamedTemporaryFile(prefix='logo', suffix='.jpg')
+        image.save(tmp_file)
+        tmp_file.seek(0)
+        file_name = os.path.basename(tmp_file.name)
+
+        request = factory.put(url, {'photo': tmp_file, 'department': 'FBI'}, format='multipart')
+
+        force_authenticate(request, user=user)
+        response = UserProfile.as_view()(request)
+
+        self.assertEqual(user.department, 'FBI')
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+        self.assertTrue(user.photo.name.startswith('user_{0}/logo'.format(user.id)))
+
+        url = reverse('users:user_profile')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = UserProfile.as_view()(request)
+
+        ETALON = {
+            'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
+            'photo': '/static/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
+            'email': u'maxellort@gmail.com', 'is_superuser': False, 'is_staff': False,
+            'last_login': u'2016-03-09T13:10:20.662000Z', 'department': u'FBI', 'detailed_info': u'',
+            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
+        }
+
+        self.assertEqual(response.data, ETALON)
+
 
 class TestUserProfileUpdate(APITestCase):
     fixtures = ['data.json']
@@ -57,13 +97,13 @@ class TestUserProfileUpdate(APITestCase):
         user = get_user_model().objects.get(username='user')
 
         factory =APIRequestFactory()
-        request = factory.put(url, {'first_name': 'Jon'}, format='multipart')
+        request = factory.put(url, {'first_name': 'John'}, format='multipart')
 
         force_authenticate(request, user=user)
         response = UserProfile.as_view()(request)
 
-        self.assertTrue(user.first_name == 'Jon')
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+        self.assertTrue(user.first_name == 'John')
 
 
     def last_name(self):
