@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularDjangoRegistrationAuthApp', [
+angular.module('mainApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('angularDjangoRegistrationAuthApp')
+angular.module('mainApp')
   .controller('MainCtrl', function ($scope, $cookies, $location, djangoAuth) {
     
     $scope.login = function(){

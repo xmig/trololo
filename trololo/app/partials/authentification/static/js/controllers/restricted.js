@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name angularDjangoRegistrationAuthApp.controller:RestrictedCtrl
+ * @name mainApp.controller:RestrictedCtrl
  * @description
  * # RestrictedCtrl
- * Controller of the angularDjangoRegistrationAuthApp
+ * Controller of the mainApp
  */
-angular.module('angularDjangoRegistrationAuthApp')
+angular.module('mainApp')
   .controller('RestrictedCtrl', function ($scope, $location) {
     $scope.$on('djangoAuth.logged_in', function() {
       $location.path('/');
