@@ -111,8 +111,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'static')),
+    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/css', 'static')),
+    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/js', 'static')),
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/authentification', 'static')),
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/authentification', 'templates')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/start', 'static')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/start', 'templates')),
 ]
 
 LOGIN_URL = '/users/login/'
