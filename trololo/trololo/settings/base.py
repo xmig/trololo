@@ -113,12 +113,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'static')),
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'partials')),
-    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/css', 'static')),
-    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/js', 'static')),
-    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/main', 'static')),
-    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/main', 'templates')),
-    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/user', 'static')),
-    # os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app/partials/user', 'templates')),
 ]
 
 LOGIN_URL = '/users/login/'
