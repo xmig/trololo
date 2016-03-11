@@ -8,6 +8,8 @@ from projects import views_api
 router = routers.DefaultRouter()
 router.register(r'projects', views_api.ProjectViewSet)
 router.register(r'tasks', views_api.TaskViewSet)
+router.register(r'projectscomments', views_api.ProjectCommentViewSet)
+router.register(r'taskscomments', views_api.TaskCommentViewSet)
 
 
 urlpatterns = [
