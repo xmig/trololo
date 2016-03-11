@@ -8,7 +8,7 @@ from rest_framework import status
 import requests
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
-
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 # class UserList(APIView):
@@ -51,7 +51,7 @@ class CsrfExemptSessionAuthentication(SessionAuthentication):
 #         return Response(UserSerializer(user).data)
 #
 #     def put(self, request, id):
-#         s = UserSerializer(data=request.data)
+#         s = UserSerializer(data=request.data, photo=request.data['file'])
 #         if s.is_valid():
 #             s.save()
 #
@@ -65,6 +65,15 @@ class UserProfile(APIView):
         u = UserSerializer(request.user)
 
         return Response(u.data)
+
+    def put(self,request):
+        s = UserSerializer(request.user, data=request.data)
+
+        if s.is_valid():
+            s.save()
+
+            return Response(s.data, status=status.HTTP_201_CREATED)
+        return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AccountConfirmEmailView(APIView):
@@ -86,3 +95,13 @@ class AccountConfirmEmailView(APIView):
 
 class MainView(TemplateView):
     template_name = 'templates/index.html'
+
+
+class UserPhotoUploadView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    def put(self,request):
+        file_obj = request.data['file']
+        request.user.photo = file_obj
+        request.user.save()
+        return Response(status=status.HTTP_201_CREATED)
