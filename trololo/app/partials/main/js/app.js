@@ -5,8 +5,12 @@ angular.module('mainApp', [
         'ngResource',
         'ngSanitize',
         'ngRoute',
+        'ngMaterial',
+        'material.svgAssetsCache',
+        'userApp'
     ])
     .config(function ($routeProvider) {
+
         $routeProvider
             .when('/', {
                 templateUrl: '/static/main/templates/main.html',
