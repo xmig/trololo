@@ -28,11 +28,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGE_SIZE': 10
-}
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -125,10 +120,12 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/users/login/'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
