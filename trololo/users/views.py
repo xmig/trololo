@@ -1,6 +1,7 @@
 from users.serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.generics import GenericAPIView
 from rest_framework import status
 import requests
 from django.views.generic import TemplateView
@@ -60,16 +61,17 @@ from django.core.urlresolvers import reverse
 #         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class UserProfile(APIView):
+class UserProfile(GenericAPIView):
+    serializer_class = UserSerializer
     # parser_classes = (MultiPartParser, FormParser, JSONParser)
 
     def get(self, request):
-        u = UserSerializer(request.user)
+        u = self.get_serializer_class()(request.user)
 
         return Response(u.data)
 
     def put(self,request):
-        s = UserSerializer(request.user, data=request.data)
+        s = self.get_serializer_class()(request.user, data=request.data)
 
         if s.is_valid():
             s.save()

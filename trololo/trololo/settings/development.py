@@ -1,4 +1,3 @@
-import os
 from .base import *
 
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -59,3 +58,10 @@ LOGGING = {
 
 # SERVER_PORT = 8000
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+INSTALLED_APPS += (
+    'rest_framework_swagger',
+)
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
