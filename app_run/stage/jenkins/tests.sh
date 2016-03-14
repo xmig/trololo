@@ -6,6 +6,8 @@ set -o pipefail
 echo "****** Install new virtual env ******"
 pwd
 
+git status
+
 cd $WORKSPACE
 
 test -e "$PWD/env" && rm -rf "$PWD/env"
@@ -22,14 +24,8 @@ echo "***********************"
 
 echo "****** Run tests ******"
 
-coverage run --source='trololo' trololo/manage.py test trololo/ || { echo "Tests FAILED"; exit 1; }
+coverage run --source='trololo' --omit="*wsgi.py,*urls.py,*stage.py" trololo/manage.py test trololo/
 
-percentage=$(coverage report | tail -n 1 | awk '{print $4}' | awk -F% '{print $1}')
-
-coverage_limit=70
-
-echo "Tests coverage % is - $percentage %"
-
-[ $percentage -lt $coverage_limit ] && { echo "Coverage $percentage is LESS than $coverage_limit"; exit 1; }
+coverage report --fail-under=70
 
 echo "******** END ***********"
