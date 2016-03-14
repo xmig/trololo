@@ -92,7 +92,7 @@ class TestUserProfileUpdate(APITestCase):
         self.assertTrue(user.photo.name.startswith('user_{0}/logo'.format(user.id)))
 
 
-    def test_user_first_name(self):
+    def test_user_first_name_update(self):
         url = reverse('users:user_profile')
         user = get_user_model().objects.get(username='user')
 
@@ -106,7 +106,7 @@ class TestUserProfileUpdate(APITestCase):
         self.assertTrue(user.first_name == 'John')
 
 
-    def last_name(self):
+    def test_last_name_update(self):
         url = reverse('users:user_profile')
         user = get_user_model().objects.get(username='user')
 
@@ -120,7 +120,7 @@ class TestUserProfileUpdate(APITestCase):
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
 
 
-    def specialization(self):
+    def test_specialization_update(self):
         url = reverse('users:user_profile')
         user = get_user_model().objects.get(username='user')
 
@@ -134,7 +134,7 @@ class TestUserProfileUpdate(APITestCase):
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
 
 
-    def detailed_info_specialization(self):
+    def test_detailed_info_specialization_update(self):
         url = reverse('users:user_profile')
         user = get_user_model().objects.get(username='user')
 
