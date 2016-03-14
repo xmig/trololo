@@ -99,3 +99,6 @@ class AccountConfirmEmailView(APIView):
 
 class MainView(TemplateView):
     template_name = 'templates/index.html'
+
+
+

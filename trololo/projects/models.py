@@ -1,10 +1,15 @@
 from __future__ import unicode_literals
 from django.db import models
 
-from users.models import TrololoUser
+from django.conf import settings
 
 
-class Project(models.Model):
+class AbstractModel(models.Model):
+    class Meta:
+        abstract = True
+
+
+class Project(AbstractModel):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -31,8 +36,8 @@ class Project(models.Model):
     )
 
     name = models.CharField(max_length=100, null=True, blank=True, default='')
-    owner = models.ForeignKey(TrololoUser, blank=True, default='')
-    member = models.ManyToManyField(TrololoUser, blank=True, default='')
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_owned')
+    member = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
@@ -46,7 +51,7 @@ class Project(models.Model):
         return self.name
 
 
-class ProjectComment(models.Model):
+class ProjectComment(AbstractModel):
     # who = relation for project user
     project = models.ForeignKey(Project, blank=True, null=True, default='')
     comment = models.TextField(blank=True, null=True, default='')
@@ -61,7 +66,7 @@ class ProjectComment(models.Model):
 
 
 
-class Task(models.Model):
+class Task(AbstractModel):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -98,8 +103,8 @@ class Task(models.Model):
 
     )
 
-    project = models.ForeignKey(Project, default='', blank=True)
-    # members
+    project = models.ForeignKey(Project, default='', null=True, blank=True)
+    member = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')
@@ -119,9 +124,9 @@ class Task(models.Model):
         return self.name
 
 
-class TaskComment(models.Model):
+class TaskComment(AbstractModel):
     # who = relation for project user
-    task = models.ForeignKey(Task)
+    task = models.ForeignKey(Task, default='', null=True, blank=True)
     comment = models.TextField(blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
