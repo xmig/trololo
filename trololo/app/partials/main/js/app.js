@@ -6,6 +6,7 @@ angular.module('mainApp', [
         'ngSanitize',
         'ngRoute',
         'ngMaterial',
+        'ngMessages',
         'material.svgAssetsCache',
         'userApp'
     ])

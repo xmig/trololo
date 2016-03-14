@@ -11,7 +11,8 @@ angular.module('mainApp')
         djangoAuth.login($scope.model.username, $scope.model.password)
         .then(function(data){
         	// success case
-        	$location.path("/");
+            $scope.cancel();
+        	$location.path("/user/projects");
         },function(data){
         	// error case
         	$scope.errors = data;

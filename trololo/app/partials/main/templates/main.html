@@ -1,44 +1,125 @@
-<h4>Routes</h4>
-    <p>
-        <a ng-hide="authenticated" href="#/login" class="btn btn-primary">Login</a>
-        <a ng-hide="authenticated" href="#/passwordReset" class="btn btn-primary">Send Password Reset</a>
-        <a ng-hide="authenticated" ng-click="goConfirmReset()" class="btn btn-primary">Confirm Password Reset</a>
-    </p>
-    <p>
-        <a ng-show="authenticated" href="#/logout" class="btn btn-primary">Logout</a>
-        <a ng-hide="authenticated" ng-href="#/register" class="btn btn-primary">Register</a>
-        <a ng-click="goVerify()" class="btn btn-primary">Verify Email</a>
-        <a ng-show="authenticated" href="#/passwordChange" class="btn btn-primary">Change Password</a>
-        <a ng-show="authenticated" href="#/userProfile" class="btn btn-primary">Profile</a>
-        <a href="#/authRequired" class="btn btn-primary">Restricted Page</a>
-        <a href="#/user/projects" class="btn btn-primary">User Page</a>
-    </p>
-<hr/>
-<h4>Kitchen Sink Demo</h4>
-<div style="margin-bottom:25px;">
-  <div style="margin-bottom:15px;">
-    <button ng-hide="authenticated" ng-click="login()" class="btn btn-primary">Login</button>
-    <button ng-show="authenticated" ng-click="logout()" class="btn btn-primary">Logout</button>
-    <button ng-hide="authenticated" ng-click="resetPassword()" class="btn btn-primary">Send Password Reset</button>
-    <button ng-hide="authenticated" ng-click="confirmReset()" class="btn btn-primary">Confirm Password Reset</button>
-    <button ng-hide="authenticated" ng-click="register()" class="btn btn-primary">Register</button>
-    <button ng-click="verify()" class="btn btn-primary">Verify Email</button>
-    <button ng-show="authenticated" ng-click="changePassword()" class="btn btn-primary">Change Password</button>
-    <button ng-show="authenticated" ng-click="profile()" class="btn btn-primary">Get Profile</button>
-    <button ng-show="authenticated" ng-click="updateProfile()" class="btn btn-primary">Update Profile</button>
-  </div>
+<md-content flex>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Наше Трололо</span>
+            </h2>
+            <span flex=""></span>
+            <md-button class="md-raised" ng-hide="authenticated" ng-click="popLogin($event)">Login</md-button>
+            <md-button class="md-raised" ng-show="authenticated" ng-click="logout()">Logout</md-button>
+            <md-button class="md-raised md-warn">Registration</md-button>
+        </div>
+    </md-toolbar>
+    <div layout="column">
+        <md-content flex>
+            <h4>Routes</h4>
+            <p>
+                <a ng-hide="authenticated" href="#/login" class="btn btn-primary">Login</a>
+                <a ng-hide="authenticated" href="#/passwordReset" class="btn btn-primary">Send Password Reset</a>
+                <a ng-hide="authenticated" ng-click="goConfirmReset()" class="btn btn-primary">Confirm Password
+                    Reset</a>
+            </p>
+            <p>
+                <a ng-show="authenticated" href="#/logout" class="btn btn-primary">Logout</a>
+                <a ng-hide="authenticated" ng-href="#/register" class="btn btn-primary">Register</a>
+                <a ng-click="goVerify()" class="btn btn-primary">Verify Email</a>
+                <a ng-show="authenticated" href="#/passwordChange" class="btn btn-primary">Change Password</a>
+                <a ng-show="authenticated" href="#/userProfile" class="btn btn-primary">Profile</a>
+                <a href="#/authRequired" class="btn btn-primary">Restricted Page</a>
+                <a href="#/user/projects" class="btn btn-primary">User Page</a>
+            </p>
+            <hr/>
+            <h4>Kitchen Sink Demo</h4>
+            <div style="margin-bottom:25px;">
+                <div style="margin-bottom:15px;">
+                    <button ng-hide="authenticated" ng-click="login()" class="btn btn-primary">Login</button>
+                    <button ng-show="authenticated" ng-click="logout()" class="btn btn-primary">Logout</button>
+                    <button ng-hide="authenticated" ng-click="resetPassword()" class="btn btn-primary">Send Password
+                        Reset
+                    </button>
+                    <button ng-hide="authenticated" ng-click="confirmReset()" class="btn btn-primary">Confirm Password
+                        Reset
+                    </button>
+                    <button ng-hide="authenticated" ng-click="register()" class="btn btn-primary">Register</button>
+                    <button ng-click="verify()" class="btn btn-primary">Verify Email</button>
+                    <button ng-show="authenticated" ng-click="changePassword()" class="btn btn-primary">Change
+                        Password
+                    </button>
+                    <button ng-show="authenticated" ng-click="profile()" class="btn btn-primary">Get Profile</button>
+                    <button ng-show="authenticated" ng-click="updateProfile()" class="btn btn-primary">Update Profile
+                    </button>
+                </div>
 
-  <p><textarea style="width:90%;height:200px;">{{response}}</textarea></p>
+                <p><textarea style="width:90%;height:200px;">{{response}}</textarea></p>
 
-</div>
+            </div>
 
-<hr/>
-<h4>ngInclude Demo - Login</h4>
-<div ng-if="show_login" ng-include="'/static/main/templates/login.html'"></div>
-<div ng-if="!show_login" class="alert alert-info">You have logged in.</div>
+            <hr/>
+            <h4>ngInclude Demo - Login</h4>
+            <div ng-if="show_login" ng-include="'/static/main/templates/login.html'"></div>
+            <div ng-if="!show_login" class="alert alert-info">You have logged in.</div>
 
 
-<div class="footer">
-  <p>Tivix</p>
-</div>
+            <div class="footer">
+                <p>Tivix</p>
+            </div>
+        </md-content>
+    </div>
+</md-content>
+<script type="text/ng-template" id="login.tmpl.html">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
+       <form role="form" name="loginForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Login</h2>
+                    <span flex="" class="flex"></span>
+                    <button class="md-icon-button md-button md-ink-ripple" type="button"
+                            ng-click="cancel()">
+                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            </svg>
+                        </md-icon>
+                    </button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Username</label>
+                            <input type="text" name="username" id="id_username" ng-model="model.username" md-autofocus required>
+                            <div ng-messages="loginForm.username.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Password</label>
+                            <input type="password" name="user_password" id="id_password" ng-model="model.password" required>
+                            <div ng-messages="loginForm.user_password.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                        </md-input-container>
+                        <div ng-repeat="error in errors.password">{{error}}</div>
+                        <div ng-repeat="error in errors.non_field_errors">{{error}}</div>
+                        <div ng-if="error">{{error}}</div>
+                    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button ng-click="login(loginForm)" style="margin-right:20px;">
+                    Submit
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script>
+
+
+
+
 
