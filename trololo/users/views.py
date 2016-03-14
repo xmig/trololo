@@ -62,6 +62,9 @@ from django.core.urlresolvers import reverse
 
 
 class UserProfile(GenericAPIView):
+    """
+        Get/Update current logged in user profile data.
+    """
     serializer_class = UserSerializer
     # parser_classes = (MultiPartParser, FormParser, JSONParser)
 
