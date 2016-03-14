@@ -78,7 +78,7 @@ SWAGGER_SETTINGS = {
         'delete'
     ],
     'api_key': '',
-    'is_authenticated': True,
+    'is_authenticated': False,
     'is_superuser': False,
     'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
     'permission_denied_handler': None,
