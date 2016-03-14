@@ -11,10 +11,18 @@ class UserSerializer(serializers.ModelSerializer):
             'email', 'is_superuser', 'is_staff', 'last_login',
             'department', 'detailed_info', 'date_joined'
         )
-        editable_fields = (
-            'first_name', 'last_name',
-            'specialization', 'photo',
-            'department', 'detailed_info',
+
+        read_only_fields = (
+            'username', 'is_active', 'id',
+            'is_superuser', 'is_staff',
+            'last_login', 'email', 'date_joined'
         )
 
-        read_only_fields = tuple(set(fields) - set(editable_fields))
+    def to_representation(self, obj):
+        data = super(UserSerializer, self).to_representation(obj)
+
+        if data.get('photo'):
+            data['photo'] = '/static/' + data['photo']
+
+        return data
+
