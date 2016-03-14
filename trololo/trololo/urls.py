@@ -5,6 +5,7 @@ from users.views import AccountConfirmEmailView, MainView
 
 from rest_framework import routers
 from projects import views_api
+# from users import views
 
 
 router = routers.DefaultRouter()
@@ -12,6 +13,7 @@ router.register(r'projects', views_api.ProjectViewSet)
 router.register(r'tasks', views_api.TaskViewSet)
 router.register(r'projectscomments', views_api.ProjectCommentViewSet)
 router.register(r'taskscomments', views_api.TaskCommentViewSet)
+# router.register(r'users', views.UserProfile)
 
 
 urlpatterns = [

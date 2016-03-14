@@ -1,3 +1,4 @@
+import os
 from .base import *
 
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -57,3 +58,4 @@ LOGGING = {
 }
 
 # SERVER_PORT = 8000
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

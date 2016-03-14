@@ -68,4 +68,3 @@ class TaskCommentSerializer(serializers.ModelSerializer):
 
 
 
-        TrololoUser

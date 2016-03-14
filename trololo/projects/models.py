@@ -1,6 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 
+from users.models import TrololoUser
+
 
 class Project(models.Model):
 
@@ -29,8 +31,8 @@ class Project(models.Model):
     )
 
     name = models.CharField(max_length=100, null=True, blank=True, default='')
-    # owner = models.ForeignKey(User, blank=True, default='')
-    # member = models.ManyToManyField(User, blank=True, default='')
+    owner = models.ForeignKey(TrololoUser, blank=True, default='')
+    member = models.ManyToManyField(TrololoUser, blank=True, default='')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
@@ -97,7 +99,7 @@ class Task(models.Model):
     )
 
     project = models.ForeignKey(Project, default='', blank=True)
-    #members
+    # members
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')

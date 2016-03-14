@@ -93,6 +93,7 @@ DATABASES = {
     }
 }
 
+MEDIA_ROOT = '/var/www/trololo/media'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
