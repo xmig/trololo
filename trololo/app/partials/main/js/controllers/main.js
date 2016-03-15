@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mainApp')
-    .controller('MainCtrl', function ($scope, $cookies, $location, djangoAuth, $mdDialog, $mdMedia) {
+    .controller('MainCtrl', function ($scope, $rootScope, $cookies, $location, djangoAuth, $mdDialog, $mdMedia) {
         $scope.popLogin = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             $mdDialog.show({
@@ -27,7 +27,6 @@ angular.module('mainApp')
 
         $scope.popRegistr = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
-            console.log('Register');
             $mdDialog.show({
                     controller: DialogController,
                     templateUrl: 'register.tmpl.html',
@@ -43,6 +42,7 @@ angular.module('mainApp')
                     if($scope.complete){
                         $scope.registerComplete(ev);
                     }
+                    $rootScope.$broadcast('registrationComplete', false);
                 });
 
             $scope.$watch(function () {
