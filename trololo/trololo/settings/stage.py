@@ -1,7 +1,7 @@
 from .base import *
 
 MEDIA_ROOT = '/var/www/trololo/media/stage/'
-STATIC_ROOT = '/var/www/trololo/media/stage/'
+STATIC_ROOT = '/var/www/trololo/static/stage/'
 
 ['127.0.0.1', 'worddict.net']
 
