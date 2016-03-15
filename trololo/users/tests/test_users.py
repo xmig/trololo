@@ -1,7 +1,7 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from users.views import UserProfile
+from users.views import UserProfile, EmailVerificationSentView
 from PIL import Image
 import tempfile
 import os
@@ -147,3 +147,14 @@ class TestUserProfileUpdate(APITestCase):
         self.assertTrue(user.detailed_info == 'born in USA', user.specialization == 'developer')
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
 
+
+class TestEmailVerificationSentView(APITestCase):
+    def test_email_verification_sent(self):
+        url = reverse('account_email_verification_sent')
+        factory = APIRequestFactory()
+
+        request = factory.get(url)
+        response = EmailVerificationSentView.as_view()(request)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, "Verification email has been sent.")

@@ -104,4 +104,12 @@ class MainView(TemplateView):
     template_name = 'index.html'
 
 
+class EmailVerificationSentView(APIView):
+    authentication_classes = ()
+    permission_classes = ()
+
+    def get(self, request):
+        return Response("Verification email has been sent.")
+
+
 
