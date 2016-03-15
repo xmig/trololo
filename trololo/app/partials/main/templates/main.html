@@ -71,7 +71,7 @@
 <!-- Login modal -->
 <script type="text/ng-template" id="login.tmpl.html">
     <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
-       <form role="form" name="loginForm" novalidate>
+       <form role="form" name="loginForm" novalidate ng-submit="login(loginForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>Login</h2>
@@ -108,14 +108,14 @@
                             </div>
                             <span class="alert" ng-repeat="error in errors.password">{{error}}</span>
                         </md-input-container>
-                        <button class="forgot-pass-link" ng-click="openResetPasswordModal()">Forgot your password?</button>
+                        <span class="forgot-pass-link" ng-click="openResetPasswordModal()">Forgot your password?</span>
                     </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
                 <md-button ng-click="cancel()">
                     Cancel
                 </md-button>
-                <md-button ng-click="login(loginForm)" style="margin-right:20px;">
+                <md-button type="submit" style="margin-right:20px;">
                     Submit
                 </md-button>
             </md-dialog-actions>
@@ -126,7 +126,7 @@
 <!-- Registration modal -->
 <script type="text/ng-template" id="register.tmpl.html">
     <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="register_view" ng-controller="RegisterCtrl">
-       <form role="form" name="registerForm" novalidate>
+       <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>Registration</h2>
@@ -172,7 +172,7 @@
                 <md-button ng-click="cancel()">
                     Cancel
                 </md-button>
-                <md-button ng-click="register(registerForm)" style="margin-right:20px;">
+                <md-button type="submit" style="margin-right:20px;">
                     Register
                 </md-button>
             </md-dialog-actions>
@@ -218,7 +218,7 @@
 <!-- Reset password modal -->
 <script type="text/ng-template" id="reset_pass.tmpl.html">
     <md-dialog aria-label="reset" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="reset_view" ng-controller="PasswordresetCtrl">
-       <form role="form" name="passwordResetForm" novalidate>
+       <form role="form" name="passwordResetForm" novalidate ng-submit="resetPassword(passwordResetForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
                     <h2>Reset password</h2>
@@ -249,7 +249,7 @@
                 <md-button ng-click="cancel()">
                     Cancel
                 </md-button>
-                <md-button ng-click="resetPassword(passwordResetForm)" style="margin-right:20px;">
+                <md-button type="submit" style="margin-right:20px;">
                     Reset
                 </md-button>
             </md-dialog-actions>
