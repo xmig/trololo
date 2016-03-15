@@ -27,4 +27,6 @@ coverage run --source='trololo' --omit="*wsgi.py,*urls.py,*stage.py" trololo/man
 
 coverage report --fail-under=70
 
+deactivate
+
 echo "******** END ***********"

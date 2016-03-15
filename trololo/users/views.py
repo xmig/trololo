@@ -110,6 +110,3 @@ class EmailVerificationSentView(APIView):
 
     def get(self, request):
         return Response("Verification email has been sent.")
-
-
-

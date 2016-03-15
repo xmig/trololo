@@ -15,7 +15,6 @@ sudo -u ubuntu git pull
 echo "**************** End #1 *******************"
 echo "******** Jenkins Script Step #2 ********"
 
-source venv/bin/activate
 export BUILD=$BUILD_NUMBER
 
 echo "****** Run StageRun.sh Script as User: ubuntu ******"
