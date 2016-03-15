@@ -59,3 +59,14 @@ LOGGING = {
         },
     }
 }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'trololo_stage',
+        'USER': 'trololo_user',
+        'PASSWORD': 'louShoote6',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
