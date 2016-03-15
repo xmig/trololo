@@ -44,7 +44,6 @@ INSTALLED_APPS = (
     'users',
     'projects',
 )
-
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,12 +56,11 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'trololo.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app'))
+            os.path.abspath(os.path.join(BASE_DIR, os.pardir, 'app'))
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -112,7 +110,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'static')),
-    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'templates')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'partials')),
 ]
 
 LOGIN_URL = '/users/login/'
@@ -142,3 +140,8 @@ EMAIL_HOST_USER = 'jonny.john2017@yandex.ru'
 EMAIL_HOST_PASSWORD = 'uasar3aeK2'
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
+
+# authorization settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
