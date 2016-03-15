@@ -4,8 +4,8 @@ from projects import views
 
 urlpatterns = [
 
-    url(r'^projects/$', views.ProjectData.as_view(), name='projects'),
-    url(r'^tasks/$', views.TaskData.as_view(), name='tasks'),
+    url(r'^projects/$', views.ProjectsData.as_view(), name='projects'),
+    url(r'^tasks/$', views.TasksData.as_view(), name='tasks'),
 
     # url(r'^$', views.project_list, name='projects'),
     # url(r'^create/$', projects.views.project_create, name='project_create'),
