@@ -22,8 +22,8 @@ class Migration(migrations.Migration):
                 ('visible_by', models.CharField(default='undefined', max_length=30, choices=[('members', 'Members'), ('particular_user', 'Particular_user'), ('all_users', 'All_users'), ('undefined', 'Undefined')])),
                 ('date_started', models.DateTimeField(default='', null=True, blank=True)),
                 ('date_finished', models.DateTimeField(default='', null=True, blank=True)),
-                ('member', models.ManyToManyField(default='', related_name='projects_added', to=settings.AUTH_USER_MODEL, blank=True)),
-                ('owner', models.ForeignKey(related_name='projects_owned', default='', blank=True, to=settings.AUTH_USER_MODEL)),
+                ('member', models.ManyToManyField(related_name='projects_added', null=True, to=settings.AUTH_USER_MODEL, blank=True)),
+                ('owner', models.ForeignKey(related_name='projects_owned', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -55,7 +55,8 @@ class Migration(migrations.Migration):
                 ('modified_at', models.DateTimeField(auto_now=True)),
                 ('deadline_date', models.DateTimeField(default='', null=True, blank=True)),
                 ('estimate_minutes', models.IntegerField(default='', null=True, blank=True)),
-                ('project', models.ForeignKey(default='', blank=True, to='projects.Project')),
+                ('member', models.ManyToManyField(related_name='tasks_added', null=True, to=settings.AUTH_USER_MODEL, blank=True)),
+                ('project', models.ForeignKey(default='', blank=True, to='projects.Project', null=True)),
             ],
             options={
                 'abstract': False,
@@ -68,7 +69,7 @@ class Migration(migrations.Migration):
                 ('comment', models.TextField(default='', null=True, blank=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
-                ('task', models.ForeignKey(to='projects.Task')),
+                ('task', models.ForeignKey(default='', blank=True, to='projects.Task', null=True)),
             ],
             options={
                 'abstract': False,
