@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mainApp')
-  .controller('RegisterCtrl', function ($scope, djangoAuth, Validate) {
+  .controller('RegisterCtrl', function ($scope, $rootScope, djangoAuth, Validate) {
   	$scope.model = {'username':'','password':'','email':''};
     $scope.errors = [];
     $scope.register = function(formData){
@@ -11,7 +11,7 @@ angular.module('mainApp')
         djangoAuth.register($scope.model.username,$scope.model.password1,$scope.model.password2,$scope.model.email)
         .then(function(data){
         	// success case
-        	$scope.complete = true;
+        	$rootScope.$broadcast('registrationComplete', true);
             $scope.cancel();
         },function(data){
         	// error case

@@ -40,7 +40,6 @@ angular.module('mainApp')
                     $scope.status = 'You said the information was "' + answer + '".';
                 }, function () {
                     $scope.status = 'You cancelled the dialog.';
-                    console.log("$scope.complete", $scope.complete);
                     if($scope.complete){
                         $scope.registerComplete(ev);
                     }
