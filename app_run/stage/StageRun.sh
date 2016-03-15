@@ -10,7 +10,7 @@ whoami
 echo "------------------------------------------------------"
 
 echo "-------------------- Go to (APP home) --------------------"
-cd /home/ubuntu/projects/trololo/
+cd /home/ubuntu/projects/trololo/stage/
 pwd
 echo "------------------------------------------------------"
 
@@ -24,7 +24,7 @@ sleep 1
 
 export DJANGO_SETTINGS_MODULE="trololo.settings.stage"
 echo "#----------------------------------- Collection Static -----------------------------------#"
-cd /home/ubuntu/projects/trololo/trololo
+cd /home/ubuntu/projects/trololo/stage/trololo
 
 python manage.py collectstatic --noinput
 echo "#-------------------------------- Collection Static: END --------------------------------#"
