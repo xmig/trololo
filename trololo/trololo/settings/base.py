@@ -22,11 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'jsa)6+4tm14a==zehmcjqnyr&qjy!b1ka#fd3@zw5uc43ees9c'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -38,13 +34,15 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
     'allauth',
     'allauth.account',
     'rest_auth.registration',
+
+    'users',
+    'projects',
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,6 +87,7 @@ DATABASES = {
     }
 }
 
+MEDIA_ROOT = '/var/www/trololo/media'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -116,10 +115,12 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/users/login/'
 
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -129,6 +130,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.TrololoUser'
 # option for registration
+# TODO: change to real for production
 SITE_ID = 1
 
 # email settings

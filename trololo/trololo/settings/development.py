@@ -57,3 +57,40 @@ LOGGING = {
 }
 
 # SERVER_PORT = 8000
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# INSTALLED_APPS += (
+#     'rest_framework_swagger',
+# )
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+
+SWAGGER_SETTINGS = {
+    'exclude_namespaces': [],
+    'api_version': '0.1',
+    'api_path': '/',
+    'enabled_methods': [
+        'get',
+        'post',
+        'put',
+        'patch',
+        'delete'
+    ],
+    'api_key': '',
+    'is_authenticated': False,
+    'is_superuser': False,
+    'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
+    'permission_denied_handler': None,
+    'resource_access_handler': None,
+    'base_path':'127.0.0.1:8000/docs',
+    'info': {
+        'contact': '',
+        'description': '',
+        'license': '',
+        'licenseUrl': '',
+        'termsOfServiceUrl': '',
+        'title': 'Trololo API',
+    },
+    'doc_expansion': 'none',
+}

@@ -3,8 +3,7 @@ from users import views
 
 
 urlpatterns = [
-    url('^login/$', views.app_login),
-    url('^user/$', views.user_list),
-    url('^users/$', views.UserList.as_view()),
-    url('^(?P<id>\d+)/$', views.SingleUser.as_view())
+    # url(r'^$', views.UserList.as_view(), name='user_list'),
+    url(r'^profile/$', views.UserProfile.as_view(), name='user_profile'),
+    # url('^(?P<id>\d+)/$', views.SingleUser.as_view(), name='single_user')
 ]
