@@ -35,8 +35,8 @@ urlpatterns = [
     url(r'^$', MainView.as_view()),
 ]
 
-# # docs
-# if 'rest_framework_swagger' in settings.INSTALLED_APPS:
-#     urlpatterns += [
-#         url(r'^docs/', include('rest_framework_swagger.urls')),
-#     ]
+# docs
+if 'rest_framework_swagger' in settings.INSTALLED_APPS:
+    urlpatterns += [
+        url(r'^docs/', include('rest_framework_swagger.urls')),
+    ]
