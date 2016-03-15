@@ -8,7 +8,7 @@ echo "****** Start Jenkins Script Step #1 ******"
 echo "*************** USER: ***************"
 echo "User:"
 whoami
-cd /home/ubuntu/projects/trololo/
+cd /home/ubuntu/projects/trololo/stage/
 pwd
 git branch
 sudo -u ubuntu git pull
@@ -22,7 +22,7 @@ echo "****** Run StageRun.sh Script as User: ubuntu ******"
 sudo supervisorctl stop trololo
 
 echo "*** Go to Scripts folder: /home/ubuntu/projects/trololo/app_run/stage/ ***"
-cd /home/ubuntu/projects/trololo/app_run/stage/
+cd /home/ubuntu/projects/trololo/stage/app_run/stage/
 
 sudo -u ubuntu bash StageRun.sh
 
