@@ -46,7 +46,6 @@ INSTALLED_APPS = (
     'allauth.account',
     'rest_auth.registration',
 )
-
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -139,3 +138,8 @@ EMAIL_HOST_USER = 'jonny.john2017@yandex.ru'
 EMAIL_HOST_PASSWORD = 'uasar3aeK2'
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
+
+# authorization settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'

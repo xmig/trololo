@@ -21,4 +21,6 @@ angular.module('mainApp')
       console.error("Unable to change routes.  Error: ", rejection)
       $location.path('/restricted').replace();
     });
+    // Registration flag
+    $scope.complete = false;
   });
