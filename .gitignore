@@ -3,5 +3,6 @@ env/
 *.pyc
 .idea/
 .coverage
+*.sqlite3
 db.sqlite3
 media/
