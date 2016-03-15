@@ -3,7 +3,7 @@ from .base import *
 MEDIA_ROOT = '/var/www/trololo/media/stage/'
 STATIC_ROOT = '/var/www/trololo/static/stage/'
 
-['127.0.0.1', 'worddict.net']
+ALLOWED_HOSTS = ['127.0.0.1', 'worddict.net']
 
 # LOGGING
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
