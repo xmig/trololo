@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 from rest_framework import status
+from rest_framework.renderers import TemplateHTMLRenderer
 import requests
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
@@ -86,18 +87,20 @@ class UserProfile(GenericAPIView):
 class AccountConfirmEmailView(APIView):
     authentication_classes = ()
     permission_classes = ()
+    renderer_classes = (TemplateHTMLRenderer, )
 
-    def get(self, request, key):
+    def get(self, request, key, format=None):
         r = requests.post(
             request.build_absolute_uri(reverse('registration:rest_verify_email')),
             # 'http://localhost:{}/rest-auth/registration/verify-email/'.format(settings.SERVER_PORT),
             json={"key": key}
         )
 
-        if r.status_code == 200:
-            return Response({"STATUS": "REGISTRATION COMPLETED"}, status=status.HTTP_200_OK)
-        else:
-            return Response({"STATUS": r.raw}, status=r.status_code)
+        status = 'REGISTRATION COMPLETED' if r.status_code == 200 else r.raw
+
+        return Response(
+            {"status": status}, template_name='account_confirm.html', status=r.status_code
+        )
 
 
 class MainView(TemplateView):
@@ -110,7 +113,3 @@ class EmailVerificationSentView(APIView):
 
     def get(self, request):
         return Response("Verification email has been sent.")
-
-
-class ResetPasswordForm(TemplateView):
-    template_name = 'password_reset_form.html'
