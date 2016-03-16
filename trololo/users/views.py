@@ -110,3 +110,7 @@ class EmailVerificationSentView(APIView):
 
     def get(self, request):
         return Response("Verification email has been sent.")
+
+
+class ResetPasswordForm(TemplateView):
+    template_name = 'password_reset_form.html'
