@@ -1,20 +1,21 @@
-<div ng-controller="projectsCtrl">
-<md-content ng-controller="nutritionController">
-      <md-card>
-        <div layout="row" layout-wrap class="checkboxes">
-          <md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>
-          <md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>
-          <md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>
-          <md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>
-          <md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>
-        </div>
-      </md-card>
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="projectsCtrl">
+
+<div flex ng-controller="nutritionController">
+      <!--<md-card>-->
+        <!--<div layout="row" layout-wrap class="checkboxes">-->
+          <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
+        <!--</div>-->
+      <!--</md-card>-->
 
       <md-card>
 
         <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
           <div class="md-toolbar-tools">
-            <span>Nutrition</span>
+            <span>Projects</span>
             <div flex></div>
             <md-button ng-click="loadStuff()">Async Operation</md-button>
           </div>
@@ -70,5 +71,7 @@
 
         <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{desserts.count}}" md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
       </md-card>
-    </md-content>
-</div>
+    </div>
+  </md-content>
+
+

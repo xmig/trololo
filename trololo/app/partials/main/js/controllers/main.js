@@ -16,6 +16,10 @@ angular.module('mainApp')
                     $scope.status = 'You said the information was "' + answer + '".';
                 }, function () {
                     $scope.status = 'You cancelled the dialog.';
+                    if($scope.resetPasswordFlag){
+                        $scope.resetPasswordModal(ev);
+                    }
+                    $rootScope.$broadcast('resetPasswordEv', false);
                 });
 
             $scope.$watch(function () {
@@ -76,6 +80,30 @@ angular.module('mainApp')
                 $scope.customFullscreen = (wantsFullScreen === true);
             });
         };
+
+         $scope.resetPasswordModal = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    controller: DialogController,
+                    templateUrl: 'reset_pass.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                });
+
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+
 
         $scope.login = function () {
             djangoAuth.login(prompt('Username'), prompt('password'))
