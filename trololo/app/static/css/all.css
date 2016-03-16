@@ -71,9 +71,9 @@ md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
   font-size: 16px;
 }
 
-md-card:first-child {
-  padding: 8px 8px 8px 24px;
-}
+/*md-card:first-child {*/
+  /*padding: 8px 8px 8px 24px;*/
+/*}*/
 
 .checkboxes > md-checkbox {
   margin: 0;
