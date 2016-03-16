@@ -8,7 +8,7 @@
     min-width: 272px;
 }
 
-.user-content md-content {
+.user-content .gray-bg {
     background-color: #eaebf5 !important;
 }
 
@@ -46,11 +46,13 @@
     color: #2196F3;
     outline: none;
 }
-
-/* Tables */
-md-card {
-	margin: 15px;
+.md-padding {
+    padding: 8px;
 }
+/* Tables */
+/*md-card {*/
+	/*margin: 15px;*/
+/*}*/
 
 body, html {
   background-color: #eaebf5;
