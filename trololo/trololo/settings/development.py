@@ -94,3 +94,5 @@ SWAGGER_SETTINGS = {
     },
     'doc_expansion': 'none',
 }
+
+SITE_ID = 2

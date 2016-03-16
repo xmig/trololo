@@ -4,3 +4,4 @@ Pillow
 django-rest-auth[with_social]
 django-rest-swagger
 psycopg2
+sqlparse
