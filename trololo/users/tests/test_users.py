@@ -1,10 +1,10 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from users.views import UserProfile, EmailVerificationSentView
+from users.views import UserProfile, EmailVerificationSentView, AccountConfirmEmailView
 from PIL import Image
 import tempfile
-import os
+import os, mock
 from rest_framework import status
 
 
@@ -158,3 +158,51 @@ class TestEmailVerificationSentView(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, "Verification email has been sent.")
+
+
+class RequestsPost(object):
+    status_code = 200
+    data = {}
+
+
+class RequestsRequests(object):
+    def post(self, *args, **kwargs):
+        return RequestsPost
+
+
+class TestAccountConfirmView(APITestCase):
+    def setUp(self):
+        super(TestAccountConfirmView, self).setUp()
+        self.requests_mock = mock.patch('users.views.requests.post', new=RequestsRequests().post)
+        self.requests_mock.start()
+
+    def tearDown(self):
+        super(TestAccountConfirmView, self).tearDown()
+        self.requests_mock.stop()
+
+    def test_account_confirm_email(self):
+        key = "ihoeqvcuyliphh4p1zexgcl4vh4fksizkbblfyeuwcfszot1vmyft1nakglmvgmd"
+        url = reverse('account_confirm_email',kwargs={"key": key})
+
+        factory = APIRequestFactory()
+
+        request = factory.get(url)
+        response = AccountConfirmEmailView.as_view()(request, key)
+
+        response.render()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.content,
+            '''<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>registration complete</title>
+</head>
+<body>
+
+<b>REGISTRATION COMPLETED</b>
+
+</body>
+</html>'''
+        )
