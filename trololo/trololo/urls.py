@@ -6,7 +6,7 @@ from projects import urls as projects_urls
 
 from users.views import AccountConfirmEmailView, MainView, EmailVerificationSentView
 from django.conf import settings
-
+from django.contrib.auth.views import password_reset_confirm
 # from rest_framework import routers
 # from projects import views_api
 # from users import views
@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'^rest-auth/', include('rest_auth.urls')),
     url(r'^rest-auth/registration/', include('rest_auth.registration.urls', namespace='registration')),
     url(r'^$', MainView.as_view()),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        'django.contrib.auth.views.password_reset_confirm', name='password_reset_confirm'),
 ]
 
 # docs
