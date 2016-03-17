@@ -18,12 +18,13 @@ from django.contrib.auth import get_user_model
 
 
 class SingleUser(GenericAPIView):
-    """
-        Get user's data by it's id
-    """
     queryset = get_user_model().objects.all()
+    serializer_class = UserSerializer
 
     def get(self, request, id):
+        """
+        Get user's data by it's id
+        """
         try:
             user = self.get_queryset().get(pk=int(id))
         except get_user_model().DoesNotExist:
@@ -38,18 +39,21 @@ class SingleUser(GenericAPIView):
 
 
 class UserProfile(GenericAPIView):
-    """
-        Get/Update current logged in user profile data.
-    """
     serializer_class = UserSerializer
     parser_classes = (MultiPartParser, FormParser, JSONParser)
 
     def get(self, request):
+        """
+        Get current user profile info
+        """
         u = self.get_serializer_class()(request.user)
 
         return Response(u.data)
 
     def put(self,request):
+        """
+            Update current user profile info
+        """
         s = self.get_serializer_class()(request.user, data=request.data)
 
         if s.is_valid():
@@ -65,6 +69,13 @@ class AccountConfirmEmailView(APIView):
     renderer_classes = (TemplateHTMLRenderer, )
 
     def get(self, request, key, format=None):
+        """
+        Send confirmation request for given key and renders email confirmation status page.
+
+            * key: verification key
+
+            return: rendered HTML template 'account_confirm.html'
+        """
         r = requests.post(
             request.build_absolute_uri(reverse('registration:rest_verify_email')),
             # 'http://localhost:{}/rest-auth/registration/verify-email/'.format(settings.SERVER_PORT),
