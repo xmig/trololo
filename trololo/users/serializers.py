@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         data = super(UserSerializer, self).to_representation(obj)
 
         if data.get('photo'):
-            data['photo'] = '/static/' + data['photo']
+            data['photo'] = '/media/' + data['photo']
 
         return data
 

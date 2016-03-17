@@ -1,11 +1,12 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
-from users.views import UserProfile, EmailVerificationSentView, AccountConfirmEmailView
+from users.views import UserProfile, EmailVerificationSentView, AccountConfirmEmailView, SingleUser
 from PIL import Image
-import tempfile
-import os, mock
+import tempfile, os, mock
 from rest_framework import status
+from urlparse import urlparse
+from rest_auth.registration.views import VerifyEmailView
 
 
 class TestUserProfileGet(APITestCase):
@@ -161,19 +162,39 @@ class TestEmailVerificationSentView(APITestCase):
 
 
 class RequestsPost(object):
-    status_code = 200
-    data = {}
+    def __init__(self, status_code=200, data={}, raw=''):
+        self.status_code = status_code
+        self.data = data
+        self.raw = raw
 
 
-class RequestsRequests(object):
-    def post(self, *args, **kwargs):
-        return RequestsPost
+class RequestsRequest(object):
+    def __init__(self, url_name=''):
+        self.url_name = url_name
+
+    def post(self, url, *args, **kwargs):
+        post_resp = RequestsPost()
+        view_url = reverse(self.url_name)
+
+        if urlparse(url).path == view_url:
+            factory = APIRequestFactory()
+
+            request = factory.post(view_url, kwargs.get('json', {}))
+            response = VerifyEmailView.as_view()(request, **kwargs['json'])
+            post_resp.status_code = response.status_code
+
+        return post_resp
 
 
 class TestAccountConfirmView(APITestCase):
+    fixtures = ['data.json']
+
     def setUp(self):
         super(TestAccountConfirmView, self).setUp()
-        self.requests_mock = mock.patch('users.views.requests.post', new=RequestsRequests().post)
+        self.requests_mock = mock.patch(
+            'users.views.requests.post',
+            new=RequestsRequest('registration:rest_verify_email').post
+        )
         self.requests_mock.start()
 
     def tearDown(self):
@@ -182,7 +203,7 @@ class TestAccountConfirmView(APITestCase):
 
     def test_account_confirm_email(self):
         key = "ihoeqvcuyliphh4p1zexgcl4vh4fksizkbblfyeuwcfszot1vmyft1nakglmvgmd"
-        url = reverse('account_confirm_email',kwargs={"key": key})
+        url = reverse('account_confirm_email', kwargs={"key": key})
 
         factory = APIRequestFactory()
 
@@ -206,3 +227,40 @@ class TestAccountConfirmView(APITestCase):
 </body>
 </html>'''
         )
+
+
+class TestGetSingleUser(APITestCase):
+    fixtures = ['data.json']
+
+    def test_get_existed_user(self):
+        url = reverse('users:single_user', kwargs={'id': '1'})
+        user = get_user_model().objects.get(username='user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url, format='json')
+        force_authenticate(request, user=user)
+
+        response = SingleUser.as_view()(request, '1')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data,
+            {
+                'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
+                'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
+                'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
+                'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
+            }
+        )
+
+    def test_get_not_existed_user(self):
+        url = reverse('users:single_user', kwargs={'id': '100'})
+        user = get_user_model().objects.get(username='user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url, format='json')
+        force_authenticate(request, user=user)
+
+        response = SingleUser.as_view()(request, '100')
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
