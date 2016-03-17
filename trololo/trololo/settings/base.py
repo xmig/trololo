@@ -40,12 +40,13 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-    'cuser',
-    'chi_django_base',
-
     'users',
-    'projects',
+    'cuser',
+
+    'chi_django_base',
     'activity',
+    'projects',
+
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
