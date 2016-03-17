@@ -62,7 +62,7 @@ class TestUserProfileGet(APITestCase):
 
         ETALON = {
             'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-            'photo': '/static/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
+            'photo': '/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
             'email': u'maxellort@gmail.com', 'is_superuser': False, 'is_staff': False,
             'last_login': u'2016-03-09T13:10:20.662000Z', 'department': u'FBI', 'detailed_info': u'',
             u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
