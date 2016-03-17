@@ -1,23 +1,50 @@
-<md-content ng-controller="personalCtrl">
-    <div layout="column"></div>
-    <md-card>
-        <!--<div layout="row">-->
-            <!--{{location}}-->
-        <!--</div>-->
-      </md-card>
-      <md-card>
-        <md-card-title>
-          <md-card-title-text>
-            <span class="md-headline">Card with image</span>
-            <span class="md-subhead">Large</span>
-          </md-card-title-text>
-          <md-card-title-media>
-            <div class="md-media-lg card-media"></div>
-          </md-card-title-media>
-        </md-card-title>
-        <md-card-actions layout="row" layout-align="end center">
-          <md-button>Action 1</md-button>
-          <md-button>Action 2</md-button>
-        </md-card-actions>
-      </md-card>
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="personalCtrl">
+    <div flex-xs="" flex-gt-xs="50" layout="column">
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline">Maxello</span>
+                    <span class="md-subhead">maxellort@gmail.com</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-md card-media">
+                        <img ng-src="/static/img/249px-Trololoman.jpg" class="md-card-image" alt="User avatar">
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="start center">
+                <md-button class="md-primary md-button md-ink-ripple">Change password</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+    <div flex-xs="" flex-gt-xs="50" layout="column">
+        <md-card>
+            <form>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Additional Info</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Department</label>
+                            <input type="text" name="department" id="user_department">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Specialization</label>
+                            <input type="text" name="specialization" id="user_specialization">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Detailed Info</label>
+                            <textarea name="specialization" id="user_detailed_info"></textarea>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-primary md-button md-ink-ripple md-raised">Save</md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+    </div>
 </md-content>

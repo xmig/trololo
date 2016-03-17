@@ -8,7 +8,7 @@
     min-width: 272px;
 }
 
-.user-content md-content {
+.user-content .gray-bg {
     background-color: #eaebf5 !important;
 }
 
@@ -28,10 +28,31 @@
     padding-top: 5px;
 }
 
-/* Tables */
-md-card {
-	margin: 15px;
+.forgot-pass-link {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    color: #2196F3;
+    font-size: 14px;
+    line-height: 14px;
+    opacity: 1;
+    margin-top: 0;
+    padding-top: 5px;
+    text-decoration: underline;
+    cursor: pointer;
 }
+.forgot-pass-link:hover {
+    color: #207dd7;
+}
+.forgot-pass-link:focus, .forgot-pass-link:active {
+    color: #2196F3;
+    outline: none;
+}
+.md-padding {
+    padding: 8px;
+}
+/* Tables */
+/*md-card {*/
+	/*margin: 15px;*/
+/*}*/
 
 body, html {
   background-color: #eaebf5;
@@ -50,9 +71,9 @@ md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
   font-size: 16px;
 }
 
-md-card:first-child {
-  padding: 8px 8px 8px 24px;
-}
+/*md-card:first-child {*/
+  /*padding: 8px 8px 8px 24px;*/
+/*}*/
 
 .checkboxes > md-checkbox {
   margin: 0;
