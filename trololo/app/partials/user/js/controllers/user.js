@@ -4,9 +4,9 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
     };
-
-    $scope.location = $routeParams.userLocation;
     $scope.partialPath = '/static/user/templates/' + $routeParams.userLocation + '.html';
+    $scope.location = $routeParams.userLocation;
+
     $scope.leftSidebarList = [
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},

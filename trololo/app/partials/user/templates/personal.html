@@ -1,10 +1,11 @@
 <md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="personalCtrl">
     <div flex-xs="" flex-gt-xs="50" layout="column">
-        <md-card>
+        <md-card class="md-padding">
             <md-card-title>
                 <md-card-title-text>
-                    <span class="md-headline">Maxello</span>
-                    <span class="md-subhead">maxellort@gmail.com</span>
+                    <span class="md-headline" ng-if="!userPersonalData.first_name">{{userPersonalData.username}}</span>
+                    <span class="md-headline" ng-else>{{userPersonalData.first_name}} {{userPersonalData.last_name}}</span>
+                    <span class="md-subhead">{{userPersonalData.email}}</span>
                 </md-card-title-text>
                 <md-card-title-media>
                     <div class="md-media-md card-media">
@@ -18,7 +19,7 @@
         </md-card>
     </div>
     <div flex-xs="" flex-gt-xs="50" layout="column">
-        <md-card>
+        <md-card class="md-padding">
             <form>
                 <md-card-title>
                     <md-card-title-text>
@@ -42,9 +43,16 @@
                     </div>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button class="md-primary md-button md-ink-ripple md-raised">Save</md-button>
+                    <md-button class="md-primary md-button md-ink-ripple md-raised" ng-click="saveForm()">Save</md-button>
                 </md-card-actions>
             </form>
         </md-card>
+
+        userPersonalData:
+        <pre>{{ userPersonalData | json }}</pre>
+        dublicatePersonalData:
+        <pre>{{ dublicatePersonalData | json }}</pre>
+
+
     </div>
 </md-content>
