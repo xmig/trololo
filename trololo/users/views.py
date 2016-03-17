@@ -7,59 +7,34 @@ from rest_framework.renderers import TemplateHTMLRenderer
 import requests
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
-# from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-# from rest_framework.authentication import SessionAuthentication
-# from rest_framework import permissions
-# from django.contrib.auth import get_user_model
-
-
-# class UserList(APIView):
-#     # authentication_classes = (SessionAuthentication,)
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get(self, request):
-#         User = get_user_model()
-#
-#         return Response(
-#             UserSerializer(User.objects.all(), many=True).data
-#         )
-#
-#     def post(self, request):
-#         s = UserSerializer(data=request.data)
-#         if s.is_valid():
-#             s.save()
-#
-#             return Response(s.data, status=status.HTTP_201_CREATED)
-#
-#         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from django.contrib.auth import get_user_model
 
 
 # class CsrfExemptSessionAuthentication(SessionAuthentication):
-#
+#     """Helper Class to ignore Csrf Token verification"""
 #     def enforce_csrf(self, request):
 #         return  # To not perform the csrf check previously happening
 
 
-# class SingleUser(APIView):
-#     # authentication_classes = (SessionAuthentication,)
-#     permission_classes = (permissions.IsAuthenticated,)
-#
-#     def get(self, request, id):
-#         try:
-#             user = get_user_model().objects.get(pk=id)
-#         except get_user_model().DoesNotExist:
-#             return Response({}, status=status.HTTP_404_NOT_FOUND)
-#
-#         return Response(UserSerializer(user).data)
-#
-#     def put(self, request, id):
-#         s = UserSerializer(data=request.data, photo=request.data['file'])
-#         if s.is_valid():
-#             s.save()
-#
-#             return Response(s.data, status=status.HTTP_200_OK)
-#
-#         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
+class SingleUser(GenericAPIView):
+    """
+        Get user's data by it's id
+    """
+    queryset = get_user_model().objects.all()
+
+    def get(self, request, id):
+        try:
+            user = self.get_queryset().get(pk=int(id))
+        except get_user_model().DoesNotExist:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+        user_data = UserSerializer(user).data
+
+        # TODO: hide some data for not current user
+        # if user_data['id'] != request.user.id:
+        #     pass
+        return Response(user_data)
 
 
 class UserProfile(GenericAPIView):
@@ -67,7 +42,7 @@ class UserProfile(GenericAPIView):
         Get/Update current logged in user profile data.
     """
     serializer_class = UserSerializer
-    # parser_classes = (MultiPartParser, FormParser, JSONParser)
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
 
     def get(self, request):
         u = self.get_serializer_class()(request.user)

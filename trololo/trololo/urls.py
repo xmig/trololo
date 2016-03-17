@@ -8,6 +8,7 @@ from users.views import (
     AccountConfirmEmailView, MainView, EmailVerificationSentView
 )
 from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -40,3 +41,8 @@ if 'rest_framework_swagger' in settings.INSTALLED_APPS:
     urlpatterns += [
         url(r'^docs/', include('rest_framework_swagger.urls')),
     ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
