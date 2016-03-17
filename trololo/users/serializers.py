@@ -17,12 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
             'is_superuser', 'is_staff',
             'last_login', 'email', 'date_joined'
         )
-
-    def to_representation(self, obj):
-        data = super(UserSerializer, self).to_representation(obj)
-
-        if data.get('photo'):
-            data['photo'] = '/static/' + data['photo']
-
-        return data
+    # Deprecated!!!
+    # def to_representation(self, obj):
+    #     data = super(UserSerializer, self).to_representation(obj)
+    #
+    #     if data.get('photo'):
+    #         print(data['photo'])
+    #         data['photo'] = '/media/' + data['photo']
+    #
+    #     return data
 

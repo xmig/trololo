@@ -4,4 +4,6 @@ Pillow
 django-rest-auth[with_social]
 django-rest-swagger
 psycopg2
+django-cuser==2014.9.28
 sqlparse
+mock

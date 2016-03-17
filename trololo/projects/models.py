@@ -1,7 +1,10 @@
 from __future__ import unicode_literals
 from django.db import models
-
 from django.conf import settings
+from activity.models import HasActivity, Activity
+
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class AbstractModel(models.Model):
@@ -9,7 +12,7 @@ class AbstractModel(models.Model):
         abstract = True
 
 
-class Project(AbstractModel):
+class Project(AbstractModel, HasActivity):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -43,6 +46,14 @@ class Project(AbstractModel):
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
     date_started = models.DateTimeField(blank=True, null=True, default='')
     date_finished = models.DateTimeField(blank=True, null=True, default='')
+
+    def get_activity_message(self, **kwargs):
+        message = ''
+        if kwargs['created']:
+            message += 'create new project "' + self.name + '"'
+        else:
+            message += 'edit project "' + self.name + '"'
+        return message
 
     def __str__(self):
         return self.name
@@ -136,3 +147,9 @@ class TaskComment(AbstractModel):
 
     def __unicode__(self):
         return self.comment
+
+
+@receiver(post_save, sender = Project)
+def add_score(instance, **kwargs):
+    activity_massage = instance.get_activity_message(**kwargs)
+    instance.activity.create(message=activity_massage)

@@ -40,9 +40,13 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-
     'users',
+    'cuser',
+
+    'chi_django_base',
+    'activity',
     'projects',
+
 )
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,6 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'cuser.middleware.CuserMiddleware',
 )
 
 ROOT_URLCONF = 'trololo.urls'
@@ -86,7 +91,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+MEDIA_URL = '/media/'
 MEDIA_ROOT = '/var/www/trololo/media'
 
 # Internationalization
@@ -129,6 +134,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.TrololoUser'
+ACTIVITY_MODEL = 'activity.Activity'
 # option for registration
 # TODO: change to real for production
 SITE_ID = 1

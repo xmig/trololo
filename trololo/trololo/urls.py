@@ -5,17 +5,16 @@ from users import urls as users_urls
 from projects import urls as projects_urls
 
 from users.views import (
-    AccountConfirmEmailView, MainView, EmailVerificationSentView, ResetPasswordForm
+    AccountConfirmEmailView, MainView, EmailVerificationSentView
 )
 from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include(users_urls, namespace="users")),
     url(r'^projects/', include(projects_urls, namespace="projects")),
-
-    # url(r'^api/', include(router.urls)),
     url('^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/registration/account-confirm-email/(?P<key>\w+)/$', AccountConfirmEmailView.as_view(),
         name='account_confirm_email'),
@@ -42,3 +41,8 @@ if 'rest_framework_swagger' in settings.INSTALLED_APPS:
     urlpatterns += [
         url(r'^docs/', include('rest_framework_swagger.urls')),
     ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
