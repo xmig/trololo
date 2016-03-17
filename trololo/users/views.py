@@ -6,7 +6,7 @@ from rest_framework import status
 import requests
 from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
-# from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 # from rest_framework.authentication import SessionAuthentication
 # from rest_framework import permissions
 # from django.contrib.auth import get_user_model
@@ -66,7 +66,7 @@ class UserProfile(GenericAPIView):
         Get/Update current logged in user profile data.
     """
     serializer_class = UserSerializer
-    # parser_classes = (MultiPartParser, FormParser, JSONParser)
+    parser_classes = (MultiPartParser, FormParser, JSONParser)
 
     def get(self, request):
         u = self.get_serializer_class()(request.user)
@@ -76,6 +76,7 @@ class UserProfile(GenericAPIView):
     def put(self,request):
         s = self.get_serializer_class()(request.user, data=request.data)
 
+        print request.POST
         if s.is_valid():
             s.save()
 

@@ -5,7 +5,7 @@ angular.module('userApp').factory('personalInfoService', function($resource, $co
         { 'get':    {method:'GET'},
           'save':   {method:'POST'},
           'create': {method:'POST'},
-          'update': {method:'PUT', headers: {'Content-type' : 'multipart/form-data', 'X-CSRFToken': $cookies.get('csrftoken')}},
+          'update': {method:'PUT', data: {}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
           'query':  {method:'GET', isArray:true},
           'remove': {method:'DELETE'},
           'delete': {method:'DELETE'}
