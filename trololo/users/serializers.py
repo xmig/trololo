@@ -27,3 +27,8 @@ class UserSerializer(serializers.ModelSerializer):
     #
     #     return data
 
+
+class UserFilterSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False)
+    project = serializers.IntegerField(required=False)
+    task = serializers.IntegerField(required=False)
