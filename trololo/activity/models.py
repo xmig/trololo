@@ -1,9 +1,9 @@
 from django.db import models
 from django.conf import settings
-from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable
+from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, AbstractAddOldObject
 
 
-class HasActivity(models.Model):
+class HasActivity(models.Model, AbstractAddOldObject):
     class Meta:
         abstract = True
 

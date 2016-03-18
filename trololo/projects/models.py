@@ -48,7 +48,11 @@ class Project(AbstractModel, HasActivity):
         return 'create new project "' + self.name + '"'
 
     def get_activity_message_on_update(self, **kwargs):
-        return 'edit project "' + self.name + '"'
+        message = 'edit project'
+        old_data = self.get_original_object()
+        if old_data.name != self.name:
+            message = message + ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+        return message
 
     def __str__(self):
         return self.name
