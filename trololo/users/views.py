@@ -1,4 +1,4 @@
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer, UserFilterSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
@@ -9,6 +9,7 @@ from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 
 # class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -61,6 +62,40 @@ class UserProfile(GenericAPIView):
 
             return Response(s.data, status=status.HTTP_201_CREATED)
         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserListView(GenericAPIView):
+    serializer_class = UserFilterSerializer
+    queryset = get_user_model().objects.all()
+
+    def get(self, request):
+        """
+        Return users list filtered by following criteria:
+
+            * name - filters by username, first_name or last_name fields
+            * task - shows users assigned to the task with given id
+            * project - shows users added to the project with given id
+        """
+        s = self.get_serializer_class()(data=request.query_params)
+
+        if s.is_valid():
+            q = self.get_queryset()
+            if 'name' in s.validated_data:
+                name = s.validated_data['name']
+                q = q.filter(
+                    Q(username__startswith=name) | Q(first_name__startswith=name) | Q(last_name__startswith=name)
+                )
+
+            if 'project' in s.validated_data:
+                q = q.filter(projects_added__id=s.validated_data['project'])
+
+            if 'task' in s.validated_data:
+                q = q.filter(tasks_added__id=s.validated_data['task'])
+
+            return Response(UserSerializer(q.all(), many=True).data)
+
+        else:
+            return Response({'errors': s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AccountConfirmEmailView(APIView):
