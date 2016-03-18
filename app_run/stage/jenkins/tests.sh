@@ -16,8 +16,7 @@ virtualenv env
 
 source env/bin/activate
 
-pip install -r requirements.txt
-pip install -r test_requirements.txt
+pip install -r test_requirements.txt > /dev/null
 
 
 echo "***********************"
@@ -27,5 +26,7 @@ echo "****** Run tests ******"
 coverage run --source='trololo' --omit="*wsgi.py,*urls.py,*stage.py" trololo/manage.py test trololo/
 
 coverage report --fail-under=70
+
+deactivate
 
 echo "******** END ***********"
