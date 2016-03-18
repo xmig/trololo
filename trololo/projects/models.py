@@ -3,9 +3,6 @@ from django.db import models
 from django.conf import settings
 from activity.models import HasActivity, Activity
 
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-
 
 class AbstractModel(models.Model):
     class Meta:
@@ -47,13 +44,11 @@ class Project(AbstractModel, HasActivity):
     date_started = models.DateTimeField(blank=True, null=True, default='')
     date_finished = models.DateTimeField(blank=True, null=True, default='')
 
-    def get_activity_message(self, **kwargs):
-        message = ''
-        if kwargs['created']:
-            message += 'create new project "' + self.name + '"'
-        else:
-            message += 'edit project "' + self.name + '"'
-        return message
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new project "' + self.name + '"'
+
+    def get_activity_message_on_update(self, **kwargs):
+        return 'edit project "' + self.name + '"'
 
     def __str__(self):
         return self.name
@@ -147,9 +142,3 @@ class TaskComment(AbstractModel):
 
     def __unicode__(self):
         return self.comment
-
-
-@receiver(post_save, sender = Project)
-def add_score(instance, **kwargs):
-    activity_massage = instance.get_activity_message(**kwargs)
-    instance.activity.create(message=activity_massage)
