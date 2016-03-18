@@ -37,7 +37,7 @@ class Project(AbstractModel):
 
     name = models.CharField(max_length=100, null=True, blank=True, default='')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_owned')
-    member = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_added')
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
@@ -104,7 +104,7 @@ class Task(AbstractModel):
     )
 
     project = models.ForeignKey(Project, default='', null=True, blank=True)
-    member = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='tasks_added')
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')

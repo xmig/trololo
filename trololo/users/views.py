@@ -61,6 +61,59 @@ from django.core.urlresolvers import reverse
 #         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
+from users.models import TrololoUser
+from django.http import Http404
+
+
+class UsersList(GenericAPIView):
+    """
+    Get List of Users.
+    """
+    serializer_class = UserSerializer
+    queryset = TrololoUser.objects.all()
+
+    def get(self, request):
+
+        return Response(
+            UserSerializer(self.get_queryset(), many=True).data
+        )
+
+
+class SingleUser(GenericAPIView):
+    """
+    Retrieve, update or delete User instance.
+    """
+    serializer_class = UserSerializer
+
+
+    def get_object(self, pk):
+        try:
+            return TrololoUser.objects.get(pk=pk)
+        except TrololoUser.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        single_user = self.get_object(pk)
+        serializer = UserSerializer(single_user)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        single_user = self.get_object(pk)
+        serializer = UserSerializer(single_user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        single_user = self.get_object(pk)
+        single_user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
 class UserProfile(GenericAPIView):
     """
         Get/Update current logged in user profile data.
