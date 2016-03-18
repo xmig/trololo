@@ -3,12 +3,7 @@
 	text-align: center;
 }
 
-.md-sidenav-left {
-    width: 272px;
-    min-width: 272px;
-}
-
-.user-content .gray-bg {
+.gray-bg {
     background-color: #eaebf5 !important;
 }
 

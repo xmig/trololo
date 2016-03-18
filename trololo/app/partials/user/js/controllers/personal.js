@@ -1,4 +1,4 @@
-angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$cookies', function ($scope, $http, personalInfoService, $cookies) {
+angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', function ($scope, $http, personalInfoService) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
 
@@ -13,23 +13,31 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
         $scope.userPersonalData = data;
     });
 
-    //$scope.compareData = function(originalObj, copyObj, partObj){
-    //    if(partObj.length){
-    //        angular.forEach(partObj, function(elem){
-    //            angular.forEach(copyObj, function(el){
-    //                if(elem !== el){
-    //                    el = elem;
-    //                }
-    //            })
-    //        })
-    //    }
-    //    console.log("copyObj", copyObj);
-    //    console.log("partObj", partObj);
-    //};
+    $scope.isEmpty = function(obj) {
+        return Object.keys(obj).length === 0;
+    };
+
+    $scope.compareData = function(firstObj, secondObj){
+        $scope.coincidedElementsArray = [];
+
+        if(!$scope.isEmpty(secondObj)){
+            angular.forEach(secondObj, function(svalue, skey){
+                angular.forEach(firstObj, function(fvalue, fkey){
+                    console.log("+++", svalue === fvalue);
+                    if(skey === fkey && svalue !== fvalue){
+                        $scope.coincidedElementsArray.push(skey);
+                    }
+                })
+            })
+        }
+        console.log($scope.coincidedElementsArray);
+        return $scope.coincidedElementsArray;
+    };
 
     $scope.AdditionalInfoSubmit = function () {
+        $scope.compareData($scope.userPersonalData, $scope.userAdditionData);
         personalInfoService.update($scope.userAdditionData, function(response) {
             $scope.userPersonalData = response;
         });
-    }
+    };
 }]);
