@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 from django.db import models
-
 from django.conf import settings
+from activity.models import HasActivity, Activity
 
 
 class AbstractModel(models.Model):
@@ -9,7 +9,7 @@ class AbstractModel(models.Model):
         abstract = True
 
 
-class Project(AbstractModel):
+class Project(AbstractModel, HasActivity):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -43,6 +43,16 @@ class Project(AbstractModel):
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
     date_started = models.DateTimeField(blank=True, null=True, default='')
     date_finished = models.DateTimeField(blank=True, null=True, default='')
+
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new project "' + self.name + '"'
+
+    def get_activity_message_on_update(self, **kwargs):
+        message = 'edit project'
+        old_data = self.get_original_object()
+        if old_data.name != self.name:
+            message = message + ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+        return message
 
     def __str__(self):
         return self.name

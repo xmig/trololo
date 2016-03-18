@@ -36,3 +36,9 @@ class UserSerializer(serializers.ModelSerializer):
     def take_created_projects(self, get_user_model):
         created_project_list = [x.name for x in Project.objects.filter(owner_id=get_user_model.id)]
         return created_project_list
+
+
+class UserFilterSerializer(serializers.Serializer):
+    name = serializers.CharField(required=False)
+    project = serializers.IntegerField(required=False)
+    task = serializers.IntegerField(required=False)
