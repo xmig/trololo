@@ -116,6 +116,6 @@ angular.module('mainApp', [
                 redirectTo: '/'
             });
     })
-    .run(function (djangoAuth) {
-        djangoAuth.initialize('//127.0.0.1:8000/rest-auth', false);
+    .run(function (djangoAuth, $window) {
+        djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
     });
