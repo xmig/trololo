@@ -1,4 +1,4 @@
-<md-content layout-xs="column" layout="row" class="md-padding" ng-controller="personalCtrl">
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="personalCtrl">
     <div flex-xs="" flex-gt-xs="50" layout="column">
         <md-card class="md-padding">
             <md-card-title>
@@ -66,4 +66,22 @@
         <pre>{{ userPersonalData | json }}</pre>
 
     </div>
+
+    <script type="text/ng-template" id="personal-save-template.html">
+        <md-toast>
+            <span class="md-toast-text" flex>Save!</span>
+            <md-button ng-click="closeToast()">
+                Close
+            </md-button>
+            </md-toast>
+    </script>
+
+    <script type="text/ng-template" id="personal-reject-template.html">
+        <md-toast>
+            <span class="md-toast-text" flex>Any changes!</span>
+            <md-button ng-click="closeToast()">
+                Close
+            </md-button>
+            </md-toast>
+    </script>
 </md-content>

@@ -1,4 +1,8 @@
-angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', function ($scope, $http, personalInfoService) {
+'use strict';
+
+var isDlgOpen;
+
+angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', function ($scope, $http, personalInfoService, $mdToast) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
 
@@ -18,26 +22,50 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     };
 
     $scope.compareData = function(firstObj, secondObj){
-        $scope.coincidedElementsArray = [];
-
+        var coincidedElementsArray = [];
         if(!$scope.isEmpty(secondObj)){
             angular.forEach(secondObj, function(svalue, skey){
                 angular.forEach(firstObj, function(fvalue, fkey){
-                    console.log("+++", svalue === fvalue);
                     if(skey === fkey && svalue !== fvalue){
-                        $scope.coincidedElementsArray.push(skey);
+                        coincidedElementsArray.push(skey);
                     }
                 })
             })
         }
-        console.log($scope.coincidedElementsArray);
-        return $scope.coincidedElementsArray;
+        return coincidedElementsArray;
     };
 
-    $scope.AdditionalInfoSubmit = function () {
-        $scope.compareData($scope.userPersonalData, $scope.userAdditionData);
-        personalInfoService.update($scope.userAdditionData, function(response) {
-            $scope.userPersonalData = response;
+    $scope.showPersonalToastSave = function() {
+        $mdToast.show({
+            hideDelay   : 3000,
+            position    : 'top right',
+            controller  : 'ToastCtrl',
+            templateUrl : 'personal-save-template.html'
         });
     };
+
+    $scope.showPersonalToastReject = function() {
+        $mdToast.show({
+            hideDelay   : 3000,
+            position    : 'top right',
+            controller  : 'ToastCtrl',
+            templateUrl : 'personal-reject-template.html'
+        });
+    };
+
+    $scope.AdditionalInfoSubmit = function(){
+        if($scope.compareData($scope.userPersonalData, $scope.userAdditionData).length){
+            $scope.savePersonalForm();
+        } else {
+            $scope.showPersonalToastReject();
+        }
+    };
+
+    $scope.savePersonalForm = function () {
+        personalInfoService.update($scope.userAdditionData, function(response) {
+            $scope.userPersonalData = response;
+             $scope.showPersonalToastSave();
+        });
+    };
+
 }]);

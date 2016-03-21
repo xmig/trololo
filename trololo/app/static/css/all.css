@@ -107,10 +107,14 @@ table.md-table.md-row-select td.md-cell:nth-child(n+3):nth-last-child(n+2), tabl
     margin: 0;
     max-height: 40px;
     overflow: hidden;
-    padding: 0px 16px;
+    padding: 0 16px;
     text-align: left;
     text-decoration: none;
     white-space: normal;
     width: 100%;
     border-bottom: none;
+}
+
+md-toast .md-toast-content {
+    padding-right: 0;
 }
