@@ -1,7 +1,7 @@
 from users.serializers import UserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView
 from rest_framework import status
 from rest_framework.renderers import TemplateHTMLRenderer
 import requests
@@ -9,6 +9,8 @@ from django.views.generic import TemplateView
 from django.core.urlresolvers import reverse
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.contrib.auth import get_user_model
+from rest_framework import filters
+from django_filters import FilterSet, NumberFilter, IsoDateTimeFilter
 
 
 # class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -30,7 +32,7 @@ class SingleUser(GenericAPIView):
         except get_user_model().DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-        user_data = UserSerializer(user).data
+        user_data = self.get_serializer_class()(user, context={'request': request}).data
 
         # TODO: hide some data for not current user
         # if user_data['id'] != request.user.id:
@@ -46,7 +48,7 @@ class UserProfile(GenericAPIView):
         """
         Get current user profile info
         """
-        u = self.get_serializer_class()(request.user)
+        u = self.get_serializer_class()(request.user, context={'request': request})
 
         return Response(u.data)
 
@@ -54,13 +56,40 @@ class UserProfile(GenericAPIView):
         """
             Update current user profile info
         """
-        s = self.get_serializer_class()(request.user, data=request.data)
+        s = self.get_serializer_class()(request.user, data=request.data, context={'request': request})
 
         if s.is_valid():
             s.save()
 
             return Response(s.data, status=status.HTTP_201_CREATED)
         return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UsersFilter(FilterSet):
+    project = NumberFilter(name='projects_added__pk')
+    task = NumberFilter(name='tasks_added__pk')
+    logged_min = IsoDateTimeFilter(name='last_login', lookup_type='gte')
+    logged_max = IsoDateTimeFilter(name='last_login', lookup_type='lte')
+
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'username', 'first_name', 'last_name',
+            'department', 'specialization',
+            'detailed_info', 'email',
+            'logged_max', 'logged_min', 'project', 'task'
+        )
+
+
+class UserListView(ListAPIView):
+    serializer_class = UserSerializer
+    queryset = get_user_model().objects.all()
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = UsersFilter
+    ordering_fields = (
+        'username', 'first_name', 'last_name', 'department', 'specialization', 'detailed_info', 'email', 'id'
+    )
+    search_fields = ('username', 'first_name', 'last_name', 'department', 'specialization', 'detailed_info', 'email')
 
 
 class AccountConfirmEmailView(APIView):
