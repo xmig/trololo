@@ -48,7 +48,7 @@ class UserProfile(GenericAPIView):
         """
         Get current user profile info
         """
-        u = self.get_serializer_class()(request.user)
+        u = self.get_serializer_class()(request.user, context={'request': request})
 
         return Response(u.data)
 
@@ -56,7 +56,7 @@ class UserProfile(GenericAPIView):
         """
             Update current user profile info
         """
-        s = self.get_serializer_class()(request.user, data=request.data)
+        s = self.get_serializer_class()(request.user, data=request.data, context={'request': request})
 
         if s.is_valid():
             s.save()

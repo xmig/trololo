@@ -7,6 +7,7 @@ from users.views import (
 from PIL import Image
 import tempfile, os, mock
 from rest_framework import status
+from rest_framework.reverse import reverse
 from urlparse import urlparse
 from rest_auth.registration.views import VerifyEmailView
 
@@ -31,7 +32,7 @@ class TestUserProfileGet(APITestCase):
                 'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
-                'projects': []
+                'projects': [], 'url': u'http://testserver/users/1/'
             }
         )
 
@@ -65,10 +66,11 @@ class TestUserProfileGet(APITestCase):
 
         ETALON = {
             'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-            'photo': '/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
+            'photo': 'http://testserver/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
             'email': u'maxellort@gmail.com', 'is_superuser': False, 'is_staff': False,
             'last_login': u'2016-03-09T13:10:20.662000Z', 'department': u'FBI', 'detailed_info': u'',
-            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z', 'projects': []
+            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z', 'projects': [],
+            'url': u'http://testserver/users/1/'
         }
 
         self.assertEqual(response.data, ETALON)
@@ -253,7 +255,7 @@ class TestGetSingleUser(APITestCase):
                 'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
-                'projects': []
+                'projects': [], 'url': u'http://testserver/users/1/'
             }
         )
 
@@ -293,7 +295,7 @@ class TestUserList(APITestCase):
                     'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                     'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                     'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
-                    'projects': []
+                    'projects': [], 'url': u'http://testserver/users/1/'
                 }
             ]
         )
