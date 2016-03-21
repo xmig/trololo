@@ -4,6 +4,7 @@ from django.contrib import admin
 from users import urls as users_urls
 from projects import urls as projects_urls
 from projects.views import api_root
+from activity import urls as activity_urls
 
 from users.views import (
     AccountConfirmEmailView, MainView, EmailVerificationSentView
@@ -17,6 +18,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include(users_urls, namespace="users")),
     url(r'^projects/', include(projects_urls, namespace="projects")),
+    url(r'^activities/', include(activity_urls, namespace="activity")),
     url('^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/registration/account-confirm-email/(?P<key>\w+)/$', AccountConfirmEmailView.as_view(),
         name='account_confirm_email'),
