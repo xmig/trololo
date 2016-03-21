@@ -1,5 +1,4 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
-from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from users.views import (
     UserProfile, EmailVerificationSentView, AccountConfirmEmailView, SingleUser, UserListView
