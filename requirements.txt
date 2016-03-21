@@ -7,3 +7,4 @@ psycopg2
 django-cuser==2014.9.28
 sqlparse
 mock
+django-filter

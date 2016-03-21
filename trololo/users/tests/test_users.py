@@ -1,5 +1,4 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
-from django.core.urlresolvers import reverse
 from django.contrib.auth import get_user_model
 from users.views import (
     UserProfile, EmailVerificationSentView, AccountConfirmEmailView, SingleUser, UserListView
@@ -7,6 +6,7 @@ from users.views import (
 from PIL import Image
 import tempfile, os, mock
 from rest_framework import status
+from rest_framework.reverse import reverse
 from urlparse import urlparse
 from rest_auth.registration.views import VerifyEmailView
 
@@ -30,7 +30,8 @@ class TestUserProfileGet(APITestCase):
                 'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
                 'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
-                'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
+                'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
+                'projects': [], 'url': u'http://testserver/users/1/'
             }
         )
 
@@ -64,10 +65,11 @@ class TestUserProfileGet(APITestCase):
 
         ETALON = {
             'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-            'photo': '/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
+            'photo': 'http://testserver/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
             'email': u'maxellort@gmail.com', 'is_superuser': False, 'is_staff': False,
             'last_login': u'2016-03-09T13:10:20.662000Z', 'department': u'FBI', 'detailed_info': u'',
-            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
+            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z', 'projects': [],
+            'url': u'http://testserver/users/1/'
         }
 
         self.assertEqual(response.data, ETALON)
@@ -251,7 +253,8 @@ class TestGetSingleUser(APITestCase):
                 'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
                 'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
-                'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
+                'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
+                'projects': [], 'url': u'http://testserver/users/1/'
             }
         )
 
@@ -272,7 +275,7 @@ class TestUserList(APITestCase):
     fixtures = ['data.json']
 
     def test_get_users_list(self):
-        url = reverse('users:user_list') + '?name=use'
+        url = reverse('users:user_list') + '?name=use&logged_min=2016-03-09T13:10:19&logged_max=2016-03-10T13:11:19'
 
         user = get_user_model().objects.get(username='user')
 
@@ -284,13 +287,14 @@ class TestUserList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response.data,
+            response.data['results'],
             [
                 {
                     'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
                     'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                     'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
-                    'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z'
+                    'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
+                    'projects': [], 'url': u'http://testserver/users/1/'
                 }
             ]
         )
@@ -308,7 +312,7 @@ class TestUserList(APITestCase):
         response = UserListView.as_view()(request)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [])
+        self.assertEqual(response.data['results'], [])
 
     def test_get_users_list_by_task(self):
         url = reverse('users:user_list') + '?task=1&name=use'
@@ -322,4 +326,18 @@ class TestUserList(APITestCase):
         response = UserListView.as_view()(request)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [])
+        self.assertEqual(response.data['results'], [])
+
+    def test_get_user_list_filter_by_loggerin(self):
+        url = reverse('users:user_list') + '?logged_min=2016-03-09T13:10:21'
+
+        user = get_user_model().objects.get(username='user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+        force_authenticate(request, user=user)
+
+        response = UserListView.as_view()(request)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['results'], [])
