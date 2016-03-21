@@ -31,6 +31,8 @@ class Activity(AbstractModel, AbstractTimestampable, AbstractSignable):
 
     message = models.TextField()
 
+    ordering = ['-created_at']
+
     def __str__(self):
         return self.message
 
