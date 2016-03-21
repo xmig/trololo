@@ -32,7 +32,7 @@ class SingleUser(GenericAPIView):
         except get_user_model().DoesNotExist:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
-        user_data = UserSerializer(user).data
+        user_data = self.get_serializer_class()(user, context={'request': request}).data
 
         # TODO: hide some data for not current user
         # if user_data['id'] != request.user.id:

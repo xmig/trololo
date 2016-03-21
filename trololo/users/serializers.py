@@ -9,6 +9,9 @@ class UserSerializer(serializers.ModelSerializer):
         read_only=True,
         source='projects_added'
     )
+    url = serializers.HyperlinkedIdentityField(
+        view_name='users:single_user', read_only=True ,lookup_field='id'
+    )
 
     class Meta:
         model = get_user_model()
@@ -17,14 +20,14 @@ class UserSerializer(serializers.ModelSerializer):
             'specialization', 'photo', 'is_active',
             'email', 'is_superuser', 'is_staff', 'last_login',
             'department', 'detailed_info', 'date_joined',
-            'projects'
+            'projects', 'url'
         )
 
         read_only_fields = (
             'username', 'is_active', 'id',
             'is_superuser', 'is_staff',
             'last_login', 'email', 'date_joined',
-            'projects'
+            'projects', 'url'
         )
     # TODO: update this for gravatar integration
     # def to_representation(self, obj):
