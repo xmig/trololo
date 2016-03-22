@@ -1,4 +1,8 @@
-angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$cookies', function ($scope, $http, personalInfoService, $cookies) {
+'use strict';
+
+var isDlgOpen;
+
+angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', function ($scope, $http, personalInfoService, $mdToast) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
 
@@ -13,23 +17,55 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
         $scope.userPersonalData = data;
     });
 
-    //$scope.compareData = function(originalObj, copyObj, partObj){
-    //    if(partObj.length){
-    //        angular.forEach(partObj, function(elem){
-    //            angular.forEach(copyObj, function(el){
-    //                if(elem !== el){
-    //                    el = elem;
-    //                }
-    //            })
-    //        })
-    //    }
-    //    console.log("copyObj", copyObj);
-    //    console.log("partObj", partObj);
-    //};
+    $scope.isEmpty = function(obj) {
+        return Object.keys(obj).length === 0;
+    };
 
-    $scope.AdditionalInfoSubmit = function () {
+    $scope.compareData = function(firstObj, secondObj){
+        var coincidedElementsArray = [];
+        if(!$scope.isEmpty(secondObj)){
+            angular.forEach(secondObj, function(svalue, skey){
+                angular.forEach(firstObj, function(fvalue, fkey){
+                    if(skey === fkey && svalue !== fvalue){
+                        coincidedElementsArray.push(skey);
+                    }
+                })
+            })
+        }
+        return coincidedElementsArray;
+    };
+
+    $scope.showPersonalToastSave = function() {
+        $mdToast.show({
+            hideDelay   : 3000,
+            position    : 'top right',
+            controller  : 'ToastCtrl',
+            templateUrl : 'personal-save-template.html'
+        });
+    };
+
+    $scope.showPersonalToastReject = function() {
+        $mdToast.show({
+            hideDelay   : 3000,
+            position    : 'top right',
+            controller  : 'ToastCtrl',
+            templateUrl : 'personal-reject-template.html'
+        });
+    };
+
+    $scope.AdditionalInfoSubmit = function(){
+        if($scope.compareData($scope.userPersonalData, $scope.userAdditionData).length){
+            $scope.savePersonalForm();
+        } else {
+            $scope.showPersonalToastReject();
+        }
+    };
+
+    $scope.savePersonalForm = function () {
         personalInfoService.update($scope.userAdditionData, function(response) {
             $scope.userPersonalData = response;
+             $scope.showPersonalToastSave();
         });
-    }
+    };
+
 }]);
