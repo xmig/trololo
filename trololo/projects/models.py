@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
-from activity.models import HasActivity, Activity
+from activity.models import HasActivity
+from chi_django_base.models import AbstractTimestampable, AbstractSignable
 
 
 class AbstractModel(models.Model):
@@ -9,7 +10,7 @@ class AbstractModel(models.Model):
         abstract = True
 
 
-class Project(AbstractModel, HasActivity):
+class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -36,7 +37,6 @@ class Project(AbstractModel, HasActivity):
     )
 
     name = models.CharField(max_length=100, null=True, blank=True, default='')
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_owned')
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
@@ -62,7 +62,6 @@ class Project(AbstractModel, HasActivity):
 
 
 class ProjectComment(AbstractModel):
-    # who = relation for project user
     project = models.ForeignKey(Project, blank=True, null=True, default='')
     comment = models.TextField(blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
@@ -121,7 +120,7 @@ class Task(AbstractModel):
 
     name = models.CharField(max_length=150, null=True, default='', blank=True)
     description = models.TextField(blank=True, null=True, default='')
-    created_at = models.DateTimeField(auto_now_add=True)
+    # created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     deadline_date = models.DateTimeField(null=True, blank=True, default='')
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
@@ -135,7 +134,6 @@ class Task(AbstractModel):
 
 
 class TaskComment(AbstractModel):
-    # who = relation for project user
     task = models.ForeignKey(Task, default='', null=True, blank=True)
     comment = models.TextField(blank=True, null=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
