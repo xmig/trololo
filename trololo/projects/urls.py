@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from projects import views
-from users.models import TrololoUser
+
 
 
 urlpatterns = [
