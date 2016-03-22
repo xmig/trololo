@@ -36,7 +36,7 @@ echo $LOCAL_DB_NAME
 echo $LOCAL_DB_PASSWORD
 
 # create role and database
-sudo psql -U postgres -c "CREATE ROLE ${LOCAL_DB_USER} LOGIN;"
+sudo psql -U postgres -c "CREATE ROLE ${LOCAL_DB_USER} LOGIN CREATEDB;"
 sudo psql -U postgres -c "ALTER ROLE ${LOCAL_DB_USER} WITH PASSWORD '${LOCAL_DB_PASSWORD}';"
 sudo psql -U postgres -c "CREATE DATABASE ${LOCAL_DB_NAME} OWNER ${LOCAL_DB_USER};"
 
