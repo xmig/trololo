@@ -8,12 +8,12 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
     $scope.location = $routeParams.userLocation;
 
     $scope.leftSidebarList = [
+        {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},
-        {"title": "Progress", "link": "progress"},
-        {"title": "Teams", "link": "teams"},
-        {"title": "Activity", "link": "activity"},
-        {"title": "Personal Info", "link": "personal"}
+        //{"title": "Progress", "link": "progress"},
+        //{"title": "Teams", "link": "teams"},
+        //{"title": "Activity", "link": "activity"},
     ];
     $scope.isSectionSelected = function(section){
         return section === $scope.location;

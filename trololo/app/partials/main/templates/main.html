@@ -1,16 +1,19 @@
-<md-content flex>
+<md-content layout="column">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>
                 <span>Trololo</span>
             </h2>
             <span flex=""></span>
-            <md-button class="md-raised" ng-hide="authenticated" ng-click="popLogin($event)">Login</md-button>
-            <md-button class="md-raised" ng-show="authenticated" ng-click="logout()">Logout</md-button>
-            <md-button class="md-raised md-warn" ng-hide="authenticated" ng-click="popRegistr($event)">Registr</md-button>
-            <md-button class="md-raised md-warn" ng-show="authenticated" ng-href="#/user/projects">Profile</md-button>
+            <md-button class="md-raised" ng-hide="authenticated" ng-click="popLogin($event)">Sign in</md-button>
+            <md-button class="md-raised" ng-show="authenticated" ng-click="logout()">Log out</md-button>
+            <md-button class="md-raised md-warn" ng-hide="authenticated" ng-click="popRegistr($event)">Sign up</md-button>
+            <md-button class="md-raised md-warn" ng-show="authenticated" ng-href="#/user/personal">Profile</md-button>
         </div>
     </md-toolbar>
+    <md-content>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!
+    </md-content>
     <!--<div layout="column">-->
         <!--<md-content flex>-->
             <!--<h4>Routes</h4>-->
@@ -74,7 +77,7 @@
        <form role="form" name="loginForm" novalidate ng-submit="login(loginForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2>Login</h2>
+                    <h2>Log in</h2>
                     <span flex="" class="flex"></span>
                     <button class="md-icon-button md-button md-ink-ripple" type="button"
                             ng-click="cancel()">
@@ -129,7 +132,7 @@
        <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2>Registration</h2>
+                    <h2>Sign up</h2>
                     <span flex="" class="flex"></span>
                     <button class="md-icon-button md-button md-ink-ripple" type="button"
                             ng-click="cancel()">
@@ -186,7 +189,7 @@
        <form role="form" name="registerForm" novalidate>
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2>Registration</h2>
+                    <h2>Congratulations</h2>
                     <span flex="" class="flex"></span>
                     <button class="md-icon-button md-button md-ink-ripple" type="button"
                             ng-click="cancel()">
@@ -207,7 +210,7 @@
                     </div>
             </md-dialog-content>
             <md-dialog-actions layout="row">
-                <md-button ng-click="cancel()">
+                <md-button ng-click="cancel()" class="md-primary md-button md-ink-ripple md-raised">
                     OK
                 </md-button>
             </md-dialog-actions>
