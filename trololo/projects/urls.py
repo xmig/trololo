@@ -1,14 +1,13 @@
 from django.conf.urls import url
 from projects import views
+from  users.models import TrololoUser
 
 
 urlpatterns = [
-    # url(r'^projects/(?P<description>.+)/$', views.ProjectData.as_view(), name='projects'),
-    # url(r'^projects/(?P<name>.+)/$', views.ProjectData.as_view(), name='projects'),
-    # url(r'^projects/$', views.ProjectData.as_view(), name='projects'),
     url(r'^tasks/$', views.TaskData.as_view(), name='tasks'),
-    # url(r'^projects/', views.ProjectData.as_view(), name='projects'),
     url(r'^projects/', views.ProjectList.as_view(), name='projects'),
+
+
 
 
     # url(r'^$', views.project_list, name='projects'),
