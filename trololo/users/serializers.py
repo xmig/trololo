@@ -29,7 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
             'last_login', 'email', 'date_joined',
             'projects', 'url'
         )
-    # TODO: update this for gravatar integration
+
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
 

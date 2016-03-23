@@ -12,8 +12,8 @@ class AbstractSignable(models.Model):
     class Meta:
         abstract = True
 
-    created_by = CurrentUserField(add_only=True, related_name="%(class)s_created_by")
-    updated_by = CurrentUserField(related_name="%(class)s_updated_by")
+    created_by = CurrentUserField(add_only=True, related_name="%(class)s_created_by", default='')
+    updated_by = CurrentUserField(related_name="%(class)s_updated_by", default='')
 
 
 class AbstractTimestampable(models.Model):
