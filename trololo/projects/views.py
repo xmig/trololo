@@ -54,7 +54,6 @@ class ProjectsList(generics.ListCreateAPIView):
 
 
     def post(self, request):
-        request.data['owner']=request.user.id
         serializer = ProjectSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -150,11 +149,3 @@ class TaskDetail(generics.GenericAPIView):
         task = self.get_object(pk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-
-
-
-
-
-
-
