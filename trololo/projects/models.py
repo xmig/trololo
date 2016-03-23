@@ -37,7 +37,7 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     )
 
     name = models.CharField(max_length=100, null=True, blank=True, default='')
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='projects_added')
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='projects_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
@@ -75,7 +75,7 @@ class ProjectComment(AbstractModel):
 
 
 
-class Task(AbstractModel):
+class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -113,7 +113,7 @@ class Task(AbstractModel):
     )
 
     project = models.ForeignKey(Project, default='', null=True, blank=True)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL, null=True, blank=True, related_name='tasks_added')
+    members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')
@@ -126,11 +126,23 @@ class Task(AbstractModel):
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
 
 
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new project "' + self.name + '"'
+
+    def get_activity_message_on_update(self, **kwargs):
+        message = 'edit project'
+        old_data = self.get_original_object()
+        if old_data.name != self.name:
+            message = message + ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+        return message
+
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return self.name
+
+
 
 
 class TaskComment(AbstractModel):

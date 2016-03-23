@@ -7,7 +7,7 @@ class HasActivity(models.Model, AbstractAddOldObject):
     class Meta:
         abstract = True
 
-    activity = models.ManyToManyField(settings.ACTIVITY_MODEL, null=True, blank=True, related_name='activities')
+    activity = models.ManyToManyField(settings.ACTIVITY_MODEL, blank=True, related_name='%(class)s_activities')
 
     def get_activity_message_on_create(self, **kwargs):
         return 'create activity default message'
