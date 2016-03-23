@@ -1,26 +1,56 @@
-from serializers import ProjectSerializer, TaskSerializer # ProjectCommentSerializer, TaskCommentSerializer
+from serializers import ProjectSerializer, TaskSerializer
 from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView
 from rest_framework import status
 from projects.models import Project, Task
 
+from rest_framework import filters
+from rest_framework import generics
+from django_filters import FilterSet, NumberFilter, CharFilter, IsoDateTimeFilter
 
 from django.http import Http404
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
-class ProjectsList(GenericAPIView):
+
+@api_view(['GET'])
+def api_root(request, format=None):
+    return Response({
+        'users': reverse('users:user_list', request=request),
+        'projects': reverse('projects:projects', request=request),
+        'tasks': reverse('projects:tasks', request=request)
+    })
+
+
+class ProjectFilter(FilterSet):
+    user = NumberFilter(name='member__id', lookup_expr='exact')
+    name = CharFilter(name='name', lookup_expr='iexact')
+    id = NumberFilter(name='id',lookup_expr='exact')
+    content_description = CharFilter(name='description', lookup_type='icontains')
+
+    date_to_started = NumberFilter(name='date_started', lookup_expr='day')
+    date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
+    date_to_started_lt = IsoDateTimeFilter(name='date_started',lookup_expr='lte')
+
+    class Meta:
+        model = Project
+        fields = [
+            'name', 'status', 'description', 'id', 'content_description', 'date_to_started',
+            'date_to_started_gt', 'date_to_started_lt', 'user'
+        ]
+
+
+class ProjectsList(generics.ListCreateAPIView):
     """
     Get/Update data.
     """
     serializer_class = ProjectSerializer
     queryset = Project.objects.all()
-
-
-    def get(self, request):
-        queryset = Project.objects.all()
-        serializer = ProjectSerializer(queryset, many=True)
-        return Response(serializer.data)
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,filters.OrderingFilter)
+    filter_class = ProjectFilter
+    search_fields = ('name', 'description', 'id')
+    ordering_fields = ('name', 'id', 'description', 'date_started')
 
 
     def post(self, request):
@@ -35,12 +65,12 @@ class ProjectsList(GenericAPIView):
 
 
 
-class ProjectDetail(APIView):
+class ProjectDetail(generics.GenericAPIView):
     """
     Retrieve, update or delete a Project instance.
     """
     serializer_class = ProjectSerializer
-
+    queryset = Project.objects.all()
 
     def get_object(self, pk):
         try:
@@ -67,17 +97,10 @@ class ProjectDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-    # def put(self,request):
-    #     s = self.get_serializer_class()(request.project, data=request.data)
-    #
-    #     if s.is_valid():
-    #         s.save()
-    #
-    #         return Response(s.data, status=status.HTTP_201_CREATED)
-    #     return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TaskList(GenericAPIView):
+
+class TaskList(generics.GenericAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
@@ -96,11 +119,12 @@ class TaskList(GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class TaskDetail(APIView):
+class TaskDetail(generics.GenericAPIView):
     """
     Retrieve, update or delete a Task instance.
     """
     serializer_class = TaskSerializer
+    queryset = Task.objects.all()
 
 
     def get_object(self, pk):
@@ -126,3 +150,11 @@ class TaskDetail(APIView):
         task = self.get_object(pk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
+
+
+
+
+
+

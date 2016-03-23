@@ -19,7 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             'id', 'username', 'first_name', 'last_name',
             'specialization', 'photo', 'is_active',
             'email', 'is_superuser', 'is_staff', 'last_login',
-            'department', 'detailed_info', 'date_joined'
+            'department', 'detailed_info', 'date_joined',
             'projects', 'url'
         )
 

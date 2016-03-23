@@ -105,9 +105,9 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
     UNDEFINED = "undefined"
 
     LABELS = (
-        (RED, "Breakthrough"),
-        (ORANGE, "In_progress"),
-        (GREEN, "Finished"),
+        (RED, "Red"),
+        (ORANGE, "Orange"),
+        (GREEN, "Green"),
         (UNDEFINED, "Undefined"),
 
     )
@@ -120,7 +120,6 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
 
     name = models.CharField(max_length=150, null=True, default='', blank=True)
     description = models.TextField(blank=True, null=True, default='')
-    # created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
     deadline_date = models.DateTimeField(null=True, blank=True, default='')
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
