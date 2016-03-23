@@ -11,5 +11,6 @@ class TrololoUser(AbstractUser):
     department = models.CharField(max_length=40, blank=True)
     specialization = models.CharField(max_length=200, blank=True)
     detailed_info = models.TextField(blank=True)
+    use_gravatar = models.BooleanField(default=False)
 
 
