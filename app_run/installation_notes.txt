@@ -7,6 +7,7 @@ sudo apt-get install python-dev python-pip postgresql-9.3 postgresql-server-dev-
 
 # allow postgres user login to DB
 sudo sed -i 's/local   all             postgres                                peer/local   all             postgres                                trust/g' /etc/postgresql/9.3/main/pg_hba.conf
+sudo sed -i 's/local   all             all                                     peer/#local   all             all                                     peer/g' /etc/postgresql/9.3/main/pg_hba.conf
 sudo service postgresql reload
 
 # add trololo/ dir to the PYTHONPATH
