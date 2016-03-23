@@ -31,7 +31,7 @@ class TestUserProfileGet(APITestCase):
                 'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
-                'projects': [], 'url': u'http://testserver/users/1/'
+                'projects': [], 'use_gravatar': False,'url': u'http://testserver/users/1/'
             }
         )
 
@@ -68,7 +68,7 @@ class TestUserProfileGet(APITestCase):
             'photo': 'http://testserver/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
             'email': u'maxellort@gmail.com', 'is_superuser': False, 'is_staff': False,
             'last_login': u'2016-03-09T13:10:20.662000Z', 'department': u'FBI', 'detailed_info': u'',
-            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z', 'projects': [],
+            u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z', 'projects': [], 'use_gravatar': False,
             'url': u'http://testserver/users/1/'
         }
 
@@ -254,7 +254,7 @@ class TestGetSingleUser(APITestCase):
                 'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
-                'projects': [], 'url': u'http://testserver/users/1/'
+                'projects': [], 'use_gravatar': False, 'url': u'http://testserver/users/1/'
             }
         )
 
@@ -294,7 +294,7 @@ class TestUserList(APITestCase):
                     'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
                     'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                     'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
-                    'projects': [], 'url': u'http://testserver/users/1/'
+                    'projects': [],'use_gravatar': False, 'url': u'http://testserver/users/1/'
                 }
             ]
         )
@@ -341,3 +341,31 @@ class TestUserList(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['results'], [])
+
+
+class TestUserProfileGravatar(APITestCase):
+    fixtures = ['data_with_gravatar.json']
+
+    def test_get_user_profile(self):
+        url = reverse('users:user_profile')
+        user = get_user_model().objects.get(username='yura')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = UserProfile.as_view()(request)
+
+        self.assertEqual(
+            response.data,
+            {
+                'username': u'yura', 'first_name': u'yura', 'last_name': u'', 'specialization': u'',
+                'photo': "http://www.gravatar.com/avatar/b4c20c59303507f4c03435a0877ee46b?s=50&d=http%3A%2F%2Fwww."
+                         "curiousinkling.com%2Fimg%2Ftrololo%2Ftrololo-t-shirts-005DES.gif", 'is_active': True,
+                'email': u'yura@example.com',
+                'is_superuser': True, 'is_staff': True, 'last_login': u'2016-03-18T13:26:04.553000Z',
+                'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-18T09:54:08.108000Z',
+                'projects': [u'http://testserver/projects/projects/1/'], 'use_gravatar': True,
+                'url': u'http://testserver/users/1/'
+            }
+        )

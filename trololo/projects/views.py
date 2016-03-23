@@ -61,3 +61,6 @@ class ProjectList(generics.ListAPIView):
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
 
+class ProjectDetail(generics.RetrieveAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
