@@ -1,7 +1,6 @@
 from rest_framework import serializers
 
 from projects.models import Project, Task, TaskComment, ProjectComment
-from django.contrib.auth import get_user_model
 
 
 class ProjectSerializer(serializers.ModelSerializer):
@@ -11,7 +10,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ('name', 'id', 'status', 'description', 'members', 'visible_by', 'tasks', 'comments', 'date_started', 'date_finished')
+        fields = ('name', 'id', 'description', 'status', 'members', 'visible_by', 'tasks', 'comments', 'date_started', 'date_finished', 'created_by', 'created_at', 'updated_by', 'updated_at')
 
     def take_tasks(self, project):
         tasks_list = [x.name for x in project.task_set.all()]
@@ -31,7 +30,7 @@ class TaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('name', 'id', 'description', 'status', 'type', 'label', 'project', 'comments', 'created_at', 'modified_at', 'deadline_date', 'estimate_minutes')
+        fields = ('name', 'id', 'description', 'status', 'members', 'type', 'label', 'project', 'comments', 'deadline_date', 'estimate_minutes', 'created_by', 'created_at', 'updated_by', 'updated_at')
 
     def take_comments(self, task):
         comments_list = [x.comment for x in task.taskcomment_set.all()]
@@ -40,13 +39,11 @@ class TaskSerializer(serializers.ModelSerializer):
 
 
 class ProjectCommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ProjectComment
 
 
 class TaskCommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = TaskComment
 
