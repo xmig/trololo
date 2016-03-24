@@ -8,3 +8,16 @@
 .card-media {
   background-color: #999999;
 }
+.status-ico {
+    height: 20px;
+    width: 20px;
+}
+.status-ico.red {
+    color: red;
+}
+.status-ico.green {
+    color: green;
+}
+.status-ico.yellow {
+    color: yellow;
+}

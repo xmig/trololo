@@ -1,76 +1,124 @@
-<md-content layout-xs="column" layout="row" class="md-padding" ng-controller="projectsCtrl">
-<div flex ng-controller="nutritionController">
-      <!--<md-card>-->
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="projectsCtrl">
+    <div flex layout="column" ng-controller="nutritionController">
+        <!--<md-card>-->
         <!--<div layout="row" layout-wrap class="checkboxes">-->
-          <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
-          <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
-          <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
-          <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
-          <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
         <!--</div>-->
-      <!--</md-card>-->
+        <!--</md-card>-->
 
-      <md-card>
+        <md-card>
 
-        <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
-          <div class="md-toolbar-tools">
-            <span>Projects</span>
-            <div flex></div>
-            <md-button ng-click="loadStuff()">Async Operation</md-button>
-          </div>
-        </md-toolbar>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Projects</span>
+                    <div flex></div>
+                    <md-button ng-click="loadStuff()">Async Operation</md-button>
+                </div>
+            </md-toolbar>
 
-        <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
-          <div class="md-toolbar-tools">
-            <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
-          </div>
-        </md-toolbar>
+            <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+                </div>
+            </md-toolbar>
 
-        <md-table-container>
-          <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
-            <thead md-head md-order="query.order" md-on-reorder="logOrder">
-              <tr md-row>
-                <th md-column md-order-by="name"><span>Dessert (100g serving)</span></th>
-                <th md-column md-order-by="type"><span>Type</span></th>
-                <th md-column md-numeric md-order-by="calories.value" md-desc><span>Calories</span></th>
-                <th md-column md-numeric md-order-by="fat.value"><span>Fat (g)</span></th>
-                <th md-column md-numeric md-order-by="carbs.value"><span>Carbs (g)</span></th>
-                <th md-column md-numeric md-order-by="protein.value"><span>Protein (g)</span></th>
-                <th md-column md-numeric md-order-by="sodium.value" hide-gt-xs show-gt-md><span>Sodium (mg)</span></th>
-                <th md-column md-numeric md-order-by="calcium.value" hide-gt-xs show-gt-lg><span>Calcium (%)</span></th>
-                <th md-column md-numeric md-order-by="iron.value" hide-gt-xs show-gt-lg><span>Iron (%)</span></th>
-                <th md-column md-order-by="comment">
-                  <md-icon>comments</md-icon>
-                  <span>Comments</span>
-                </th>
-              </tr>
-            </thead>
-            <tbody md-body>
-              <tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect" ng-disabled="dessert.calories.value > 400" ng-repeat="dessert in desserts.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
-                <td md-cell>{{dessert.name}}</td>
-                <td md-cell>
-                  <md-select ng-model="dessert.type" placeholder="Other">
-                    <md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>
-                  </md-select>
-                </td>
-                <td md-cell>{{dessert.calories.value}}</td>
-                <td md-cell>{{dessert.fat.value | number: 2}}</td>
-                <td md-cell>{{dessert.carbs.value}}</td>
-                <td md-cell>{{dessert.protein.value | number: 2}}</td>
-                <td md-cell hide-gt-xs show-gt-md>{{dessert.sodium.value}}</td>
-                <td md-cell hide-gt-xs show-gt-lg>{{dessert.calcium.value}}%</td>
-                <td md-cell hide-gt-xs show-gt-lg>{{dessert.iron.value}}%</td>
-                <td md-cell ng-click="editComment($event, dessert)" ng-class="{'md-placeholder': !dessert.comment}">
-                  {{dessert.comment || 'Add a comment'}}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </md-table-container>
+            <md-table-container>
+                <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
+                    <thead md-head md-order="query.order" md-on-reorder="logOrder">
+                    <tr md-row>
+                        <th md-column md-order-by="name"><span>Project name</span></th>
+                        <th md-column md-order-by="type"><span>Tasks</span></th>
+                        <th md-column md-numeric md-order-by="calories.value" md-desc><span>Members</span></th>
+                        <th md-column md-numeric md-order-by="fat.value"><span>Owner</span></th>
+                        <th md-column md-numeric md-order-by="carbs.value"><span>Date started</span></th>
+                        <th md-column md-numeric md-order-by="protein.value"><span>Estimate date</span></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect"
+                        ng-disabled="dessert.calories.value > 400"
+                        ng-repeat="dessert in desserts.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        <td md-cell>{{dessert.name}}</td>
+                        <td md-cell>
+                            <md-select ng-model="dessert.type" placeholder="Other">
+                                <md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>
+                            </md-select>
+                        </td>
+                        <td md-cell>{{dessert.calories.value}}</td>
+                        <td md-cell>{{dessert.fat.value | number: 2}}</td>
+                        <td md-cell>{{dessert.carbs.value}}</td>
+                        <td md-cell>{{dessert.protein.value | number: 2}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
 
-        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{desserts.count}}" md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
-      </md-card>
+            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{desserts.count}}"
+                                 md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
+                                 md-on-paginate="logPagination"></md-table-pagination>
+        </md-card>
+        <md-card>
+            <md-tabs md-dynamic-height="" md-border-bottom="">
+                <md-tab label="my tasks"><check></check>
+                    <md-content class="md-padding">
+                        <!--<h1 class="md-display-2">My tasks</h1>-->
+                        <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.-->
+                            <!--Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales-->
+                            <!--pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies-->
+                            <!--mi.</p>-->
+                        <md-list>
+                            <md-subheader class="md-no-sticky">Single Action Checkboxes</md-subheader>
+                              <md-list-item ng-repeat="topping in toppings">
+                                <span class="status-ico" ng-class="{high: 'red', low: 'green', middle: 'yellow'}"></span>
+                                <p> {{ topping.name }} </p>
+                                <!--<md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>-->
+                              </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="my notifications">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">My notifications</h1>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
+                            Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales
+                            pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies
+                            mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum
+                            enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida.
+                            Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a
+                            facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac
+                            lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim
+                            venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit.
+                            Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec
+                            orci posuere, nec luctus mauris semper.</p>
+                        <p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci nec
+                            magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum facilisis.
+                            Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam pulvinar vel. Cras
+                            ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet nisl at, hendrerit
+                            tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam vitae nunc leo. Cras sed
+                            nisl consectetur, rhoncus sapien sit amet, tempus sapien.</p>
+                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere
+                            molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit
+                            erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac
+                            est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                    </md-content>
+                </md-tab>
+                <md-tab label="activity">
+                    <md-content class="md-padding">
+                        <h1 class="md-display-2">Activity</h1>
+                        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere
+                            molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit
+                            erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac
+                            est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-card>
     </div>
-  </md-content>
+</md-content>
 
 
