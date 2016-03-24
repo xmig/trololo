@@ -14,7 +14,7 @@ git branch
 sudo -u ubuntu git pull
 echo "**************** End #1 *******************"
 
-sudo supervisorctl stop trololo
+sudo supervisorctl stop trololo_prod
 
 echo "******** Jenkins Script Step #2 ********"
 
@@ -29,5 +29,5 @@ sudo -u ubuntu bash ProdRun.sh
 
 echo "*** Restart supervisorctl and nginx ***"
 
-sudo supervisorctl start trololo
+sudo supervisorctl start trololo_prod
 sudo service nginx restart
