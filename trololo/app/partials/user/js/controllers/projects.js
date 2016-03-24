@@ -1,5 +1,5 @@
 angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope){
-
+    /* Test table data */
     $scope.desserts = {
         "count": 9,
         "data": [
@@ -139,4 +139,14 @@ angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope)
     $scope.getTypes = function () {
         return ['Candy', 'Ice cream', 'Other', 'Pastry'];
     };
+    /* Test table data end */
+
+    /* Test activity data */
+    $scope.toppings = [
+        { name: 'Pepperoni', wanted: true, status: 'low' },
+        { name: 'Sausage', wanted: false, status: 'high' },
+        { name: 'Black Olives', wanted: true, status: 'high' },
+        { name: 'Green Peppers', wanted: false, status: 'middle' }
+    ];
+    /* Test activity data end */
 }]);
