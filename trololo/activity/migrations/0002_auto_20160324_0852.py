@@ -9,18 +9,19 @@ import cuser.fields
 class Migration(migrations.Migration):
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('activity', '0001_initial'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='activity',
             name='created_by',
-            field=cuser.fields.CurrentUserField(related_name='activity_created_by', editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=cuser.fields.CurrentUserField(related_name='activity_created_by', default=b'', editable=False, to=settings.AUTH_USER_MODEL, null=True),
         ),
-        migrations.AlterField(
+        migrations.AddField(
             model_name='activity',
             name='updated_by',
-            field=cuser.fields.CurrentUserField(related_name='activity_updated_by', editable=False, to=settings.AUTH_USER_MODEL, null=True),
+            field=cuser.fields.CurrentUserField(related_name='activity_updated_by', default=b'', editable=False, to=settings.AUTH_USER_MODEL, null=True),
         ),
     ]
