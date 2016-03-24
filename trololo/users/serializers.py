@@ -1,13 +1,23 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from trololo.gravatarintegration import get_avatavr_url
+from projects.models import Project, Task
 
-class UserSerializer(serializers.ModelSerializer):
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     projects = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='projects:projects_detail',
-        read_only=True,
-        source='projects_added'
+        queryset=Project.objects.all(),
+        source='projects_added',
+        lookup_field='pk'
+    )
+    tasks = serializers.HyperlinkedRelatedField(
+        many=True,
+        view_name='projects:tasks_detail',
+        queryset=Task.objects.all(),
+        source='tasks_added',
+        lookup_field='pk'
     )
     url = serializers.HyperlinkedIdentityField(
         view_name='users:single_user', read_only=True ,lookup_field='id'
@@ -20,21 +30,21 @@ class UserSerializer(serializers.ModelSerializer):
             'specialization', 'photo', 'is_active',
             'email', 'is_superuser', 'is_staff', 'last_login',
             'department', 'detailed_info', 'date_joined',
-            'projects', 'url', 'use_gravatar'
+            'projects', 'url', 'use_gravatar', 'tasks'
         )
 
         read_only_fields = (
             'username', 'is_active', 'id',
             'is_superuser', 'is_staff',
             'last_login', 'email', 'date_joined',
-            'projects', 'url'
+            'url'
         )
 
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
-
         if data['use_gravatar']:
-            # print(data['photo'])
-            data['photo'] = get_avatavr_url(data['email'], default='http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif')
+            data['photo'] = get_avatavr_url(
+                data['email'], default='http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif'
+            )
 
         return data
