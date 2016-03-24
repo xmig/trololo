@@ -34,8 +34,14 @@
 .secondary-button-padding p {
     padding-right: 100px;
 }
-.tabs-name {
+.project-tabs-name {
     color: #2196F3;
     text-decoration: underline;
+}
+.project-tabs-list {
+    font-size: 14px;
+}
+.project-tabs-box md-list-item, .project-tabs-box md-list-item .md-list-item-inner {
+    min-height: 35px;
 }
 /* Tabs end */

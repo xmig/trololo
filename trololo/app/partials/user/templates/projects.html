@@ -58,7 +58,7 @@
                                  md-on-paginate="logPagination"></md-table-pagination>
         </md-card>
         <md-card>
-            <md-tabs md-dynamic-height="" md-border-bottom="">
+            <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
                 <md-tab label="my tasks">
                     <md-content class="md-padding">
                         <div layout="row">
@@ -75,11 +75,11 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        <md-list>
-                            <md-list-item ng-repeat="topping in toppings" class="secondary-button-padding">
+                        <md-list class="project-tabs-list">
+                            <md-list-item ng-repeat="topping in toppings" class="secondary-button-padding" ng-click="action($event)">
                                 <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - <a ng-href="#" class="tabs-name">{{ topping.user }}</a> {{topping.action}} for <b>{{topping.project}}</b></p>
-                                <md-button class="md-secondary">View</md-button>
+                                <p><b> {{ topping.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ topping.user }}</a> {{topping.action}} for <b>{{topping.project}}</b></p>
+                                <!--<md-button class="md-secondary">View</md-button>-->
                             </md-list-item>
                         </md-list>
                         <span></span>

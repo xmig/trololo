@@ -149,7 +149,6 @@ angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope)
         { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' }
     ];
 
-
     $scope.sortVariants = [
           "by Date",
           "by Project",
