@@ -143,10 +143,10 @@ angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope)
 
     /* Test activity data */
     $scope.toppings = [
-        { name: 'Pepperoni', wanted: true, status: 'low' },
-        { name: 'Sausage', wanted: false, status: 'high' },
-        { name: 'Black Olives', wanted: true, status: 'high' },
-        { name: 'Green Peppers', wanted: false, status: 'middle' }
+        { name: 'Shipping', wanted: true, status: 'low', user: 'Masha', action: 'new Task to the Project' },
+        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project' },
+        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project' },
+        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply' }
     ];
     /* Test activity data end */
 }]);
