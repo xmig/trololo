@@ -5,6 +5,7 @@ from django.db import models, migrations
 import django.utils.timezone
 import django.core.validators
 import django.contrib.auth.models
+import users.models
 
 
 class Migration(migrations.Migration):
@@ -28,10 +29,11 @@ class Migration(migrations.Migration):
                 ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
                 ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
                 ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('photo', models.ImageField(upload_to=b'')),
-                ('department', models.CharField(max_length=40)),
-                ('specialization', models.CharField(max_length=200)),
-                ('detailed_info', models.TextField()),
+                ('photo', models.ImageField(upload_to=users.models.user_photo_directory_path, blank=True)),
+                ('department', models.CharField(max_length=40, blank=True)),
+                ('specialization', models.CharField(max_length=200, blank=True)),
+                ('detailed_info', models.TextField(blank=True)),
+                ('use_gravatar', models.BooleanField(default=False)),
                 ('groups', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
