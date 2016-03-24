@@ -9,7 +9,7 @@ import cuser.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('activity', '0002_auto_20160324_0747'),
+        ('activity', '0002_auto_20160324_0852'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('projects', '0001_initial'),
     ]

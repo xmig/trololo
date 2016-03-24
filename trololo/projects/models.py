@@ -2,12 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
 from activity.models import HasActivity
-from chi_django_base.models import AbstractTimestampable, AbstractSignable
-
-
-class AbstractModel(models.Model):
-    class Meta:
-        abstract = True
+from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -61,11 +56,10 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
         return self.name
 
 
+
 class ProjectComment(AbstractModel):
     project = models.ForeignKey(Project, blank=True, null=True, default='')
     comment = models.TextField(blank=True, null=True, default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.comment
@@ -109,21 +103,17 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
         (ORANGE, "Orange"),
         (GREEN, "Green"),
         (UNDEFINED, "Undefined"),
-
     )
 
+    name = models.CharField(max_length=150, null=True, default='', blank=True)
+    description = models.TextField(blank=True, null=True, default='')
     project = models.ForeignKey(Project, default='', null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')
-
-    name = models.CharField(max_length=150, null=True, default='', blank=True)
-    description = models.TextField(blank=True, null=True, default='')
-    modified_at = models.DateTimeField(auto_now=True)
     deadline_date = models.DateTimeField(null=True, blank=True, default='')
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
-
 
     def get_activity_message_on_create(self, **kwargs):
         return 'create new project "' + self.name + '"'
@@ -143,12 +133,9 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
 
 
 
-
 class TaskComment(AbstractModel):
     task = models.ForeignKey(Task, default='', null=True, blank=True)
     comment = models.TextField(blank=True, null=True, default='')
-    created_at = models.DateTimeField(auto_now_add=True)
-    modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.comment

@@ -1,5 +1,4 @@
 from serializers import ProjectSerializer, TaskSerializer
-from rest_framework.views import APIView
 from rest_framework import status
 from projects.models import Project, Task
 

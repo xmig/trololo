@@ -35,8 +35,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('comment', models.TextField(default='', null=True, blank=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('modified_at', models.DateTimeField(auto_now=True)),
             ],
             options={
                 'abstract': False,
@@ -48,12 +46,11 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
+                ('name', models.CharField(default='', max_length=150, null=True, blank=True)),
+                ('description', models.TextField(default='', null=True, blank=True)),
                 ('status', models.CharField(default='undefined', help_text='choose status', max_length=30, choices=[('breakthrough', 'Breakthrough'), ('in_progress', 'In_progress'), ('finished', 'Finished'), ('undefined', 'Undefined')])),
                 ('type', models.CharField(default='undefined', help_text='choose type', max_length=30, choices=[('bug', 'Bug'), ('feature', 'Feature'), ('undefined', 'Undefined')])),
                 ('label', models.CharField(default='undefined', help_text='choose label', max_length=50, choices=[('red', 'Red'), ('orange', 'Orange'), ('green', 'Green'), ('undefined', 'Undefined')])),
-                ('name', models.CharField(default='', max_length=150, null=True, blank=True)),
-                ('description', models.TextField(default='', null=True, blank=True)),
-                ('modified_at', models.DateTimeField(auto_now=True)),
                 ('deadline_date', models.DateTimeField(default='', null=True, blank=True)),
                 ('estimate_minutes', models.IntegerField(default='', null=True, blank=True)),
                 ('activity', models.ManyToManyField(related_name='task_activities', to='activity.Activity', blank=True)),
@@ -68,8 +65,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('comment', models.TextField(default='', null=True, blank=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('modified_at', models.DateTimeField(auto_now=True)),
                 ('task', models.ForeignKey(default='', blank=True, to='projects.Task', null=True)),
             ],
             options={
