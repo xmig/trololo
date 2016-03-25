@@ -162,8 +162,16 @@ class ProjectActivity(generics.ListAPIView):
 
     def get(self, request, id):
         """
-        Get project activity data by project id
-        Activity ordering by created_at DESC
+        Get project activity data by project id \n
+        Activity ordering by created_at DESC \n\n
+        {id} - project_id \n\n
+
+        Available filters:\n
+        message       - filter by strict activity message\n
+        message_like  - filter by contains activity message (insensitive)\n
+        date_0        - from date (created_at)\n
+        date_1        - to date (created_at)
+
         """
         try:
             self.queryset = self.filter_queryset(self.get_queryset())
