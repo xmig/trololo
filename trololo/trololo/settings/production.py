@@ -70,3 +70,5 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+SITE_ID = 3

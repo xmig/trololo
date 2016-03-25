@@ -136,7 +136,6 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'users.TrololoUser'
 ACTIVITY_MODEL = 'activity.Activity'
 # option for registration
-# TODO: change to real for production
 SITE_ID = 1
 
 # email settings
