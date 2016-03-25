@@ -1,0 +1,265 @@
+<md-content layout="column">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Trololo</span>
+            </h2>
+            <span flex=""></span>
+            <md-button class="md-raised" ng-hide="authenticated" ng-click="popLogin($event)">Sign in</md-button>
+            <md-button class="md-raised" ng-show="authenticated" ng-click="logout()">Log out</md-button>
+            <md-button class="md-raised md-warn" ng-hide="authenticated" ng-click="popRegistr($event)">Sign up</md-button>
+            <md-button class="md-raised md-warn" ng-show="authenticated" ng-href="#/user/personal">Profile</md-button>
+        </div>
+    </md-toolbar>
+    <md-content>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!
+    </md-content>
+    <!--<div layout="column">-->
+        <!--<md-content flex>-->
+            <!--<h4>Routes</h4>-->
+            <!--<p>-->
+                <!--<a ng-hide="authenticated" href="#/login" class="btn btn-primary">Login</a>-->
+                <!--<a ng-hide="authenticated" href="#/passwordReset" class="btn btn-primary">Send Password Reset</a>-->
+                <!--<a ng-hide="authenticated" ng-click="goConfirmReset()" class="btn btn-primary">Confirm Password-->
+                    <!--Reset</a>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<a ng-show="authenticated" href="#/logout" class="btn btn-primary">Logout</a>-->
+                <!--<a ng-hide="authenticated" ng-href="#/register" class="btn btn-primary">Register</a>-->
+                <!--<a ng-click="goVerify()" class="btn btn-primary">Verify Email</a>-->
+                <!--<a ng-show="authenticated" href="#/passwordChange" class="btn btn-primary">Change Password</a>-->
+                <!--<a ng-show="authenticated" href="#/userProfile" class="btn btn-primary">Profile</a>-->
+                <!--<a href="#/authRequired" class="btn btn-primary">Restricted Page</a>-->
+                <!--<a href="#/user/projects" class="btn btn-primary">User Page</a>-->
+            <!--</p>-->
+            <!--<hr/>-->
+            <!--<h4>Kitchen Sink Demo</h4>-->
+            <!--<div style="margin-bottom:25px;">-->
+                <!--<div style="margin-bottom:15px;">-->
+                    <!--<button ng-hide="authenticated" ng-click="login()" class="btn btn-primary">Login</button>-->
+                    <!--<button ng-show="authenticated" ng-click="logout()" class="btn btn-primary">Logout</button>-->
+                    <!--<button ng-hide="authenticated" ng-click="resetPassword()" class="btn btn-primary">Send Password-->
+                        <!--Reset-->
+                    <!--</button>-->
+                    <!--<button ng-hide="authenticated" ng-click="confirmReset()" class="btn btn-primary">Confirm Password-->
+                        <!--Reset-->
+                    <!--</button>-->
+                    <!--<button ng-hide="authenticated" ng-click="register()" class="btn btn-primary">Register</button>-->
+                    <!--<button ng-click="verify()" class="btn btn-primary">Verify Email</button>-->
+                    <!--<button ng-show="authenticated" ng-click="changePassword()" class="btn btn-primary">Change-->
+                        <!--Password-->
+                    <!--</button>-->
+                    <!--<button ng-show="authenticated" ng-click="profile()" class="btn btn-primary">Get Profile</button>-->
+                    <!--<button ng-show="authenticated" ng-click="updateProfile()" class="btn btn-primary">Update Profile-->
+                    <!--</button>-->
+                <!--</div>-->
+
+                <!--<p><textarea style="width:90%;height:200px;">{{response}}</textarea></p>-->
+
+            <!--</div>-->
+
+            <!--<hr/>-->
+            <!--<h4>ngInclude Demo - Login</h4>-->
+            <!--<div ng-if="show_login" ng-include="'/static/main/templates/login.html'"></div>-->
+            <!--<div ng-if="!show_login" class="alert alert-info">You have logged in.</div>-->
+
+
+            <!--<div class="footer">-->
+                <!--<p>Tivix</p>-->
+            <!--</div>-->
+        <!--</md-content>-->
+    <!--</div>-->
+</md-content>
+
+<!-- Login modal -->
+<script type="text/ng-template" id="login.tmpl.html">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
+       <form role="form" name="loginForm" novalidate ng-submit="login(loginForm)">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Log in</h2>
+                    <span flex="" class="flex"></span>
+                    <button class="md-icon-button md-button md-ink-ripple" type="button"
+                            ng-click="cancel()">
+                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            </svg>
+                        </md-icon>
+                    </button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Username</label>
+                            <input type="text" name="username" id="id_username" ng-model="model.username" md-autofocus required ng-keydown="resetErrors('non_field_errors')">
+                            <div ng-messages="loginForm.username.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                            <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                            <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Password</label>
+                            <input type="password" name="user_password" id="id_password" ng-model="model.password" required ng-keydown="resetErrors('password')">
+                            <div ng-messages="loginForm.user_password.$error">
+                                <div ng-message="required">This is required.</div>
+                            </div>
+                            <span class="alert" ng-repeat="error in errors.password">{{error}}</span>
+                        </md-input-container>
+                        <span class="forgot-pass-link" ng-click="openResetPasswordModal()">Forgot your password?</span>
+                    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button type="submit" style="margin-right:20px;">
+                    Sign in
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script> <!-- Login modal end -->
+
+<!-- Registration modal -->
+<script type="text/ng-template" id="register.tmpl.html">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="register_view" ng-controller="RegisterCtrl">
+       <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Sign up</h2>
+                    <span flex="" class="flex"></span>
+                    <button class="md-icon-button md-button md-ink-ripple" type="button"
+                            ng-click="cancel()">
+                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            </svg>
+                        </md-icon>
+                    </button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Username</label>
+                            <input type="text" name="username" id="id_reg_username" ng-model="model.username" md-autofocus ng-keydown="resetErrors('username')">
+                            <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Password</label>
+                            <input type="password" name="password1" id="id_password1" ng-model="model.password1" ng-keydown="resetErrors('password1')">
+                            <span class="alert" ng-repeat="error in errors.password1">{{error}}</span>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Repeat password</label>
+                            <input type="password" name="password2" id="id_password2" ng-model="model.password2" ng-keydown="resetErrors('non_field_errors')">
+                            <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Email</label>
+                            <input type="email" name="email" id="id_email" ng-model="model.email" ng-keydown="resetErrors('email')">
+                            <span class="alert" ng-repeat="error in errors.email">{{error}}</span>
+                        </md-input-container>
+                    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button type="submit" style="margin-right:20px;">
+                    Sign up
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script> <!-- Registration modal end -->
+
+<!-- Registration complete modal -->
+<script type="text/ng-template" id="registerComplete.tmpl.html">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="register_complete_view">
+       <form role="form" name="registerForm" novalidate>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Congratulations</h2>
+                    <span flex="" class="flex"></span>
+                    <button class="md-icon-button md-button md-ink-ripple" type="button"
+                            ng-click="cancel()">
+                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            </svg>
+                        </md-icon>
+                    </button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_3">
+                <md-content layout-padding="">
+                    <div>
+                        Complete registration!
+                    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="cancel()" class="md-primary md-button md-ink-ripple md-raised">
+                    OK
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script> <!-- Registration complete modal end -->
+
+<!-- Reset password modal -->
+<script type="text/ng-template" id="reset_pass.tmpl.html">
+    <md-dialog aria-label="reset" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="reset_view" ng-controller="PasswordresetCtrl">
+       <form role="form" name="passwordResetForm" novalidate ng-submit="resetPassword(passwordResetForm)">
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Reset password</h2>
+                    <span flex="" class="flex"></span>
+                    <button class="md-icon-button md-button md-ink-ripple" type="button"
+                            ng-click="cancel()">
+                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            </svg>
+                        </md-icon>
+                    </button>
+                </div>
+            </md-toolbar>
+            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_4">
+                <md-content layout-padding="">
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>Username</label>
+                            <input type="email" name="email" id="id_email1" ng-model="model.email" md-autofocus ng-keydown="resetErrors('email')">
+                            <span class="alert alert-danger" ng-repeat="error in errors.email">{{error}}</span>
+                            </md-input-container>
+                    </div>
+            </md-dialog-content>
+            <md-dialog-actions layout="row">
+                <md-button ng-click="cancel()">
+                    Cancel
+                </md-button>
+                <md-button type="submit" style="margin-right:20px;">
+                    Reset
+                </md-button>
+            </md-dialog-actions>
+        </form>
+    </md-dialog>
+</script> <!-- Reset password modal end -->
+
+
+
+

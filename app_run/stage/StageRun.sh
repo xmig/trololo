@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ex
+
 echo "++++++ Start Staging Project Script ++++++"
 
 echo "------------------------------------------------------"
@@ -8,7 +10,7 @@ whoami
 echo "------------------------------------------------------"
 
 echo "-------------------- Go to (APP home) --------------------"
-cd /home/ubuntu/projects/trololo/
+cd /home/ubuntu/projects/trololo/stage/
 pwd
 echo "------------------------------------------------------"
 
@@ -17,18 +19,19 @@ source /home/ubuntu/projects/trololo/venv/bin/activate
 echo "------------------------------------------------------"
 
 echo "-== Install python Packeges ==-"
-pip install -r requirements.txt
+pip install -r requirements.txt > /dev/null
 sleep 1
 
 export DJANGO_SETTINGS_MODULE="trololo.settings.stage"
-#echo "#----------------------------------- Collection Static: NUCLEUS -----------------------------------#"
-#cd /home/nucleus/www/Staging/nucleus/NUCLEUS
-#./manage.py collectstatic --noinput
-#echo "#-------------------------------- Collection Static: NUCLEUS: END --------------------------------#"
+echo "#----------------------------------- Collection Static -----------------------------------#"
+cd /home/ubuntu/projects/trololo/stage/trololo
 
-#echo "#----------------------------------- Collection Static: WEBSHOP -----------------------------------#"
-#cd /home/nucleus/www/Staging/fragrantjewels/WEBSHOP
-#./manage.py collectstatic --noinput
-#echo "#-------------------------------- Collection Static: WEBSHOP: END --------------------------------#"
+python manage.py collectstatic --noinput
+echo "#-------------------------------- Collection Static: END --------------------------------#"
+echo "#-------------------------------- Apply Migrations --------------------------------#"
+python manage.py migrate
 
-echo "#----------------------------------- END -----------------------------------#"
+echo "#-------------------------------- Apply Migrations: END --------------------------------#"
+
+deactivate
+echo "#----------------------------------- END Staging Project Script -----------------------------------#"

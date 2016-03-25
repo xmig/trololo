@@ -1,0 +1,145 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="projectsCtrl">
+    <div flex layout="column" ng-controller="nutritionController">
+        <!--<md-card>-->
+        <!--<div layout="row" layout-wrap class="checkboxes">-->
+        <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
+        <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
+        <!--</div>-->
+        <!--</md-card>-->
+
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Projects</span>
+                    <div flex></div>
+                    <md-button ng-click="loadStuff()">Async Operation</md-button>
+                </div>
+            </md-toolbar>
+            <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+                </div>
+            </md-toolbar>
+            <md-table-container>
+                <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
+                    <thead md-head md-order="query.order" md-on-reorder="logOrder">
+                    <tr md-row>
+                        <th md-column md-order-by="name"><span>Project name</span></th>
+                        <th md-column md-order-by="type"><span>Tasks</span></th>
+                        <th md-column md-numeric md-order-by="calories.value" md-desc><span>Members</span></th>
+                        <th md-column md-numeric md-order-by="fat.value"><span>Owner</span></th>
+                        <th md-column md-numeric md-order-by="carbs.value"><span>Date started</span></th>
+                        <th md-column md-numeric md-order-by="protein.value"><span>Estimate date</span></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect"
+                        ng-disabled="dessert.calories.value > 400"
+                        ng-repeat="dessert in desserts.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        <td md-cell>{{dessert.name}}</td>
+                        <td md-cell>
+                            <md-select ng-model="dessert.type" placeholder="Other">
+                                <md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>
+                            </md-select>
+                        </td>
+                        <td md-cell>{{dessert.calories.value}}</td>
+                        <td md-cell>{{dessert.fat.value | number: 2}}</td>
+                        <td md-cell>{{dessert.carbs.value}}</td>
+                        <td md-cell>{{dessert.protein.value | number: 2}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{desserts.count}}"
+                                 md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
+                                 md-on-paginate="logPagination"></md-table-pagination>
+        </md-card>
+        <md-card>
+            <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
+                <md-tab label="my tasks">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.tasks">
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.tasks">
+                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list class="project-tabs-list">
+                            <md-list-item ng-repeat="topping in toppings" class="secondary-button-padding" ng-click="action($event)">
+                                <span class="status-ico" ng-class="topping.status"></span>
+                                <p><b> {{ topping.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ topping.user }}</a> {{topping.action}} for <b>{{topping.project}}</b></p>
+                                <!--<md-button class="md-secondary">View</md-button>-->
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="my notifications">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.notifications">
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.notifications">
+                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="topping in toppings">
+                                <span class="status-ico" ng-class="topping.status"></span>
+                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.project}}</b></p>
+                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="activity">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.activity">
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.activity">
+                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="topping in toppings">
+                                <span class="status-ico" ng-class="topping.status"></span>
+                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.project}}</b></p>
+                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-card>
+    </div>
+</md-content>
+
+

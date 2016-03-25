@@ -1,0 +1,47 @@
+.logo {
+    text-decoration: none;
+    color: #fff;
+}
+.logo:hover {
+    text-decoration: none;
+}
+.card-media {
+  background-color: #999999;
+}
+/* Tabs */
+.status-ico {
+    height: 12px;
+    width: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    border-radius: 50%;
+    box-sizing: content-box;
+}
+.status-ico.high {
+    background: #F21905;
+}
+.status-ico.low {
+    background: #03A64A;
+}
+.status-ico.middle {
+    background: #F2BD1D;
+}
+.sorting-margin {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+.secondary-button-padding p {
+    padding-right: 100px;
+}
+.project-tabs-name {
+    color: #2196F3;
+    text-decoration: underline;
+}
+.project-tabs-list {
+    font-size: 14px;
+}
+.project-tabs-box md-list-item, .project-tabs-box md-list-item .md-list-item-inner {
+    min-height: 35px;
+}
+/* Tabs end */

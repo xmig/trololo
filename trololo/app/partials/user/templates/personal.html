@@ -1,0 +1,87 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="personalCtrl">
+    <div flex-xs="" flex-gt-xs="50" layout="column">
+        <md-card class="md-padding">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          ng-show="!userPersonalData.first_name">{{userPersonalData.username}}</span>
+                    <span class="md-headline" ng-show="userPersonalData.first_name">{{userPersonalData.first_name}} {{userPersonalData.last_name}}</span>
+                    <span class="md-subhead">{{userPersonalData.email}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <div class="md-media-md card-media">
+                        <img ng-src="/static/img/249px-Trololoman.jpg" class="md-card-image" alt="User avatar">
+                    </div>
+                </md-card-title-media>
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="start center">
+                <md-button class="md-primary md-button md-ink-ripple">Change password</md-button>
+            </md-card-actions>
+        </md-card>
+    </div>
+    <div flex-xs="" flex-gt-xs="50" layout="column">
+        <md-card class="md-padding">
+            <form ng-submit="AdditionalInfoSubmit()">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Additional Info</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>First Name</label>
+                            <input type="text" name="first_name" id="user-first-name"
+                                   ng-model="userAdditionData.first_name">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name" id="user-last-name"
+                                   ng-model="userAdditionData.last_name">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Department</label>
+                            <input type="text" name="department" id="user-department"
+                                   ng-model="userAdditionData.department">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Specialization</label>
+                            <input type="text" name="specialization" id="user-specialization"
+                                   ng-model="userAdditionData.specialization">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Detailed Info</label>
+                            <textarea name="detailed_info" id="user-detailed-info"
+                                      ng-model="userAdditionData.detailed_info"></textarea>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+
+        <!--userPersonalData:-->
+        <!--<pre>{{ userPersonalData | json }}</pre>-->
+
+    </div>
+
+    <script type="text/ng-template" id="personal-save-template.html">
+        <md-toast>
+            <span class="md-toast-text" flex>Saved!</span>
+            <md-button ng-click="closeToast()">
+                Close
+            </md-button>
+            </md-toast>
+    </script>
+
+    <script type="text/ng-template" id="personal-reject-template.html">
+        <md-toast>
+            <span class="md-toast-text" flex>Any change!</span>
+            <md-button ng-click="closeToast()">
+                Close
+            </md-button>
+            </md-toast>
+    </script>
+</md-content>

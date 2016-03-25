@@ -1,0 +1,120 @@
+/* Common styles */
+.text-center {
+	text-align: center;
+}
+
+.gray-bg {
+    background-color: #eaebf5 !important;
+}
+
+.user-content {
+    flex-basis: 100%;
+}
+
+.alert {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    color: #DD2C00;
+    font-size: 12px;
+    line-height: 14px;
+    overflow: hidden;
+    transition: all .3s cubic-bezier(.55,0,.55,.2);
+    opacity: 1;
+    margin-top: 0;
+    padding-top: 5px;
+}
+
+.forgot-pass-link {
+    font-family: Roboto, 'Helvetica Neue', sans-serif;
+    color: #2196F3;
+    font-size: 14px;
+    line-height: 14px;
+    opacity: 1;
+    margin-top: 0;
+    padding-top: 5px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.forgot-pass-link:hover {
+    color: #207dd7;
+}
+.forgot-pass-link:focus, .forgot-pass-link:active {
+    color: #2196F3;
+    outline: none;
+}
+/*.md-padding {*/
+    /*padding: 8px;*/
+/*}*/
+/* Tables */
+/*md-card {*/
+	/*margin: 15px;*/
+/*}*/
+
+body, html {
+  background-color: #eaebf5;
+}
+
+body > md-toolbar {
+  z-index: 3;
+}
+
+md-toolbar.md-table-toolbar.alternate {
+  color: #1e88e5;
+  background-color: #e3f2fd;
+}
+
+md-toolbar.md-table-toolbar.alternate .md-toolbar-tools {
+  font-size: 16px;
+}
+
+/*md-card:first-child {*/
+  /*padding: 8px 8px 8px 24px;*/
+/*}*/
+
+.checkboxes > md-checkbox {
+  margin: 0;
+  padding: 16px;
+  min-width: 300px;
+  flex: 0 0 auto;
+}
+
+table.md-table.md-row-select td.md-cell:nth-child(n+3):nth-last-child(n+2), table.md-table.md-row-select th.md-column:nth-child(n+3):nth-last-child(n+2) {
+    padding: 0 26px 0 0;
+}
+
+/* Left sidebar */
+.left-sidebar-list {
+    margin: 0;
+    padding: 20px 0;
+}
+.left-sidebar-list a.md-button {
+    display: block;
+    padding: 0 16px 0 32px;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+.left-sidebar-list .md-button.active {
+    background-color: #eaebf5;
+    color: rgb(42, 154, 243);
+}
+.left-sidebar-list .md-button {
+    border-radius: 0;
+    color: white;
+    cursor: pointer;
+    display: block;
+    align-items: inherit;
+    line-height: 40px;
+    margin: 0;
+    max-height: 40px;
+    overflow: hidden;
+    padding: 0 16px;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    width: 100%;
+    border-bottom: none;
+}
+
+md-toast .md-toast-content {
+    padding-right: 0;
+}

@@ -34,15 +34,20 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-)
+    'users',
+    'cuser',
 
+    'chi_django_base',
+    'activity',
+    'projects',
+
+)
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -52,15 +57,15 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'cuser.middleware.CuserMiddleware',
 )
 
 ROOT_URLCONF = 'trololo.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app'))
+            os.path.abspath(os.path.join(BASE_DIR, os.pardir, 'app'))
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -86,7 +91,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
+MEDIA_URL = '/media/'
 MEDIA_ROOT = '/var/www/trololo/media'
 
 # Internationalization
@@ -110,15 +115,17 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'static')),
-    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'templates')),
+    os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'partials')),
 ]
 
 LOGIN_URL = '/users/login/'
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES' : (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
@@ -127,8 +134,8 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'users.TrololoUser'
+ACTIVITY_MODEL = 'activity.Activity'
 # option for registration
-# TODO: change to real for production
 SITE_ID = 1
 
 # email settings
@@ -138,3 +145,8 @@ EMAIL_HOST_USER = 'jonny.john2017@yandex.ru'
 EMAIL_HOST_PASSWORD = 'uasar3aeK2'
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
+
+# authorization settings
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
