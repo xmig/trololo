@@ -22,9 +22,11 @@ class TestProjectFilter(APITestCase):
             [
                 {
                     "name": u"project_01", u"id": 1, "description": u"some_project_description",
-                    "status": u"breakthrough","members": [u'admin'], "visible_by": u"particular_user",
-                    "tasks": [u"task_01"], "comments": [],"date_started": None, "date_finished": None, "created_by":1,
-                    "created_at": u"2016-03-24T10:36:51.551000Z", "updated_by": 1,
+                    "status": u"breakthrough","members": [u'http://testserver/users/1/'],
+                    "visible_by": u"particular_user",
+                    "tasks": [u"http://testserver/projects/tasks/1/"], "comments": [],"date_started": None,
+                    "date_finished": None, "created_by": u'http://testserver/users/1/',
+                    "created_at": u"2016-03-24T10:36:51.551000Z", "updated_by": u'http://testserver/users/1/',
                     "updated_at": u"2016-03-24T11:03:40.020000Z"
                 }
             ]
@@ -49,8 +51,9 @@ class TestProjectFilterList(APITestCase):
             [
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
-                    'members': [u'yura'], 'visible_by': u'undefined',
-                    'tasks': [u'task2', u'task1'], 'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
+                    'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
+                    'tasks': [u'http://testserver/projects/tasks/2/', u'http://testserver/projects/tasks/1/'],
+                    'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None,
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 },
@@ -79,8 +82,9 @@ class TestProjectFilterList(APITestCase):
             [
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
-                    'members': [u'yura'], 'visible_by': u'undefined',
-                    'tasks': [u'task2', u'task1'], 'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
+                    'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
+                    'tasks': [u'http://testserver/projects/tasks/2/', u'http://testserver/projects/tasks/1/'],
+                    'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None,
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 }
@@ -102,8 +106,9 @@ class TestProjectFilterList(APITestCase):
             [
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
-                    'members': [u'yura'], 'visible_by': u'undefined',
-                    'tasks': [u'task2', u'task1'], 'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
+                    'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
+                    'tasks': [u'http://testserver/projects/tasks/2/', u'http://testserver/projects/tasks/1/'],
+                    'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None,
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 },
@@ -135,15 +140,15 @@ class TestProjectFilterList(APITestCase):
                     'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
                     'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
                     'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-
                 },
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
-                    'members': [u'yura'], 'visible_by': u'undefined',
-                    'tasks': [u'task2', u'task1'], 'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
+                    'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
+                    'tasks': [u'http://testserver/projects/tasks/2/', u'http://testserver/projects/tasks/1/'],
+                    'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None,
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                }
+                },
             ]
         )
 
@@ -161,30 +166,32 @@ class TestProjectFilterList(APITestCase):
             responce.data['results'],
             [
                 {
-                    "name": u"projecta", u"id": 4, "description": u"aa", "status": u"undefined", "members": [],
-                    "visible_by": u"undefined", "tasks": [], "comments": [], "date_started": u"2016-03-30T14:17:49Z",
-                    "date_finished": None,"created_by": None, "created_at": u"2016-03-02T10:56:37Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
+                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
+                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
+                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 },
                 {
                     "name": u"projectc", u"id": 3, "description": u"aaa", "status": u"undefined",
-                    "members": [], "visible_by": u"undefined", "tasks": [u"task3"],
+                    "members": [], "visible_by": u"undefined", "tasks": [u'http://testserver/projects/tasks/3/'],
                     "comments": [], "date_started": u"2016-03-03T10:57:11Z", "date_finished": None, "created_by": None,
                     "created_at": u"2016-03-02T10:56:37Z", "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
                 },
                 {
                     "name": u"projectb", u"id": 2, "description": u"bbbb", "status": u"undefined",
-                    "members": [u"yura2"], "visible_by": u"undefined", "tasks": [u"task5",u"task4"],
+                    "members": [u'http://testserver/users/2/'], "visible_by": u"undefined",
+                    "tasks": [u'http://testserver/projects/tasks/5/', u'http://testserver/projects/tasks/4/'],
                     "comments": [], "date_started": u"2016-03-02T10:56:37Z", "date_finished": None,
                     "created_by": None, "created_at": "2016-03-02T10:56:37Z", "updated_by": None,
                     "updated_at": u"2016-03-02T10:56:37Z"
                 },
                 {
-                    "name": u"projecta", u"id": 1, "description": u"eee", "status": u"undefined", "members": [u"yura"],
-                    "visible_by": u"undefined", "tasks": [u"task2", u"task1"], "comments": [],
-                    "date_started": u"2016-03-01T10:56:19Z", "date_finished": None, "created_by": None,
-                    "created_at": u"2016-03-02T10:56:37Z", "updated_by": None,
-                    "updated_at": u"2016-03-02T10:56:37Z"
+                    'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
+                    'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
+                    'tasks': [u'http://testserver/projects/tasks/2/', u'http://testserver/projects/tasks/1/'],
+                    'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
+                    'date_finished': None, 'created_by': None,
+                    'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 }
             ]
         )
