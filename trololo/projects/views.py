@@ -26,7 +26,7 @@ class ProjectFilter(FilterSet):
     user = NumberFilter(name='member__id', lookup_expr='exact')
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
-    content_description = CharFilter(name='description', lookup_type='icontains')
+    description = CharFilter(name='description', lookup_type='icontains')
 
     date_to_started = NumberFilter(name='date_started', lookup_expr='day')
     date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
@@ -35,7 +35,7 @@ class ProjectFilter(FilterSet):
     class Meta:
         model = Project
         fields = [
-            'name', 'status', 'description', 'id', 'content_description', 'date_to_started',
+            'name', 'status', 'description', 'id', 'date_to_started',
             'date_to_started_gt', 'date_to_started_lt', 'user'
         ]
 
@@ -95,17 +95,37 @@ class ProjectDetail(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ProjectTaskFilter(FilterSet):
+    name = CharFilter(name='name', lookup_expr='iexact')
+    description = CharFilter(name='description', lookup_type='icontains')
+    status = CharFilter(name='status', lookup_expr='icontains')
+    type = CharFilter(name='type', lookup_expr='icontains')
+    label = CharFilter(name='label', lookup_expr='icontains')
+
+    class Meta:
+        model = Task
+        fields = [
+            'name', 'description',
+            'status', 'type', 'label'
+        ]
 
 
 
-class TaskList(generics.GenericAPIView):
+class TaskList(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
-    def get(self, request):
-        queryset = Task.objects.all()
-        serializer = TaskSerializer(queryset, many=True)
-        return Response(serializer.data)
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = ProjectTaskFilter
+    search_fields = ('name', 'description', 'status', 'type', 'label')
+    ordering_fields = ('name', 'description', 'status', 'type', 'label')
+
+
+
+    # def get(self, request):
+    #     queryset = Task.objects.all()
+    #     serializer = TaskSerializer(queryset, many=True)
+    #     return Response(serializer.data)
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data)

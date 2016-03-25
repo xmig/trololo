@@ -369,3 +369,69 @@ class TestUserProfileGravatar(APITestCase):
 
         for k, v in res.iteritems():
             self.assertEqual(response.data[k], v)
+
+
+class TestUserProfileAddTasks(APITestCase):
+    fixtures = ['data_with_gravatar.json']
+
+    def test_get_user_profile_add_tasks(self):
+        url = reverse('users:user_profile')
+        user = get_user_model().objects.get(username='yura')
+
+        factory = APIRequestFactory()
+        request = factory.put(url, {'tasks': ["http://testserver/projects/tasks/1/"]},
+                              format='multipart'
+                              )
+
+        force_authenticate(request, user=user)
+        response = UserProfile.as_view()(request)
+
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+
+        ETALON = {
+            'username': u'yura', 'first_name': u'yura', 'last_name': u'', 'specialization': u'',
+            'photo': "http://www.gravatar.com/avatar/b4c20c59303507f4c03435a0877ee46b?s=50&d=http%3A%2F%2Fwww."
+                     "curiousinkling.com%2Fimg%2Ftrololo%2Ftrololo-t-shirts-005DES.gif", 'is_active': True,
+            'email': u'yura@example.com',
+            'is_superuser': True, 'is_staff': True, 'last_login': u'2016-03-18T13:26:04.553000Z',
+            'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-18T09:54:08.108000Z',
+            'projects': [u'http://testserver/projects/projects/1/'], 'use_gravatar': True,
+            'url': u'http://testserver/users/1/', 'tasks': [
+                u"http://testserver/projects/tasks/1/"
+            ]
+        }
+        for k in ETALON:
+            self.assertEqual(response.data[k], ETALON[k])
+
+
+
+class TestUserProfileAddProjects(APITestCase):
+    fixtures = ['data_with_gravatar.json']
+
+    def test_get_user_profile_add_projects(self):
+        url = reverse('users:user_profile')
+        user = get_user_model().objects.get(username='yura')
+
+        factory = APIRequestFactory()
+        request = factory.put(url, {'projects': ["http://testserver/projects/projects/1/"]},
+                              format='multipart'
+                              )
+
+        force_authenticate(request, user=user)
+        response = UserProfile.as_view()(request)
+
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+
+        ETALON = {
+            'username': u'yura', 'first_name': u'yura', 'last_name': u'', 'specialization': u'',
+            'photo': "http://www.gravatar.com/avatar/b4c20c59303507f4c03435a0877ee46b?s=50&d=http%3A%2F%2Fwww."
+                     "curiousinkling.com%2Fimg%2Ftrololo%2Ftrololo-t-shirts-005DES.gif", 'is_active': True,
+            'email': u'yura@example.com',
+            'is_superuser': True, 'is_staff': True, 'last_login': u'2016-03-18T13:26:04.553000Z',
+            'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-18T09:54:08.108000Z',
+            'projects': [u'http://testserver/projects/projects/1/'], 'use_gravatar': True,
+            'url': u'http://testserver/users/1/', 'tasks': []
+        }
+
+        for k in ETALON:
+            self.assertEqual(response.data[k], ETALON[k])

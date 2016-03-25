@@ -40,6 +40,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'url'
         )
 
+
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
         if data['use_gravatar']:
