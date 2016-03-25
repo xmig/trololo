@@ -12,6 +12,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
+from activity.serializers import ActivitySerializer
+from activity.filters import ActivityFilter
+from activity.models import Activity
+
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -148,3 +152,27 @@ class TaskDetail(generics.GenericAPIView):
         task = self.get_object(pk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectActivity(generics.ListAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    filter_backends = (filters.DjangoFilterBackend,)
+    filter_class = ActivityFilter
+
+    def get(self, request, id):
+        """
+        Get project activity data by project id
+        Activity ordering by created_at DESC
+        """
+        try:
+            self.queryset = self.filter_queryset(self.get_queryset())
+            activities = self.get_queryset().filter(project_activities=int(id)).order_by('-created_at')
+            data = ActivitySerializer(activities, many=True).data
+            response = Response(data)
+        except Project.DoesNotExist:
+            response = Response({}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return response

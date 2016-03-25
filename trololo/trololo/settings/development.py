@@ -100,9 +100,9 @@ SITE_ID = 2
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'test_db',
-        'USER': 'test_user',
-        'PASSWORD': 'test',
+        'NAME': 'trololo',
+        'USER': 'trololo',
+        'PASSWORD': 'trololo',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
