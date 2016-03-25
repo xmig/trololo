@@ -1,3 +1,3 @@
 jenkins    ALL=(ALL:ALL) NOPASSWD: /usr/bin/supervisorctl*, /usr/sbin/service nginx*
-jenkins    ALL=(ubuntu:ubuntu) NOPASSWD: /bin/bash StageRun.sh, /usr/bin/git pull, /bin/bash StageRun.sh
+jenkins    ALL=(ubuntu:ubuntu) NOPASSWD: /bin/bash StageRun.sh, /usr/bin/git pull, /bin/bash ProdRun.sh
 
