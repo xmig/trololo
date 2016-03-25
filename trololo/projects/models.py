@@ -107,7 +107,7 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
 
     name = models.CharField(max_length=150, null=True, default='', blank=True)
     description = models.TextField(blank=True, null=True, default='')
-    project = models.ForeignKey(Project, default='', null=True, blank=True)
+    project = models.ForeignKey(Project, default='', null=True, blank=True, related_name='tasks')
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')

@@ -53,7 +53,7 @@ class ProjectsList(generics.ListCreateAPIView):
 
 
     def post(self, request):
-        serializer = ProjectSerializer(data=request.data)
+        serializer = ProjectSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             serializer.save()
@@ -78,12 +78,12 @@ class ProjectDetail(generics.GenericAPIView):
 
     def get(self, request, pk):
         project = self.get_object(pk)
-        serializer = ProjectSerializer(project)
+        serializer = ProjectSerializer(project, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
         project = self.get_object(pk)
-        serializer = ProjectSerializer(project, data=request.data)
+        serializer = ProjectSerializer(project, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -114,21 +114,13 @@ class ProjectTaskFilter(FilterSet):
 class TaskList(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
-
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = ProjectTaskFilter
     search_fields = ('name', 'description', 'status', 'type', 'label')
     ordering_fields = ('name', 'description', 'status', 'type', 'label')
 
-
-
-    # def get(self, request):
-    #     queryset = Task.objects.all()
-    #     serializer = TaskSerializer(queryset, many=True)
-    #     return Response(serializer.data)
-
     def post(self, request):
-        serializer = TaskSerializer(data=request.data)
+        serializer = TaskSerializer(data=request.data, context={'request': request})
 
         if serializer.is_valid():
             serializer.save()
@@ -153,12 +145,12 @@ class TaskDetail(generics.GenericAPIView):
 
     def get(self, request, pk):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task)
+        serializer = TaskSerializer(task, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task, data=request.data)
+        serializer = TaskSerializer(task, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

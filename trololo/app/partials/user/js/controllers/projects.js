@@ -1,5 +1,5 @@
 angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope){
-
+    /* Test table data */
     $scope.desserts = {
         "count": 9,
         "data": [
@@ -139,4 +139,29 @@ angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope)
     $scope.getTypes = function () {
         return ['Candy', 'Ice cream', 'Other', 'Pastry'];
     };
+    /* Test table data end */
+
+    /* Test activity data */
+    $scope.toppings = [
+        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha', action: 'new Task to the Project', project: 'Villabajo' },
+        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', project: 'Villaribo' },
+        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', project: 'Trololo' },
+        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' }
+    ];
+
+    $scope.sortVariants = [
+          "by Date",
+          "by Project",
+          "by Type",
+          "by Label",
+          "by Status"
+      ];
+
+    $scope.viewVariants = [
+          "10",
+          "20",
+          "50",
+          "All"
+      ];
+    /* Test activity data end */
 }]);
