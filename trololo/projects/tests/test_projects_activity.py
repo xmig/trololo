@@ -9,7 +9,7 @@ from collections import OrderedDict
 
 
 class TestProjectActivities(APITestCase):
-    fixtures = ['users/fixtures/data_with_gravatar.json']
+    fixtures = ['data_for_activity_test.json']
 
     def __get_project_activities(self, expected, url_params={}, for_current_user=None):
         user = get_user_model().objects.get(pk=1)
