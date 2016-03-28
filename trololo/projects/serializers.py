@@ -34,6 +34,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
+    # activity =
+
     class Meta:
         model = Project
         fields = ('name', 'id', 'description', 'status', 'members', 'comments', 'visible_by', 'tasks', 'date_started', 'date_finished', 'created_by', 'created_at', 'updated_by', 'updated_at')

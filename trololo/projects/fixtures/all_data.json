@@ -1,0 +1,776 @@
+[
+{
+    "fields": {
+        "domain": "example.com",
+        "name": "example.com"
+    },
+    "model": "sites.site",
+    "pk": 2
+},
+{
+    "fields": {
+        "model": "logentry",
+        "app_label": "admin"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 1
+},
+{
+    "fields": {
+        "model": "permission",
+        "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 2
+},
+{
+    "fields": {
+        "model": "group",
+        "app_label": "auth"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 3
+},
+{
+    "fields": {
+        "model": "site",
+        "app_label": "sites"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 4
+},
+{
+    "fields": {
+        "model": "contenttype",
+        "app_label": "contenttypes"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 5
+},
+{
+    "fields": {
+        "model": "session",
+        "app_label": "sessions"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 6
+},
+{
+    "fields": {
+        "model": "token",
+        "app_label": "authtoken"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 7
+},
+{
+    "fields": {
+        "model": "emailaddress",
+        "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 8
+},
+{
+    "fields": {
+        "model": "emailconfirmation",
+        "app_label": "account"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 9
+},
+{
+    "fields": {
+        "model": "trololouser",
+        "app_label": "users"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 10
+},
+{
+    "fields": {
+        "model": "activity",
+        "app_label": "activity"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 11
+},
+{
+    "fields": {
+        "model": "project",
+        "app_label": "projects"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 12
+},
+{
+    "fields": {
+        "model": "projectcomment",
+        "app_label": "projects"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 13
+},
+{
+    "fields": {
+        "model": "task",
+        "app_label": "projects"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 14
+},
+{
+    "fields": {
+        "model": "taskcomment",
+        "app_label": "projects"
+    },
+    "model": "contenttypes.contenttype",
+    "pk": 15
+},
+{
+    "fields": {
+        "expire_date": "2016-04-07T10:27:54.284Z",
+        "session_data": "NDQzZWYxYmU3ZDA0NTc1NmFlZmRlMjk1NDZiOTNmNDQ2ZGU4NmU5Yjp7Il9hdXRoX3VzZXJfaGFzaCI6ImMxOWM5NDY0YTI5NGM1ZjNlMzIwMDlhMjU3MGFmNGI3YTBlNGI0Y2UiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0="
+    },
+    "model": "sessions.session",
+    "pk": "o04pmxpxrq24j44yvj43btsrmro56g4a"
+},
+{
+    "fields": {
+        "codename": "add_logentry",
+        "name": "Can add log entry",
+        "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 1
+},
+{
+    "fields": {
+        "codename": "change_logentry",
+        "name": "Can change log entry",
+        "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 2
+},
+{
+    "fields": {
+        "codename": "delete_logentry",
+        "name": "Can delete log entry",
+        "content_type": 1
+    },
+    "model": "auth.permission",
+    "pk": 3
+},
+{
+    "fields": {
+        "codename": "add_permission",
+        "name": "Can add permission",
+        "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 4
+},
+{
+    "fields": {
+        "codename": "change_permission",
+        "name": "Can change permission",
+        "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 5
+},
+{
+    "fields": {
+        "codename": "delete_permission",
+        "name": "Can delete permission",
+        "content_type": 2
+    },
+    "model": "auth.permission",
+    "pk": 6
+},
+{
+    "fields": {
+        "codename": "add_group",
+        "name": "Can add group",
+        "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 7
+},
+{
+    "fields": {
+        "codename": "change_group",
+        "name": "Can change group",
+        "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 8
+},
+{
+    "fields": {
+        "codename": "delete_group",
+        "name": "Can delete group",
+        "content_type": 3
+    },
+    "model": "auth.permission",
+    "pk": 9
+},
+{
+    "fields": {
+        "codename": "add_site",
+        "name": "Can add site",
+        "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 10
+},
+{
+    "fields": {
+        "codename": "change_site",
+        "name": "Can change site",
+        "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 11
+},
+{
+    "fields": {
+        "codename": "delete_site",
+        "name": "Can delete site",
+        "content_type": 4
+    },
+    "model": "auth.permission",
+    "pk": 12
+},
+{
+    "fields": {
+        "codename": "add_contenttype",
+        "name": "Can add content type",
+        "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 13
+},
+{
+    "fields": {
+        "codename": "change_contenttype",
+        "name": "Can change content type",
+        "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 14
+},
+{
+    "fields": {
+        "codename": "delete_contenttype",
+        "name": "Can delete content type",
+        "content_type": 5
+    },
+    "model": "auth.permission",
+    "pk": 15
+},
+{
+    "fields": {
+        "codename": "add_session",
+        "name": "Can add session",
+        "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 16
+},
+{
+    "fields": {
+        "codename": "change_session",
+        "name": "Can change session",
+        "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 17
+},
+{
+    "fields": {
+        "codename": "delete_session",
+        "name": "Can delete session",
+        "content_type": 6
+    },
+    "model": "auth.permission",
+    "pk": 18
+},
+{
+    "fields": {
+        "codename": "add_token",
+        "name": "Can add token",
+        "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 19
+},
+{
+    "fields": {
+        "codename": "change_token",
+        "name": "Can change token",
+        "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 20
+},
+{
+    "fields": {
+        "codename": "delete_token",
+        "name": "Can delete token",
+        "content_type": 7
+    },
+    "model": "auth.permission",
+    "pk": 21
+},
+{
+    "fields": {
+        "codename": "add_emailaddress",
+        "name": "Can add email address",
+        "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 22
+},
+{
+    "fields": {
+        "codename": "change_emailaddress",
+        "name": "Can change email address",
+        "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 23
+},
+{
+    "fields": {
+        "codename": "delete_emailaddress",
+        "name": "Can delete email address",
+        "content_type": 8
+    },
+    "model": "auth.permission",
+    "pk": 24
+},
+{
+    "fields": {
+        "codename": "add_emailconfirmation",
+        "name": "Can add email confirmation",
+        "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 25
+},
+{
+    "fields": {
+        "codename": "change_emailconfirmation",
+        "name": "Can change email confirmation",
+        "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 26
+},
+{
+    "fields": {
+        "codename": "delete_emailconfirmation",
+        "name": "Can delete email confirmation",
+        "content_type": 9
+    },
+    "model": "auth.permission",
+    "pk": 27
+},
+{
+    "fields": {
+        "codename": "add_trololouser",
+        "name": "Can add user",
+        "content_type": 10
+    },
+    "model": "auth.permission",
+    "pk": 28
+},
+{
+    "fields": {
+        "codename": "change_trololouser",
+        "name": "Can change user",
+        "content_type": 10
+    },
+    "model": "auth.permission",
+    "pk": 29
+},
+{
+    "fields": {
+        "codename": "delete_trololouser",
+        "name": "Can delete user",
+        "content_type": 10
+    },
+    "model": "auth.permission",
+    "pk": 30
+},
+{
+    "fields": {
+        "codename": "add_activity",
+        "name": "Can add activity",
+        "content_type": 11
+    },
+    "model": "auth.permission",
+    "pk": 31
+},
+{
+    "fields": {
+        "codename": "change_activity",
+        "name": "Can change activity",
+        "content_type": 11
+    },
+    "model": "auth.permission",
+    "pk": 32
+},
+{
+    "fields": {
+        "codename": "delete_activity",
+        "name": "Can delete activity",
+        "content_type": 11
+    },
+    "model": "auth.permission",
+    "pk": 33
+},
+{
+    "fields": {
+        "codename": "add_project",
+        "name": "Can add project",
+        "content_type": 12
+    },
+    "model": "auth.permission",
+    "pk": 34
+},
+{
+    "fields": {
+        "codename": "change_project",
+        "name": "Can change project",
+        "content_type": 12
+    },
+    "model": "auth.permission",
+    "pk": 35
+},
+{
+    "fields": {
+        "codename": "delete_project",
+        "name": "Can delete project",
+        "content_type": 12
+    },
+    "model": "auth.permission",
+    "pk": 36
+},
+{
+    "fields": {
+        "codename": "add_projectcomment",
+        "name": "Can add project comment",
+        "content_type": 13
+    },
+    "model": "auth.permission",
+    "pk": 37
+},
+{
+    "fields": {
+        "codename": "change_projectcomment",
+        "name": "Can change project comment",
+        "content_type": 13
+    },
+    "model": "auth.permission",
+    "pk": 38
+},
+{
+    "fields": {
+        "codename": "delete_projectcomment",
+        "name": "Can delete project comment",
+        "content_type": 13
+    },
+    "model": "auth.permission",
+    "pk": 39
+},
+{
+    "fields": {
+        "codename": "add_task",
+        "name": "Can add task",
+        "content_type": 14
+    },
+    "model": "auth.permission",
+    "pk": 40
+},
+{
+    "fields": {
+        "codename": "change_task",
+        "name": "Can change task",
+        "content_type": 14
+    },
+    "model": "auth.permission",
+    "pk": 41
+},
+{
+    "fields": {
+        "codename": "delete_task",
+        "name": "Can delete task",
+        "content_type": 14
+    },
+    "model": "auth.permission",
+    "pk": 42
+},
+{
+    "fields": {
+        "codename": "add_taskcomment",
+        "name": "Can add task comment",
+        "content_type": 15
+    },
+    "model": "auth.permission",
+    "pk": 43
+},
+{
+    "fields": {
+        "codename": "change_taskcomment",
+        "name": "Can change task comment",
+        "content_type": 15
+    },
+    "model": "auth.permission",
+    "pk": 44
+},
+{
+    "fields": {
+        "codename": "delete_taskcomment",
+        "name": "Can delete task comment",
+        "content_type": 15
+    },
+    "model": "auth.permission",
+    "pk": 45
+},
+{
+    "fields": {
+        "username": "admin",
+        "first_name": "",
+        "last_name": "",
+        "specialization": "",
+        "user_permissions": [],
+        "photo": "",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2016-03-24T10:27:54.276Z",
+        "groups": [],
+        "department": "",
+        "detailed_info": "",
+        "password": "pbkdf2_sha256$20000$YMkAqXsQgISe$CNx7gZFxNh+podt2p5r1To7iMinCVMPlQbUpvsHR1yE=",
+        "use_gravatar": false,
+        "email": "",
+        "date_joined": "2016-03-24T10:27:35.427Z"
+    },
+    "model": "users.trololouser",
+    "pk": 1
+},
+{
+    "fields": {
+        "username": "test_user",
+        "first_name": "",
+        "last_name": "",
+        "specialization": "",
+        "user_permissions": [],
+        "photo": "",
+        "is_active": true,
+        "is_superuser": true,
+        "is_staff": true,
+        "last_login": "2016-03-24T10:27:54.276Z",
+        "groups": [],
+        "department": "",
+        "detailed_info": "",
+        "password": "pbkdf2_sha256$20000$YMkAqXsQgISe$CNx7gZFxNh+podt2p5r1To7iMinCVMPlQbUpvsHR1yE=",
+        "use_gravatar": false,
+        "email": "",
+        "date_joined": "2016-03-24T10:27:35.427Z"
+    },
+    "model": "users.trololouser",
+    "pk": 2
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T10:36:51.583Z",
+        "message": "create new project \"project_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T10:36:51.584Z"
+    },
+    "model": "activity.activity",
+    "pk": 1
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T10:58:25.179Z",
+        "message": "create new project \"project_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T10:58:25.179Z"
+    },
+    "model": "activity.activity",
+    "pk": 2
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T11:00:11.146Z",
+        "message": "create new project \"task_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T11:00:11.146Z"
+    },
+    "model": "activity.activity",
+    "pk": 3
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T11:03:40.028Z",
+        "message": "edit project",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T11:03:40.028Z"
+    },
+    "model": "activity.activity",
+    "pk": 4
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T11:12:07.010Z",
+        "message": "create new project \"task_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T11:12:07.010Z"
+    },
+    "model": "activity.activity",
+    "pk": 5
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T11:25:48.547Z",
+        "message": "create new project \"task_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T11:25:48.547Z"
+    },
+    "model": "activity.activity",
+    "pk": 6
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T11:50:46.886Z",
+        "message": "create new project \"task_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T11:50:46.886Z"
+    },
+    "model": "activity.activity",
+    "pk": 7
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T11:51:06.844Z",
+        "message": "create new project \"task_01\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T11:51:06.844Z"
+    },
+    "model": "activity.activity",
+    "pk": 8
+},
+{
+    "fields": {
+        "created_at": "2016-03-24T16:02:58.024Z",
+        "message": "edit project Name: \"task_01\" ==> \"task_02\"",
+        "updated_by": 1,
+        "created_by": 1,
+        "updated_at": "2016-03-24T16:02:58.024Z"
+    },
+    "model": "activity.activity",
+    "pk": 9
+},
+{
+    "fields": {
+        "status": "breakthrough",
+        "name": "project_01",
+        "date_finished": "2016-03-03T14:02:00Z",
+        "created_at": "2016-03-24T10:36:51.551Z",
+        "description": "some_project_description",
+        "visible_by": "particular_user",
+        "updated_at": "2016-03-24T11:03:40.020Z",
+        "created_by": 1,
+        "members": [
+            1
+        ],
+        "activity": [
+            1,
+            4
+        ],
+        "date_started": "2016-01-01T14:32:00Z",
+        "updated_by": 1
+    },
+    "model": "projects.project",
+    "pk": 1
+},
+{
+    "fields": {
+        "status": "breakthrough",
+        "name": "project_02",
+        "date_finished": "2016-03-03T14:02:00Z",
+        "created_at": "2016-03-24T10:36:51.551Z",
+        "description": "some_project_02_description",
+        "visible_by": "particular_user",
+        "updated_at": "2016-03-24T11:03:40.020Z",
+        "created_by": 1,
+        "members": [
+            1
+        ],
+        "activity": [
+            1,
+            4
+        ],
+        "date_started": "2016-01-01T14:32:00Z",
+        "updated_by": 1
+    },
+    "model": "projects.project",
+    "pk": 2
+},
+{
+    "fields": {
+        "status": "breakthrough",
+        "estimate_minutes": 5,
+        "name": "task_01",
+        "created_at": "2016-03-24T11:00:11.106Z",
+        "updated_at": "2016-03-28T07:27:10.444039Z",
+        "updated_by": 1,
+        "label": "red",
+        "project": 1,
+        "deadline_date": null,
+        "created_by": 1,
+        "members": [
+            1
+        ],
+        "type": "bug",
+        "description": "task_01_description"
+    },
+    "model": "projects.task",
+    "pk": 1
+},
+{
+    "fields": {
+        "status": "breakthrough",
+        "estimate_minutes": 5,
+        "name": "task_02",
+        "created_at": "2016-03-24T11:00:11.106Z",
+        "updated_at": "2016-03-28T07:27:10.444039Z",
+        "updated_by": 1,
+        "label": "green",
+        "project": 1,
+        "deadline_date": null,
+        "created_by": 1,
+        "members": [
+            1
+        ],
+        "type": "bug",
+        "description": "task_02_description"
+    },
+    "model": "projects.task",
+    "pk": 2
+}
+]

@@ -116,12 +116,12 @@ class TestUserProfileUpdate(APITestCase):
         user = get_user_model().objects.get(username='user')
 
         factory =APIRequestFactory()
-        request = factory.put(url, {'first_name': 'Doy'}, format='multipart')
+        request = factory.put(url, {'last_name': 'Doy'}, format='multipart')
 
         force_authenticate(request, user=user)
         response = UserProfile.as_view()(request)
 
-        self.assertTrue(user.first_name == 'Doy')
+        self.assertTrue(user.last_name == 'Doy')
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
 
 

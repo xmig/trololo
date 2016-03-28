@@ -83,7 +83,7 @@ class ProjectDetail(generics.GenericAPIView):
 
     def put(self, request, pk):
         project = self.get_object(pk)
-        serializer = ProjectSerializer(project, data=request.data, context={'request': request})
+        serializer = ProjectSerializer(project, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -138,7 +138,7 @@ class TaskDetail(generics.GenericAPIView):
 
     def put(self, request, pk):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task, data=request.data, context={'request': request})
+        serializer = TaskSerializer(task, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
