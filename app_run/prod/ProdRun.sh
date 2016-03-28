@@ -22,7 +22,7 @@ echo "-== Install python Packeges ==-"
 pip install -r requirements.txt > /dev/null
 sleep 1
 
-export DJANGO_SETTINGS_MODULE="trololo.settings.stage"
+export DJANGO_SETTINGS_MODULE="trololo.settings.production"
 echo "#----------------------------------- Collection Static -----------------------------------#"
 cd /home/ubuntu/projects/trololo/prod/trololo
 

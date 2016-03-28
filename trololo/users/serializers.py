@@ -10,6 +10,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         view_name='projects:projects_detail',
         queryset=Project.objects.all(),
         source='projects_added',
+        required=False,
         lookup_field='pk'
     )
     tasks = serializers.HyperlinkedRelatedField(
@@ -17,6 +18,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         view_name='projects:tasks_detail',
         queryset=Task.objects.all(),
         source='tasks_added',
+        required=False,
         lookup_field='pk'
     )
     url = serializers.HyperlinkedIdentityField(
@@ -39,6 +41,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'last_login', 'email', 'date_joined',
             'url'
         )
+
 
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
