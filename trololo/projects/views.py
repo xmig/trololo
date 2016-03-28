@@ -157,8 +157,11 @@ class TaskDetail(generics.GenericAPIView):
 class ProjectActivity(generics.ListAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    filter_backends = (filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_class = ActivityFilter
+    # ordering_fields = '__all__'
+    ordering_fields = ('message', 'created_at',)
+    ordering = ('-created_at',)
 
     def get(self, request, id):
         """
@@ -167,15 +170,29 @@ class ProjectActivity(generics.ListAPIView):
         {id} - project_id \n\n
 
         Available filters:\n
+        for_cu        - get data filtered by current user\n
         message       - filter by strict activity message\n
         message_like  - filter by contains activity message (insensitive)\n
         date_0        - from date (created_at)\n
-        date_1        - to date (created_at)
+        date_1        - to date (created_at)\n\n
+
+        Available sorting (send param like this ?sorting=filter1,filter2,.....):\n
+
+        message\n
+        -message\n
+        created_at\n
+        -created_at\n
 
         """
         try:
+            for_current_user=request.GET.get('for_cu', False)
             self.queryset = self.filter_queryset(self.get_queryset())
-            activities = self.get_queryset().filter(project_activities=int(id)).order_by('-created_at')
+            activities = self.get_queryset().filter(project_activities=int(id))
+
+            if for_current_user:
+                activities = activities.filter(created_by=int(request.user.id))
+
+
             data = ActivitySerializer(activities, many=True).data
             response = Response(data)
         except Project.DoesNotExist:
