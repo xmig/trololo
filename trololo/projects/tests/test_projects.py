@@ -1,8 +1,8 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 from django.contrib.auth import get_user_model
-from projects.views import ProjectsList
+from projects.views import ProjectsList, TaskList
 from rest_framework.reverse import reverse
-
+from rest_framework import status
 
 class TestProjectFilter(APITestCase):
     fixtures = ['all_data.json']
@@ -15,10 +15,11 @@ class TestProjectFilter(APITestCase):
         request = factory.get(url)
 
         force_authenticate(request, user=user)
-        responce = ProjectsList.as_view()(request)
+        response = ProjectsList.as_view()(request)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            responce.data['results'],
+            response.data['results'],
             [
                 {
                     "name": u"project_01", u"id": 1, "description": u"some_project_description",
@@ -44,10 +45,11 @@ class TestProjectFilterList(APITestCase):
         request = factory.get(url)
 
         force_authenticate(request, user=user)
-        responce = ProjectsList.as_view()(request)
+        response = ProjectsList.as_view()(request)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            responce.data['results'],
+            response.data['results'],
             [
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
@@ -75,10 +77,11 @@ class TestProjectFilterList(APITestCase):
         request = factory.get(url)
 
         force_authenticate(request, user=user)
-        responce = ProjectsList.as_view()(request)
+        response = ProjectsList.as_view()(request)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            responce.data['results'],
+            response.data['results'],
             [
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
@@ -99,10 +102,11 @@ class TestProjectFilterList(APITestCase):
         request = factory.get(url)
 
         force_authenticate(request, user=user)
-        responce = ProjectsList.as_view()(request)
+        response = ProjectsList.as_view()(request)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            responce.data['results'],
+            response.data['results'],
             [
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
@@ -130,10 +134,11 @@ class TestProjectFilterList(APITestCase):
         request = factory.get(url)
 
         force_authenticate(request, user=user)
-        responce = ProjectsList.as_view()(request)
+        response = ProjectsList.as_view()(request)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            responce.data['results'],
+            response.data['results'],
             [
                 {
                     'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
@@ -160,10 +165,11 @@ class TestProjectFilterList(APITestCase):
         request = factory.get(url)
 
         force_authenticate(request, user=user)
-        responce = ProjectsList.as_view()(request)
+        response = ProjectsList.as_view()(request)
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            responce.data['results'],
+            response.data['results'],
             [
                 {
                     'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
@@ -196,3 +202,113 @@ class TestProjectFilterList(APITestCase):
             ]
         )
 
+
+class TestProjectTaskFilter(APITestCase):
+    fixtures = ['data_with_gravatar.json']
+
+    def test_task_filter(self):
+        url = reverse('projects:projects') + '?name=task1'
+        user = get_user_model().objects.get(username='yura')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskList.as_view()(request)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data['results'],
+            [
+                {
+                    "name": u"task1", "id": 1, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/1/",
+                    "comments": [], "deadline_date": u"2016-03-06T10:57:47Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T10:57:49.589000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                }
+            ]
+        )
+
+    def test_task_filter_search(self):
+        url = reverse('projects:projects') + '?search=task5'
+        user = get_user_model().objects.get(username='yura')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskList.as_view()(request)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data['results'],
+            [
+                {
+                    "name": u"task5", "id": 5, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/2/",
+                    "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                }
+            ]
+        )
+
+    def test_task_filter_ordering(self):
+        url = reverse('projects:projects') + '?ordering=-name'
+        user = get_user_model().objects.get(username='yura')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskList.as_view()(request)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.data['results'],
+            [
+                {
+                    "name": u"task5", "id": 5, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/2/",
+                    "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                },
+                {
+                    "name": u"task4", "id": 4, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/2/",
+                    "comments": [], "deadline_date": u"2016-03-23T11:07:17Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T11:07:19.325000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                },
+                {
+                    "name": u"task3", "id": 3, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/3/",
+                    "comments": [], "deadline_date": u"2016-03-07T10:59:12Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T10:59:14.494000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                },
+                {
+                    "name": u"task2", "id": 2, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/1/",
+                    "comments": [], "deadline_date": u"2016-03-07T10:58:29Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T10:58:31.790000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                },
+                {
+                    "name": u"task1", "id": 1, "description": u"", "status": u"undefined",
+                    "members": [], "type": u"undefined", "label": u"undefined",
+                    "project": u"http://testserver/projects/projects/1/",
+                    "comments": [], "deadline_date": u"2016-03-06T10:57:47Z", "estimate_minutes": None,
+                    "created_by": None, "created_at": u"2016-03-18T10:57:49.589000Z",
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                }
+            ]
+        )
