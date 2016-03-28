@@ -72,3 +72,8 @@ DATABASES = {
 }
 
 SITE_ID = 3
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
