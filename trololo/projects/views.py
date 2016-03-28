@@ -12,6 +12,10 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
+from activity.serializers import ActivitySerializer
+from activity.filters import ActivityFilter
+from activity.models import Activity
+
 
 @api_view(['GET'])
 def api_root(request, format=None):
@@ -160,3 +164,52 @@ class TaskDetail(generics.GenericAPIView):
         task = self.get_object(pk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectActivity(generics.ListAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    filter_class = ActivityFilter
+    # ordering_fields = '__all__'
+    ordering_fields = ('message', 'created_at',)
+    ordering = ('-created_at',)
+
+    def get(self, request, id):
+        """
+        Get project activity data by project id \n
+        Activity ordering by created_at DESC \n\n
+        {id} - project_id \n\n
+
+        Available filters:\n
+        for_cu        - get data filtered by current user\n
+        message       - filter by strict activity message\n
+        message_like  - filter by contains activity message (insensitive)\n
+        date_0        - from date (created_at)\n
+        date_1        - to date (created_at)\n\n
+
+        Available sorting (send param like this ?sorting=filter1,filter2,.....):\n
+
+        message\n
+        -message\n
+        created_at\n
+        -created_at\n
+
+        """
+        try:
+            for_current_user=request.GET.get('for_cu', False)
+            self.queryset = self.filter_queryset(self.get_queryset())
+            activities = self.get_queryset().filter(project_activities=int(id))
+
+            if for_current_user:
+                activities = activities.filter(created_by=int(request.user.id))
+
+
+            data = ActivitySerializer(activities, many=True).data
+            response = Response(data)
+        except Project.DoesNotExist:
+            response = Response({}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return response
