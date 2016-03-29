@@ -1,6 +1,7 @@
 from serializers import ProjectSerializer, TaskSerializer
 from rest_framework import status
 from projects.models import Project, Task
+from django.db.models import Q
 
 from rest_framework import filters
 from rest_framework import generics
@@ -175,11 +176,15 @@ class ProjectActivity(generics.ListAPIView):
     ordering_fields = ('message', 'created_at',)
     ordering = ('-created_at',)
 
-    def get(self, request, id):
+    def get(self, request, id, show_type):
         """
         Get project activity data by project id \n
         Activity ordering by created_at DESC \n\n
-        {id} - project_id \n\n
+        {id} - project_id \n
+        {show_type}  : \n
+        a  -  get all activity \n
+        p  - get only project activity \n
+        t  - get only task activity \n\n
 
         Available filters:\n
         for_cu        - get data filtered by current user\n
@@ -199,11 +204,23 @@ class ProjectActivity(generics.ListAPIView):
         try:
             for_current_user=request.GET.get('for_cu', False)
             self.queryset = self.filter_queryset(self.get_queryset())
-            activities = self.get_queryset().filter(project_activities=int(id))
+
+            if show_type == 'a':
+                # all activity
+                activity_type_query = Q(project_activities=int(id)) | Q(task_activities__project__id=int(id))
+            elif show_type == 'p':
+                # project only activity
+                activity_type_query = Q(project_activities=int(id))
+            elif show_type == 't':
+                # task only activity
+                activity_type_query = Q(task_activities__project__id=int(id))
+            else:
+                activity_type_query = Q(project_activities=int(id)) | Q(task_activities__project__id=int(id))
+
+            activities = self.get_queryset().filter(activity_type_query)
 
             if for_current_user:
                 activities = activities.filter(created_by=int(request.user.id))
-
 
             data = ActivitySerializer(activities, many=True).data
             response = Response(data)
