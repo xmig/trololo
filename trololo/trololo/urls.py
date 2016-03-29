@@ -2,7 +2,9 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from users import urls as users_urls
-from projects import urls as projects_urls
+from projects import urls_projects as projects_urls
+from projects import urls_tasks as tasks_urls
+
 from projects.views import api_root
 from activity import urls as activity_urls
 
@@ -17,7 +19,10 @@ urlpatterns = [
     url(r'^api/$', api_root, name='api'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include(users_urls, namespace="users")),
+
     url(r'^projects/', include(projects_urls, namespace="projects")),
+    url(r'^tasks/', include(tasks_urls, namespace="tasks")),
+
     url(r'^activities/', include(activity_urls, namespace="activity")),
     url('^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^rest-auth/registration/account-confirm-email/(?P<key>\w+)/$', AccountConfirmEmailView.as_view(),
