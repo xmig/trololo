@@ -1,6 +1,7 @@
 from serializers import ProjectSerializer, TaskSerializer
 from rest_framework import status
 from projects.models import Project, Task
+from django.db.models import Q
 
 from rest_framework import filters
 from rest_framework import generics
@@ -11,6 +12,10 @@ from django.http import Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+
+from activity.serializers import ActivitySerializer
+from activity.filters import ActivityFilter
+from activity.models import Activity
 
 
 @api_view(['GET'])
@@ -26,7 +31,7 @@ class ProjectFilter(FilterSet):
     user = NumberFilter(name='member__id', lookup_expr='exact')
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
-    content_description = CharFilter(name='description', lookup_type='icontains')
+    description = CharFilter(name='description', lookup_type='icontains')
 
     date_to_started = NumberFilter(name='date_started', lookup_expr='day')
     date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
@@ -35,7 +40,7 @@ class ProjectFilter(FilterSet):
     class Meta:
         model = Project
         fields = [
-            'name', 'status', 'description', 'id', 'content_description', 'date_to_started',
+            'name', 'status', 'description', 'id', 'date_to_started',
             'date_to_started_gt', 'date_to_started_lt', 'user'
         ]
 
@@ -95,17 +100,29 @@ class ProjectDetail(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ProjectTaskFilter(FilterSet):
+    name = CharFilter(name='name', lookup_expr='iexact')
+    description = CharFilter(name='description', lookup_type='icontains')
+    status = CharFilter(name='status', lookup_expr='icontains')
+    type = CharFilter(name='type', lookup_expr='icontains')
+    label = CharFilter(name='label', lookup_expr='icontains')
+
+    class Meta:
+        model = Task
+        fields = [
+            'name', 'description',
+            'status', 'type', 'label'
+        ]
 
 
 
-class TaskList(generics.GenericAPIView):
+class TaskList(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
-
-    def get(self, request):
-        queryset = Task.objects.all()
-        serializer = TaskSerializer(queryset, many=True, context={'request': request})
-        return Response(serializer.data)
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = ProjectTaskFilter
+    search_fields = ('name', 'description', 'status', 'type', 'label')
+    ordering_fields = ('name', 'description', 'status', 'type', 'label')
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data, context={'request': request})
@@ -148,3 +165,68 @@ class TaskDetail(generics.GenericAPIView):
         task = self.get_object(pk)
         task.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ProjectActivity(generics.ListAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    filter_class = ActivityFilter
+    # ordering_fields = '__all__'
+    ordering_fields = ('message', 'created_at',)
+    ordering = ('-created_at',)
+
+    def get(self, request, id, show_type):
+        """
+        Get project activity data by project id \n
+        Activity ordering by created_at DESC \n\n
+        {id} - project_id \n
+        {show_type}  : \n
+        a  -  get all activity \n
+        p  - get only project activity \n
+        t  - get only task activity \n\n
+
+        Available filters:\n
+        for_cu        - get data filtered by current user\n
+        message       - filter by strict activity message\n
+        message_like  - filter by contains activity message (insensitive)\n
+        date_0        - from date (created_at)\n
+        date_1        - to date (created_at)\n\n
+
+        Available sorting (send param like this ?sorting=filter1,filter2,.....):\n
+
+        message\n
+        -message\n
+        created_at\n
+        -created_at\n
+
+        """
+        try:
+            for_current_user=request.GET.get('for_cu', False)
+            self.queryset = self.filter_queryset(self.get_queryset())
+
+            if show_type == 'a':
+                # all activity
+                activity_type_query = Q(project_activities=int(id)) | Q(task_activities__project__id=int(id))
+            elif show_type == 'p':
+                # project only activity
+                activity_type_query = Q(project_activities=int(id))
+            elif show_type == 't':
+                # task only activity
+                activity_type_query = Q(task_activities__project__id=int(id))
+            else:
+                activity_type_query = Q(project_activities=int(id)) | Q(task_activities__project__id=int(id))
+
+            activities = self.get_queryset().filter(activity_type_query)
+
+            if for_current_user:
+                activities = activities.filter(created_by=int(request.user.id))
+
+            data = ActivitySerializer(activities, many=True).data
+            response = Response(data)
+        except Project.DoesNotExist:
+            response = Response({}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return response

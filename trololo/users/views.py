@@ -56,7 +56,7 @@ class UserProfile(GenericAPIView):
         """
             Update current user profile info
         """
-        s = self.get_serializer_class()(request.user, data=request.data, context={'request': request})
+        s = self.get_serializer_class()(request.user, data=request.data, context={'request': request}, partial=True)
 
         if s.is_valid():
             s.save()

@@ -1,7 +1,7 @@
 from .base import *
 
-MEDIA_ROOT = '/var/www/trololo/media/stage/'
-STATIC_ROOT = '/var/www/trololo/static/stage/'
+MEDIA_ROOT = '/var/www/trololo/media/prod/'
+STATIC_ROOT = '/var/www/trololo/static/prod/'
 
 ALLOWED_HOSTS = ['127.0.0.1', 'worddict.net']
 
@@ -35,8 +35,8 @@ LOGGING = {
             'level': 'INFO',
             #'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/home/ubuntu/projects/trololo/logs/app.log',
-            'maxBytes': 1024*1024*10, # 10 MB
+            'filename': '/home/ubuntu/projects/trololo/logs/prod_app.log',
+            'maxBytes': 1024 * 1024 * 10, # 10 MB
             'backupCount': 2,
             'formatter': 'verbose'
             }
@@ -63,13 +63,15 @@ LOGGING = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'trololo_stage',
+        'NAME': 'trololo_prod',
         'USER': 'trololo_user',
         'PASSWORD': 'louShoote6',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
+
+SITE_ID = 3
 
 try:
     from local_settings import *

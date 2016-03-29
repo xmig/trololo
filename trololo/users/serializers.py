@@ -15,7 +15,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     )
     tasks = serializers.HyperlinkedRelatedField(
         many=True,
-        view_name='projects:tasks_detail',
+        view_name='tasks:tasks_detail',
         queryset=Task.objects.all(),
         source='tasks_added',
         required=False,
@@ -41,6 +41,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             'last_login', 'email', 'date_joined',
             'url'
         )
+
 
     def to_representation(self, obj):
         data = super(UserSerializer, self).to_representation(obj)
