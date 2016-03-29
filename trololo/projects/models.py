@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from django.conf import settings
 from activity.models import HasActivity
-from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable
+from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -69,7 +69,7 @@ class ProjectComment(AbstractModel):
 
 
 
-class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, HasStatus):
 
     BREAKTHROUGH = "breakthrough"
     IN_PROGRESS = "in_progress"
@@ -142,3 +142,17 @@ class TaskComment(AbstractModel):
 
     def __unicode__(self):
         return self.comment
+
+
+class Status(AbstractModel):
+
+    project = models.ForeignKey(Project, default=True, null=True, blank=True, related_name='project_statuses')
+    name = models.CharField(max_length=30)
+    order_number = models.IntegerField()
+    ordering = ['-order_number']
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name

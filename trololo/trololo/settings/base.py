@@ -135,6 +135,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.TrololoUser'
 ACTIVITY_MODEL = 'activity.Activity'
+STATUS_MODEL = 'projects.Status'
 # option for registration
 SITE_ID = 1
 
