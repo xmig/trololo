@@ -28,8 +28,8 @@ class StatusDetail(generics.GenericAPIView):
         return Response(serializer.data)
 
     def put(self, request, pk):
-        status = self.get_object(pk)
-        serializer = StatusSerializer(status, data=request.data, context={'request': request})
+        stat = self.get_object(pk)
+        serializer = StatusSerializer(stat, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

@@ -116,10 +116,10 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new project "' + self.name + '"'
+        return 'create new task "' + self.name + '"'
 
     def get_activity_message_on_update(self, **kwargs):
-        message = 'edit project'
+        message = 'edit task'
         old_data = self.get_original_object()
         if old_data.name != self.name:
             message = message + ' Name: "' + old_data.name + '" ==> "' + self.name + '"'

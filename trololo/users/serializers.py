@@ -15,7 +15,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     )
     tasks = serializers.HyperlinkedRelatedField(
         many=True,
-        view_name='projects:tasks_detail',
+        view_name='tasks:tasks_detail',
         queryset=Task.objects.all(),
         source='tasks_added',
         required=False,

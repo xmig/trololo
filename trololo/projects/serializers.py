@@ -9,7 +9,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     tasks = serializers.HyperlinkedRelatedField(
         many=True,
-        view_name='projects:tasks_detail',
+        view_name='tasks:tasks_detail',
         queryset=Task.objects.all(),
         required=False,
         lookup_field='pk'
@@ -34,6 +34,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
+    # activity =
+
     class Meta:
         model = Project
         fields = ('name', 'id', 'description', 'status', 'members', 'comments', 'visible_by', 'tasks', 'date_started', 'date_finished', 'created_by', 'created_at', 'updated_by', 'updated_at')
@@ -41,6 +43,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def take_comments(self, project):
         comments_list = [x.comment for x in project.projectcomment_set.all()]
         return comments_list
+
 
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
@@ -101,7 +104,7 @@ class StatusSerializer(serializers.ModelSerializer):
     )
 
     url = serializers.HyperlinkedIdentityField(
-        view_name='projects:status_detail', read_only=True ,lookup_field='pk'
+        view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
     )
     class Meta:
         model = Status

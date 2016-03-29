@@ -70,3 +70,8 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

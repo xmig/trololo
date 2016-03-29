@@ -142,10 +142,6 @@ SITE_ID = 1
 # email settings
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'jonny.john2017@yandex.ru'
-EMAIL_HOST_PASSWORD = 'uasar3aeK2'
-EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
 
 # authorization settings
 ACCOUNT_EMAIL_REQUIRED = True

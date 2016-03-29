@@ -24,24 +24,3 @@ class SingleActivity(GenericAPIView):
 
         return response
 
-
-class ProjectActivity(GenericAPIView):
-    queryset = Project.objects.all()
-    serializer_class = ActivitySerializer
-
-    def get(self, request, id):
-        """
-        Get project activity data by project id
-        Activity ordering by created_at DESC
-        """
-        try:
-            project = self.get_queryset().get(pk=int(id))
-            activities = project.activity.all().order_by('-created_at')
-            data = ActivitySerializer(activities, many=True).data
-            response = Response(data)
-        except Project.DoesNotExist:
-            response = Response({}, status=status.HTTP_404_NOT_FOUND)
-        except:
-            response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-        return response

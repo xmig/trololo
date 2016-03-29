@@ -1,6 +1,8 @@
 from serializers import ProjectSerializer, TaskSerializer, StatusSerializer
 from rest_framework import status
 from projects.models import Project, Task, Status
+from projects.models import Project, Task
+from django.db.models import Q
 
 from rest_framework import filters, viewsets
 from rest_framework import generics
@@ -12,13 +14,17 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
+from activity.serializers import ActivitySerializer
+from activity.filters import ActivityFilter
+from activity.models import Activity
+
 
 @api_view(['GET'])
 def api_root(request, format=None):
     return Response({
         'users': reverse('users:user_list', request=request),
         'projects': reverse('projects:projects', request=request),
-        'tasks': reverse('projects:tasks', request=request),
+        'tasks': reverse('tasks:tasks', request=request),
         'status': reverse('projects:status', request=request)
     })
 
@@ -84,7 +90,7 @@ class ProjectDetail(generics.GenericAPIView):
 
     def put(self, request, pk):
         project = self.get_object(pk)
-        serializer = ProjectSerializer(project, data=request.data, context={'request': request})
+        serializer = ProjectSerializer(project, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -151,7 +157,7 @@ class TaskDetail(generics.GenericAPIView):
 
     def put(self, request, pk):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task, data=request.data, context={'request': request})
+        serializer = TaskSerializer(task, data=request.data, context={'request': request}, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -163,3 +169,66 @@ class TaskDetail(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class ProjectActivity(generics.ListAPIView):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    filter_class = ActivityFilter
+    # ordering_fields = '__all__'
+    ordering_fields = ('message', 'created_at',)
+    ordering = ('-created_at',)
+
+    def get(self, request, id, show_type):
+        """
+        Get project activity data by project id \n
+        Activity ordering by created_at DESC \n\n
+        {id} - project_id \n
+        {show_type}  : \n
+        a  -  get all activity \n
+        p  - get only project activity \n
+        t  - get only task activity \n\n
+
+        Available filters:\n
+        for_cu        - get data filtered by current user\n
+        message       - filter by strict activity message\n
+        message_like  - filter by contains activity message (insensitive)\n
+        date_0        - from date (created_at)\n
+        date_1        - to date (created_at)\n\n
+
+        Available sorting (send param like this ?sorting=filter1,filter2,.....):\n
+
+        message\n
+        -message\n
+        created_at\n
+        -created_at\n
+
+        """
+        try:
+            for_current_user=request.GET.get('for_cu', False)
+            self.queryset = self.filter_queryset(self.get_queryset())
+
+            if show_type == 'a':
+                # all activity
+                activity_type_query = Q(project_activities=int(id)) | Q(task_activities__project__id=int(id))
+            elif show_type == 'p':
+                # project only activity
+                activity_type_query = Q(project_activities=int(id))
+            elif show_type == 't':
+                # task only activity
+                activity_type_query = Q(task_activities__project__id=int(id))
+            else:
+                activity_type_query = Q(project_activities=int(id)) | Q(task_activities__project__id=int(id))
+
+            activities = self.get_queryset().filter(activity_type_query)
+
+            if for_current_user:
+                activities = activities.filter(created_by=int(request.user.id))
+
+            data = ActivitySerializer(activities, many=True).data
+            response = Response(data)
+        except Project.DoesNotExist:
+            response = Response({}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return response
