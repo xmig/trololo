@@ -363,7 +363,7 @@ class TestUserProfileGravatar(APITestCase):
             'email': u'yura@example.com',
             'is_superuser': True, 'is_staff': True, 'last_login': u'2016-03-18T13:26:04.553000Z',
             'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-18T09:54:08.108000Z',
-            'projects': [u'http://testserver/projects/projects/1/'], 'use_gravatar': True,
+            'projects': [u'http://testserver/projects/1/'], 'use_gravatar': True,
             'url': u'http://testserver/users/1/', 'tasks': []
         }
 

@@ -233,7 +233,7 @@ class TestProjectUpdate(APITestCase):
         user = get_user_model().objects.get(username='admin')
 
         factory = APIRequestFactory()
-        request = factory.put(url, {'tasks': [u'http://testserver/projects/tasks/2/']})
+        request = factory.put(url, {'tasks': [u'http://testserver/tasks/2/']})
 
         force_authenticate(request, user=user)
         response = ProjectDetail.as_view()(request, '1')
@@ -246,7 +246,7 @@ class TestProjectUpdate(APITestCase):
                 "description": u'some_project_description', "visible_by": u'particular_user', "updated_at": u'2016-03-24T11:03:40.020000Z',
                 "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/1/'],
                 "date_started": u"2016-01-01T14:32:00Z", "updated_by": u'http://testserver/users/1/', "id": 1,
-                'tasks': [u'http://testserver/projects/tasks/2/']
+                'tasks': [u'http://testserver/tasks/2/']
             }
         print response.data
 
@@ -291,7 +291,7 @@ class TestTaskDetailGet(APITestCase):
     fixtures = ['all_data.json']
 
     def test_get_task(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory = APIRequestFactory()
@@ -303,7 +303,7 @@ class TestTaskDetailGet(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-28T07:27:10.444039Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -317,7 +317,7 @@ class TestTaskUpdate(APITestCase):
     fixtures = ['all_data.json']
 
     def test_task_name_update(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -331,7 +331,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
             "status": "breakthrough", "estimate_minutes": 5, "name": "task_01_new", "created_at": "2016-03-24T11:00:11.106000Z",
             "updated_at": "2016-03-28T07:27:10.444039Z", "updated_by": u'http://testserver/users/1/', "label": "red",
-            "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+            "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
             "members": [u'http://testserver/users/1/'], "type": "bug", "description": "task_01_description"
             }
 
@@ -344,7 +344,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_description_update(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -358,7 +358,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-28T07:27:10.444039Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description_new'
             }
 
@@ -371,11 +371,11 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_project_update(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
-        request = factory.put(url, {'project': u'http://testserver/projects/projects/2/'})
+        request = factory.put(url, {'project': u'http://testserver/projects/2/'})
 
         force_authenticate(request, user=user)
         response = TaskDetail.as_view()(request, '1')
@@ -385,7 +385,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-28T07:27:10.444039Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/2/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/2/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -398,7 +398,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_members_update(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -412,7 +412,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-28T07:27:10.444039Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/', u'http://testserver/users/2/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -425,7 +425,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_status_update(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -439,7 +439,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'finished', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-28T07:27:10.444039Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -452,7 +452,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_type_update(self):
-        url = reverse('projects:projects_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -466,7 +466,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-24T11:00:11.106000Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'feature', "description": u'task_01_description'
             }
 
@@ -479,7 +479,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_label(self):
-        url = reverse('projects:projects_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -493,7 +493,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-24T11:00:11.106000Z', "updated_by": u'http://testserver/users/1/', "label": u'green',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -506,7 +506,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_deadline_date(self):
-        url = reverse('projects:projects_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -520,7 +520,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 5, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-24T11:00:11.106000Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": u'2016-05-24T11:00:11.106000Z', "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": u'2016-05-24T11:00:11.106000Z', "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -533,7 +533,7 @@ class TestTaskUpdate(APITestCase):
 
 
     def test_task_estimate(self):
-        url = reverse('projects:projects_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
@@ -547,7 +547,7 @@ class TestTaskUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "estimate_minutes": 7, "name": u'task_01', "created_at": u'2016-03-24T11:00:11.106000Z',
                 "updated_at": u'2016-03-24T11:00:11.106000Z', "updated_by": u'http://testserver/users/1/', "label": u'red',
-                "project": u'http://testserver/projects/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
+                "project": u'http://testserver/projects/1/', "deadline_date": None, "created_by": u'http://testserver/users/1/',
                 "members": [u'http://testserver/users/1/'], "type": u'bug', "description": u'task_01_description'
             }
 
@@ -563,7 +563,7 @@ class TestTaskDelete(APITestCase):
     fixtures = ['all_data.json']
 
     def test_task_name_update(self):
-        url = reverse('projects:tasks_detail', kwargs={'pk': '1'})
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '1'})
         user = get_user_model().objects.get(username='admin')
 
         factory =APIRequestFactory()
