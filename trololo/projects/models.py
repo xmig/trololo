@@ -57,15 +57,26 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
 
 
 
-class ProjectComment(AbstractModel):
+class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    title = models.CharField(max_length=200, blank=True, null=True, default='')
     project = models.ForeignKey(Project, blank=True, null=True, default='')
     comment = models.TextField(blank=True, null=True, default='')
 
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new comment' + self.title + 'for project' + self.project
+
+    def get_activity_message_on_update(self, **kwargs):
+        message = 'edit comment'
+        old_data = self.get_original_object()
+        if old_data.comment != self.comment:
+            message = message + 'Comment:' + old_data.comment + ' ==> ' + self.comment
+        return message
+
     def __str__(self):
-        return self.comment
+        return self.title
 
     def __unicode__(self):
-        return self.comment
+        return self.title
 
 
 
@@ -133,12 +144,23 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
 
 
 
-class TaskComment(AbstractModel):
+class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    title = models.CharField(max_length=200, blank=True, null=True, default='')
     task = models.ForeignKey(Task, default='', null=True, blank=True)
     comment = models.TextField(blank=True, null=True, default='')
 
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new comment' + self.title + 'for task' + self.task
+
+    def get_activity_message_on_update(self, **kwargs):
+        message = 'edit comment'
+        old_data = self.get_original_object()
+        if old_data.comment != self.comment:
+            message = message + 'Comment:' + old_data.comment + ' ==> ' + self.comment
+        return message
+
     def __str__(self):
-        return self.comment
+        return self.title
 
     def __unicode__(self):
-        return self.comment
+        return self.title

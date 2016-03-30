@@ -23,7 +23,7 @@ def api_root(request, format=None):
     return Response({
         'users': reverse('users:user_list', request=request),
         'projects': reverse('projects:projects', request=request),
-        'tasks': reverse('projects:tasks', request=request)
+        'tasks': reverse('tasks:tasks', request=request)
     })
 
 
