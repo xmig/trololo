@@ -8,6 +8,10 @@ from rest_framework.response import Response
 
 
 class StatusView(generics.ListCreateAPIView):
+    """
+    Method get returns a list of statuses
+    Method post creates new status
+    """
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
 
@@ -23,11 +27,17 @@ class StatusDetail(generics.GenericAPIView):
             raise Http404
 
     def get(self, request, pk):
+        """
+        This method returns the status by id
+        """
         status = self.get_object(pk)
         serializer = StatusSerializer(status, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
+        """
+       This method rename status
+        """
         stat = self.get_object(pk)
         serializer = StatusSerializer(stat, data=request.data, context={'request': request})
         if serializer.is_valid():
@@ -36,6 +46,9 @@ class StatusDetail(generics.GenericAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
+        """
+        This method delete status
+        """
         st = self.get_object(pk)
         st.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
