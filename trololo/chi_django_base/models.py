@@ -1,7 +1,7 @@
 from django.db import models
 from cuser.fields import CurrentUserField
 import copy
-
+from django.conf import settings
 
 class AbstractModel(models.Model):
     class Meta:
@@ -37,3 +37,10 @@ class AbstractAddOldObject(object):
 
     def set_original_object(self, original_object):
         self.__original_object = original_object
+
+
+class HasStatus(models.Model, AbstractAddOldObject):
+    class Meta:
+        abstract = True
+
+    group = models.ForeignKey(settings.STATUS_MODEL, blank=True, null=True, related_name='%(class)s_statuses')

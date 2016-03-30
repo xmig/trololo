@@ -20,14 +20,21 @@ from activity.models import Activity
 
 @api_view(['GET'])
 def api_root(request, format=None):
+    """
+    Return api root
+    """
     return Response({
         'users': reverse('users:user_list', request=request),
         'projects': reverse('projects:projects', request=request),
-        'tasks': reverse('projects:tasks', request=request)
+        'tasks': reverse('tasks:tasks', request=request),
+        'status': reverse('statuses:status', request=request)
     })
 
 
 class ProjectFilter(FilterSet):
+    """
+    Project filter
+    """
     user = NumberFilter(name='member__id', lookup_expr='exact')
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
@@ -101,6 +108,9 @@ class ProjectDetail(generics.GenericAPIView):
 
 
 class ProjectTaskFilter(FilterSet):
+    """
+    Project task filetr
+    """
     name = CharFilter(name='name', lookup_expr='iexact')
     description = CharFilter(name='description', lookup_type='icontains')
     status = CharFilter(name='status', lookup_expr='icontains')
@@ -117,6 +127,9 @@ class ProjectTaskFilter(FilterSet):
 
 
 class TaskList(generics.ListCreateAPIView):
+    """
+    Return filtering tasks
+    """
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
