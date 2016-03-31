@@ -1,10 +1,26 @@
 from serializers import StatusSerializer
 from rest_framework import status
-from projects.models import  Status
+from projects.models import Status
 from rest_framework import generics
 from django.http import Http404
 from rest_framework.response import Response
 
+from rest_framework import filters
+from django_filters import FilterSet, NumberFilter, CharFilter
+
+
+class StatusFilter(FilterSet):
+    """
+    Status filtering
+    """
+
+    name = CharFilter(name='name', lookup_expr='iexact')
+    number = NumberFilter(name='order_namber')
+    project = NumberFilter(name='project__id')
+
+    class Meta:
+        model = Status
+        fields = ['name', 'number', 'project']
 
 
 class StatusView(generics.ListCreateAPIView):
@@ -14,6 +30,10 @@ class StatusView(generics.ListCreateAPIView):
     """
     queryset = Status.objects.all()
     serializer_class = StatusSerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = StatusFilter
+    search_fields = ('name', )
+    ordering_fields = ('name', 'order_number', 'project')
 
 
 class StatusDetail(generics.GenericAPIView):
@@ -52,3 +72,4 @@ class StatusDetail(generics.GenericAPIView):
         st = self.get_object(pk)
         st.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+

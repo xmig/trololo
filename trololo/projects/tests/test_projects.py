@@ -399,7 +399,7 @@ class TestProjectUpdate(APITestCase):
         ETALON = {
                 "status": u'breakthrough', "name": u'project_01', "date_finished": u"2016-03-03T14:02:00Z", "created_at": u'2016-03-24T10:36:51.551000Z',
                 "description": u'some_project_description', "visible_by": u'particular_user', "updated_at": u'2016-03-24T11:03:40.020000Z',
-                "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/1/', u'http://testserver/users/2/'],
+                "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/2/', u'http://testserver/users/1/'],
                 "date_started": u"2016-01-01T14:32:00Z", "updated_by": u'http://testserver/users/1/', "id": 1
             }
 
@@ -857,6 +857,7 @@ class TestTaskUpdate(APITestCase):
                 self.assertNotEqual(response.data[k], ETALON[k])
             else:
                 self.assertEqual(response.data[k], ETALON[k])
+
 
 
 

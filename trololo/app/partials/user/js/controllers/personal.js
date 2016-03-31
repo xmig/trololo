@@ -12,7 +12,8 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
             last_name: data.last_name,
             department: data.department,
             specialization: data.specialization,
-            detailed_info: data.detailed_info
+            detailed_info: data.detailed_info,
+            use_gravatar: data.use_gravatar
         };
         $scope.userPersonalData = data;
     });
