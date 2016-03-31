@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-
     'users',
     'cuser',
 
@@ -138,6 +137,7 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'users.TrololoUser'
 ACTIVITY_MODEL = 'activity.Activity'
+STATUS_MODEL = 'projects.Status'
 # option for registration
 SITE_ID = 1
 
@@ -149,5 +149,9 @@ EMAIL_PORT = 465
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 
-
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'chi_django_base.auth_backends.EmailAuthBackend'
+]

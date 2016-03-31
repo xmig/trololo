@@ -4,6 +4,7 @@ from django.contrib import admin
 from users import urls as users_urls
 from projects import urls_projects as projects_urls
 from projects import urls_tasks as tasks_urls
+from projects import urls_statuses as statuses_urls
 
 from projects.views import api_root
 from activity import urls as activity_urls
@@ -19,7 +20,7 @@ urlpatterns = [
     url(r'^api/$', api_root, name='api'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^users/', include(users_urls, namespace="users")),
-
+    url(r'^status/', include(statuses_urls, namespace="statuses")),
     url(r'^projects/', include(projects_urls, namespace="projects")),
     url(r'^tasks/', include(tasks_urls, namespace="tasks")),
 

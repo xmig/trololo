@@ -83,7 +83,7 @@ class UsersFilter(FilterSet):
 
 class UserListView(ListAPIView):
     serializer_class = UserSerializer
-    queryset = get_user_model().objects.all()
+    queryset = get_user_model().objects.prefetch_related("projects_added", "tasks_added").all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = UsersFilter
     ordering_fields = (

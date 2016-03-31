@@ -4,6 +4,23 @@ from .base import *
 # LOGGING
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
 # --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+from logging import Filter
+
+
+class FilterDBLogs(Filter):
+    def filter(self, record):
+        skip_records = [
+            "ALTER SEQUENCE", "CREATE TABLE",
+            "CREATE INDEX", "ALTER TABLE",
+        ]
+
+        for r in skip_records:
+            if record.msg.startswith(r):
+                return 0
+
+        return 1
+
+
 LOGGING = {
     'version': 1,
     'formatters': {
@@ -12,21 +29,30 @@ LOGGING = {
             'datefmt' : "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
-            'format': '%(levelname)s %(message)s'
+            'format': '%(levelname)s [%(name)s %(asctime)s] %(message)s'
         }
     },
     'disable_existing_loggers': False,
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
+        },
+        'db_query_filter': {
+            '()': 'trololo.settings.development.FilterDBLogs'
         }
     },
     'handlers': {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
-            },
+            'formatter': 'simple',
+        },
+        'db_log': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+            'filters': ['db_query_filter'],
+        }
         # 'file': {
         #     #'level': 'INFO',
         #     'level': 'DEBUG',
@@ -38,6 +64,11 @@ LOGGING = {
         #     }
         },
     'loggers': {
+        # 'django.db.backends': {
+        #     'handlers': ['db_log'],
+        #     'level': 'DEBUG',
+        #     'propagate': False
+        # },
         'django.request': {
             'handlers': ['console'],
             'level': 'WARNING',

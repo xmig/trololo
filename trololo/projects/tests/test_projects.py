@@ -218,7 +218,7 @@ class TestProjectTaskFilter(APITestCase):
     fixtures = ['data_with_gravatar.json']
 
     def test_task_filter(self):
-        url = reverse('projects:projects') + '?name=task1'
+        url = reverse('tasks:tasks') + '?name=task1'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -243,7 +243,7 @@ class TestProjectTaskFilter(APITestCase):
         )
 
     def test_task_filter_search(self):
-        url = reverse('projects:projects') + '?search=task5'
+        url = reverse('tasks:tasks') + '?search=task5'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -268,7 +268,7 @@ class TestProjectTaskFilter(APITestCase):
         )
 
     def test_task_filter_ordering(self):
-        url = reverse('projects:projects') + '?ordering=-name'
+        url = reverse('tasks:tasks') + '?ordering=-name'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -323,7 +323,7 @@ class TestProjectTaskFilter(APITestCase):
                 }
             ]
         )
-        
+
 
 
 class TestProjectDetailGet(APITestCase):
@@ -857,6 +857,7 @@ class TestTaskUpdate(APITestCase):
                 self.assertNotEqual(response.data[k], ETALON[k])
             else:
                 self.assertEqual(response.data[k], ETALON[k])
+
 
 
 

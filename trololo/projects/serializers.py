@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from projects.models import Project, Task, TaskComment, ProjectComment
+from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from django.contrib.auth import get_user_model
 
 
@@ -86,12 +86,28 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 
-class ProjectCommentSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectComment
 
 
-
-class TaskCommentSerializer(serializers.HyperlinkedModelSerializer):
+class TaskCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = TaskComment
+
+
+class StatusSerializer(serializers.ModelSerializer):
+
+    project = serializers.HyperlinkedRelatedField(
+        view_name='projects:projects_detail',
+        queryset=Project.objects.all(),
+        required=True,
+        lookup_field='pk'
+    )
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
+    )
+    class Meta:
+        model = Status
+        fields = ('name', 'order_number', 'url', 'project')

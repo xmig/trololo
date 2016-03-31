@@ -1244,5 +1244,41 @@
     },
     "model": "admin.logentry",
     "pk": 22
+},
+{
+    "fields": {
+        "name": "inprogress",
+        "project": 1,
+        "order_number": 1
+    },
+    "model": "projects.status",
+    "pk": 1
+},
+{
+    "fields": {
+        "name": "done",
+        "project": 1,
+        "order_number": 2
+    },
+    "model": "projects.status",
+    "pk": 2
+},
+{
+    "fields": {
+        "name": "inprogress1",
+        "project": 2,
+        "order_number": 1
+    },
+    "model": "projects.status",
+    "pk": 3
+},
+{
+    "fields": {
+        "name": "done",
+        "project": 2,
+        "order_number": 2
+    },
+    "model": "projects.status",
+    "pk": 4
 }
 ]
