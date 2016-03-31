@@ -86,12 +86,12 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 
-class ProjectCommentSerializer(serializers.ModelSerializer):
+class ProjectCommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProjectComment
 
 
-class TaskCommentSerializer(serializers.ModelSerializer):
+
+class TaskCommentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = TaskComment
-
