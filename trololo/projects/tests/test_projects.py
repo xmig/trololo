@@ -860,6 +860,7 @@ class TestTaskUpdate(APITestCase):
 
 
 
+
 class TestTaskDelete(APITestCase):
     fixtures = ['all_data.json']
 

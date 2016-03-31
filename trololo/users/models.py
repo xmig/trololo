@@ -13,4 +13,9 @@ class TrololoUser(AbstractUser):
     detailed_info = models.TextField(blank=True)
     use_gravatar = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['id']
+
+
+
 

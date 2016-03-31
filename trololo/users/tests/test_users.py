@@ -28,7 +28,8 @@ class TestUserProfileGet(APITestCase):
             response.data,
             {
                 'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-                'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
+                'photo': u'http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif',
+                'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
                 'projects': [], 'use_gravatar': False,'url': u'http://testserver/users/1/', 'tasks': []
@@ -251,7 +252,8 @@ class TestGetSingleUser(APITestCase):
             response.data,
             {
                 'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-                'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
+                'photo': u'http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif',
+                'is_active': True, 'email': u'maxellort@gmail.com',
                 'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                 'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
                 'projects': [], 'use_gravatar': False, 'url': u'http://testserver/users/1/', 'tasks': []
@@ -291,7 +293,8 @@ class TestUserList(APITestCase):
             [
                 {
                     'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-                    'photo': None, 'is_active': True, 'email': u'maxellort@gmail.com',
+                    'photo': u'http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif',
+                    'is_active': True, 'email': u'maxellort@gmail.com',
                     'is_superuser': False, 'is_staff': False, 'last_login': u'2016-03-09T13:10:20.662000Z',
                     'department': u'', 'detailed_info': u'', u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z',
                     'projects': [],'use_gravatar': False, 'url': u'http://testserver/users/1/', 'tasks': []
