@@ -2,7 +2,6 @@ from rest_framework import serializers
 
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from django.contrib.auth import get_user_model
-from taggit.models import Tag
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -42,7 +41,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     tags = serializers.SerializerMethodField()
 
     def get_tags(self, obj):
-        return obj.tags.names()
+        return list(obj.tags.names())
 
     class Meta:
         model = Project
@@ -116,8 +115,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         return comments_list
 
 
-
-
 class ProjectCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectComment
@@ -143,8 +140,3 @@ class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
         fields = ('name', 'order_number', 'url', 'project')
-
-
-class TagSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tag
