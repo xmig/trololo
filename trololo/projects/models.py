@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
+from taggit.managers import TaggableManager
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -38,6 +39,8 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
     date_started = models.DateTimeField(blank=True, null=True, default='')
     date_finished = models.DateTimeField(blank=True, null=True, default='')
+
+    tags = TaggableManager()
 
     def get_activity_message_on_create(self, **kwargs):
         return 'create new project "' + self.name + '"'

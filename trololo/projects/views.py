@@ -39,6 +39,7 @@ class ProjectFilter(FilterSet):
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
     description = CharFilter(name='description', lookup_type='icontains')
+    tags = CharFilter(name='tags__slug')
 
     date_to_started = NumberFilter(name='date_started', lookup_expr='day')
     date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
@@ -48,7 +49,7 @@ class ProjectFilter(FilterSet):
         model = Project
         fields = [
             'name', 'status', 'description', 'id', 'date_to_started',
-            'date_to_started_gt', 'date_to_started_lt', 'user'
+            'date_to_started_gt', 'date_to_started_lt', 'user', 'tags'
         ]
 
 
@@ -60,7 +61,7 @@ class ProjectsList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,filters.OrderingFilter)
     filter_class = ProjectFilter
-    search_fields = ('name', 'description', 'id')
+    search_fields = ('name', 'description', 'id', 'tags__slug')
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
 
