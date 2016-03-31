@@ -55,6 +55,8 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['pk']
 
 
 class ProjectComment(AbstractModel):
@@ -131,6 +133,8 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['pk']
 
 
 class TaskComment(AbstractModel):
@@ -149,10 +153,12 @@ class Status(AbstractModel):
     project = models.ForeignKey(Project, default=True, null=True, blank=True, related_name='project_statuses')
     name = models.CharField(max_length=30)
     order_number = models.IntegerField()
-    ordering = ['-order_number']
 
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-order_number', 'pk']
