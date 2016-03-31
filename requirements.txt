@@ -9,3 +9,4 @@ sqlparse
 mock
 django-filter
 django-taggit
+django-suit==0.2.18
