@@ -1,4 +1,17 @@
-angular.module('userApp').controller('projectsCtrl', ['$scope', function($scope){
+angular.module('userApp').controller('projectsCtrl', ['$scope', '$http', 'projectService', function($scope, $http, projectService){
+    projectService.get(function (data) {
+        $scope.projects = {}
+        $scope.projects.data = data.results;
+        $scope.projects.count = $scope.projects.data.length;
+    });
+
+    $scope.getStatuses = function () {
+        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+    };
+
+
+
+
     /* Test table data */
     $scope.desserts = {
         "count": 9,

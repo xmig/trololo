@@ -51,3 +51,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             )
 
         return data
+
+
+class OnlyUserInfoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id', 'username', 'first_name', 'last_name',
+            'specialization', 'is_active',
+            'email'
+        )
+
+        read_only_fields = (
+            'id', 'username', 'first_name', 'last_name',
+            'specialization', 'is_active',
+            'email'
+        )

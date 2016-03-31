@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from django.contrib.auth import get_user_model
+from users.serializers import OnlyUserInfoSerializer
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -14,13 +15,14 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
-    members = serializers.HyperlinkedRelatedField(
-        many=True,
-        view_name='users:single_user',
-        queryset=get_user_model().objects.all(),
-        required=False,
-        lookup_field='id'
-    )
+    # members = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     view_name='users:single_user',
+    #     queryset=get_user_model().objects.all(),
+    #     required=False,
+    #     lookup_field='id'
+    # )
+    members = OnlyUserInfoSerializer(many=True, read_only=True)
     created_by = serializers.HyperlinkedRelatedField(
         view_name='users:single_user',
         queryset=get_user_model().objects.all(),
@@ -33,17 +35,24 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='id'
     )
-
-    # activity =
+    owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
 
     class Meta:
         model = Project
-        fields = ('name', 'id', 'description', 'status', 'members', 'comments', 'visible_by', 'tasks', 'date_started', 'date_finished', 'created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = ('name', 'id', 'description', 'status', 'members', 'comments', 'visible_by', 'tasks', 'date_started',
+                  'date_finished', 'created_by', 'created_at', 'updated_by', 'updated_at', 'owner')
 
     def take_comments(self, project):
         comments_list = [x.comment for x in project.projectcomment_set.all()]
         return comments_list
 
+    def to_representation(self, obj):
+        data = super(ProjectSerializer, self).to_representation(obj)
+        data['task_count'] = Task.objects.all().filter(project=obj).count()
+        data['my_task_count'] = Task.objects.all().filter(project=obj)\
+            .filter(created_by=self.context['request'].user).count()
+
+        return data
 
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
