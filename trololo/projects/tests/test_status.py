@@ -22,21 +22,21 @@ class TestStatus(APITestCase):
                 response.data['results'],
                 [
                     {
-                        'name':u'inprogress', 'order_number': 1, 'url':  u'http://testserver/status/status/1/',
+                        'name':u'done', 'order_number': 2, 'url':  u'http://testserver/status/status/2/',
                         'project': u'http://testserver/projects/1/'
                     },
                     {
-                        'name':u'done', 'order_number': 2, 'url':  u'http://testserver/status/status/2/',
+                        'name': u'done', 'order_number': 2, 'url': u'http://testserver/status/status/4/',
+                        'project': u'http://testserver/projects/2/'
+                    },
+                    {
+                        'name':u'inprogress', 'order_number': 1, 'url':  u'http://testserver/status/status/1/',
                         'project': u'http://testserver/projects/1/'
                     },
                     {
                         'name':u'inprogress1', 'order_number': 1, 'url':  u'http://testserver/status/status/3/',
                         'project': u'http://testserver/projects/2/'
                     },
-                    {
-                        'name': u'done', 'order_number': 2, 'url': u'http://testserver/status/status/4/',
-                        'project': u'http://testserver/projects/2/'
-                    }
                 ]
             )
 
@@ -166,13 +166,13 @@ class TestStatusFilter(APITestCase):
             response.data['results'],
             [
                 {
-                        'name':u'inprogress', 'order_number': 1, 'url':  u'http://testserver/status/status/1/',
-                        'project': u'http://testserver/projects/1/'
-                    },
-                    {
-                        'name':u'done', 'order_number': 2, 'url':  u'http://testserver/status/status/2/',
-                        'project': u'http://testserver/projects/1/'
-                    }
+                    'name':u'done', 'order_number': 2, 'url':  u'http://testserver/status/status/2/',
+                    'project': u'http://testserver/projects/1/'
+                },
+                {
+                    'name':u'inprogress', 'order_number': 1, 'url':  u'http://testserver/status/status/1/',
+                    'project': u'http://testserver/projects/1/'
+                }
             ]
         )
 
@@ -216,21 +216,21 @@ class TestStatusFilter(APITestCase):
             response.data['results'],
             [
                 {
-                    'name':u'done', 'order_number': 2, 'url':  u'http://testserver/status/status/2/',
-                    'project': u'http://testserver/projects/1/'
-                },
-                {
                     'name':u'inprogress', 'order_number': 1, 'url':  u'http://testserver/status/status/1/',
                     'project': u'http://testserver/projects/1/'
                 },
                 {
-                    'name': u'done', 'order_number': 2, 'url': u'http://testserver/status/status/4/',
-                    'project': u'http://testserver/projects/2/'
+                    'name':u'done', 'order_number': 2, 'url':  u'http://testserver/status/status/2/',
+                    'project': u'http://testserver/projects/1/'
                 },
                 {
                     'name':u'inprogress1', 'order_number': 1, 'url':  u'http://testserver/status/status/3/',
                     'project': u'http://testserver/projects/2/'
                 },
+                {
+                    'name': u'done', 'order_number': 2, 'url': u'http://testserver/status/status/4/',
+                    'project': u'http://testserver/projects/2/'
+                }
             ]
         )
 
