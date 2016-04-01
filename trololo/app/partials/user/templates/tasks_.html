@@ -18,15 +18,6 @@
             </md-toolbar>
 
             <md-table-container>
-
-                        <th md-column md-order-by="name"><span>Task title</span></th>
-                        <th md-column md-order-by="type"><span>Type</span></th>
-                        <th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>
-                        <th md-column md-numeric md-order-by="deadline_date.value"><span>Date started</span></th>
-                        <th md-column md-numeric md-order-by="estimate_minutes.value"><span>Estimate date</span></th>
-                    </tr>
-                    </thead>
-
                 <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
                     <thead md-head md-order="query.order" md-on-reorder="logOrder">
                     <tr md-row>

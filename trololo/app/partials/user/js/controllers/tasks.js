@@ -9,6 +9,10 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$http', 'taskServi
         return ['breakthrough', 'in_progress', 'finished', 'undefined'];
     };
 
+    $scope.getTypes = function () {
+        return ['bug', 'feature', 'undefined'];
+    };
+
 
 
 //angular.module('userApp').controller('tasksCtrl', ['$scope', function($scope){

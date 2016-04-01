@@ -29,28 +29,30 @@
                     <tr md-row>
                         <th md-column md-order-by="name"><span>Task title</span></th>
                         <th md-column md-order-by="type"><span>Type</span></th>
+                        <th md-column md-order-by="status"><span>Status</span></th>
+
                         <th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>
+                        <th md-column md-numeric md-order-by=" " md-desc><span>Project</span></th>
+                        <th md-column md-numeric md-order-by=" " md-desc><span>Members</span></th>
                         <th md-column md-numeric md-order-by="deadline_date.value"><span>Deadline date</span></th>
                         <th md-column md-numeric md-order-by="estimate_minutes.value"><span>Estimate minutes</span></th>
                     </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row md-select="project" md-on-select="logItem" md-auto-select="options.autoSelect"
+                    <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
                         ng-disabled="task.status = 'undefined'"
                         ng-repeat="task in tasks.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>{{task.name}}</td>
+                        <td md-cell>{{task.type}}</td>
+                        <td md-cell>{{task.status}}</td>
                         <td md-cell>
-                            <div>{{project.task_count}} - all tasks</div>
-                            <div>{{project.my_task_count}} - my tasks</div>
-                        </td>
-                        <td md-cell>
-                            <div ng-repeat="member in project.members">
+                            <div ng-repeat="member in task.members">
                                 {{member.username}}({{member.email}})
                             </div>
                         </td>
-                        <td md-cell>{{project.owner.username}}({{project.owner.email}})</td>
-                        <td md-cell>{{project.date_started}}</td>
-                        <td md-cell>{{project.date_finished}}</td>
+                        <td md-cell>{{task.project.name}}</td>
+                        <td md-cell>{{task.deadline_date}}</td>
+                        <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>
                     <!--<tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect"-->
                         <!--ng-disabled="dessert.calories.value > 400"-->
