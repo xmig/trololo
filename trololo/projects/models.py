@@ -65,7 +65,7 @@ class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, Abstract
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new comment' + self.title + 'for project' + self.project
+        return 'create new comment' + self.title + 'for project' + self.project.name
 
     def get_activity_message_on_update(self, **kwargs):
         message = 'edit comment'
@@ -154,7 +154,7 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new comment' + self.title + 'for task' + self.task
+        return 'create new comment' + self.title + 'for task' + self.task.name
 
     def get_activity_message_on_update(self, **kwargs):
         message = 'edit comment'
