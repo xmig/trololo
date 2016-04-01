@@ -1,4 +1,19 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', function($scope){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$http', 'taskService', function($scope, $http, taskService){
+    taskService.get(function (data) {
+        $scope.tasks = {}
+        $scope.tasks.data = data.results;
+        $scope.tasks.count = $scope.tasks.data.length;
+    });
+
+    $scope.getStatuses = function () {
+        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+    };
+
+
+
+//angular.module('userApp').controller('tasksCtrl', ['$scope', function($scope){
+
+    /* Test table data */
     $scope.desserts = {
         "count": 9,
         "data": [

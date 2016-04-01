@@ -1,20 +1,23 @@
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="tasksCtrl">
-    <div flex layout="column" ng-controller="nutritionController">
+<div ng-controller="tasksCtrl">
+    <md-content ng-controller="nutritionController">
+
+
         <!--<md-card>-->
         <!--<div layout="row" layout-wrap class="checkboxes">-->
-        <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
+          <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
         <!--</div>-->
-        <!--</md-card>-->
+      <!--</md-card>-->
+
 
         <md-card>
 
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
-                    <span>Tasks</span>
+                    <span>Nutrition</span>
                     <div flex></div>
                     <md-button ng-click="loadStuff()">Async Operation</md-button>
                 </div>
@@ -27,27 +30,17 @@
             </md-toolbar>
 
             <md-table-container>
-
-                        <th md-column md-order-by="name"><span>Project name</span></th>
-                        <th md-column md-order-by="type"><span>Tasks</span></th>
-                        <th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>
-                        <th md-column md-numeric md-order-by="owner.username.value"><span>Owner</span></th>
-                        <th md-column md-numeric md-order-by="date_started.value"><span>Date started</span></th>
-                        <th md-column md-numeric md-order-by="date_finished.value"><span>Estimate date</span></th>
-                    </tr>
-                    </thead>
-
                 <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
                     <thead md-head md-order="query.order" md-on-reorder="logOrder">
                     <tr md-row>
-                        <th md-column md-order-by="name"><span>Task title</span></th>
+                        <th md-column md-order-by="name"><span>Dessert (100g serving)</span></th>
                         <th md-column md-order-by="type"><span>Type</span></th>
-                        <th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>
-                        <th md-column md-numeric md-order-by="fat.value"><span>Fat</span></th>
-                        <th md-column md-numeric md-order-by="carbs.value"><span>Carbs</span></th>
-                        <th md-column md-numeric md-order-by="protein.value"><span>Protein</span></th>
-                        <th md-column md-numeric md-order-by="sodium.value" hide-gt-xs show-gt-md><span>Sodium</span></th>
-                        <th md-column md-numeric md-order-by="calcium.value" hide-gt-xs show-gt-lg><span>Calcium</span></th>
+                        <th md-column md-numeric md-order-by="calories.value" md-desc><span>Calories</span></th>
+                        <th md-column md-numeric md-order-by="fat.value"><span>Fat (g)</span></th>
+                        <th md-column md-numeric md-order-by="carbs.value"><span>Carbs (g)</span></th>
+                        <th md-column md-numeric md-order-by="protein.value"><span>Protein (g)</span></th>
+                        <th md-column md-numeric md-order-by="sodium.value" hide-gt-xs show-gt-md><span>Sodium (mg)</span></th>
+                        <th md-column md-numeric md-order-by="calcium.value" hide-gt-xs show-gt-lg><span>Calcium (%)</span></th>
                         <th md-column md-numeric md-order-by="iron.value" hide-gt-xs show-gt-lg><span>Iron (%)</span></th>
                         <th md-column md-order-by="comment">
                             <md-icon>comments</md-icon>
