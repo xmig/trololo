@@ -145,12 +145,22 @@
                             </md-input-container>
                         </div>
                         <md-list>
-                            <md-list-item ng-repeat="topping in toppings">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.project}}</b></p>
+                            <md-list-item ng-repeat="activity in activities.data">
+                                <span class="status-ico" ng-class="activity.activity_model"></span>
+                                <p><b> {{ activity.message }} </b> - {{ activity.owner.username }}</p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
+
+
+
+                        <!--<md-list>-->
+                            <!--<md-list-item ng-repeat="topping in toppings">-->
+                                <!--<span class="status-ico" ng-class="topping.status"></span>-->
+                                <!--<p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.project}}</b></p>-->
+                                <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
+                            <!--</md-list-item>-->
+                        <!--</md-list>-->
                         <span></span>
                     </md-content>
                 </md-tab>

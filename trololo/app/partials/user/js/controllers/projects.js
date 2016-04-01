@@ -1,16 +1,20 @@
-angular.module('userApp').controller('projectsCtrl', ['$scope', '$http', 'projectService', function($scope, $http, projectService){
+angular.module('userApp').controller('projectsCtrl', ['$scope', '$http', 'projectService', 'activityListService',
+function($scope, $http, projectService, activityListService){
     projectService.get(function (data) {
         $scope.projects = {}
         $scope.projects.data = data.results;
         $scope.projects.count = $scope.projects.data.length;
     });
 
+    activityListService.get(function (data) {
+        $scope.activities = {}
+        $scope.activities.data = data.results;
+        $scope.activities.count = $scope.activities.data.length;
+    });
+
     $scope.getStatuses = function () {
         return ['breakthrough', 'in_progress', 'finished', 'undefined'];
     };
-
-
-
 
     /* Test table data */
     $scope.desserts = {
