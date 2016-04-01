@@ -10,7 +10,7 @@
                 </md-card-title-text>
                 <md-card-title-media>
                     <div class="md-media-md card-media">
-                        <img ng-src="/static/img/249px-Trololoman.jpg" class="md-card-image" alt="User avatar">
+                        <img ng-src="{{userPersonalData.photo}}" class="md-card-image" alt="User avatar">
                     </div>
                 </md-card-title-media>
             </md-card-title>
@@ -53,6 +53,11 @@
                             <label>Detailed Info</label>
                             <textarea name="detailed_info" id="user-detailed-info"
                                       ng-model="userAdditionData.detailed_info"></textarea>
+                        </md-input-container>
+                        <md-input-container class="checkboxdemoBasicUsage" ng-app="MyApp" >
+                            <md-checkbox ng-model="userAdditionData.use_gravatar" aria-label="Use gravatar">
+                                Use gravatar
+                            </md-checkbox>
                         </md-input-container>
                     </div>
                 </md-card-content>

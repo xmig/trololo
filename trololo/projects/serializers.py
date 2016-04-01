@@ -43,7 +43,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
                   'date_finished', 'created_by', 'created_at', 'updated_by', 'updated_at', 'owner')
 
     def take_comments(self, project):
-        comments_list = [x.comment for x in project.projectcomment_set.all()]
+        comments_list = [x.title for x in project.projectcomment_set.all()]
         return comments_list
 
     def to_representation(self, obj):
@@ -89,8 +89,10 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'id', 'description', 'status', 'members', 'type', 'label', 'project', 'comments', 'deadline_date', 'estimate_minutes', 'created_by', 'created_at', 'updated_by', 'updated_at')
 
     def take_comments(self, task):
-        comments_list = [x.comment for x in task.taskcomment_set.all()]
+        comments_list = [x.title for x in task.taskcomment_set.all()]
         return comments_list
+
+
 
 
 class ProjectCommentSerializer(serializers.ModelSerializer):

@@ -49,6 +49,8 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             data['photo'] = get_avatavr_url(
                 data['email'], default='http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif'
             )
+        if not data['photo']:
+            data['photo'] = 'http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif'
 
         return data
 
