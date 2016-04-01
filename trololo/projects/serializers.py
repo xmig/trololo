@@ -2,6 +2,14 @@ from rest_framework import serializers
 
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from django.contrib.auth import get_user_model
+from taggit.models import Tag
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+
+        fields = ['name']
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -33,22 +41,24 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='id'
     )
-    new_tags = serializers.ListField(
-        write_only=True,
-        required=False,
-        child=serializers.CharField()
-    )
-    tags = serializers.SerializerMethodField()
+    # new_tags = serializers.ListField(
+    #     write_only=True,
+    #     required=False,
+    #     child=serializers.CharField()
+    # )
+    tags = TagSerializer(many=True, read_only=False)
 
-    def get_tags(self, obj):
-        return list(obj.tags.names())
+    # tags = serializers.SerializerMethodField()
+    #
+    # def get_tags(self, obj):
+    #     return list(obj.tags.names())
 
     class Meta:
         model = Project
         fields = (
             'name', 'id', 'description', 'status', 'members', 'comments', 'visible_by',
             'tasks', 'date_started', 'date_finished', 'created_by', 'created_at',
-            'updated_by', 'updated_at', 'tags', 'new_tags'
+            'updated_by', 'updated_at', 'tags'
         )
 
     def take_comments(self, project):
@@ -57,20 +67,20 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     def save_tags(self, instance, tags):
         if tags is not None:
-            instance.tags.set(*tags)
+            instance.tags.set(*[tag.name for tag in tags])
             instance.save()
 
         return instance
 
     def create(self, validated_data):
-        tags = validated_data.pop('new_tags') if 'new_tags' in validated_data else None
+        tags = validated_data.pop('tags') if 'tags' in validated_data else None
 
         proj = super(ProjectSerializer, self).create(validated_data)
 
         return self.save_tags(self, proj, tags)
 
     def update(self, instance, validated_data):
-        tags = validated_data.pop('new_tags') if 'new_tags' in validated_data else None
+        tags = validated_data.pop('tags') if 'tags' in validated_data else None
 
         instance = super(ProjectSerializer, self).update(instance, validated_data)
 

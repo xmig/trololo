@@ -137,16 +137,16 @@
 },
 {
     "fields": {
-        "name": "\"123\", \"222\"",
-        "slug": "123-222"
+        "name": "cisco",
+        "slug": "cisco"
     },
     "model": "taggit.tag",
     "pk": 1
 },
 {
     "fields": {
-        "name": "[\"123\", \"222\"]",
-        "slug": "123-222_1"
+        "name": "chi software",
+        "slug": "chi-software"
     },
     "model": "taggit.tag",
     "pk": 3

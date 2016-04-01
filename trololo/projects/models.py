@@ -131,6 +131,8 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     deadline_date = models.DateTimeField(null=True, blank=True, default='')
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
 
+    tags = TaggableManager()
+    
     def get_activity_message_on_create(self, **kwargs):
         return 'create new task "' + self.name + '"'
 
