@@ -39,6 +39,7 @@ class ProjectFilter(FilterSet):
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
     description = CharFilter(name='description', lookup_type='icontains')
+    tag = CharFilter(name='tags__name')
 
     date_to_started = NumberFilter(name='date_started', lookup_expr='day')
     date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
@@ -48,7 +49,7 @@ class ProjectFilter(FilterSet):
         model = Project
         fields = [
             'name', 'status', 'description', 'id', 'date_to_started',
-            'date_to_started_gt', 'date_to_started_lt', 'user'
+            'date_to_started_gt', 'date_to_started_lt', 'user', 'tag'
         ]
 
 
@@ -60,7 +61,7 @@ class ProjectsList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,filters.OrderingFilter)
     filter_class = ProjectFilter
-    search_fields = ('name', 'description', 'id')
+    search_fields = ('name', 'description', 'id', 'tags__name')
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
 
@@ -116,12 +117,12 @@ class ProjectTaskFilter(FilterSet):
     status = CharFilter(name='status', lookup_expr='icontains')
     type = CharFilter(name='type', lookup_expr='icontains')
     label = CharFilter(name='label', lookup_expr='icontains')
+    tag = CharFilter(name='tags__name')
 
     class Meta:
         model = Task
         fields = [
-            'name', 'description',
-            'status', 'type', 'label'
+            'name', 'description', 'status', 'type', 'label', 'tags__name'
         ]
 
 
@@ -134,7 +135,7 @@ class TaskList(generics.ListCreateAPIView):
     queryset = Task.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = ProjectTaskFilter
-    search_fields = ('name', 'description', 'status', 'type', 'label')
+    search_fields = ('name', 'description', 'status', 'type', 'label', 'tags__name')
     ordering_fields = ('name', 'description', 'status', 'type', 'label')
 
     def post(self, request):
