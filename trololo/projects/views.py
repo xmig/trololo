@@ -57,12 +57,17 @@ class ProjectsList(generics.ListCreateAPIView):
     Get/Update data.
     """
     serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,filters.OrderingFilter)
     filter_class = ProjectFilter
     search_fields = ('name', 'description', 'id')
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
+    def get_queryset(self):
+        current_user = self.request.user
+        # if current_user.is_superuser:
+        #     return Project.objects.all()
+        # else:
+        return Project.objects.filter(Q(members=current_user) | Q(created_by=current_user))
 
     def post(self, request):
         serializer = ProjectSerializer(data=request.data, context={'request': request})
@@ -131,11 +136,17 @@ class TaskList(generics.ListCreateAPIView):
     Return filtering tasks
     """
     serializer_class = TaskSerializer
-    queryset = Task.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = ProjectTaskFilter
     search_fields = ('name', 'description', 'status', 'type', 'label')
     ordering_fields = ('name', 'description', 'status', 'type', 'label')
+
+    def get_queryset(self):
+        current_user = self.request.user
+        # if current_user.is_superuser:
+        #     return Task.objects.all()
+        # else:
+        return Task.objects.filter(Q(project__members=current_user) | Q(project__created_by=current_user))
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data, context={'request': request})

@@ -69,13 +69,6 @@ class TestProjectFilterList(APITestCase):
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None,
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-
                 }
             ]
         )
@@ -127,13 +120,13 @@ class TestProjectFilterList(APITestCase):
                     'date_finished': None, 'created_by': None,
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 },
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-
-                }
+                # {
+                #     'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
+                #     'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
+                #     'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
+                #     'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
+                #
+                # }
             ]
         )
 
@@ -151,12 +144,12 @@ class TestProjectFilterList(APITestCase):
         self.assertEqual(
             response.data['results'],
             [
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
+                # {
+                #     'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
+                #     'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
+                #     'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
+                #     'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
+                # },
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
@@ -182,26 +175,26 @@ class TestProjectFilterList(APITestCase):
         self.assertEqual(
             response.data['results'],
             [
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    "name": u"projectc", u"id": 3, "description": u"aaa", "status": u"undefined",
-                    "members": [], "visible_by": u"undefined", "tasks": [u'http://testserver/tasks/3/'],
-                    "comments": [], "date_started": u"2016-03-03T10:57:11Z", "date_finished": None, "created_by": None,
-                    "created_at": u"2016-03-02T10:56:37Z", "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                },
-                {
-                    "name": u"projectb", u"id": 2, "description": u"bbbb", "status": u"undefined",
-                    "members": [u'http://testserver/users/2/'], "visible_by": u"undefined",
-                    "tasks": [u'http://testserver/tasks/4/', u'http://testserver/tasks/5/'],
-                    "comments": [], "date_started": u"2016-03-02T10:56:37Z", "date_finished": None,
-                    "created_by": None, "created_at": "2016-03-02T10:56:37Z", "updated_by": None,
-                    "updated_at": u"2016-03-02T10:56:37Z"
-                },
+                # {
+                #     'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
+                #     'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
+                #     'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
+                #     'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
+                # },
+                # {
+                #     "name": u"projectc", u"id": 3, "description": u"aaa", "status": u"undefined",
+                #     "members": [], "visible_by": u"undefined", "tasks": [u'http://testserver/tasks/3/'],
+                #     "comments": [], "date_started": u"2016-03-03T10:57:11Z", "date_finished": None, "created_by": None,
+                #     "created_at": u"2016-03-02T10:56:37Z", "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                # },
+                # {
+                #     "name": u"projectb", u"id": 2, "description": u"bbbb", "status": u"undefined",
+                #     "members": [u'http://testserver/users/2/'], "visible_by": u"undefined",
+                #     "tasks": [u'http://testserver/tasks/4/', u'http://testserver/tasks/5/'],
+                #     "comments": [], "date_started": u"2016-03-02T10:56:37Z", "date_finished": None,
+                #     "created_by": None, "created_at": "2016-03-02T10:56:37Z", "updated_by": None,
+                #     "updated_at": u"2016-03-02T10:56:37Z"
+                # },
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
@@ -256,14 +249,14 @@ class TestProjectTaskFilter(APITestCase):
         self.assertEqual(
             response.data['results'],
             [
-                {
-                    "name": u"task5", "id": 5, "description": u"", "status": u"undefined",
-                    "members": [], "type": u"undefined", "label": u"undefined",
-                    "project": u"http://testserver/projects/2/",
-                    "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
-                    "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                }
+                # {
+                #     "name": u"task5", "id": 5, "description": u"", "status": u"undefined",
+                #     "members": [], "type": u"undefined", "label": u"undefined",
+                #     "project": u"http://testserver/projects/2/",
+                #     "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
+                #     "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
+                #     "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                # }
             ]
         )
 
@@ -281,30 +274,30 @@ class TestProjectTaskFilter(APITestCase):
         self.assertEqual(
             response.data['results'],
             [
-                {
-                    "name": u"task5", "id": 5, "description": u"", "status": u"undefined",
-                    "members": [], "type": u"undefined", "label": u"undefined",
-                    "project": u"http://testserver/projects/2/",
-                    "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
-                    "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                },
-                {
-                    "name": u"task4", "id": 4, "description": u"", "status": u"undefined",
-                    "members": [], "type": u"undefined", "label": u"undefined",
-                    "project": u"http://testserver/projects/2/",
-                    "comments": [], "deadline_date": u"2016-03-23T11:07:17Z", "estimate_minutes": None,
-                    "created_by": None, "created_at": u"2016-03-18T11:07:19.325000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                },
-                {
-                    "name": u"task3", "id": 3, "description": u"", "status": u"undefined",
-                    "members": [], "type": u"undefined", "label": u"undefined",
-                    "project": u"http://testserver/projects/3/",
-                    "comments": [], "deadline_date": u"2016-03-07T10:59:12Z", "estimate_minutes": None,
-                    "created_by": None, "created_at": u"2016-03-18T10:59:14.494000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                },
+                # {
+                #     "name": u"task5", "id": 5, "description": u"", "status": u"undefined",
+                #     "members": [], "type": u"undefined", "label": u"undefined",
+                #     "project": u"http://testserver/projects/2/",
+                #     "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
+                #     "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
+                #     "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                # },
+                # {
+                #     "name": u"task4", "id": 4, "description": u"", "status": u"undefined",
+                #     "members": [], "type": u"undefined", "label": u"undefined",
+                #     "project": u"http://testserver/projects/2/",
+                #     "comments": [], "deadline_date": u"2016-03-23T11:07:17Z", "estimate_minutes": None,
+                #     "created_by": None, "created_at": u"2016-03-18T11:07:19.325000Z",
+                #     "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                # },
+                # {
+                #     "name": u"task3", "id": 3, "description": u"", "status": u"undefined",
+                #     "members": [], "type": u"undefined", "label": u"undefined",
+                #     "project": u"http://testserver/projects/3/",
+                #     "comments": [], "deadline_date": u"2016-03-07T10:59:12Z", "estimate_minutes": None,
+                #     "created_by": None, "created_at": u"2016-03-18T10:59:14.494000Z",
+                #     "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                # },
                 {
                     "name": u"task2", "id": 2, "description": u"", "status": u"undefined",
                     "members": [], "type": u"undefined", "label": u"undefined",
