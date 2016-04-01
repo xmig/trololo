@@ -238,7 +238,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/1/",
                     "comments": [], "deadline_date": u"2016-03-06T10:57:47Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:57:49.589000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 }
             ]
         )
@@ -263,7 +263,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 }
             ]
         )
@@ -288,7 +288,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task4", "id": 4, "description": u"", "status": u"undefined",
@@ -296,7 +296,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-23T11:07:17Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:07:19.325000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task3", "id": 3, "description": u"", "status": u"undefined",
@@ -304,7 +304,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/3/",
                     "comments": [], "deadline_date": u"2016-03-07T10:59:12Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:59:14.494000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task2", "id": 2, "description": u"", "status": u"undefined",
@@ -312,7 +312,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/1/",
                     "comments": [], "deadline_date": u"2016-03-07T10:58:29Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:58:31.790000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task1", "id": 1, "description": u"", "status": u"undefined",
@@ -320,7 +320,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/1/",
                     "comments": [], "deadline_date": u"2016-03-06T10:57:47Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:57:49.589000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 }
             ]
         )

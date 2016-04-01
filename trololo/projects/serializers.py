@@ -1,14 +1,14 @@
 from rest_framework import serializers
-
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from django.contrib.auth import get_user_model
 from taggit.models import Tag
 
 
 class TagSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=100)
+
     class Meta:
         model = Tag
-
         fields = ['name']
 
 
@@ -41,17 +41,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='id'
     )
-    # new_tags = serializers.ListField(
-    #     write_only=True,
-    #     required=False,
-    #     child=serializers.CharField()
-    # )
-    tags = TagSerializer(many=True, read_only=False)
 
-    # tags = serializers.SerializerMethodField()
-    #
-    # def get_tags(self, obj):
-    #     return list(obj.tags.names())
+    tags = TagSerializer(many=True, read_only=False)
 
     class Meta:
         model = Project
@@ -67,14 +58,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     def save_tags(self, instance, tags):
         if tags is not None:
-            instance.tags.set(*[tag.name for tag in tags])
+            instance.tags.set(*[tag['name'] for tag in tags])
             instance.save()
 
         return instance
 
     def create(self, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
-
         proj = super(ProjectSerializer, self).create(validated_data)
 
         return self.save_tags(self, proj, tags)
@@ -85,6 +75,12 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         instance = super(ProjectSerializer, self).update(instance, validated_data)
 
         return self.save_tags(instance, tags)
+
+    def to_representation(self, instance):
+        data = super(ProjectSerializer, self).to_representation(instance)
+
+        data['tags'] = sorted(data['tags'])
+        return data
 
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
@@ -115,14 +111,46 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='id'
     )
+    tags = TagSerializer(many=True, read_only=False)
 
     class Meta:
         model = Task
-        fields = ('name', 'id', 'description', 'status', 'members', 'type', 'label', 'project', 'comments', 'deadline_date', 'estimate_minutes', 'created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = (
+            'name', 'id', 'description', 'status', 'members', 'type', 'label',
+            'project', 'comments', 'deadline_date', 'estimate_minutes', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'tags'
+        )
 
     def take_comments(self, task):
         comments_list = [x.title for x in task.taskcomment_set.all()]
         return comments_list
+
+    def save_tags(self, instance, tags):
+        if tags is not None:
+            instance.tags.set(*[tag['name'] for tag in tags])
+            instance.save()
+
+        return instance
+
+    def create(self, validated_data):
+        tags = validated_data.pop('tags') if 'tags' in validated_data else None
+
+        proj = super(TaskSerializer, self).create(validated_data)
+
+        return self.save_tags(self, proj, tags)
+
+    def update(self, instance, validated_data):
+        tags = validated_data.pop('tags') if 'tags' in validated_data else None
+
+        instance = super(TaskSerializer, self).update(instance, validated_data)
+
+        return self.save_tags(instance, tags)
+
+    def to_representation(self, instance):
+        data = super(TaskSerializer, self).to_representation(instance)
+
+        data['tags'] = sorted(data['tags'])
+        return data
 
 
 class ProjectCommentSerializer(serializers.ModelSerializer):
