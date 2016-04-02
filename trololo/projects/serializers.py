@@ -23,6 +23,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     #     lookup_field='id'
     # )
     members = OnlyUserInfoSerializer(many=True, read_only=True)
+
     created_by = serializers.HyperlinkedRelatedField(
         view_name='users:single_user',
         queryset=get_user_model().objects.all(),
@@ -64,13 +65,17 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
-    members = serializers.HyperlinkedRelatedField(
-        many=True,
-        view_name='users:single_user',
-        queryset=get_user_model().objects.all(),
-        required=False,
-        lookup_field='id'
-    )
+
+    # members = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     view_name='users:single_user',
+    #     queryset=get_user_model().objects.all(),
+    #     required=False,
+    #     lookup_field='id'
+    # )
+
+    members = OnlyUserInfoSerializer(many=True, read_only=True)
+
     created_by = serializers.HyperlinkedRelatedField(
         view_name='users:single_user',
         queryset=get_user_model().objects.all(),
