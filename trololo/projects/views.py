@@ -12,6 +12,7 @@ from django.http import Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework import exceptions
 
 from activity.serializers import ActivitySerializer
 from activity.filters import ActivityFilter
@@ -129,7 +130,6 @@ class ProjectTaskFilter(FilterSet):
         fields = [
             'name', 'description', 'status', 'type', 'label', 'tags__name'
         ]
-
 
 
 class TaskList(generics.ListCreateAPIView):
@@ -255,3 +255,97 @@ class ProjectActivity(generics.ListAPIView):
             response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return response
+
+
+class ProjectDetailTag(generics.GenericAPIView):
+    def get_project(self, pk):
+        try:
+            pr = Project.objects.get(pk=pk)
+        except Project.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Project with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+
+        if pr.created_by != user and user not in pr.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for project with id {}".format(pk)
+            )
+
+        return pr
+
+    def put(self, request, pk, tag_name):
+        """
+        Add single tag by name to the given project.
+        No error will be raised in case given tag is already added.
+        """
+        pr = self.get_project(int(pk))
+
+        if tag_name not in pr.tags.names():
+            pr.tags.add(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully added to project {}.".format(tag_name, pr.name)},
+            status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk, tag_name):
+        """
+        Remove single tag by name from the given project.
+        No error will be raised in case given tag is not added to the project.
+        """
+        pr = self.get_project(int(pk))
+
+        pr.tags.remove(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully removed from project {}.".format(tag_name, pr.name)},
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+
+class TaskDetailTag(generics.GenericAPIView):
+    def get_project(self, pk):
+        try:
+            task = Task.objects.select_related("project").get(pk=pk)
+        except Task.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Task with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+
+        if task.project.created_by != user and user not in task.project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for task with id {}".format(pk)
+            )
+
+        return task
+
+    def put(self, request, pk, tag_name):
+        """
+        Add single tag by name to the given task.
+        No error will be raised in case given tag is already added to the task.
+        """
+        task = self.get_project(int(pk))
+
+        if tag_name not in task.tags.names():
+            task.tags.add(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully added to task {}.".format(tag_name, task.name)},
+            status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk, tag_name):
+        """
+        Remove single tag by it's from the given task.
+        No error will be raised in case given tag is not added to the task.
+        """
+        task = self.get_project(int(pk))
+
+        task.tags.remove(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully removed from task {}.".format(tag_name, task.name)},
+            status=status.HTTP_204_NO_CONTENT
+        )
