@@ -92,10 +92,11 @@
                                 </md-select>
                             </md-input-container>
                         </div>
+
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="topping in toppings" class="secondary-button-padding" ng-click="action($event)">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ topping.user }}</a> {{topping.action}} for <b>{{topping.task}}</b></p>
+                            <md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">
+                                <span class="status-ico" ng-class="my_tsk.status"></span>
+                                <p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>
                                 <!--<md-button class="md-secondary">View</md-button>-->
                             </md-list-item>
                         </md-list>
@@ -119,10 +120,11 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        <md-list>
-                            <md-list-item ng-repeat="topping in toppings">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.task}}</b></p>
+
+                        <md-list class="project-tabs-list">
+                            <md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">
+                                <span class="status-ico" ng-class="tsk.status"></span>
+                                <p><b> {{ tsk.name }} </b> - {{ tsk.user }} {{tsk.action}} for <b>{{tsk.task}}</b></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -146,10 +148,11 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        <md-list>
-                            <md-list-item ng-repeat="topping in toppings">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.task}}</b></p>
+
+                        <md-list class="project-tabs-list">
+                            <md-list-item ng-repeat="act in t_activity">
+                                <span class="status-ico" ng-class="act.status"></span>
+                                <p><b> {{ act.name }} </b> - {{ act.user }} {{act.action}} for <b>{{act.task}}</b></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -173,10 +176,10 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        <md-list>
-                            <md-list-item ng-repeat="topping in toppings">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.task}}</b></p>
+                        <md-list class="project-tabs-list">
+                            <md-list-item ng-repeat="my_notif in my_notifications">
+                                <span class="status-ico" ng-class="my_notif.status"></span>
+                                <p><b> {{ my_notif.name }} </b> - {{ my_notif.user }} {{my_notif.action}} for <b>{{my_notif.task}}</b></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
