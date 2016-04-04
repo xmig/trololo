@@ -7,7 +7,6 @@ urlpatterns = [
     url(r'^$', views.ProjectsList.as_view(), name='projects'),
     url(r'^(?P<pk>[0-9]+)/$', views.ProjectDetail.as_view(), name='projects_detail'),
 
-
     # <type>
     # a - all activity
     # p - project activity only

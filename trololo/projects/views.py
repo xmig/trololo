@@ -39,6 +39,7 @@ class ProjectFilter(FilterSet):
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
     description = CharFilter(name='description', lookup_type='icontains')
+    tag = CharFilter(name='tags__name')
 
     date_to_started = NumberFilter(name='date_started', lookup_expr='day')
     date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
@@ -48,7 +49,7 @@ class ProjectFilter(FilterSet):
         model = Project
         fields = [
             'name', 'status', 'description', 'id', 'date_to_started',
-            'date_to_started_gt', 'date_to_started_lt', 'user'
+            'date_to_started_gt', 'date_to_started_lt', 'user', 'tag'
         ]
 
 
@@ -59,15 +60,15 @@ class ProjectsList(generics.ListCreateAPIView):
     serializer_class = ProjectSerializer
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,filters.OrderingFilter)
     filter_class = ProjectFilter
-    search_fields = ('name', 'description', 'id')
+    search_fields = ('name', 'description', 'id', 'tags__name')
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
     def get_queryset(self):
         current_user = self.request.user
-        # if current_user.is_superuser:
-        #     return Project.objects.all()
-        # else:
-        return Project.objects.filter(Q(members=current_user) | Q(created_by=current_user))
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
+        return Project.objects.filter(id__in=proj)
 
     def post(self, request):
         serializer = ProjectSerializer(data=request.data, context={'request': request})
@@ -121,12 +122,12 @@ class ProjectTaskFilter(FilterSet):
     status = CharFilter(name='status', lookup_expr='icontains')
     type = CharFilter(name='type', lookup_expr='icontains')
     label = CharFilter(name='label', lookup_expr='icontains')
+    tag = CharFilter(name='tags__name')
 
     class Meta:
         model = Task
         fields = [
-            'name', 'description',
-            'status', 'type', 'label'
+            'name', 'description', 'status', 'type', 'label', 'tags__name'
         ]
 
 
@@ -138,15 +139,15 @@ class TaskList(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = ProjectTaskFilter
-    search_fields = ('name', 'description', 'status', 'type', 'label')
+    search_fields = ('name', 'description', 'status', 'type', 'label', 'tags__name')
     ordering_fields = ('name', 'description', 'status', 'type', 'label')
 
     def get_queryset(self):
         current_user = self.request.user
-        # if current_user.is_superuser:
-        #     return Task.objects.all()
-        # else:
-        return Task.objects.filter(Q(project__members=current_user) | Q(project__created_by=current_user))
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
+        return Task.objects.filter(project__id__in=proj)
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data, context={'request': request})

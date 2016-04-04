@@ -8,3 +8,5 @@ django-cuser==2014.9.28
 sqlparse
 mock
 django-filter
+django-taggit
+django-suit==0.2.18
