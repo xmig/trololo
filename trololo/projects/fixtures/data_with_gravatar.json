@@ -705,6 +705,7 @@
             15,
             18
         ],
+        "created_by": 1,
         "date_started": "2016-03-02T10:56:37Z",
         "created_at": "2016-03-02T10:56:37Z",
         "updated_at": "2016-03-02T10:56:37Z",
@@ -727,6 +728,7 @@
             11,
             14
         ],
+        "created_by": 2,
         "date_started": "2016-03-03T10:57:11Z",
         "created_at": "2016-03-02T10:56:37Z",
         "updated_at": "2016-03-02T10:56:37Z",
@@ -741,7 +743,9 @@
         "name": "projecta",
         "date_finished": null,
         "visible_by": "undefined",
-        "members": [],
+        "members": [
+            2
+        ],
         "activity": [
             12,
             13

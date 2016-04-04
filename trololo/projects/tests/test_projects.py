@@ -25,7 +25,8 @@ class TestProjectFilter(APITestCase):
                 "name": u"project_01", u"id": 1, "description": u"some_project_description",
                 "status": u"breakthrough","members": [u'http://testserver/users/1/'],
                 "visible_by": u"particular_user",
-                "tasks": [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'], "comments": [],"date_started": "2016-01-01T14:32:00Z",
+                "tasks": [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'], "comments": [],
+                "date_started": "2016-01-01T14:32:00Z",
                 "date_finished": "2016-03-03T14:02:00Z", "created_by": u'http://testserver/users/1/',
                 "created_at": u"2016-03-24T10:36:51.551000Z", "updated_by": u'http://testserver/users/1/',
                 "updated_at": u"2016-03-24T11:03:40.020000Z", 'tags': []
@@ -69,13 +70,6 @@ class TestProjectFilterList(APITestCase):
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z', 'tags': []
-
                 }
             ]
         )
@@ -126,13 +120,6 @@ class TestProjectFilterList(APITestCase):
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
                     'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z', 'tags': [],
-
                 }
             ]
         )
@@ -151,12 +138,6 @@ class TestProjectFilterList(APITestCase):
         self.assertEqual(
             response.data['results'],
             [
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z', 'tags': [],
-                },
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
@@ -183,25 +164,13 @@ class TestProjectFilterList(APITestCase):
             response.data['results'],
             [
                 {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z', 'tags': [],
-                },
-                {
-                    "name": u"projectc", u"id": 3, "description": u"aaa", "status": u"undefined",
-                    "members": [], "visible_by": u"undefined", "tasks": [u'http://testserver/tasks/3/'],
-                    "comments": [], "date_started": u"2016-03-03T10:57:11Z", "date_finished": None, "created_by": None,
-                    "created_at": u"2016-03-02T10:56:37Z", "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z",
-                    'tags': [],
-                },
-                {
                     "name": u"projectb", u"id": 2, "description": u"bbbb", "status": u"undefined",
                     "members": [u'http://testserver/users/2/'], "visible_by": u"undefined",
                     "tasks": [u'http://testserver/tasks/4/', u'http://testserver/tasks/5/'],
                     "comments": [], "date_started": u"2016-03-02T10:56:37Z", "date_finished": None,
-                    "created_by": None, "created_at": "2016-03-02T10:56:37Z", "updated_by": None,
-                    "updated_at": u"2016-03-02T10:56:37Z", 'tags': [],
+                    "created_by": u"http://testserver/users/1/", "created_at": "2016-03-02T10:56:37Z",
+                    "updated_by": None,
+                    "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
@@ -296,14 +265,6 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-23T11:07:17Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:07:19.325000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
-                },
-                {
-                    "name": u"task3", "id": 3, "description": u"", "status": u"undefined",
-                    "members": [], "type": u"undefined", "label": u"undefined",
-                    "project": u"http://testserver/projects/3/",
-                    "comments": [], "deadline_date": u"2016-03-07T10:59:12Z", "estimate_minutes": None,
-                    "created_by": None, "created_at": u"2016-03-18T10:59:14.494000Z",
                     "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
