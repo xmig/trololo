@@ -4,7 +4,7 @@ from projects.views import ProjectsList, TaskList
 from rest_framework.reverse import reverse
 from rest_framework import status
 from projects.views import ProjectDetail, TaskDetail
-
+from projects.models import Project, Task
 
 class TestProjectFilter(APITestCase):
     fixtures = ['all_data.json']
@@ -302,18 +302,51 @@ class TestProjectDetailGet(APITestCase):
         response = ProjectDetail.as_view()(request, '1')
 
         ETALON = {
-                "status": u'breakthrough', "name": u'project_01', "date_finished": u"2016-03-03T14:02:00Z", "created_at": u'2016-03-24T10:36:51.551000Z',
-                "description": u'some_project_description', "visible_by": u'particular_user', "updated_at": u'2016-03-24T11:03:40.020000Z',
-                "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/1/'],
-                "activity": [1, 4],
-                "date_started": u"2016-01-01T14:32:00Z",
-                "updated_by": u'http://testserver/users/1/', "id": 1
-            }
+            "status": u'breakthrough', "name": u'project_01', "date_finished": u"2016-03-03T14:02:00Z", "created_at": u'2016-03-24T10:36:51.551000Z',
+            "description": u'some_project_description', "visible_by": u'particular_user', "updated_at": u'2016-03-24T11:03:40.020000Z',
+            "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/1/'],
+            "date_started": u"2016-01-01T14:32:00Z",
+            "updated_by": u'http://testserver/users/1/', "id": 1
+        }
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         for k in ETALON:
-            if k in response.data:
-                self.assertEqual(response.data[k], ETALON[k])
+            self.assertEqual(response.data[k], ETALON[k])
 
+    def test_get_project_false(self):
+        url = reverse('projects:projects_detail', kwargs={'pk': '10'})
+        user = get_user_model().objects.get(username='admin')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = ProjectDetail.as_view()(request, '10')
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(
+            response.data,
+            {"detail": "Project with id 10 does not exist."}
+        )
+
+    def test_get_project_false_name(self):
+        url = reverse('projects:projects_detail', kwargs={'pk': '2'})
+        user = get_user_model().objects.get(username='test_user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = ProjectDetail.as_view()(request, '2')
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            response.data,
+            {"detail": "You don't have access permissions for project with id 2"}
+        )
+
+        pr = Project.objects.get(pk=2)
+        self.assertEqual(set(pr.tags.names()), set())
 
 
 class TestProjectUpdate(APITestCase):
@@ -555,7 +588,6 @@ class TestProjectDelete(APITestCase):
                 self.assertEqual(response.data[k], ETALON[k])
 
 
-
 class TestTaskDetailGet(APITestCase):
     fixtures = ['all_data.json']
 
@@ -580,6 +612,39 @@ class TestTaskDetailGet(APITestCase):
             if k in response.data:
                 self.assertEqual(response.data[k], ETALON[k])
 
+    def test_get_task_false(self):
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '10'})
+        user = get_user_model().objects.get(username='admin')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskDetail.as_view()(request, '10')
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(
+            response.data,
+            {"detail": "Task with id 10 does not exist."}
+        )
+
+    def test_get_task_false_name(self):
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '2'})
+        user = get_user_model().objects.get(username='test_user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskDetail.as_view()(request, '2')
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            response.data,
+            {"detail": "You don't have access permissions for task with id 2"}
+        )
+        task1 = Task.objects.get(id=2)
+        self.assertEqual(set(task1.tags.names()), set())
 
 
 class TestTaskUpdate(APITestCase):
