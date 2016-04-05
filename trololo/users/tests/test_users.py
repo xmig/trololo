@@ -84,9 +84,10 @@ class TestUserProfileUpdate(APITestCase):
         user = get_user_model().objects.get(username='user')
 
         factory = APIRequestFactory()
-        image = Image.new('RGB', (100, 100))
+        image = Image.new('RGB', (150, 120))
         tmp_file = tempfile.NamedTemporaryFile(prefix='logo', suffix='.jpg')
         image.save(tmp_file)
+        img_name = os.path.basename(tmp_file.name)
         tmp_file.seek(0)
         request = factory.put(url, {'photo': tmp_file, 'department': 'python'}, format='multipart')
 
@@ -95,8 +96,12 @@ class TestUserProfileUpdate(APITestCase):
 
         self.assertTrue(user.department == 'python')
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
-        self.assertTrue(user.photo.name.startswith('user_{0}/logo'.format(user.id)))
+        self.assertTrue(user.photo.name.startswith('user_{0}/{1}'.format(user.id, img_name)))
 
+        user = get_user_model().objects.get(username='user')
+        # check image resize
+        self.assertEqual(user.photo.width, 112)
+        self.assertEqual(user.photo.height, int(round((112.0 / 150) * 120)))
 
     def test_user_first_name_update(self):
         url = reverse('users:user_profile')
