@@ -78,7 +78,7 @@ class ProjectsList(generics.ListCreateAPIView):
             serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -91,9 +91,17 @@ class ProjectDetail(generics.GenericAPIView):
 
     def get_object(self, pk):
         try:
-            return Project.objects.get(pk=pk)
+            project = Project.objects.get(pk=pk)
         except Project.DoesNotExist:
-            raise Http404
+            raise exceptions.NotFound(
+                detail="Project with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+        if project.created_by != user and user not in project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for project with id {}".format(pk)
+            )
+        return project
 
     def get(self, request, pk):
         project = self.get_object(pk)
@@ -106,7 +114,7 @@ class ProjectDetail(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         project = self.get_object(pk)
@@ -156,7 +164,7 @@ class TaskList(generics.ListCreateAPIView):
             serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TaskDetail(generics.GenericAPIView):
@@ -166,12 +174,21 @@ class TaskDetail(generics.GenericAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
-
     def get_object(self, pk):
         try:
-            return Task.objects.get(pk=pk)
+            task = Task.objects.select_related("project").get(pk=pk)
         except Task.DoesNotExist:
-            raise Http404
+            raise exceptions.NotFound(
+                detail="Task with id {} does not exist.".format(pk)
+            )
+
+        user = self.request.user
+
+        if task.project.created_by != user and user not in task.project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for task with id {}".format(pk)
+            )
+        return task
 
     def get(self, request, pk):
         task = self.get_object(pk)
@@ -184,7 +201,7 @@ class TaskDetail(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         task = self.get_object(pk)
