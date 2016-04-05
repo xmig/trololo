@@ -5,6 +5,7 @@ var isDlgOpen;
 angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', function ($scope, $http, personalInfoService, $mdToast) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
+    $scope.myFile = {}
 
     personalInfoService.get(function (data) {
         $scope.userAdditionData = {
@@ -69,4 +70,31 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
         });
     };
 
+    $scope.UserPhotoSubmit = function () {
+        var fd = new FormData();
+        fd.append('photo', $scope.myFile);
+        fd.append('id', $scope.userPersonalData["id"]);
+        personalInfoService.update_photo(fd, function(response) {
+            $scope.userPersonalData = response;
+            $scope.showPersonalToastSave();
+        });
+    };
+
+}]);
+
+angular.module('userApp').directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                    scope.UserPhotoSubmit();
+                });
+            });
+        }
+    };
 }]);
