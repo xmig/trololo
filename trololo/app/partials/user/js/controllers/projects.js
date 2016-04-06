@@ -12,6 +12,12 @@ function($scope, $http, projectService, activityListService){
         $scope.activities.count = $scope.activities.data.length;
     });
 
+    activityListService.get({'for_cu':1}, function (data) {
+        $scope.notifications = {}
+        $scope.notifications.data = data.results;
+        $scope.notifications.count = $scope.notifications.data.length;
+    });
+
     $scope.getStatuses = function () {
         return ['breakthrough', 'in_progress', 'finished', 'undefined'];
     };
