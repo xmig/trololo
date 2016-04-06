@@ -1,4 +1,4 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$http', 'taskService', '$mdDialog', '$mdMedia', function($scope, $http, taskService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$http', 'taskService', '$mdDialog', '$mdMedia', function($scope, $http, taskService, $mdDialog, $mdMedia){
     taskService.get(function (data) {
         $scope.tasks = {}
         $scope.tasks.data = data.results;

@@ -7,4 +7,3 @@ angular.module('userApp').config(['$mdThemingProvider', function ($mdThemingProv
       .primaryPalette('blue');
 }]);
 
-
