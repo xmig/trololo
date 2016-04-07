@@ -1,13 +1,14 @@
 from serializers import StatusSerializer
 from rest_framework import status
-from projects.models import Status
+from projects.models import Status, Project
 from rest_framework import generics
 from django.http import Http404
 from rest_framework.response import Response
 
 from rest_framework import filters
 from django_filters import FilterSet, NumberFilter, CharFilter
-
+from django.db.models import Q
+from rest_framework import exceptions
 
 class StatusFilter(FilterSet):
     """
@@ -22,18 +23,57 @@ class StatusFilter(FilterSet):
         model = Status
         fields = ['name', 'number', 'project']
 
-
+from pprint import pprint
 class StatusView(generics.ListCreateAPIView):
     """
     Method get returns a list of statuses
     Method post creates new status
     """
-    queryset = Status.objects.all()
     serializer_class = StatusSerializer
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = StatusFilter
     search_fields = ('name', )
     ordering_fields = ('name', 'order_number', 'project')
+
+    def get_queryset(self):
+        user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+        return Status.objects.filter(project__id__in=proj)
+
+    def post(self, request):
+        serializer = StatusSerializer(data=request.data, context={'request': request})
+
+        user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+
+        if serializer.is_valid():
+            project = serializer.validated_data['project'].id
+            order_number = serializer.validated_data['order_number']
+
+            stat = Status.objects.filter(
+                project=serializer.validated_data['project'],
+                order_number__gte=order_number
+            ).order_by('order_number').all()
+
+            if project not in proj:
+                return Response(
+                    {'detail':"You don't have access permissions for project with id {}".format(project)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            elif stat:
+                if stat[0].order_number == order_number:
+                    for item in stat:
+                        item.order_number += 1
+                        item.save()
+
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class StatusDetail(generics.GenericAPIView):
@@ -42,9 +82,19 @@ class StatusDetail(generics.GenericAPIView):
 
     def get_object(self, pk):
         try:
-            return Status.objects.get(pk=pk)
+            status = Status.objects.select_related("project").get(pk=pk)
         except Status.DoesNotExist:
-            raise Http404
+            raise exceptions.NotFound(
+                detail="Status with id {} does not exist.".format(pk)
+            )
+
+        user = self.request.user
+
+        if status.project.created_by != user and user not in status.project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for status with id {}".format(pk)
+            )
+        return status
 
     def get(self, request, pk):
         """
@@ -60,8 +110,31 @@ class StatusDetail(generics.GenericAPIView):
         """
         stat = self.get_object(pk)
         serializer = StatusSerializer(stat, data=request.data, context={'request': request})
+        user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
         if serializer.is_valid():
+            project = serializer.validated_data['project'].id
+            order_number = serializer.validated_data['order_number']
+
+            stat = Status.objects.filter(
+                project=serializer.validated_data['project'],
+                order_number__gte=order_number
+            ).order_by('order_number').all()
+
+            if project not in proj:
+                return Response(
+                    {'detail':"You don't have access permissions for project with id {}".format(project)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            elif stat:
+                if stat[0].order_number == order_number:
+                    for item in stat:
+                        item.order_number += 1
+                        item.save()
             serializer.save()
+
             return Response(serializer.data)
         return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

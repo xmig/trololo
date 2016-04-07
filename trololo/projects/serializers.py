@@ -139,7 +139,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
         proj = super(TaskSerializer, self).create(validated_data)
 
-        return self.save_tags(self, proj, tags)
+        return self.save_tags(proj, tags)
 
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
