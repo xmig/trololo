@@ -62,7 +62,7 @@ class UserProfile(GenericAPIView):
             s.save()
 
             return Response(s.data, status=status.HTTP_201_CREATED)
-        return Response({"errors": s.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": s.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UsersFilter(FilterSet):

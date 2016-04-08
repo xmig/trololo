@@ -5,9 +5,19 @@
 .logo:hover {
     text-decoration: none;
 }
+
 .card-media {
-  background-color: #999999;
+  background-color: #FFFFFF;
 }
+
+#file-input {
+    display: none;
+}
+
+.md-card-image {
+    cursor: pointer;
+}
+
 /* Tabs */
 .status-ico {
     height: 12px;

@@ -45,7 +45,6 @@ class TestUserProfileGet(APITestCase):
         tmp_file = tempfile.NamedTemporaryFile(prefix='logo', suffix='.jpg')
         image.save(tmp_file)
         tmp_file.seek(0)
-        file_name = os.path.basename(tmp_file.name)
 
         request = factory.put(url, {'photo': tmp_file, 'department': 'FBI'}, format='multipart')
 
@@ -66,7 +65,7 @@ class TestUserProfileGet(APITestCase):
 
         ETALON = {
             'username': u'user', 'first_name': u'', 'last_name': u'', 'specialization': u'',
-            'photo': 'http://testserver/media/user_{0}/{1}'.format(user.id, file_name), 'is_active': True,
+            'photo': 'http://testserver/media/user_{0}/{1}'.format(user.id, 'logo.jpg'), 'is_active': True,
             'email': u'maxellort@gmail.com', 'is_superuser': False, 'is_staff': False,
             'last_login': u'2016-03-09T13:10:20.662000Z', 'department': u'FBI', 'detailed_info': u'',
             u'id': 1, 'date_joined': u'2016-03-09T12:46:26.556000Z', 'projects': [], 'use_gravatar': False,
@@ -84,7 +83,7 @@ class TestUserProfileUpdate(APITestCase):
         user = get_user_model().objects.get(username='user')
 
         factory = APIRequestFactory()
-        image = Image.new('RGB', (100, 100))
+        image = Image.new('RGB', (150, 120))
         tmp_file = tempfile.NamedTemporaryFile(prefix='logo', suffix='.jpg')
         image.save(tmp_file)
         tmp_file.seek(0)
@@ -95,8 +94,12 @@ class TestUserProfileUpdate(APITestCase):
 
         self.assertTrue(user.department == 'python')
         self.assertEqual(status.HTTP_201_CREATED, response.status_code)
-        self.assertTrue(user.photo.name.startswith('user_{0}/logo'.format(user.id)))
+        self.assertTrue(user.photo.name.startswith('user_{0}/{1}'.format(user.id, 'logo.jpg')))
 
+        user = get_user_model().objects.get(username='user')
+        # check image resize
+        self.assertEqual(user.photo.width, 112)
+        self.assertEqual(user.photo.height, int(round((112.0 / 150) * 120)))
 
     def test_user_first_name_update(self):
         url = reverse('users:user_profile')

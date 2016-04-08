@@ -1,6 +1,6 @@
-from serializers import ProjectSerializer, TaskSerializer
+from serializers import ProjectSerializer, TaskSerializer, ProjectCommentSerializer, TaskCommentSerializer
 from rest_framework import status
-from projects.models import Project, Task
+from projects.models import Project, Task, ProjectComment, TaskComment
 from django.db.models import Q
 
 from rest_framework import filters
@@ -12,6 +12,7 @@ from django.http import Http404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+from rest_framework import exceptions
 
 from activity.serializers import ActivitySerializer
 from activity.filters import ActivityFilter
@@ -39,6 +40,7 @@ class ProjectFilter(FilterSet):
     name = CharFilter(name='name', lookup_expr='iexact')
     id = NumberFilter(name='id',lookup_expr='exact')
     description = CharFilter(name='description', lookup_type='icontains')
+    tag = CharFilter(name='tags__name')
 
     date_to_started = NumberFilter(name='date_started', lookup_expr='day')
     date_to_started_gt = IsoDateTimeFilter(name='date_started',lookup_expr='gte')
@@ -48,7 +50,7 @@ class ProjectFilter(FilterSet):
         model = Project
         fields = [
             'name', 'status', 'description', 'id', 'date_to_started',
-            'date_to_started_gt', 'date_to_started_lt', 'user'
+            'date_to_started_gt', 'date_to_started_lt', 'user', 'tag'
         ]
 
 
@@ -57,12 +59,17 @@ class ProjectsList(generics.ListCreateAPIView):
     Get/Update data.
     """
     serializer_class = ProjectSerializer
-    queryset = Project.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter,filters.OrderingFilter)
     filter_class = ProjectFilter
-    search_fields = ('name', 'description', 'id')
+    search_fields = ('name', 'description', 'id', 'tags__name')
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
+    def get_queryset(self):
+        current_user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
+        return Project.objects.filter(id__in=proj)
 
     def post(self, request):
         serializer = ProjectSerializer(data=request.data, context={'request': request})
@@ -71,7 +78,7 @@ class ProjectsList(generics.ListCreateAPIView):
             serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -84,9 +91,17 @@ class ProjectDetail(generics.GenericAPIView):
 
     def get_object(self, pk):
         try:
-            return Project.objects.get(pk=pk)
+            project = Project.objects.get(pk=pk)
         except Project.DoesNotExist:
-            raise Http404
+            raise exceptions.NotFound(
+                detail="Project with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+        if project.created_by != user and user not in project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for project with id {}".format(pk)
+            )
+        return project
 
     def get(self, request, pk):
         project = self.get_object(pk)
@@ -99,7 +114,7 @@ class ProjectDetail(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         project = self.get_object(pk)
@@ -116,14 +131,13 @@ class ProjectTaskFilter(FilterSet):
     status = CharFilter(name='status', lookup_expr='icontains')
     type = CharFilter(name='type', lookup_expr='icontains')
     label = CharFilter(name='label', lookup_expr='icontains')
+    tag = CharFilter(name='tags__name')
 
     class Meta:
         model = Task
         fields = [
-            'name', 'description',
-            'status', 'type', 'label'
+            'name', 'description', 'status', 'type', 'label', 'tags__name'
         ]
-
 
 
 class TaskList(generics.ListCreateAPIView):
@@ -131,20 +145,42 @@ class TaskList(generics.ListCreateAPIView):
     Return filtering tasks
     """
     serializer_class = TaskSerializer
-    queryset = Task.objects.all()
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = ProjectTaskFilter
-    search_fields = ('name', 'description', 'status', 'type', 'label')
+    search_fields = ('name', 'description', 'status', 'type', 'label', 'tags__name')
     ordering_fields = ('name', 'description', 'status', 'type', 'label')
+
+    def get_queryset(self):
+        current_user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
+        return Task.objects.filter(project__id__in=proj)
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data, context={'request': request})
+        current_user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
 
         if serializer.is_valid():
-            serializer.save()
+            project = serializer.validated_data['project'].id
+            if project not in proj:
+                return Response(
+                    {'detail':"You don't have access permissions for project with id {}".format(project)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            else:
+                serializer.save()
 
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #
+        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class TaskDetail(generics.GenericAPIView):
@@ -154,12 +190,21 @@ class TaskDetail(generics.GenericAPIView):
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
 
-
     def get_object(self, pk):
         try:
-            return Task.objects.get(pk=pk)
+            task = Task.objects.select_related("project").get(pk=pk)
         except Task.DoesNotExist:
-            raise Http404
+            raise exceptions.NotFound(
+                detail="Task with id {} does not exist.".format(pk)
+            )
+
+        user = self.request.user
+
+        if task.project.created_by != user and user not in task.project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for task with id {}".format(pk)
+            )
+        return task
 
     def get(self, request, pk):
         task = self.get_object(pk)
@@ -172,7 +217,7 @@ class TaskDetail(generics.GenericAPIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
         task = self.get_object(pk)
@@ -243,3 +288,141 @@ class ProjectActivity(generics.ListAPIView):
             response = Response({}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return response
+
+
+class ProjectDetailTag(generics.GenericAPIView):
+    def get_project(self, pk):
+        try:
+            pr = Project.objects.get(pk=pk)
+        except Project.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Project with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+
+        if pr.created_by != user and user not in pr.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for project with id {}".format(pk)
+            )
+
+        return pr
+
+    def put(self, request, pk, tag_name):
+        """
+        Add single tag by name to the given project.
+        No error will be raised in case given tag is already added.
+        """
+        pr = self.get_project(int(pk))
+
+        if tag_name not in pr.tags.names():
+            pr.tags.add(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully added to project {}.".format(tag_name, pr.name)},
+            status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk, tag_name):
+        """
+        Remove single tag by name from the given project.
+        No error will be raised in case given tag is not added to the project.
+        """
+        pr = self.get_project(int(pk))
+
+        pr.tags.remove(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully removed from project {}.".format(tag_name, pr.name)},
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+
+class TaskDetailTag(generics.GenericAPIView):
+    def get_project(self, pk):
+        try:
+            task = Task.objects.select_related("project").get(pk=pk)
+        except Task.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Task with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+
+        if task.project.created_by != user and user not in task.project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for task with id {}".format(pk)
+            )
+
+        return task
+
+    def put(self, request, pk, tag_name):
+        """
+        Add single tag by name to the given task.
+        No error will be raised in case given tag is already added to the task.
+        """
+        task = self.get_project(int(pk))
+
+        if tag_name not in task.tags.names():
+            task.tags.add(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully added to task {}.".format(tag_name, task.name)},
+            status=status.HTTP_200_OK
+        )
+
+    def delete(self, request, pk, tag_name):
+        """
+        Remove single tag by it's from the given task.
+        No error will be raised in case given tag is not added to the task.
+        """
+        task = self.get_project(int(pk))
+
+        task.tags.remove(tag_name)
+
+        return Response(
+            {"detail": "Tag {} was successfully removed from task {}.".format(tag_name, task.name)},
+            status=status.HTTP_204_NO_CONTENT
+        )
+
+
+
+#
+# class ProjectCommentFilter(FilterSet):
+#      title = CharFilter(name='title', lookup_expr='exact')
+#      comment = CharFilter(name='comment', lookup_expr='icontains')
+#
+#      class Meta:
+#          model = ProjectComment
+#          fields = ['title', 'comment']
+#
+# class ProjectCommentList(generics.ListAPIView):
+#     serializer_class = ProjectCommentSerializer
+#     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+#     filter_class = ProjectCommentFilter
+#     search_fields = ('title', 'comment')
+#     ordering_fields = ('title')
+#
+#
+#     def get_queryset(self):
+#         current_user = self.request.user
+#         proj = [
+#             pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+#         ]
+#         return ProjectComment.objects.filter(project__id__in=proj)
+#
+#     def post(self, request):
+#         serializer = ProjectCommentSerializer(data=request.data, context={'request': request})
+#
+#         if serializer.is_valid():
+#             serializer.save()
+#
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+#
+# class ProjectCommentDetail(generics.GenericAPIView):
+#     serializer_class = ProjectCommentSerializer
+#     queryset = ProjectComment.objects.all()
+#
+#     def get_object(self,pk):
+#         try:
+#             comment = ProjectComment.
+

@@ -4,7 +4,7 @@ from projects.views import ProjectsList, TaskList
 from rest_framework.reverse import reverse
 from rest_framework import status
 from projects.views import ProjectDetail, TaskDetail
-
+from projects.models import Project, Task
 
 class TestProjectFilter(APITestCase):
     fixtures = ['all_data.json']
@@ -25,10 +25,11 @@ class TestProjectFilter(APITestCase):
                 "name": u"project_01", u"id": 1, "description": u"some_project_description",
                 "status": u"breakthrough","members": [u'http://testserver/users/1/'],
                 "visible_by": u"particular_user",
-                "tasks": [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'], "comments": [],"date_started": "2016-01-01T14:32:00Z",
+                "tasks": [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'], "comments": [],
+                "date_started": "2016-01-01T14:32:00Z",
                 "date_finished": "2016-03-03T14:02:00Z", "created_by": u'http://testserver/users/1/',
                 "created_at": u"2016-03-24T10:36:51.551000Z", "updated_by": u'http://testserver/users/1/',
-                "updated_at": u"2016-03-24T11:03:40.020000Z"
+                "updated_at": u"2016-03-24T11:03:40.020000Z", 'tags': []
             },
             {
                 "name": u"project_02", u"id": 2, "description": u"some_project_02_description",
@@ -37,7 +38,7 @@ class TestProjectFilter(APITestCase):
                 "tasks": [], "comments": [],"date_started": u"2016-01-01T14:32:00Z",
                 "date_finished": u"2016-03-03T14:02:00Z", "created_by": u'http://testserver/users/1/',
                 "created_at": u"2016-03-24T10:36:51.551000Z", "updated_by": u'http://testserver/users/1/',
-                "updated_at": u"2016-03-24T11:03:40.020000Z"
+                "updated_at": u"2016-03-24T11:03:40.020000Z", 'tags': []
             }
         ]
         for i, d in enumerate(response.data['results']):
@@ -67,15 +68,8 @@ class TestProjectFilterList(APITestCase):
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
                     'tasks': [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'],
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
-                    'date_finished': None, 'created_by': None,
+                    'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-
                 }
             ]
         )
@@ -99,7 +93,7 @@ class TestProjectFilterList(APITestCase):
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
                     'tasks': [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'],
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
-                    'date_finished': None, 'created_by': None,
+                    'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 }
             ]
@@ -124,15 +118,8 @@ class TestProjectFilterList(APITestCase):
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
                     'tasks': [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'],
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
-                    'date_finished': None, 'created_by': None,
+                    'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-
                 }
             ]
         )
@@ -152,17 +139,11 @@ class TestProjectFilterList(APITestCase):
             response.data['results'],
             [
                 {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
                     'tasks': [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'],
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
-                    'date_finished': None, 'created_by': None,
+                    'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 },
             ]
@@ -183,31 +164,20 @@ class TestProjectFilterList(APITestCase):
             response.data['results'],
             [
                 {
-                    'name': u'projecta', 'id': 4, 'description': u'aa', 'status': u'undefined', 'members': [],
-                    'visible_by': u'undefined','tasks': [], 'comments': [], 'date_started': u'2016-03-30T14:17:49Z',
-                    'date_finished': None, 'created_by': None,'created_at': u'2016-03-02T10:56:37Z',
-                    'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
-                },
-                {
-                    "name": u"projectc", u"id": 3, "description": u"aaa", "status": u"undefined",
-                    "members": [], "visible_by": u"undefined", "tasks": [u'http://testserver/tasks/3/'],
-                    "comments": [], "date_started": u"2016-03-03T10:57:11Z", "date_finished": None, "created_by": None,
-                    "created_at": u"2016-03-02T10:56:37Z", "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                },
-                {
                     "name": u"projectb", u"id": 2, "description": u"bbbb", "status": u"undefined",
                     "members": [u'http://testserver/users/2/'], "visible_by": u"undefined",
                     "tasks": [u'http://testserver/tasks/4/', u'http://testserver/tasks/5/'],
                     "comments": [], "date_started": u"2016-03-02T10:56:37Z", "date_finished": None,
-                    "created_by": None, "created_at": "2016-03-02T10:56:37Z", "updated_by": None,
-                    "updated_at": u"2016-03-02T10:56:37Z"
+                    "created_by": u"http://testserver/users/1/", "created_at": "2016-03-02T10:56:37Z",
+                    "updated_by": None,
+                    "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     'name': u'projecta', 'id': 1, 'description': u'eee', 'status': u'undefined',
                     'members': [u'http://testserver/users/1/'], 'visible_by': u'undefined',
                     'tasks': [u'http://testserver/tasks/1/', u'http://testserver/tasks/2/'],
                     'comments': [], 'date_started': u'2016-03-01T10:56:19Z',
-                    'date_finished': None, 'created_by': None,
+                    'date_finished': None, 'created_by': None, 'tags': [],
                     'created_at': u'2016-03-02T10:56:37Z', 'updated_by': None, 'updated_at': u'2016-03-02T10:56:37Z'
                 }
             ]
@@ -237,7 +207,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/1/",
                     "comments": [], "deadline_date": u"2016-03-06T10:57:47Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:57:49.589000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 }
             ]
         )
@@ -262,7 +232,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 }
             ]
         )
@@ -287,7 +257,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-31T11:11:22Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:10:21.110000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task4", "id": 4, "description": u"", "status": u"undefined",
@@ -295,15 +265,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/2/",
                     "comments": [], "deadline_date": u"2016-03-23T11:07:17Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T11:07:19.325000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
-                },
-                {
-                    "name": u"task3", "id": 3, "description": u"", "status": u"undefined",
-                    "members": [], "type": u"undefined", "label": u"undefined",
-                    "project": u"http://testserver/projects/3/",
-                    "comments": [], "deadline_date": u"2016-03-07T10:59:12Z", "estimate_minutes": None,
-                    "created_by": None, "created_at": u"2016-03-18T10:59:14.494000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task2", "id": 2, "description": u"", "status": u"undefined",
@@ -311,7 +273,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/1/",
                     "comments": [], "deadline_date": u"2016-03-07T10:58:29Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:58:31.790000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 },
                 {
                     "name": u"task1", "id": 1, "description": u"", "status": u"undefined",
@@ -319,7 +281,7 @@ class TestProjectTaskFilter(APITestCase):
                     "project": u"http://testserver/projects/1/",
                     "comments": [], "deadline_date": u"2016-03-06T10:57:47Z", "estimate_minutes": None,
                     "created_by": None, "created_at": u"2016-03-18T10:57:49.589000Z",
-                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z"
+                    "updated_by": None, "updated_at": u"2016-03-02T10:56:37Z", 'tags': []
                 }
             ]
         )
@@ -340,18 +302,51 @@ class TestProjectDetailGet(APITestCase):
         response = ProjectDetail.as_view()(request, '1')
 
         ETALON = {
-                "status": u'breakthrough', "name": u'project_01', "date_finished": u"2016-03-03T14:02:00Z", "created_at": u'2016-03-24T10:36:51.551000Z',
-                "description": u'some_project_description', "visible_by": u'particular_user', "updated_at": u'2016-03-24T11:03:40.020000Z',
-                "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/1/'],
-                "activity": [1, 4],
-                "date_started": u"2016-01-01T14:32:00Z",
-                "updated_by": u'http://testserver/users/1/', "id": 1
-            }
+            "status": u'breakthrough', "name": u'project_01', "date_finished": u"2016-03-03T14:02:00Z", "created_at": u'2016-03-24T10:36:51.551000Z',
+            "description": u'some_project_description', "visible_by": u'particular_user', "updated_at": u'2016-03-24T11:03:40.020000Z',
+            "created_by": u'http://testserver/users/1/', "members": [u'http://testserver/users/1/'],
+            "date_started": u"2016-01-01T14:32:00Z",
+            "updated_by": u'http://testserver/users/1/', "id": 1
+        }
 
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         for k in ETALON:
-            if k in response.data:
-                self.assertEqual(response.data[k], ETALON[k])
+            self.assertEqual(response.data[k], ETALON[k])
 
+    def test_get_project_false(self):
+        url = reverse('projects:projects_detail', kwargs={'pk': '10'})
+        user = get_user_model().objects.get(username='admin')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = ProjectDetail.as_view()(request, '10')
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(
+            response.data,
+            {"detail": "Project with id 10 does not exist."}
+        )
+
+    def test_get_project_false_name(self):
+        url = reverse('projects:projects_detail', kwargs={'pk': '2'})
+        user = get_user_model().objects.get(username='test_user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = ProjectDetail.as_view()(request, '2')
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            response.data,
+            {"detail": "You don't have access permissions for project with id 2"}
+        )
+
+        pr = Project.objects.get(pk=2)
+        self.assertEqual(set(pr.tags.names()), set())
 
 
 class TestProjectUpdate(APITestCase):
@@ -593,7 +588,6 @@ class TestProjectDelete(APITestCase):
                 self.assertEqual(response.data[k], ETALON[k])
 
 
-
 class TestTaskDetailGet(APITestCase):
     fixtures = ['all_data.json']
 
@@ -618,6 +612,39 @@ class TestTaskDetailGet(APITestCase):
             if k in response.data:
                 self.assertEqual(response.data[k], ETALON[k])
 
+    def test_get_task_false(self):
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '10'})
+        user = get_user_model().objects.get(username='admin')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskDetail.as_view()(request, '10')
+
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(
+            response.data,
+            {"detail": "Task with id 10 does not exist."}
+        )
+
+    def test_get_task_false_name(self):
+        url = reverse('tasks:tasks_detail', kwargs={'pk': '2'})
+        user = get_user_model().objects.get(username='test_user')
+
+        factory = APIRequestFactory()
+        request = factory.get(url)
+
+        force_authenticate(request, user=user)
+        response = TaskDetail.as_view()(request, '2')
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(
+            response.data,
+            {"detail": "You don't have access permissions for task with id 2"}
+        )
+        task1 = Task.objects.get(id=2)
+        self.assertEqual(set(task1.tags.names()), set())
 
 
 class TestTaskUpdate(APITestCase):

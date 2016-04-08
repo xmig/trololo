@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
+from taggit.managers import TaggableManager
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -39,6 +40,8 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     date_started = models.DateTimeField(blank=True, null=True, default='')
     date_finished = models.DateTimeField(blank=True, null=True, default='')
 
+    tags = TaggableManager()
+
     def get_activity_message_on_create(self, **kwargs):
         return 'create new project "' + self.name + '"'
 
@@ -65,7 +68,7 @@ class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, Abstract
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new comment' + self.title + 'for project' + self.project
+        return 'create new comment' + self.title + 'for project' + self.project.name
 
     def get_activity_message_on_update(self, **kwargs):
         message = 'edit comment'
@@ -128,6 +131,8 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     deadline_date = models.DateTimeField(null=True, blank=True, default='')
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
 
+    tags = TaggableManager()
+    
     def get_activity_message_on_create(self, **kwargs):
         return 'create new task "' + self.name + '"'
 
@@ -154,7 +159,7 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new comment' + self.title + 'for task' + self.task
+        return 'create new comment' + self.title + 'for task' + self.task.name
 
     def get_activity_message_on_update(self, **kwargs):
         message = 'edit comment'
