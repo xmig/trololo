@@ -101,8 +101,8 @@
     </script>
 
     <script type="text/ng-template" id="change_pwd.tmpl.html">
-        <md-dialog aria-label="Change password form" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="change_pwd_view">
-           <form role="form" name="changePwdForm" novalidate ng-submit="ChangePasswdSubmit(changePwdForm)">
+        <md-dialog aria-label="Change password form" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="change_pwd_view" ng-controller="PasswordchangeCtrl">
+           <form role="form" name="changePwdForm" novalidate ng-submit="changePassword(changePwdForm)">
                 <md-toolbar>
                     <div class="md-toolbar-tools">
                         <h2>Change password</h2>
@@ -124,8 +124,8 @@
                         <div>
                             <md-input-container class="md-block">
                                 <label>New password</label>
-                                <input type="text" name="new_pwd1" id="new_pwd1" ng-model="model.new_pwd1" md-autofocus required ng-keydown="resetErrors('non_field_errors')">
-                                <div ng-messages="changePwdForm.new_pwd1.$error">
+                                <input type="password" name="new_password1" id="new_password1" ng-model="model.new_password1" md-autofocus required ng-keydown="resetErrors('non_field_errors')">
+                                <div ng-messages="changePwdForm.new_password1.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
                                 <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
@@ -133,11 +133,11 @@
                             </md-input-container>
                             <md-input-container class="md-block">
                                 <label>Retype new password</label>
-                                <input type="password" name="new_pwd2" id="new_pwd2" ng-model="model.new_pwd2" required ng-keydown="resetErrors('new_pwd1')">
-                                <div ng-messages="changePwdForm.new_pwd2.$error">
+                                <input type="password" name="new_password2" id="new_password2" ng-model="model.new_password2" required ng-keydown="resetErrors('new_password2')">
+                                <div ng-messages="changePwdForm.new_password2.$error">
                                     <div ng-message="required">This is required.</div>
                                 </div>
-                                <span class="alert" ng-repeat="error in errors.new_pwd2">{{error}}</span>
+                                <span class="alert" ng-repeat="error in errors.new_password2 ">{{error}}</span>
                             </md-input-container>
                         </div>
                     </md-content>

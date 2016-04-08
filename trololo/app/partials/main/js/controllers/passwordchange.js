@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mainApp')
-  .controller('PasswordchangeCtrl', function ($scope, djangoAuth, Validate) {
+  .controller('PasswordchangeCtrl', function ($scope, djangoAuth, Validate, $mdDialog) {
     $scope.model = {'new_password1':'','new_password2':''};
   	$scope.complete = false;
     $scope.changePassword = function(formData){
@@ -11,7 +11,15 @@ angular.module('mainApp')
         djangoAuth.changePassword($scope.model.new_password1, $scope.model.new_password2)
         .then(function(data){
         	// success case
-        	$scope.complete = true;
+        	$scope.hide();
+        	var alert = $mdDialog.alert()
+                .title('Complete')
+                .textContent('Password was changed!')
+                .ok('Close');
+            $mdDialog.show(alert)
+                .finally(function() {
+                    alert = undefined;
+                });
         },function(data){
         	// error case
         	$scope.errors = data;
