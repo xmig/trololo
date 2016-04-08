@@ -2,10 +2,12 @@
 
 var isDlgOpen;
 
-angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', function ($scope, $http, personalInfoService, $mdToast) {
+angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', '$mdMedia', '$mdDialog', function ($scope, $http, personalInfoService, $mdToast, $mdMedia, $mdDialog) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
     $scope.myFile = {}
+    $scope.showModal = false;
+    $scope.passwordData = {};
 
     personalInfoService.get(function (data) {
         $scope.userAdditionData = {
@@ -80,6 +82,39 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
         });
     };
 
+    $scope.popChangePwd = function (ev) {
+        var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+        $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'change_pwd.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: false
+            })
+            .then(function (answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+            }, function () {
+                $scope.status = 'You cancelled the dialog.';
+                if($scope.resetPasswordFlag){
+                    $scope.resetPasswordModal(ev);
+                }
+                $rootScope.$broadcast('resetPasswordEv', false);
+            });
+
+        $scope.$watch(function () {
+            return $mdMedia('xs') || $mdMedia('sm');
+        }, function (wantsFullScreen) {
+            $scope.customFullscreen = (wantsFullScreen === true);
+        });
+    };
+
+    $scope.ChangePasswdSubmit = function () {
+        personalInfoService.change_passwd($scope.passwordData, function(response) {
+            toggleModal();
+        });
+    };
+
 }]);
 
 angular.module('userApp').directive('fileModel', ['$parse', function ($parse) {
@@ -98,3 +133,18 @@ angular.module('userApp').directive('fileModel', ['$parse', function ($parse) {
         }
     };
 }]);
+
+
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+}
