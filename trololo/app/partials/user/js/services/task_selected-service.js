@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('userApp').factory('task_selectedService', function($resource, $cookies) {
-    return $resource("/tasks/task_selected/", null,
+    return $resource("/tasks/task_selected/:taskname",
         { 'get':    {method:'GET'},
           'save':   {method:'POST'},
           'create': {method:'POST'},

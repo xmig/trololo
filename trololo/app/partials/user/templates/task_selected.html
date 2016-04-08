@@ -1,11 +1,10 @@
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
     <div flex layout="column" ng-controller="nutritionController">
 
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
-                    <span>Task __load name__</span>
-                    <span>/__EDIT__</span>
+                    <span>{{task.name}}</span>
                     <div flex></div>
                     <md-button ng-click="loadStuff()">EDIT (test)</md-button>
                 </div>
@@ -26,17 +25,15 @@
                     </thead>
                     <tbody md-body>
                     <tr md-row md-select="task" md-on-select="logItem">
-                        <td md-cell>task.name</td>
-                        <td md-cell>task.type</td>
-                        <td md-cell>task.status</td>
-                        <td md-cell>task.members
-                            <!--<div ng-repeat="member in task.members">-->
-                                <!--{{member.username}}({{member.email}})-->
-                            <!--</div>-->
+                        <td md-cell>{{task.name}}</td>
+                        <td md-cell>{{task.type}}</td>
+                        <td md-cell>{{task.status}}</td>
+                        <td md-cell ng-repeat="member in task.members">
+                            {{member.username}}({{member.email}})
                         </td>
-                        <td md-cell>task.project.name</td>
-                        <td md-cell>task.deadline_date</td>
-                        <td md-cell>task.estimate_minutes</td>
+                        <td md-cell>{{task.project}}</td>
+                        <td md-cell>{{task.deadline_date}}</td>
+                        <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -45,8 +42,8 @@
 <!-- for popup button-->
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
-
                     <div flex></div>
+                    <md-button ng-click="popRegistr($event)">POPUP__open in popup</md-button>  <!--ng-hide="authenticated"-->
                     <md-button ng-click="popRegistr($event)">POPUP__create new task</md-button>  <!--ng-hide="authenticated"-->
                 </div>
             </md-toolbar>
@@ -88,8 +85,8 @@
                 <md-tab label="description">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                                <p><b> Task description </b></p>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!</p>
+                                <p><b>Task description</b></p>
+                                <p>{{task.description}}</p>
                         </md-list>
                         <div class="md-toolbar-tools">
                             <div flex></div>
@@ -101,9 +98,8 @@
                 <md-tab label="members">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                <span class="status-ico" ng-class="tsk.status"></span>
-                                <p> member's icon <b> member's.name </b></p>
+                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding" ng-click="action($event)">
+                                <p>member's_pic /<b>{{member.username}} ({{member.email}})</b></p>
                             </md-list-item>
                         </md-list>
                         <div class="md-toolbar-tools">
@@ -176,15 +172,25 @@
                                 <md-content layout-padding="">
                                     <div>
 
-                                        <md-input-container class="md-block">
-                                            <label>Add a comment</label>
-                                            <input type="text" name="username" id="id_reg_username" ng-model="model.username" md-autofocus ng-keydown="resetErrors('username')">
-                                            <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
-                                        </md-input-container>
+                                        <form name="myForm">
+                                            <md-input-container class="md-block">
+                                                <label>Add a commmment</label>
+                                                <textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>
+                                                <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
+                                            </md-input-container>
+                                            <md-card-actions layout="row" layout-align="end center">
+                                                <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                                            </md-card-actions>
+                                        </form>
 
                                     </div>
                                 </md-content>
                             </md-dialog-content>
+
+
+                            <div ng-repeat="task in tasks.data">
+                                <p>{{task.name}}</p>
+                            </div>
 
                         </md-content>
                     </md-tab>
@@ -194,7 +200,7 @@
                              <md-content class="md-padding">
                                  <md-list class="project-tabs-list">
                                          <p><b> Task description </b></p>
-                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!</p>
+                                         <p>{{task.description}}</p>
                                  </md-list>
                                  <div class="md-toolbar-tools">
                                      <div flex></div>
@@ -207,10 +213,9 @@
                     <md-tab label="members">
                              <md-content class="md-padding">
                                  <md-list class="project-tabs-list">
-                                     <md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                         <span class="status-ico" ng-class="tsk.status"></span>
-                                         <p> member's icon <b> member's.name </b></p>
-                                     </md-list-item>
+                                    <md-list-item ng-repeat="member in task.members" class="secondary-button-padding" ng-click="action($event)">
+                                        <p>member's_pic /<b>{{member.username}} ({{member.email}})</b></p>
+                                    </md-list-item>
                                  </md-list>
                                  <div class="md-toolbar-tools">
                                      <div flex></div>

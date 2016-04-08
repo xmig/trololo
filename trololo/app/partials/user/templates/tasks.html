@@ -1,14 +1,5 @@
 <md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="tasksCtrl">
     <div flex layout="column" ng-controller="nutritionController">
-        <!--<md-card>-->
-        <!--<div layout="row" layout-wrap class="checkboxes">-->
-        <!--<md-checkbox ng-model="options.autoSelect">Auto Row Select</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.largeEditDialog">Lard Edit Dialogs</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.rowSelection">Row Selection</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.boundaryLinks">Pagination Boundary Links</md-checkbox>-->
-        <!--<md-checkbox ng-model="options.pageSelector">Pagination Page Selector</md-checkbox>-->
-        <!--</div>-->
-        <!--</md-card>-->
 
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
@@ -41,7 +32,8 @@
                     <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
                         ng-repeat="task in tasks.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>
-                            <a ng-href="#/user/task_selected" class="project-tabs-name">{{task.name}}</a>
+                            <!--<a ng-href="#/user/task_selected" class="project-tabs-name">{{task.name}}</a>-->
+                            <a ng-href="#/user/tasks/{{task.name}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
@@ -54,34 +46,20 @@
                         <td md-cell>{{task.deadline_date}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>
-                    <!--<tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect"-->
-                        <!--ng-disabled="dessert.calories.value > 400"-->
-                        <!--ng-repeat="dessert in desserts.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">-->
-                        <!--<td md-cell>{{dessert.name}}</td>-->
-                        <!--<td md-cell>-->
-                            <!--<md-select ng-model="dessert.type" placeholder="Other">-->
-                                <!--<md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>-->
-                            <!--</md-select>-->
-                        <!--</td>-->
-                        <!--<td md-cell>{{dessert.calories.value}}</td>-->
-                        <!--<td md-cell>{{dessert.fat.value | number: 2}}</td>-->
-                        <!--<td md-cell>{{dessert.carbs.value}}</td>-->
-                        <!--<td md-cell>{{dessert.protein.value | number: 2}}</td>-->
-                    <!--</tr>-->
                     </tbody>
                 </table>
             </md-table-container>
 
 
-<!-- for popup -->
+<!--&lt;!&ndash; for popup &ndash;&gt;-->
 
-            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
-                <div class="md-toolbar-tools">
+            <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
+                <!--<div class="md-toolbar-tools">-->
 
-                    <div flex></div>
-                    <md-button class="md-raised md-warn" ng-click="popRegistr($event)">TESTING POPUP</md-button>  <!--ng-hide="authenticated"-->
-                </div>
-            </md-toolbar>
+                    <!--<div flex></div>-->
+                    <!--<md-button class="md-raised md-warn" ng-click="popRegistr($event)">TESTING POPUP</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
 
 
 
@@ -222,116 +200,116 @@
 
 
 
-<!-- for popup -->
-<!-- Registration modal -->
-<script type="text/ng-template" id="register.tmpl.html">
-    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="250" flex-gt-lg="15" id="register_view" ng-controller="task_selectedCtrl">
-       <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2>Task __load name</h2>
-                    <span flex="" class="flex"></span>
-                    <button class="md-icon-button md-button md-ink-ripple" type="button"
-                            ng-click="cancel()">
-                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
-                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
-                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                            </svg>
-                        </md-icon>
-                    </button>
-                </div>
-            </md-toolbar>
+<!--&lt;!&ndash; for popup &ndash;&gt;-->
+<!--&lt;!&ndash; Registration modal &ndash;&gt;-->
+<!--<script type="text/ng-template" id="register.tmpl.html">-->
+    <!--<md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="250" flex-gt-lg="15" id="register_view" ng-controller="task_selectedCtrl">-->
+       <!--<form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">-->
+            <!--<md-toolbar>-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<h2>Task __load name</h2>-->
+                    <!--<span flex="" class="flex"></span>-->
+                    <!--<button class="md-icon-button md-button md-ink-ripple" type="button"-->
+                            <!--ng-click="cancel()">-->
+                        <!--<md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"-->
+                                 <!--class="ng-scope ng-isolate-scope" aria-hidden="true">-->
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"-->
+                                 <!--fit="" preserveAspectRatio="xMidYMid meet" focusable="false">-->
+                                <!--<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>-->
+                            <!--</svg>-->
+                        <!--</md-icon>-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
 
 
 
-                <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
+                <!--<md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">-->
 
 
-                    <md-tab label="comments & activity">
-                        <md-content class="md-padding">
-                            <div layout="row">
-                                <md-input-container class="sorting-margin">
-                                    <label>Sort</label>
-                                    <md-select ng-model="tabSort.tasks">
-                                        <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
-                                    </md-select>
-                                </md-input-container>
-                                <md-input-container class="sorting-margin">
-                                    <label>View</label>
-                                    <md-select ng-model="tabView.tasks">
-                                        <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
-                            <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                    <span class="status-ico" ng-class="my_tsk.status"></span>
-                                    <p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>
-                                </md-list-item>
-                            </md-list>
-                            <span></span>
+                    <!--<md-tab label="comments & activity">-->
+                        <!--<md-content class="md-padding">-->
+                            <!--<div layout="row">-->
+                                <!--<md-input-container class="sorting-margin">-->
+                                    <!--<label>Sort</label>-->
+                                    <!--<md-select ng-model="tabSort.tasks">-->
+                                        <!--<md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>-->
+                                    <!--</md-select>-->
+                                <!--</md-input-container>-->
+                                <!--<md-input-container class="sorting-margin">-->
+                                    <!--<label>View</label>-->
+                                    <!--<md-select ng-model="tabView.tasks">-->
+                                        <!--<md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>-->
+                                    <!--</md-select>-->
+                                <!--</md-input-container>-->
+                            <!--</div>-->
+                            <!--<md-list class="project-tabs-list">-->
+                                <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->
+                                    <!--<span class="status-ico" ng-class="my_tsk.status"></span>-->
+                                    <!--<p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>-->
+                                <!--</md-list-item>-->
+                            <!--</md-list>-->
+                            <!--<span></span>-->
 
 
-                            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
-                                <md-content layout-padding="">
-                                    <div>
+                            <!--<md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">-->
+                                <!--<md-content layout-padding="">-->
+                                    <!--<div>-->
 
-                                        <md-input-container class="md-block">
-                                            <label>Add a comment</label>
-                                            <input type="text" name="username" id="id_reg_username" ng-model="model.username" md-autofocus ng-keydown="resetErrors('username')">
-                                            <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
-                                        </md-input-container>
+                                        <!--<md-input-container class="md-block">-->
+                                            <!--<label>Add a comment</label>-->
+                                            <!--<input type="text" name="username" id="id_reg_username" ng-model="model.username" md-autofocus ng-keydown="resetErrors('username')">-->
+                                            <!--<span class="alert" ng-repeat="error in errors.username">{{error}}</span>-->
+                                        <!--</md-input-container>-->
 
-                                    </div>
-                                </md-content>
-                            </md-dialog-content>
+                                    <!--</div>-->
+                                <!--</md-content>-->
+                            <!--</md-dialog-content>-->
 
-                        </md-content>
-                    </md-tab>
-
-
-                    <md-tab label="description">
-                             <md-content class="md-padding">
-                                 <md-list class="project-tabs-list">
-                                         <p><b> Task description </b></p>
-                                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!</p>
-                                 </md-list>
-                                 <div class="md-toolbar-tools">
-                                     <div flex></div>
-                                     <md-button ng-click="">edit description (test)</md-button>
-                                 </div>
-                             </md-content>
-                    </md-tab>
+                        <!--</md-content>-->
+                    <!--</md-tab>-->
 
 
-                    <md-tab label="members">
-                             <md-content class="md-padding">
-                                 <md-list class="project-tabs-list">
-                                     <md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                         <span class="status-ico" ng-class="tsk.status"></span>
-                                         <p> member's icon <b> member's.name </b></p>
-                                     </md-list-item>
-                                 </md-list>
-                                 <div class="md-toolbar-tools">
-                                     <div flex></div>
-                                     <md-button ng-click="">EDD / DELETE (test)</md-button>
-                                 </div>
-                             </md-content>
-                    </md-tab>
+                    <!--<md-tab label="description">-->
+                             <!--<md-content class="md-padding">-->
+                                 <!--<md-list class="project-tabs-list">-->
+                                         <!--<p><b> Task description </b></p>-->
+                                         <!--<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!</p>-->
+                                 <!--</md-list>-->
+                                 <!--<div class="md-toolbar-tools">-->
+                                     <!--<div flex></div>-->
+                                     <!--<md-button ng-click="">edit description (test)</md-button>-->
+                                 <!--</div>-->
+                             <!--</md-content>-->
+                    <!--</md-tab>-->
 
-                </md-tabs>
 
-            <md-dialog-actions layout="row">
-                <md-button type="submit" style="margin-right:20px;">
-                    Open as a full page
-                </md-button>
-            </md-dialog-actions>
-       </form>
-    </md-dialog>
-</script>
-<!-- Registration modal end -->
+                    <!--<md-tab label="members">-->
+                             <!--<md-content class="md-padding">-->
+                                 <!--<md-list class="project-tabs-list">-->
+                                     <!--<md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">-->
+                                         <!--<span class="status-ico" ng-class="tsk.status"></span>-->
+                                         <!--<p> member's icon <b> member's.name </b></p>-->
+                                     <!--</md-list-item>-->
+                                 <!--</md-list>-->
+                                 <!--<div class="md-toolbar-tools">-->
+                                     <!--<div flex></div>-->
+                                     <!--<md-button ng-click="">EDD / DELETE (test)</md-button>-->
+                                 <!--</div>-->
+                             <!--</md-content>-->
+                    <!--</md-tab>-->
+
+                <!--</md-tabs>-->
+
+            <!--<md-dialog-actions layout="row">-->
+                <!--<md-button type="submit" style="margin-right:20px;">-->
+                    <!--Open as a full page-->
+                <!--</md-button>-->
+            <!--</md-dialog-actions>-->
+       <!--</form>-->
+    <!--</md-dialog>-->
+<!--</script>-->
+<!--&lt;!&ndash; Registration modal end &ndash;&gt;-->
 
 
 

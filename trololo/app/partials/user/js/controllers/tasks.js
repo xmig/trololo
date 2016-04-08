@@ -1,5 +1,6 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$http', 'taskService', '$mdDialog', '$mdMedia', function($scope, $http, taskService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', '$mdDialog', '$mdMedia', function($scope, $rootScope, $http, taskService, $mdDialog, $mdMedia){
     taskService.get(function (data) {
+
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
@@ -10,8 +11,10 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$http', 'taskServi
     $scope.popRegistr = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
                     controller: DialogController,
-                    templateUrl: 'register.tmpl.html',
+//                    templateUrl: 'register.tmpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true,

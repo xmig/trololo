@@ -66,6 +66,8 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='pk'
     )
 
+    # project = OnlyProjectInfoSerializer(many=True, read_only=True)
+
     # members = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     view_name='users:single_user',

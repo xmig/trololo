@@ -1,15 +1,92 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$http', 'taskService', '$mdDialog', '$mdMedia', function($scope, $http, taskService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'taskService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, $mdDialog, $mdMedia, $routeParams){
+    $scope.toggleLeft = buildDelayedToggler('left');
+    $scope.toggleRight = buildToggler('right');
+    $scope.isOpenRight = function(){
+        return $mdSidenav('right').isOpen();
+    };
+    $scope.partialPath = '/static/user/templates/task_selected.html';
+    //$scope.location = $routeParams.userLocation;
+
+
+// get all data,filter by name of selected object
     taskService.get(function (data) {
         $scope.tasks = {}
         $scope.tasks.data = data.results;
-        $scope.tasks.count = $scope.tasks.data.length;
+//        $scope.tasks.count = $scope.tasks.data.length;
+//        console.log($routeParams)
+//        console.log($scope.tasks.data)
+
+        $scope.name = $routeParams.taskname;
+
+        var tasks = data.results;
+        $scope.task = tasks.filter(function(entry){
+            return entry.name === $scope.name;
+        })[0];
+//        console.log(tasks)
     });
+//
+
+
+    $scope.leftSidebarList = [
+        {"title": "Personal Info", "link": "personal"},
+        {"title": "Projects", "link": "projects"},
+        {"title": "Tasks", "link": "tasks"},
+        //{"title": "Progress", "link": "progress"},
+        //{"title": "Teams", "link": "teams"},
+        //{"title": "Activity", "link": "activity"},
+    ];
+    $scope.isSectionSelected = function(section){
+        return section === $scope.location;
+    };
+    /**
+     * Supplies a function that will continue to operate until the
+     * time is up.
+     */
+    function debounce(func, wait, context) {
+        var timer;
+
+        return function debounced() {
+            var context = $scope,
+                args = Array.prototype.slice.call(arguments);
+            $timeout.cancel(timer);
+            timer = $timeout(function() {
+                timer = undefined;
+                func.apply(context, args);
+            }, wait || 10);
+        };
+    }
+
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildDelayedToggler(navID) {
+        return debounce(function() {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        }, 200);
+    }
+
+    function buildToggler(navID) {
+        return function() {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        }
+    }
 
 
 /* for popup */
     $scope.popRegistr = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
             $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
                     controller: DialogController,
                     templateUrl: 'register.tmpl.html',
                     parent: angular.element(document.body),
