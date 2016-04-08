@@ -23,6 +23,8 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
             return entry.name === $scope.name;
         })[0];
 //        console.log(tasks)
+        console.log($scope.task.activity)
+
     });
 //
 
@@ -125,43 +127,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
 //angular.module('userApp').controller('tasksCtrl', ['$scope', function($scope){
 
-    /* Test table data */
-    $scope.desserts = {
-        "count": 9,
-        "data": [
-            {
-                "name": "Fifty yogurt",
-                "type": "Ice cream",
-                "calories": { "value": 159.0 },
-                "fat": { "value": 6.0 },
-                "carbs": { "value": 24.0 },
-                "protein": { "value": 4.0 },
-                "sodium": { "value": 87.0 },
-                "calcium": { "value": 14.0 },
-                "iron": { "value": 1.0 }
-            }, {
-                "name": "Cupcake",
-                "type": "Pastry",
-                "calories": { "value":  305.0 },
-                "fat": { "value": 3.7 },
-                "carbs": { "value": 67.0 },
-                "protein": { "value": 4.3 },
-                "sodium": { "value": 413.0 },
-                "calcium": { "value": 3.0 },
-                "iron": { "value": 8.0 }
-            }, {
-                "name": "Jelly bean",
-                "type": "Candy",
-                "calories": { "value":  375.0 },
-                "fat": { "value": 0.0 },
-                "carbs": { "value": 94.0 },
-                "protein": { "value": 0.0 },
-                "sodium": { "value": 50.0 },
-                "calcium": { "value": 0.0 },
-                "iron": { "value": 0.0 }
-            }
-        ]
-    };
+
 
     $scope.editComment = function (event, dessert) {
         event.stopPropagation(); // in case autoselect is enabled

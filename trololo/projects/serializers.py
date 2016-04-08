@@ -58,6 +58,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     comments = serializers.SerializerMethodField('take_comments')
+    activity = serializers.SerializerMethodField('take_activity')
+    # comments = TaskCommentSerializer()
 
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -66,7 +68,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='pk'
     )
 
-    # project = OnlyProjectInfoSerializer(many=True, read_only=True)
+    # project = OnlyProjectInfoSerializer(read_only=True)
 
     # members = serializers.HyperlinkedRelatedField(
     #     many=True,
@@ -76,7 +78,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     lookup_field='id'
     # )
 
-    members = OnlyUserInfoSerializer(many=True, read_only=True)
+    members = OnlyUserInfoSerializer(many=True, read_only=True) #to show names instead of urls
 
     created_by = serializers.HyperlinkedRelatedField(
         view_name='users:single_user',
@@ -93,12 +95,16 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Task
-        fields = ('name', 'id', 'description', 'status', 'members', 'type', 'label', 'project', 'comments', 'deadline_date', 'estimate_minutes', 'created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = ('name', 'id', 'description', 'status', 'members', 'type', 'label', 'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by', 'created_at', 'updated_by', 'updated_at')
 
     def take_comments(self, task):
         comments_list = [x.title for x in task.taskcomment_set.all()]
+        # comments_list = [x.comment for x in task.taskcomment_set.all()]
         return comments_list
 
+    def take_activity(self, task):
+        activity_list = [x.message for x in task.activity.all()]
+        return activity_list
 
 
 

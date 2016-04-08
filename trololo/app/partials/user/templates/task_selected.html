@@ -73,10 +73,13 @@
                             </md-input-container>
                         </div>
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                <span class="status-ico" ng-class="my_tsk.status"></span>
-                                <p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>
-                            </md-list-item>
+                                <md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Comment: <b>{{comment}}</b></p>
+                                </md-list-item>
+
+                                <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Activity: {{activity}}</p>
+                                </md-list-item>
                         </md-list>
                         <span></span>
                     </md-content>
@@ -123,7 +126,7 @@
        <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
-                    <h2>Task __load name</h2>
+                    <h2>{{task.name}}</h2>
                     <span flex="" class="flex"></span>
                     <button class="md-icon-button md-button md-ink-ripple" type="button"
                             ng-click="cancel()">
@@ -160,10 +163,20 @@
                                 </md-input-container>
                             </div>
                             <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                    <span class="status-ico" ng-class="my_tsk.status"></span>
-                                    <p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>
+
+                                <md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Comment: <b>{{comment}}</b></p>
                                 </md-list-item>
+
+                                <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Activity: {{activity}}</p>
+                                </md-list-item>
+
+                                <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->
+                                    <!--<span class="status-ico" ng-class="my_tsk.status"></span>-->
+                                    <!--<p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>-->
+                                <!--</md-list-item>-->
+
                             </md-list>
                             <span></span>
 
@@ -188,9 +201,7 @@
                             </md-dialog-content>
 
 
-                            <div ng-repeat="task in tasks.data">
-                                <p>{{task.name}}</p>
-                            </div>
+
 
                         </md-content>
                     </md-tab>
