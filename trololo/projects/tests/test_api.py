@@ -23,6 +23,8 @@ class TestApi(APITestCase):
                  "status": "http://testserver/status/status/",
                  "tasks": "http://testserver/tasks/",
                  "users": "http://testserver/users/",
-                 "projects": "http://testserver/projects/"
+                 "projects": "http://testserver/projects/",
+                 "comments": "http://testserver/projects/comments/",
+                 "comments_tasks": "http://testserver/tasks/comments/"
             }
         )
