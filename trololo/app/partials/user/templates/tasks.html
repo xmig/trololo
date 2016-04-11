@@ -33,7 +33,7 @@
                         ng-repeat="task in tasks.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>
                             <!--<a ng-href="#/user/task_selected" class="project-tabs-name">{{task.name}}</a>-->
-                            <a ng-href="#/user/tasks/{{task.name}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
+                            <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>

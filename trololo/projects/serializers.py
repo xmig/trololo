@@ -98,10 +98,15 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         return data
 
 
+class TaskCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TaskComment
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     comments = serializers.SerializerMethodField('take_comments')
     activity = serializers.SerializerMethodField('take_activity')
-    # comments = TaskCommentSerializer()
+    # comments = TaskCommentSerializer(many=True)
 
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -119,6 +124,8 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     required=False,
     #     lookup_field='id'
     # )
+
+
 
     members = OnlyUserInfoSerializer(many=True, read_only=True) #to show names instead of urls
 

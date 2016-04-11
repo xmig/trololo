@@ -165,11 +165,11 @@
                             <md-list class="project-tabs-list">
 
                                 <md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <b>{{comment}}</b></p>
+                                    <p>Comment: <b>{{comment}} {{comment.created_at}}</b></p>
                                 </md-list-item>
 
                                 <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Activity: {{activity}}</p>
+                                    <p>Activity: {{activity}} {{activity.created_at}}</p>
                                 </md-list-item>
 
                                 <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->
