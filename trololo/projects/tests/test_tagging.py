@@ -164,9 +164,11 @@ class TestTaskTags(APITestCase):
     fixtures = ["tags_data.json"]
 
     def setUp(self):
+        super(TestTaskTags, self).setUp()
         self.client.login(username='yura', password='123')
 
     def tearDown(self):
+        super(TestTaskTags, self).setUp()
         self.client.logout()
 
     def test_set_task_tags(self):
