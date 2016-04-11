@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
+from taggit.managers import TaggableManager
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -39,6 +40,8 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     date_started = models.DateTimeField(blank=True, null=True, default='')
     date_finished = models.DateTimeField(blank=True, null=True, default='')
 
+    tags = TaggableManager()
+
     def get_activity_message_on_create(self, **kwargs):
         return 'create new project "' + self.name + '"'
 
@@ -55,17 +58,30 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['pk']
 
 
-class ProjectComment(AbstractModel):
+class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    title = models.CharField(max_length=200, blank=True, null=True, default='')
     project = models.ForeignKey(Project, blank=True, null=True, default='')
     comment = models.TextField(blank=True, null=True, default='')
 
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new comment' + self.title + 'for project' + self.project.name
+
+    def get_activity_message_on_update(self, **kwargs):
+        message = 'edit comment'
+        old_data = self.get_original_object()
+        if old_data.comment != self.comment:
+            message = message + 'Comment:' + old_data.comment + ' ==> ' + self.comment
+        return message
+
     def __str__(self):
-        return self.comment
+        return self.title
 
     def __unicode__(self):
-        return self.comment
+        return self.title
 
 
 
@@ -115,6 +131,8 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     deadline_date = models.DateTimeField(null=True, blank=True, default='')
     estimate_minutes = models.IntegerField(null=True, blank=True, default='')
 
+    tags = TaggableManager()
+    
     def get_activity_message_on_create(self, **kwargs):
         return 'create new task "' + self.name + '"'
 
@@ -131,17 +149,30 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     def __unicode__(self):
         return self.name
 
+    class Meta:
+        ordering = ['pk']
 
 
-class TaskComment(AbstractModel):
+class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    title = models.CharField(max_length=200, blank=True, null=True, default='')
     task = models.ForeignKey(Task, default='', null=True, blank=True)
     comment = models.TextField(blank=True, null=True, default='')
 
+    def get_activity_message_on_create(self, **kwargs):
+        return 'create new comment' + self.title + 'for task' + self.task.name
+
+    def get_activity_message_on_update(self, **kwargs):
+        message = 'edit comment'
+        old_data = self.get_original_object()
+        if old_data.comment != self.comment:
+            message = message + 'Comment:' + old_data.comment + ' ==> ' + self.comment
+        return message
+
     def __str__(self):
-        return self.comment
+        return self.title
 
     def __unicode__(self):
-        return self.comment
+        return self.title
 
 
 class Status(AbstractModel):
@@ -149,10 +180,12 @@ class Status(AbstractModel):
     project = models.ForeignKey(Project, default=True, null=True, blank=True, related_name='project_statuses')
     name = models.CharField(max_length=30)
     order_number = models.IntegerField()
-    ordering = ['-order_number']
 
     def __str__(self):
         return self.name
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+        ordering = ['-order_number', 'pk']

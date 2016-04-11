@@ -8,15 +8,25 @@
                     <span class="md-headline" ng-show="userPersonalData.first_name">{{userPersonalData.first_name}} {{userPersonalData.last_name}}</span>
                     <span class="md-subhead">{{userPersonalData.email}}</span>
                 </md-card-title-text>
+
+                <!--
+                User photo upload
+                -->
                 <md-card-title-media>
                     <div class="md-media-md card-media">
-                        <img ng-src="/static/img/249px-Trololoman.jpg" class="md-card-image" alt="User avatar">
+                        <label for="file-input">
+                            <img ng-src="{{userPersonalData.photo}}" class="md-card-image" alt="User avatar" />
+                        </label>
+
+                        <input id="file-input" type="file" file-model="myFile" />
                     </div>
                 </md-card-title-media>
+
             </md-card-title>
             <md-card-actions layout="row" layout-align="start center">
-                <md-button class="md-primary md-button md-ink-ripple">Change password</md-button>
+                <md-button class="md-primary md-button md-ink-ripple" ng-click="popChangePwd($event)">Change password</md-button>
             </md-card-actions>
+
         </md-card>
     </div>
     <div flex-xs="" flex-gt-xs="50" layout="column">
@@ -54,6 +64,11 @@
                             <textarea name="detailed_info" id="user-detailed-info"
                                       ng-model="userAdditionData.detailed_info"></textarea>
                         </md-input-container>
+                        <md-input-container class="checkboxdemoBasicUsage" ng-app="MyApp" >
+                            <md-checkbox ng-model="userAdditionData.use_gravatar" aria-label="Use gravatar">
+                                Use gravatar
+                            </md-checkbox>
+                        </md-input-container>
                     </div>
                 </md-card-content>
                 <md-card-actions layout="row" layout-align="end center">
@@ -84,4 +99,59 @@
             </md-button>
             </md-toast>
     </script>
+
+    <script type="text/ng-template" id="change_pwd.tmpl.html">
+        <md-dialog aria-label="Change password form" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="change_pwd_view" ng-controller="PasswordchangeCtrl">
+           <form role="form" name="changePwdForm" novalidate ng-submit="changePassword(changePwdForm)">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Change password</h2>
+                        <span flex="" class="flex"></span>
+                        <button class="md-icon-button md-button md-ink-ripple" type="button"
+                                ng-click="cancel()">
+                            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                     class="ng-scope ng-isolate-scope" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                     fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                </svg>
+                            </md-icon>
+                        </button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                    <md-content layout-padding="">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>New password</label>
+                                <input type="password" name="new_password1" id="new_password1" ng-model="model.new_password1" md-autofocus required ng-keydown="resetErrors('non_field_errors')">
+                                <div ng-messages="changePwdForm.new_password1.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Retype new password</label>
+                                <input type="password" name="new_password2" id="new_password2" ng-model="model.new_password2" required ng-keydown="resetErrors('new_password2')">
+                                <div ng-messages="changePwdForm.new_password2.$error">
+                                    <div ng-message="required">This is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.new_password2 ">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+                    <md-button type="submit" style="margin-right:20px;">
+                        Change password
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
+
 </md-content>

@@ -9,126 +9,6 @@
 },
 {
     "fields": {
-        "model": "logentry",
-        "app_label": "admin"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 1
-},
-{
-    "fields": {
-        "model": "permission",
-        "app_label": "auth"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 2
-},
-{
-    "fields": {
-        "model": "group",
-        "app_label": "auth"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 3
-},
-{
-    "fields": {
-        "model": "site",
-        "app_label": "sites"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 4
-},
-{
-    "fields": {
-        "model": "contenttype",
-        "app_label": "contenttypes"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 5
-},
-{
-    "fields": {
-        "model": "session",
-        "app_label": "sessions"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 6
-},
-{
-    "fields": {
-        "model": "token",
-        "app_label": "authtoken"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 7
-},
-{
-    "fields": {
-        "model": "emailaddress",
-        "app_label": "account"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 8
-},
-{
-    "fields": {
-        "model": "emailconfirmation",
-        "app_label": "account"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 9
-},
-{
-    "fields": {
-        "model": "trololouser",
-        "app_label": "users"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 10
-},
-{
-    "fields": {
-        "model": "activity",
-        "app_label": "activity"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 11
-},
-{
-    "fields": {
-        "model": "project",
-        "app_label": "projects"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 12
-},
-{
-    "fields": {
-        "model": "projectcomment",
-        "app_label": "projects"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 13
-},
-{
-    "fields": {
-        "model": "task",
-        "app_label": "projects"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 14
-},
-{
-    "fields": {
-        "model": "taskcomment",
-        "app_label": "projects"
-    },
-    "model": "contenttypes.contenttype",
-    "pk": 15
-},
-{
-    "fields": {
         "expire_date": "2016-04-07T10:27:54.284Z",
         "session_data": "NDQzZWYxYmU3ZDA0NTc1NmFlZmRlMjk1NDZiOTNmNDQ2ZGU4NmU5Yjp7Il9hdXRoX3VzZXJfaGFzaCI6ImMxOWM5NDY0YTI5NGM1ZjNlMzIwMDlhMjU3MGFmNGI3YTBlNGI0Y2UiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0="
     },
@@ -696,7 +576,15 @@
         "updated_at": "2016-03-24T11:03:40.020Z",
         "created_by": 1,
         "members": [
-            1
+                            {
+                    "id": 1,
+                    "username": "admin",
+                    "first_name": "admin_first_name",
+                    "last_name": "admin_last_name",
+                    "specialization": "some_specialization",
+                    "is_active": true,
+                    "email": "admin@g.com"
+                }
         ],
         "activity": [
             1,

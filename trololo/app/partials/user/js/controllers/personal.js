@@ -2,9 +2,12 @@
 
 var isDlgOpen;
 
-angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', function ($scope, $http, personalInfoService, $mdToast) {
+angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', '$mdMedia', '$mdDialog', function ($scope, $http, personalInfoService, $mdToast, $mdMedia, $mdDialog) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
+    $scope.myFile = {}
+    $scope.showModal = false;
+    $scope.passwordData = {};
 
     personalInfoService.get(function (data) {
         $scope.userAdditionData = {
@@ -12,7 +15,8 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
             last_name: data.last_name,
             department: data.department,
             specialization: data.specialization,
-            detailed_info: data.detailed_info
+            detailed_info: data.detailed_info,
+            use_gravatar: data.use_gravatar
         };
         $scope.userPersonalData = data;
     });
@@ -68,4 +72,42 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
         });
     };
 
+    $scope.UserPhotoSubmit = function () {
+        var fd = new FormData();
+        fd.append('photo', $scope.myFile);
+        fd.append('id', $scope.userPersonalData["id"]);
+        personalInfoService.update_photo(fd, function(response) {
+            $scope.userPersonalData = response;
+            $scope.showPersonalToastSave();
+        });
+    };
+
+    $scope.popChangePwd = function (ev) {
+        $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'change_pwd.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: false
+            });
+    };
+
+}]);
+
+angular.module('userApp').directive('fileModel', ['$parse', function ($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                    scope.UserPhotoSubmit();
+                });
+            });
+        }
+    };
 }]);
