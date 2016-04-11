@@ -671,7 +671,26 @@
         "date_finished": null,
         "visible_by": "undefined",
         "members": [
-            1
+            {
+                "username": "yura",
+                "first_name": "yura",
+                "last_name": "",
+                "specialization": "",
+                "user_permissions": [],
+                "photo": "",
+                "is_active": true,
+                "is_superuser": true,
+                "is_staff": true,
+                "last_login": "2016-03-18T13:26:04.553Z",
+                "groups": [],
+                "department": "",
+                "detailed_info": "",
+                "password": "pbkdf2_sha256$20000$rmZ0p4SIhTBM$KHHLBpPoFMBJCxKlECmIyF66AAgG6aST2doeXnZjSv0=",
+                "use_gravatar": true,
+                "email": "yura@example.com",
+                "date_joined": "2016-03-18T09:54:08.108Z"
+                "pk": 1
+            }
         ],
         "activity": [
             1,
