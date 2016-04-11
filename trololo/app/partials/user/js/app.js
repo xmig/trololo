@@ -7,3 +7,9 @@ angular.module('userApp').config(['$mdThemingProvider', function ($mdThemingProv
       .primaryPalette('blue');
 }]);
 
+// remain trailing slashes
+angular.module('userApp').config(function($resourceProvider) {
+  $resourceProvider.defaults.stripTrailingSlashes = false;
+});
+
+

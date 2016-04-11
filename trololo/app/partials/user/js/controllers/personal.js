@@ -2,10 +2,12 @@
 
 var isDlgOpen;
 
-angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', function ($scope, $http, personalInfoService, $mdToast) {
+angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', '$mdMedia', '$mdDialog', function ($scope, $http, personalInfoService, $mdToast, $mdMedia, $mdDialog) {
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
     $scope.myFile = {}
+    $scope.showModal = false;
+    $scope.passwordData = {};
 
     personalInfoService.get(function (data) {
         $scope.userAdditionData = {
@@ -78,6 +80,17 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
             $scope.userPersonalData = response;
             $scope.showPersonalToastSave();
         });
+    };
+
+    $scope.popChangePwd = function (ev) {
+        $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'change_pwd.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: ev,
+                clickOutsideToClose: true,
+                fullscreen: false
+            });
     };
 
 }]);
