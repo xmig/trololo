@@ -112,7 +112,7 @@ angular.module('mainApp', [
                     }]
                 }
             })
-            .when('/user/tasks/:taskname', {
+            .when('/user/tasks/:taskid', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'task_selectedCtrl',
                 resolve: {
