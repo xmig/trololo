@@ -47,6 +47,7 @@ urlpatterns = [
         {'template_name': 'password_reset_form.html', 'post_reset_redirect': '/'},
         name='password_reset_confirm'
     ),
+    url(r'^accounts/', include('allauth.urls')),
     url('^', include('django.contrib.auth.urls')),
 ]
 

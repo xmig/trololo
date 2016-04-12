@@ -126,7 +126,7 @@ SWAGGER_SETTINGS = {
     'doc_expansion': 'none',
 }
 
-SITE_ID = 2
+SITE_ID = 4
 
 DATABASES = {
     'default': {
@@ -139,13 +139,13 @@ DATABASES = {
     }
 }
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
 # for test speed up
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.MD5PasswordHasher',
     'django.contrib.auth.hashers.PBKDF2PasswordHasher'
 ]
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
