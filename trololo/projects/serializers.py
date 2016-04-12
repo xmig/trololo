@@ -201,15 +201,66 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProjectCommentSerializer(serializers.ModelSerializer):
+
+    project = serializers.HyperlinkedRelatedField(
+        view_name='projects:projects_detail',
+        queryset=Project.objects.all(),
+        required=False,
+        lookup_field='pk'
+    )
+
+    created_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+    updated_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+
     class Meta:
         model = ProjectComment
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = (
+            'title', 'comment', 'id', 'project', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'activity'
+        )
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
 
 
 class TaskCommentSerializer(serializers.ModelSerializer):
+
+    task = serializers.HyperlinkedRelatedField(
+        view_name='tasks:tasks_detail',
+        queryset=Task.objects.all(),
+        required=False,
+        lookup_field='pk'
+    )
+
+    created_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+    updated_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+
     class Meta:
         model = TaskComment
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = (
+            'title', 'comment', 'id', 'task', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'activity'
+        )
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity', 'id')
+
 
 
 class StatusSerializer(serializers.ModelSerializer):
