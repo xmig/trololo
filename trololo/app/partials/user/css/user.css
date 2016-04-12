@@ -28,10 +28,10 @@
     border-radius: 50%;
     box-sizing: content-box;
 }
-.status-ico.high {
+.status-ico.high, .status-ico.project {
     background: #F21905;
 }
-.status-ico.low {
+.status-ico.low, .status-ico.task {
     background: #03A64A;
 }
 .status-ico.middle {
@@ -55,3 +55,20 @@
     min-height: 35px;
 }
 /* Tabs end */
+
+
+/* angular material for popup window */
+
+.dialogdemoBasicUsage #popupContainer {
+  position: relative; }
+.dialogdemoBasicUsage .footer {
+  width: 100%;
+  text-align: center;
+  margin-left: 20px; }
+.dialogdemoBasicUsage .footer, .dialogdemoBasicUsage .footer > code {
+  font-size: 0.8em;
+  margin-top: 50px; }
+.dialogdemoBasicUsage button {
+  width: 200px; }
+.dialogdemoBasicUsage div#status {
+  color: #c60008; }

@@ -53,3 +53,19 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
             data['photo'] = 'http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif'
 
         return data
+
+
+class OnlyUserInfoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            'id', 'username', 'first_name', 'last_name',
+            'specialization', 'is_active',
+            'email'
+        )
+
+        read_only_fields = (
+            'id', 'username', 'first_name', 'last_name',
+            'specialization', 'is_active',
+            'email'
+        )

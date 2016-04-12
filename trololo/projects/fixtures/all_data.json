@@ -576,7 +576,15 @@
         "updated_at": "2016-03-24T11:03:40.020Z",
         "created_by": 1,
         "members": [
-            1
+                            {
+                    "id": 1,
+                    "username": "admin",
+                    "first_name": "admin_first_name",
+                    "last_name": "admin_last_name",
+                    "specialization": "some_specialization",
+                    "is_active": true,
+                    "email": "admin@g.com"
+                }
         ],
         "activity": [
             1,

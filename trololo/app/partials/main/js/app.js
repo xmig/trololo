@@ -112,6 +112,15 @@ angular.module('mainApp', [
                     }]
                 }
             })
+            .when('/user/tasks/:taskname', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'task_selectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
             .otherwise({
                 redirectTo: '/'
             });

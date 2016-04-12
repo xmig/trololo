@@ -283,8 +283,8 @@ class ProjectActivity(generics.ListAPIView):
             if for_current_user:
                 activities = activities.filter(created_by=int(request.user.id))
 
-            data = ActivitySerializer(activities, many=True).data
-            response = Response(data)
+            self.queryset = activities
+            response = super(ProjectActivity, self).get(request, show_type)
         except Project.DoesNotExist:
             response = Response({}, status=status.HTTP_404_NOT_FOUND)
         except:
