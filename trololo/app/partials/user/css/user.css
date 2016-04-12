@@ -28,10 +28,10 @@
     border-radius: 50%;
     box-sizing: content-box;
 }
-.status-ico.high {
+.status-ico.high, .status-ico.project {
     background: #F21905;
 }
-.status-ico.low {
+.status-ico.low, .status-ico.task {
     background: #03A64A;
 }
 .status-ico.middle {

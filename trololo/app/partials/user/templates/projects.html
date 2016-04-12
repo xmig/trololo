@@ -50,23 +50,9 @@
                             </div>
                         </td>
                         <td md-cell>{{project.owner.username}}({{project.owner.email}})</td>
-                        <td md-cell>{{project.date_started}}</td>
-                        <td md-cell>{{project.date_finished}}</td>
+                        <td md-cell>{{project.date_started | date : 'medium'}}</td>
+                        <td md-cell>{{project.date_finished | date : 'medium'}}</td>
                     </tr>
-                    <!--<tr md-row md-select="dessert" md-on-select="logItem" md-auto-select="options.autoSelect"-->
-                        <!--ng-disabled="dessert.calories.value > 400"-->
-                        <!--ng-repeat="dessert in desserts.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">-->
-                        <!--<td md-cell>{{dessert.name}}</td>-->
-                        <!--<td md-cell>-->
-                            <!--<md-select ng-model="dessert.type" placeholder="Other">-->
-                                <!--<md-option ng-value="type" ng-repeat="type in getTypes()">{{type}}</md-option>-->
-                            <!--</md-select>-->
-                        <!--</td>-->
-                        <!--<td md-cell>{{dessert.calories.value}}</td>-->
-                        <!--<td md-cell>{{dessert.fat.value | number: 2}}</td>-->
-                        <!--<td md-cell>{{dessert.carbs.value}}</td>-->
-                        <!--<td md-cell>{{dessert.protein.value | number: 2}}</td>-->
-                    <!--</tr>-->
                     </tbody>
                 </table>
             </md-table-container>
@@ -93,10 +79,9 @@
                             </md-input-container>
                         </div>
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="topping in toppings" class="secondary-button-padding" ng-click="action($event)">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ topping.user }}</a> {{topping.action}} for <b>{{topping.project}}</b></p>
-                                <!--<md-button class="md-secondary">View</md-button>-->
+                            <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding" ng-click="action($event)">
+                                <span class="status-ico" ng-class="task.status"></span>
+                                <p><b><a ng-href="#/user/tasks/{{task.name}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a><b>{{task.project_obj.name}}</b></p>
                             </md-list-item>
                         </md-list>
                         <span></span>
@@ -119,9 +104,9 @@
                             </md-input-container>
                         </div>
                         <md-list>
-                            <md-list-item ng-repeat="topping in toppings">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.project}}</b></p>
+                            <md-list-item ng-repeat="notification in notifications.data">
+                                <span class="status-ico" ng-class="notification.activity_model"></span>
+                                <p><b> {{ notification.message }} </b> - {{ notification.owner.username }} ({{ notification.created_at | date : 'medium' }})</p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -145,9 +130,9 @@
                             </md-input-container>
                         </div>
                         <md-list>
-                            <md-list-item ng-repeat="topping in toppings">
-                                <span class="status-ico" ng-class="topping.status"></span>
-                                <p><b> {{ topping.name }} </b> - {{ topping.user }} {{topping.action}} for <b>{{topping.project}}</b></p>
+                            <md-list-item ng-repeat="activity in activities.data">
+                                <span class="status-ico" ng-class="activity.activity_model"></span>
+                                <p><b> {{ activity.message }} </b> - {{ activity.owner.username }} ({{ activity.created_at | date : 'medium' }})</p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>

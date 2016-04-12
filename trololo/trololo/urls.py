@@ -5,6 +5,8 @@ from users import urls as users_urls
 from projects import urls_projects as projects_urls
 from projects import urls_tasks as tasks_urls
 from projects import urls_statuses as statuses_urls
+from projects import urls_comments_projects as comments_projects_urls
+from projects import urls_comments_tasks as comments_tasks_urls
 
 from projects.views import api_root
 from activity import urls as activity_urls
@@ -23,6 +25,8 @@ urlpatterns = [
     url(r'^status/', include(statuses_urls, namespace="statuses")),
     url(r'^projects/', include(projects_urls, namespace="projects")),
     url(r'^tasks/', include(tasks_urls, namespace="tasks")),
+    url(r'^projects/comments/', include(comments_projects_urls, namespace="comments_projects")),
+    url(r'^tasks/comments/', include(comments_tasks_urls, namespace="comments_tasks")),
 
     url(r'^activities/', include(activity_urls, namespace="activity")),
     url('^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

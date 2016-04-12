@@ -21,15 +21,20 @@ class HasActivity(models.Model, AbstractAddOldObject):
         else:
             return self.get_activity_message_on_update()
 
+    def __get_activity_model_name(self, **kwargs):
+        return self.__class__.__name__.lower()
+
     def save(self, *args, **kwargs):
         activity_massage = self.__get_activity_message(**kwargs)
+        activity_model_name = self.__get_activity_model_name(**kwargs)
         super(HasActivity, self).save(*args, **kwargs)
-        self.activity.create(message=activity_massage)
+        self.activity.create(message=activity_massage, activity_model=activity_model_name)
 
 
 class Activity(AbstractModel, AbstractTimestampable, AbstractSignable):
 
     message = models.TextField()
+    activity_model = models.CharField(max_length=30)
 
     ordering = ['-created_at']
 

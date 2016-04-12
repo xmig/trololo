@@ -6,6 +6,7 @@ from rest_framework import filters
 from activity.serializers import ActivitySerializer
 from activity.models import Activity
 from activity.filters import ActivityFilter
+from rest_framework.pagination import PageNumberPagination
 
 class SingleActivity(GenericAPIView):
     queryset = Activity.objects.all()
@@ -30,6 +31,7 @@ class SingleActivity(GenericAPIView):
 class Activities(ListAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
+    pagination_class = PageNumberPagination
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_class = ActivityFilter
     ordering_fields = ('message', 'created_at',)
@@ -60,7 +62,6 @@ class Activities(ListAPIView):
         """
         try:
             for_current_user=request.GET.get('for_cu', False)
-            self.queryset = self.filter_queryset(self.get_queryset())
 
             if show_type == 'a':
                 # all activity
@@ -79,8 +80,8 @@ class Activities(ListAPIView):
             if for_current_user:
                 activities = activities.filter(created_by=int(request.user.id))
 
-            data = ActivitySerializer(activities, many=True).data
-            response = Response(data)
+            self.queryset = activities
+            response = super(Activities, self).get(request, show_type)
         except Activity.DoesNotExist:
             response = Response({}, status=status.HTTP_404_NOT_FOUND)
         except:

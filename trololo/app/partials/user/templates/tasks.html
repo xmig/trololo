@@ -23,7 +23,7 @@
                         <th md-column md-order-by="status"><span>Status</span></th>
 
                         <th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>
-                        <!--<th md-column md-numeric md-order-by=" " md-desc><span>Project</span></th>-->
+                        <th md-column md-numeric md-order-by="project_obj.name" md-desc><span>Project</span></th>
                         <th md-column md-numeric md-order-by="deadline_date.value"><span>Deadline date</span></th>
                         <th md-column md-numeric md-order-by="estimate_minutes.value"><span>Estimate minutes</span></th>
                     </tr>
@@ -38,10 +38,11 @@
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
                             <div ng-repeat="member in task.members">
-                                {{member.username}}({{member.email}})
+                                {{member.username}} <br>
+                                ({{member.email}})
                             </div>
                         </td>
-                        <!--<td md-cell>{{task.project.name}}</td>-->
+                        <td md-cell>{{task.project_obj.name}}</td>
                         <td md-cell>{{task.deadline_date}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>

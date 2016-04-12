@@ -98,10 +98,21 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         return data
 
 
-class TaskCommentSerializer(serializers.ModelSerializer):
+class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = TaskComment
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        model = Project
+        fields = (
+            'id', 'name', 'status',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
+
+        read_only_fields = (
+            'id', 'name', 'status',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
+
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     comments = serializers.SerializerMethodField('take_comments')
@@ -114,6 +125,8 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
+    
+    project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
 
     # project = OnlyProjectInfoSerializer(read_only=True)
 
@@ -141,19 +154,20 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     )
     tags = TagSerializer(many=True, read_only=False)
 
+    owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
+
     class Meta:
         model = Task
         fields = (
             'name', 'id', 'description', 'status', 'members', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
 
     def take_comments(self, task):
         comments_list = [x.title for x in task.taskcomment_set.all()]
-        # comments_list = [dict((d['id'], d) for d in task.taskcomment_set.all()).values()]
-        # comments_list = [d.value() for d in task.taskcomment_set.all()]
+       
 
         return comments_list
 
@@ -190,15 +204,66 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProjectCommentSerializer(serializers.ModelSerializer):
+
+    project = serializers.HyperlinkedRelatedField(
+        view_name='projects:projects_detail',
+        queryset=Project.objects.all(),
+        required=False,
+        lookup_field='pk'
+    )
+
+    created_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+    updated_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+
     class Meta:
         model = ProjectComment
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = (
+            'title', 'comment', 'id', 'project', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'activity'
+        )
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
 
 
 class TaskCommentSerializer(serializers.ModelSerializer):
+
+    task = serializers.HyperlinkedRelatedField(
+        view_name='tasks:tasks_detail',
+        queryset=Task.objects.all(),
+        required=False,
+        lookup_field='pk'
+    )
+
+    created_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+    updated_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+
     class Meta:
         model = TaskComment
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        fields = (
+            'title', 'comment', 'id', 'task', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'activity'
+        )
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity', 'id')
+
 
 
 class StatusSerializer(serializers.ModelSerializer):
@@ -216,3 +281,4 @@ class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
         fields = ('name', 'order_number', 'url', 'project')
+
