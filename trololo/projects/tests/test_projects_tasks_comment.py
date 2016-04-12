@@ -1,17 +1,16 @@
 from rest_framework.test import APIRequestFactory, APITestCase, force_authenticate
 from django.contrib.auth import get_user_model
-from projects.views import ProjectsList, TaskList, ProjectCommentList, ProjectCommentDetail, TaskCommentList, TaskCommentDetail
+from projects.views import ProjectCommentList, ProjectCommentDetail, TaskCommentList, TaskCommentDetail
 from rest_framework.reverse import reverse
 from rest_framework import status
-from projects.views import ProjectDetail, TaskDetail
-from projects.models import Project, Task, ProjectComment, TaskComment
+
 
 
 class TestProjectComment(APITestCase):
     fixtures = ['project_comments.json']
 
     def test_project_comment(self):
-            url = reverse('comments:comments')
+            url = reverse('comments_projects:comments')
             user = get_user_model().objects.get(username='yura')
 
             factory = APIRequestFactory()
@@ -52,7 +51,7 @@ class TestProjectComment(APITestCase):
             )
 
     def test_project_comment_add(self):
-        url = reverse('comments:comments')
+        url = reverse('comments_projects:comments')
 
         self.client.login(username='yura', password='123')
         response = self.client.post(url, data=
@@ -79,7 +78,7 @@ class TestProjectComment(APITestCase):
                 self.assertEqual(ETALON[key], response.data[key])
 
     def test_add_project_comment_error(self):
-        url = reverse('comments:comments')
+        url = reverse('comments_projects:comments')
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -96,7 +95,7 @@ class TestProjectComment(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_project_comment_not_found(self):
-        url = reverse('comments:comments_detail', kwargs={'pk': '50'})
+        url = reverse('comments_projects:comments_detail', kwargs={'pk': '50'})
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -108,7 +107,7 @@ class TestProjectComment(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_project_comment_put(self):
-        url = reverse('comments:comments_detail', kwargs={'pk':'2'})
+        url = reverse('comments_projects:comments_detail', kwargs={'pk':'2'})
 
         user = get_user_model().objects.get(username='yura')
 
@@ -134,7 +133,7 @@ class TestProjectComment(APITestCase):
                 self.assertEqual(response.data[k], ETALON[k])
 
     def test_project_comment_delete(self):
-        url = reverse('comments:comments_detail', kwargs={'pk':'2'})
+        url = reverse('comments_projects:comments_detail', kwargs={'pk':'2'})
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -145,7 +144,7 @@ class TestProjectComment(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_project_comment_get(self):
-        url = reverse('statuses:status_detail', kwargs={'pk':'2'})
+        url = reverse('comments_projects:comments_detail', kwargs={'pk':'2'})
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -165,7 +164,7 @@ class TestProjectComment(APITestCase):
         )
 
     def test_project_comment_delete_not_found(self):
-        url = reverse('comments:comments_detail', kwargs={'pk':'10'})
+        url = reverse('comments_projects:comments_detail', kwargs={'pk':'10'})
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -180,7 +179,7 @@ class TestProjectCommentFilter(APITestCase):
     fixtures = ['project_comments.json']
 
     def test_project_comment_filter(self):
-        url = reverse('comments:comments') + '?project=1'
+        url = reverse('comments_projects:comments') + '?project=1'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -220,8 +219,8 @@ class TestProjectCommentFilter(APITestCase):
             ]
         )
 
-    def test_status_filter_search(self):
-        url = reverse('comments:comments') + '?search=rr'
+    def test_project_comment_filter_search(self):
+        url = reverse('comments_projects:comments') + '?search=rr'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -243,8 +242,8 @@ class TestProjectCommentFilter(APITestCase):
             ]
         )
 
-    def test_status_filter_ordering(self):
-        url = reverse('comments:comments') + '?ordering=id'
+    def test_project_comment_filter_ordering(self):
+        url = reverse('comments_projects:comments') + '?ordering=id'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -284,8 +283,8 @@ class TestProjectCommentFilter(APITestCase):
             ]
         )
 
-    def test_status_filter_search_ordering(self):
-        url = reverse('statuses:status') + '?search=r&ordering=-id'
+    def test_project_comment_filter_search_ordering(self):
+        url = reverse('comments_projects:comments') + '?search=r&ordering=-id'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -515,8 +514,8 @@ class TestTaskCommentFilter(APITestCase):
             ]
         )
 
-    def test_status_filter_search(self):
-        url = reverse('comments:comments') + '?search=se'
+    def test_task_comment_filter_search(self):
+        url = reverse('comments_tasks:comments') + '?search=se'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -538,8 +537,8 @@ class TestTaskCommentFilter(APITestCase):
             ]
         )
 
-    def test_status_filter_ordering(self):
-        url = reverse('comments:comments') + '?ordering=-id'
+    def test_task_comment_filter_ordering(self):
+        url = reverse('comments_tasks:comments') + '?ordering=-id'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()
@@ -584,9 +583,9 @@ class TestTaskCommentFilter(APITestCase):
                 }
             ]
         )
-#
-    def test_status_filter_search_ordering(self):
-        url = reverse('statuses:status') + '?search=fi&ordering=-id'
+
+    def test_task_comment_filter_search_ordering(self):
+        url = reverse('comments_tasks:comments') + '?search=fi&ordering=-id'
         user = get_user_model().objects.get(username='yura')
 
         factory = APIRequestFactory()

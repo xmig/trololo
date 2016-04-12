@@ -29,7 +29,7 @@ def api_root(request, format=None):
         'projects': reverse('projects:projects', request=request),
         'tasks': reverse('tasks:tasks', request=request),
         'status': reverse('statuses:status', request=request),
-        'comments': reverse('comments:comments', request=request),
+        'comments_projects': reverse('comments_projects:comments', request=request),
         'comments_tasks': reverse('comments_tasks:comments', request=request),
 
     })
