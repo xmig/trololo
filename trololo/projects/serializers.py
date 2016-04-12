@@ -125,8 +125,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     lookup_field='id'
     # )
 
-
-
     members = OnlyUserInfoSerializer(many=True, read_only=True) #to show names instead of urls
 
     created_by = serializers.HyperlinkedRelatedField(
@@ -154,6 +152,9 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
     def take_comments(self, task):
         comments_list = [x.title for x in task.taskcomment_set.all()]
+        # comments_list = [dict((d['id'], d) for d in task.taskcomment_set.all()).values()]
+        # comments_list = [d.value() for d in task.taskcomment_set.all()]
+
         return comments_list
 
     def take_activity(self, task):
