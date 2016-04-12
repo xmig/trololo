@@ -98,6 +98,22 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         return data
 
 
+class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Project
+        fields = (
+            'id', 'name', 'status',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
+
+        read_only_fields = (
+            'id', 'name', 'status',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
+
+
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     comments = serializers.SerializerMethodField('take_comments')
     activity = serializers.SerializerMethodField('take_activity')
@@ -109,6 +125,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
+    project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
 
     # project = OnlyProjectInfoSerializer(read_only=True)
 
@@ -136,12 +153,14 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     )
     tags = TagSerializer(many=True, read_only=False)
 
+    owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
+
     class Meta:
         model = Task
         fields = (
             'name', 'id', 'description', 'status', 'members', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
 
@@ -208,3 +227,4 @@ class StatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
         fields = ('name', 'order_number', 'url', 'project')
+
