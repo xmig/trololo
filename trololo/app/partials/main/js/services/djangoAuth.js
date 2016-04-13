@@ -197,9 +197,33 @@ angular.module('mainApp')
             }
             return getAuthStatus.promise;
         },
+        'get_social_links': function() {
+            if (this.social_links_promise == null) {
+                this.social_links_promise = this.request({
+                    'method': "GET",
+                    'url': "/social_links/"
+                })
+            }
+
+//            var da = this;
+            var social_links_promise = $q.defer();
+
+            if (this.social_links != null) {
+                this.social_links_promise.then(function(resp){
+                    this.social_links = resp.data;
+                    social_links_promise.resolve();
+                },function(){
+                    this.social_links = {};
+                    social_links_promise.reject("Error to get social links.");
+                    }
+                });
+            }
+            return social_links_promise.promise;
+        },
         'initialize': function(url, sessions){
             this.API_URL = url;
             this.use_session = sessions;
+            this.social_links_promise = this.get_social_links();
             return this.authenticationStatus();
         }
 

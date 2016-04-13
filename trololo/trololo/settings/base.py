@@ -185,7 +185,7 @@ SOCIALACCOUNT_PROVIDERS = {
             'gender',
             'updated_time'],
         'EXCHANGE_TOKEN': True,
-        'LOCALE_FUNC': 'path.to.callable',
+        # 'LOCALE_FUNC': 'path.to.callable',
         'VERIFIED_EMAIL': False,
         'VERSION': 'v2.5'},
     'linkedin':

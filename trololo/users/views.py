@@ -11,6 +11,8 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.contrib.auth import get_user_model
 from rest_framework import filters
 from django_filters import FilterSet, NumberFilter, IsoDateTimeFilter
+from rest_framework.permissions import AllowAny
+from django.template import Template, Context
 
 
 # class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -128,3 +130,17 @@ class EmailVerificationSentView(APIView):
 
     def get(self, request):
         return Response("Verification email has been sent.")
+
+
+class SocialLinksAddUser(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        links = {}
+        for account in ['google', 'github', 'facebook', 'linkedin']:
+            data = ('{{% load socialaccount %}}<a href="{{% provider_login_url "{0}" '
+                    'process="connect" %}}">{1}</a>').format(account, account.capitalize())
+            t = Template(data)
+            links[account] = t.render(context=Context({'request': request}))
+
+        return Response(links)
