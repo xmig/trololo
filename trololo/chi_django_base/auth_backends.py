@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
-from social.apps.django_app.default.models import UserSocialAuth
+from allauth.socialaccount.models import SocialAccount
 from django.core.exceptions import MultipleObjectsReturned
 
 
@@ -12,7 +12,7 @@ class EmailAuthBackend(object):
         user_model = get_user_model()
 
         social_ids = [
-            su.user_id for su in UserSocialAuth.objects.all()
+            su.user_id for su in SocialAccount.objects.all()
         ]
 
         try:
