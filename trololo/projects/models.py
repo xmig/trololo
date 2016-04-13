@@ -155,7 +155,7 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
 
 class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
     title = models.CharField(max_length=200, blank=True, null=True, default='')
-    task = models.ForeignKey(Task, default='', null=True, blank=True)
+    task = models.ForeignKey(Task, default='', null=True, blank=True, related_name='task_comments')
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):

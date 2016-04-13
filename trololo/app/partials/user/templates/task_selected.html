@@ -63,7 +63,7 @@
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.tasks">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
@@ -74,8 +74,8 @@
                             </md-input-container>
                         </div>
                         <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <b>{{comment}}</b></p>
+                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
                                 </md-list-item>
 
                                 <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
@@ -153,7 +153,7 @@
                                 <md-input-container class="sorting-margin">
                                     <label>Sort</label>
                                     <md-select ng-model="tabSort.tasks">
-                                        <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                        <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
                                     </md-select>
                                 </md-input-container>
                                 <md-input-container class="sorting-margin">
@@ -165,12 +165,12 @@
                             </div>
                             <md-list class="project-tabs-list">
 
-                                <md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <b>{{comment}} {{comment.created_at}}</b></p>
+                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
                                 </md-list-item>
 
                                 <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Activity: {{activity}} {{activity.created_at}}</p>
+                                    <p>Activvvity: {{activity}} {{activity.created_at}}</p>
                                 </md-list-item>
 
                                 <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->

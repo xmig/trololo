@@ -82,10 +82,17 @@
                 <md-tab label="my tasks">
                     <md-content class="md-padding">
                         <div layout="row">
+
+
+                    <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
+                    <thead md-head md-order="query.order" md-on-reorder="logOrder">
+
+
+
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.tasks">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option md-numeric md-order-by="opt.value" ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
