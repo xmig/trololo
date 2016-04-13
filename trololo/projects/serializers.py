@@ -123,12 +123,14 @@ class TaskCommentSerializer(serializers.ModelSerializer):
         lookup_field='pk'
     )
 
-    created_by = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        view_name='users:single_user',
-        required=False,
-        lookup_field='id'
-    )
+    created_by = OnlyUserInfoSerializer(read_only=True)
+    # created_by = serializers.HyperlinkedRelatedField(
+    #     read_only=True,
+    #     view_name='users:single_user',
+    #     required=False,
+    #     lookup_field='id'
+    # )
+
     updated_by = serializers.HyperlinkedRelatedField(
         read_only=True,
         view_name='users:single_user',

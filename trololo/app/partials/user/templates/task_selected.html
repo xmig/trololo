@@ -75,7 +75,7 @@
                         </div>
                         <md-list class="project-tabs-list">
                                 <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
+                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by.username}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
                                 </md-list-item>
 
                                 <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
@@ -84,6 +84,20 @@
                         </md-list>
                         <span></span>
                     </md-content>
+
+
+<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{count.count}}"
+                     md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
+                     md-on-paginate="logPagination"></md-table-pagination>
+
+
+<!--select items on page-->
+        <div style align="center" style="padding-top: 20px">
+            Items on page:<select ng-model="viewby" ng-change="setItemsPerPage(viewby)">
+                <option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select>
+        </div>
+
+
                 </md-tab>
 
                 <md-tab label="description">
@@ -106,6 +120,7 @@
                                 <p>member's_pic /<b>{{member.username}} ({{member.email}})</b></p>
                             </md-list-item>
                         </md-list>
+
                         <div class="md-toolbar-tools">
                             <div flex></div>
                             <md-button ng-click="">EDD / DELETE (test)</md-button>
@@ -166,7 +181,7 @@
                             <md-list class="project-tabs-list">
 
                                 <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
+                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by.username}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
                                 </md-list-item>
 
                                 <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">

@@ -239,18 +239,18 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 }]);
 
 
-/* for popup */
-function DialogController($scope, $mdDialog) {
-  $scope.hide = function() {
-    $mdDialog.hide();
-  };
-
-  $scope.cancel = function() {
-    $mdDialog.cancel();
-  };
-
-  $scope.answer = function(answer) {
-    $mdDialog.hide(answer);
-  };
-}
-/* end - for popup */
+///* for popup */
+//function DialogController($scope, $mdDialog) {
+//  $scope.hide = function() {
+//    $mdDialog.hide();
+//  };
+//
+//  $scope.cancel = function() {
+//    $mdDialog.cancel();
+//  };
+//
+//  $scope.answer = function(answer) {
+//    $mdDialog.hide(answer);
+//  };
+//}
+///* end - for popup */

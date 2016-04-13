@@ -175,6 +175,18 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
           "by Status"
       ];
 
+//    $scope.sortVariants = [
+//          {value: "created_at",
+//           option: "by Date"
+//          },
+//          {value: "created_by",
+//           option: "by User"
+//          },
+////          {value: "comment",
+////           option: "by Type"
+////          },
+//      ];
+
     $scope.viewVariants = [
           "5",
           "10",
