@@ -13,6 +13,7 @@ from rest_framework import filters
 from django_filters import FilterSet, NumberFilter, IsoDateTimeFilter
 from rest_framework.permissions import AllowAny
 from django.template import Template, Context
+from allauth.socialaccount.models import SocialApp
 
 
 # class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -133,14 +134,23 @@ class EmailVerificationSentView(APIView):
 
 
 class SocialLinksAddUser(APIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (AllowAny, )
 
     def get(self, request):
-        links = {}
-        for account in ['google', 'github', 'facebook', 'linkedin']:
-            data = ('{{% load socialaccount %}}<a href="{{% provider_login_url "{0}" '
-                    'process="connect" %}}">{1}</a>').format(account, account.capitalize())
+        links = []
+        for account in SocialApp.objects.all():
+            provider_name = account.provider
+
+            data = (
+                '{{% load socialaccount %}}{{% provider_login_url "{0}" process="connect" %}}'
+            ).format(provider_name.lower(), provider_name)
             t = Template(data)
-            links[account] = t.render(context=Context({'request': request}))
+
+            links.append(
+                {
+                    "name": provider_name,
+                    "link": t.render(context=Context({'request': request}))
+                }
+            )
 
         return Response(links)

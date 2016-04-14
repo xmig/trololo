@@ -197,33 +197,41 @@ angular.module('mainApp')
             }
             return getAuthStatus.promise;
         },
-        'get_social_links': function() {
-            if (this.social_links_promise == null) {
-                this.social_links_promise = this.request({
-                    'method': "GET",
-                    'url': "/social_links/"
+        'get_social_links': function(force) {
+            if($cookies.get('token')){
+                $http.defaults.headers.common.Authorization = 'Token ' + $cookies.get('token');
+            }
+
+            var deferred = $q.defer(),
+                url = "/users/social_links/"
+
+            if (this.social_links_promise != null || force) {
+                $http({
+                    url: url,
+                    withCredentials: this.use_session,
+                    method: "GET",
+                    headers: {'X-CSRFToken': $cookies.get('csrftoken')},
+                    params: {},
+                    data: {}
                 })
-            }
-
-//            var da = this;
-            var social_links_promise = $q.defer();
-
-            if (this.social_links != null) {
-                this.social_links_promise.then(function(resp){
-                    this.social_links = resp.data;
-                    social_links_promise.resolve();
-                },function(){
+                .success(angular.bind(this,function(data, status, headers, config) {
+                    this.social_links = data;
+                    $rootScope.$broadcast("social_links", this.social_links);
+                    deferred.resolve(data, status);
+                }))
+                .error(angular.bind(this,function(data, status, headers, config) {
                     this.social_links = {};
-                    social_links_promise.reject("Error to get social links.");
-                    }
-                });
+                    $rootScope.$broadcast("social_links", this.social_links);
+                    console.log("error syncing with: " + url);
+                    deferred.reject(data, status, headers, config);
+                }));
             }
-            return social_links_promise.promise;
+            return deferred.promise;
         },
         'initialize': function(url, sessions){
             this.API_URL = url;
             this.use_session = sessions;
-            this.social_links_promise = this.get_social_links();
+            this.social_links_promise = this.get_social_links(true);
             return this.authenticationStatus();
         }
 
