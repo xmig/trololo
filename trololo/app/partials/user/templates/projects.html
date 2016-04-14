@@ -68,13 +68,13 @@
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.tasks">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in taskSortVariants" value="{{opt.title}}" ng-click="taskSort(opt)">{{opt.title}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
                                 <md-select ng-model="tabView.tasks">
-                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in viewTaskVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
@@ -93,13 +93,13 @@
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.notifications">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in notificationSortVariants" value="{{opt.title}}" ng-click="notificationSort(opt)">{{opt.title}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
                                 <md-select ng-model="tabView.notifications">
-                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in viewNotificationVariants" value="{{opt}}" ng-click="viewNotification(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
@@ -119,13 +119,13 @@
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.activity">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in activitySortVariants" value="{{opt.title}}" ng-click="activitySort(opt)">{{opt.title}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
                                 <md-select ng-model="tabView.activity">
-                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in viewActivityVariants" value="{{opt}}" ng-click="viewActivity(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
