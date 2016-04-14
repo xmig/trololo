@@ -68,6 +68,7 @@
                                  md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
                                  md-on-paginate="logPagination"></md-table-pagination>
         </md-card>
+
         <md-card>
             <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
                 <md-tab label="my tasks">
@@ -75,8 +76,8 @@
                         <div layout="row">
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
-                                <md-select ng-model="tabSort.tasks">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                <md-select ng-model="tabSort.my_tasks">
+                                    <md-option ng-repeat="opt in myTasksSortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
@@ -88,14 +89,20 @@
                         </div>
 
                         <md-list class="project-tabs-list">
-
-
-                            <md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                <span class="status-ico" ng-class="my_tsk.status"></span>
-                                <p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>
-                                <md-button class="md-secondary" ng-click="popRegistr($event)" ng-click="doSecondaryAction($event)">View</md-button>
+                            <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding" ng-click="action($event)">
+                                <span class="status-ico" ng-class="task.status"></span>
+                                <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
+                                            {{task.name}}</a></b> for project <b>{{task.project_obj.name}}</b>
+                                            (created by <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a>)
+                                            - <span style="color:grey"> ({{task.created_at | date : 'medium' }}) </span></p>
                             </md-list-item>
+                            <!--<md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">-->
+                                <!--<span class="status-ico" ng-class="tsk.status"></span>-->
+                                <!--<p><b> {{ tsk.name }} </b> - {{ tsk.user }} {{tsk.action}} for <b>{{tsk.task}}</b></p>-->
+                                <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
+                            <!--</md-list-item>-->
                         </md-list>
+
                         <span></span>
                     </md-content>
                 </md-tab>
@@ -106,7 +113,7 @@
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.all_tasks">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in allTasksSortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
@@ -117,13 +124,16 @@
                             </md-input-container>
                         </div>
 
-                        <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">
-                                <span class="status-ico" ng-class="tsk.status"></span>
-                                <p><b> {{ tsk.name }} </b> - {{ tsk.user }} {{tsk.action}} for <b>{{tsk.task}}</b></p>
-                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
-                            </md-list-item>
-                        </md-list>
+                        <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.all_tasks" class="secondary-button-padding" ng-click="action($event)">
+                                <span class="status-ico" ng-class="task.status"></span>
+                                <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
+                                            <a ng-href="#">({{task.project_obj.name}})</a>
+                                            user(s) assigned: <div ng-repeat="member in task.members"> <a ng-href="#">{{member.username}}</a></div>
+                                            (created by <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a>)
+                                            - <span style="color:grey"> ({{task.created_at | date : 'medium' }}) </span></p>
+                        </md-list-item>
+
+
                         <span></span>
                     </md-content>
                 </md-tab>
@@ -134,27 +144,63 @@
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
                                 <md-select ng-model="tabSort.activity">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in activitySortVariants" value="{{opt.title}}" ng-click="activitySort(opt)">{{opt.title}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
                                 <md-select ng-model="tabView.activity">
-                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in viewActivityVariants" value="{{opt}}" ng-click="viewActivity(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
-
-                        <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="act in t_activity">
-                                <span class="status-ico" ng-class="act.status"></span>
-                                <p><b> {{ act.name }} </b> - {{ act.user }} {{act.action}} for <b>{{act.task}}</b></p>
+                        <md-list>
+                            <md-list-item ng-repeat="activity in activities.data">
+                                <span class="status-ico" ng-class="activity.activity_model"></span>
+                                <p><b> {{ activity.message }} </b> - {{ activity.owner.username }} ({{ activity.created_at | date : 'medium' }})</p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
                         <span></span>
                     </md-content>
                 </md-tab>
+
+                <!--<md-tab label="activity">-->
+                    <!--<md-content class="md-padding">-->
+                        <!--<div layout="row">-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>Sort</label>-->
+                                <!--<md-select ng-model="tabSort.activity">-->
+                                    <!--<md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>View</label>-->
+                                <!--<md-select ng-model="tabView.activity">-->
+                                    <!--<md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                        <!--</div>-->
+
+                        <!--<md-list>-->
+                            <!--<md-list-item ng-repeat="activity in activities.data">-->
+                                <!--<span class="status-ico" ng-class="activity.activity_model"></span>-->
+                                <!--<p><b> {{ activity.message }} </b> - {{ activity.owner.username }} ({{ activity.created_at | date : 'medium' }})</p>-->
+                                <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
+                            <!--</md-list-item>-->
+                        <!--</md-list>-->
+                        <!--<span></span>-->
+
+                        <!--&lt;!&ndash;<md-list class="project-tabs-list">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<md-list-item ng-repeat="act in t_activity">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="status-ico" ng-class="act.status"></span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<p><b> {{ act.name }} </b> - {{ act.user }} {{act.action}} for <b>{{act.task}}</b></p>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</md-list-item>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</md-list>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<span></span>&ndash;&gt;-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
 
                 <md-tab label="my notifications">
                     <md-content class="md-padding">
