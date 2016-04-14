@@ -3,6 +3,7 @@ from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from django.contrib.auth import get_user_model
 from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
+from activity.serializers import ActivitySerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -151,8 +152,9 @@ class TaskCommentSerializer(serializers.ModelSerializer):
 # from activity.serializers import ActivitySerializer
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
-    comments = TaskCommentSerializer(source='task_comments', many=True) # display dicts of comments
     activity = serializers.SerializerMethodField('take_activity')
+    # activity = ActivitySerializer(source='task_comments', many=True)
+    comments = TaskCommentSerializer(source='task_comments', many=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -201,10 +203,14 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     comments_list = [x.title for x in task.taskcomment_set.all()]
     #     return comments_list
 
+    # def take_activity(self, task):
+    #     activity_list = [x.message for x in task.activity.all()]
+    #     return activity_list
+
     def take_activity(self, task):
         activity_list = [x.message for x in task.activity.all()]
         return activity_list
-    
+
     def save_tags(self, instance, tags):
         if tags is not None:
             instance.tags.set(*[tag['name'] for tag in tags])

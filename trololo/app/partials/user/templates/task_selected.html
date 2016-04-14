@@ -57,7 +57,65 @@
 
         <md-card>
             <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
-                <md-tab label="comments & activity">
+                <md-tab label="comments">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.tasks">
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.tasks">
+                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+
+                        <md-list class="project-tabs-list">
+                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by.username}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at <span style="color:grey, size:10px"> {{comment.created_at}}</span></p>
+                                </md-list-item>
+                        </md-list>
+
+                        <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
+                                <md-content layout-padding="">
+                                    <div>
+
+                                        <form name="myForm">
+                                            <md-input-container class="md-block">
+                                                <label>Add a commmment</label>
+                                                <textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>
+                                                <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
+                                            </md-input-container>
+                                            <md-card-actions layout="row" layout-align="end center">
+                                                <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                                            </md-card-actions>
+                                        </form>
+
+                                    </div>
+                                </md-content>
+                        </md-dialog-content>
+                        <span></span>
+                    </md-content>
+
+
+<!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{count.count}}"-->
+                     <!--md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"-->
+                     <!--md-on-paginate="logPagination"></md-table-pagination>-->
+
+
+<!--&lt;!&ndash;select items on page&ndash;&gt;-->
+        <!--<div style align="center" style="padding-top: 20px">-->
+            <!--Items on page:<select ng-model="viewby" ng-change="setItemsPerPage(viewby)">-->
+                <!--<option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select>-->
+        <!--</div>-->
+
+
+                </md-tab>
+                <md-tab label="activity">
                     <md-content class="md-padding">
                         <div layout="row">
                             <md-input-container class="sorting-margin">
@@ -74,30 +132,12 @@
                             </md-input-container>
                         </div>
                         <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <a ng-href="#"><b>{{comment.created_by.username}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
-                                </md-list-item>
-
-                                <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Activity: {{activity}}</p>
+                                <md-list-item ng-repeat="activity in task.activity | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Activity: {{activity}}{{activity.created_at}}</p>
                                 </md-list-item>
                         </md-list>
                         <span></span>
                     </md-content>
-
-
-<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{count.count}}"
-                     md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
-                     md-on-paginate="logPagination"></md-table-pagination>
-
-
-<!--select items on page-->
-        <div style align="center" style="padding-top: 20px">
-            Items on page:<select ng-model="viewby" ng-change="setItemsPerPage(viewby)">
-                <option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select>
-        </div>
-
-
                 </md-tab>
 
                 <md-tab label="description">
@@ -162,7 +202,7 @@
                 <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
 
 
-                    <md-tab label="comments & activity">
+                    <md-tab label="comments">
                         <md-content class="md-padding">
                             <div layout="row">
                                 <md-input-container class="sorting-margin">
@@ -182,10 +222,6 @@
 
                                 <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
                                     <p>Comment: <a ng-href="#"><b>{{comment.created_by.username}}</b></a> added comment: <a ng-href="#"><b> {{comment.title}} </b></a> at {{comment.created_at}}</p>
-                                </md-list-item>
-
-                                <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Activvvity: {{activity}} {{activity.created_at}}</p>
                                 </md-list-item>
 
                                 <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->
@@ -215,13 +251,34 @@
                                     </div>
                                 </md-content>
                             </md-dialog-content>
-
-
-
-
-                        </md-content>
+                    </md-content>
                     </md-tab>
 
+
+                    <md-tab label="activity">
+                             <md-content class="md-padding">
+                            <div layout="row">
+                                <md-input-container class="sorting-margin">
+                                    <label>Sort</label>
+                                    <md-select ng-model="tabSort.tasks">
+                                        <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="sorting-margin">
+                                    <label>View</label>
+                                    <md-select ng-model="tabView.tasks">
+                                        <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                            </div>
+                            <md-list class="project-tabs-list">
+                                <md-list-item ng-repeat="activity in task.activity | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Activvvity: {{activity}} {{activity.created_at}}</p>
+                                </md-list-item>
+                            </md-list>
+                            <span></span>
+                    </md-content>
+                    </md-tab>
 
                     <md-tab label="description">
                              <md-content class="md-padding">
@@ -253,11 +310,13 @@
 
                 </md-tabs>
 
-            <md-dialog-actions layout="row">
-                <md-button type="submit" style="margin-right:20px;">
-                    Open as a full page
-                </md-button>
-            </md-dialog-actions>
+<!--Open as a full page-->
+            <!--<md-dialog-actions layout="row">-->
+                <!--<md-button type="submit" style="margin-right:20px;">-->
+                    <!--<a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">Open as a full page</a>-->
+                <!--</md-button>-->
+            <!--</md-dialog-actions>-->
+
        </form>
     </md-dialog>
 </script>
