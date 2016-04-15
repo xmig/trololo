@@ -82,7 +82,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
         proj = super(ProjectSerializer, self).create(validated_data)
 
-        return self.save_tags(self, proj, tags)
+        return self.save_tags(proj, tags)
 
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
@@ -117,7 +117,7 @@ class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     comments = serializers.SerializerMethodField('take_comments')
     activity = serializers.SerializerMethodField('take_activity')
-    # comments = TaskCommentSerializer()
+    # comments = TaskCommentSerializer(many=True)
 
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -125,6 +125,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
+    
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
 
     # project = OnlyProjectInfoSerializer(read_only=True)
@@ -166,6 +167,8 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
     def take_comments(self, task):
         comments_list = [x.title for x in task.taskcomment_set.all()]
+       
+
         return comments_list
 
     def take_activity(self, task):

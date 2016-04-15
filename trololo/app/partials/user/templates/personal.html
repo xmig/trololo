@@ -26,6 +26,15 @@
             <md-card-actions layout="row" layout-align="start center">
                 <md-button class="md-primary md-button md-ink-ripple" ng-click="popChangePwd($event)">Change password</md-button>
             </md-card-actions>
+            <md-card-actions layout-align="start center">
+                <span class="md-subhead">Assign social accounts:</span><br /><br />
+                <span ng-repeat="link in social_links | orderBy: 'name' track by $index ">
+                    <md-button class="md-primary md-button md-ink-ripple" target="_blank"
+                               ng-href="{{link.link}}" ng-disabled="checkSocial(link.name)">
+                        {{link.name}}
+                    </md-button>
+                </span>
+            </md-card-actions>
 
         </md-card>
     </div>

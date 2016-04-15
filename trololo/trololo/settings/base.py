@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
+# patch for SSL and django-rest-auth social auth
+
+# import urllib3.contrib.pyopenssl
+# urllib3.contrib.pyopenssl.inject_into_urllib3()
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -47,8 +52,13 @@ INSTALLED_APPS = (
     'chi_django_base',
     'activity',
     'projects',
-
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.github',
+    'allauth.socialaccount.providers.google',
 )
+
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -152,6 +162,48 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 # ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 
 AUTHENTICATION_BACKENDS = [
+    'chi_django_base.auth_backends.EmailAuthBackend',
     'django.contrib.auth.backends.ModelBackend',
-    'chi_django_base.auth_backends.EmailAuthBackend'
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook':
+       {'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'first_name',
+            'last_name',
+            'verified',
+            'locale',
+            'timezone',
+            'link',
+            'gender',
+            'updated_time'],
+        'EXCHANGE_TOKEN': True,
+        # 'LOCALE_FUNC': 'path.to.callable',
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.5'},
+    'linkedin':
+        {'SCOPE': ['r_emailaddress'],
+         'PROFILE_FIELDS': ['id',
+                         'first-name',
+                         'last-name',
+                         'email-address',
+                         'picture-url',
+                         'public-profile-url']},
+    'github': {
+        'METHOD': 'oauth2',
+        'SCOPE': ["user"],
+    },
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': { 'access_type': 'online' }
+    }
+}
+
+SOCIALACCOUNT_EMAIL_VERIFICATION = False

@@ -1,5 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import check_password
+from allauth.socialaccount.models import SocialAccount
+from django.core.exceptions import MultipleObjectsReturned
 
 
 class EmailAuthBackend(object):
@@ -9,9 +11,15 @@ class EmailAuthBackend(object):
     def authenticate(self, username=None, password=None):
         user_model = get_user_model()
 
+        # social_ids = [
+        #     su.user_id for su in SocialAccount.objects.all()
+        # ]
+
         try:
             user = user_model.objects.get(email=username)
         except user_model.DoesNotExist:
+            return None
+        except MultipleObjectsReturned:
             return None
 
         pwd_valid = check_password(password, user.password)

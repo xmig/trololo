@@ -130,9 +130,18 @@ angular.module('mainApp', [
                     }]
                 }
             })
-            .when('/user/tasks/:taskname', {
+            .when('/user/tasks/:taskid', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'task_selectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/user/projects/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'projectSelectedCtrl',
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);

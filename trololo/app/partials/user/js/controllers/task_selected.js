@@ -1,32 +1,42 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'taskService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, $mdDialog, $mdMedia, $routeParams){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
     };
     $scope.partialPath = '/static/user/templates/task_selected.html';
+
     //$scope.location = $routeParams.userLocation;
 
+    console.log("---", $routeParams.taskid)
 
-// get all data,filter by name of selected object
-    taskService.get(function (data) {
-        $scope.tasks = {}
-        $scope.tasks.data = data.results;
-//        $scope.tasks.count = $scope.tasks.data.length;
-//        console.log($routeParams)
-//        console.log($scope.tasks.data)
+    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+         console.log($scope.task);
+    })
 
-        $scope.name = $routeParams.taskname;
 
-        var tasks = data.results;
-        $scope.task = tasks.filter(function(entry){
-            return entry.name === $scope.name;
-        })[0];
-//        console.log(tasks)
-        console.log($scope.task.activity)
 
-    });
+
+
+//// get all data,filter by name of selected object
+//    taskService.get(function (data) {
+//        $scope.tasks = {}
+//        $scope.tasks.data = data.results;
+////        $scope.tasks.count = $scope.tasks.data.length;
+////        console.log($routeParams)
+////        console.log($scope.tasks.data)
 //
+//        $scope.name = $routeParams.taskname;
+//
+//        var tasks = data.results;
+//        $scope.task = tasks.filter(function(entry){
+//            return entry.name === $scope.name;
+//        })[0];
+////        console.log(tasks)
+//        console.log($scope.task.activity)
+//
+//    });
+////
 
 
     $scope.leftSidebarList = [
@@ -222,7 +232,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
           "50",
           "All"
       ];
-    /* Test activity data end */
+
 }]);
 
 

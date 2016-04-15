@@ -8,6 +8,13 @@ from activity.models import Activity
 from activity.filters import ActivityFilter
 from rest_framework.pagination import PageNumberPagination
 
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
+
 class SingleActivity(GenericAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
@@ -31,7 +38,7 @@ class SingleActivity(GenericAPIView):
 class Activities(ListAPIView):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    pagination_class = PageNumberPagination
+    pagination_class = StandardResultsSetPagination
     filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
     filter_class = ActivityFilter
     ordering_fields = ('message', 'created_at',)

@@ -70,7 +70,7 @@
 
 <!-- Login modal -->
 <script type="text/ng-template" id="login.tmpl.html">
-    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="50" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
        <form role="form" name="loginForm" novalidate ng-submit="login(loginForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -93,7 +93,7 @@
                     <div>
                         <md-input-container class="md-block">
                             <label>Username</label>
-                            <input type="text" name="username" id="id_username" ng-model="model.username" md-autofocus required ng-keydown="resetErrors('non_field_errors')">
+                            <input type="text" name="username" id="id_username" ng-model="model.username" required ng-keydown="resetErrors('non_field_errors')">
                             <div ng-messages="loginForm.username.$error">
                                 <div ng-message="required">This is required.</div>
                             </div>
@@ -109,9 +109,38 @@
                             <span class="alert" ng-repeat="error in errors.password">{{error}}</span>
                         </md-input-container>
                         <span class="forgot-pass-link" ng-click="openResetPasswordModal()">Forgot your password?</span>
+
                     </div>
+                </md-content>
             </md-dialog-content>
+
+
             <md-dialog-actions layout="row">
+                <!-- links for python-social-auth -->
+                <!--<a href="/login/facebook/?next=/" >-->
+                    <!--&lt;!&ndash; 35 x 35 &ndash;&gt;-->
+                    <!--<img src="http://skimfeed.com/blog/wp-content/plugins/simple-share-buttons-adder/buttons/simple/facebook-small.png" alt="facebook login" hspace="3" />-->
+                <!--</a>-->
+                <!--<a href="/login/linkedin/?next=/" >-->
+                    <!--&lt;!&ndash; 35 x 35 &ndash;&gt;-->
+                    <!--<img src="http://www.smu.ca/webfiles/LinkedIn_Logo_35X35.png" alt="linkedin login" hspace="3" />-->
+                <!--</a>-->
+                <a href="/accounts/facebook/login/?next=/">
+                    <!-- 35 x 35 -->
+                    <img src="/static/img/facebook-logo_35x35.png" alt="facebook login" hspace="3" />
+                </a>
+                <a href="/accounts/linkedin/login/?next=/">
+                    <!-- 35 x 35 -->
+                    <img src="/static/img/linkedIn_logo_35x35.png" alt="linkedin login" hspace="3" />
+                </a>
+                <a href="/accounts/github/login/?next=/">
+                    <!-- 35 x 35 -->
+                    <img src="/static/img/github_logo-35x35.png" alt="github login" hspace="3" />
+                </a>
+                <a href="/accounts/google/login/?next=/">
+                    <!-- 35 x 35 -->
+                    <img src="/static/img/google_logo_35x35.png" alt="google login" hspace="3" />
+                </a>
                 <md-button ng-click="cancel()">
                     Cancel
                 </md-button>
