@@ -53,6 +53,7 @@
     text-decoration: underline;
 }
 .project-link-name {
+    font-weight: bold;
     color: #2B2B2B;
     text-decoration: none;
 }

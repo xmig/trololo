@@ -92,7 +92,7 @@
                             <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
-                                            {{task.name}}</a></b> for project <a ng-href="#" class="project-link-name"><b>{{task.project_obj.name}}</b></a>
+                                            {{task.name}}</a></b> for project <a ng-href="#" class="project-link-name">{{task.project_obj.name}}</a>
                                             (created by <a ng-href="#" class="user-link-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
                             </md-list-item>
@@ -128,7 +128,7 @@
                         <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
-                                            <a ng-href="#" class="project-link-name"><b>({{task.project_obj.name}})</b></a>
+                                            <a ng-href="#" class="project-link-name">({{task.project_obj.name}})</a>
                                             user(s) assigned: <span ng-repeat="member in task.members"><a ng-href="#" class="project-tabs-name">{{member.username}}</a></span>
                                             (created by <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>

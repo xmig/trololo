@@ -25,7 +25,7 @@
                     </thead>
                     <tbody md-body>
                     <tr md-row md-select="task" md-on-select="logItem">
-                        <td md-cell>{{task.name}}</td>
+                        <td md-cell class="project-link-name">{{task.name}}</td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
@@ -78,7 +78,7 @@
 
                         <md-list class="project-tabs-list">
                                 <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                    <p><a ng-href="#" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name"><b> {{comment.title}} </b></a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                                    <p><a ng-href="#" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
                                 </md-list-item>
                         </md-list>
 
@@ -253,7 +253,7 @@
 
                             <md-list class="project-tabs-list">
                                     <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                        <p><a ng-href="#" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name"><b> {{comment.title}} </b></a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                                        <p><a ng-href="#" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
                                     </md-list-item>
 
                                 <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->
