@@ -39,7 +39,10 @@
                     <tr md-row md-select="project" md-on-select="logItem" md-auto-select="options.autoSelect"
                         ng-disabled="project.status = 'undefined'"
                         ng-repeat="project in projects.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
-                        <td md-cell>{{project.name}}</td>
+                        <td md-cell>
+                            <a ng-href="#/user/projects/{{project.id}}" class="project-tabs-name">{{project.name}}</a>
+
+                        </td>
                         <td md-cell>
                             <div>{{project.task_count}} - all tasks</div>
                             <div>{{project.my_task_count}} - my tasks</div>
