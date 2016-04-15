@@ -28,13 +28,13 @@
     border-radius: 50%;
     box-sizing: content-box;
 }
-.status-ico.high, .status-ico.project {
+.status-ico.red, .status-ico.project {
     background: #F21905;
 }
-.status-ico.low, .status-ico.task {
+.status-ico.green, .status-ico.task {
     background: #03A64A;
 }
-.status-ico.middle {
+.status-ico.orange {
     background: #F2BD1D;
 }
 .sorting-margin {
@@ -47,6 +47,15 @@
 .project-tabs-name {
     color: #2196F3;
     text-decoration: underline;
+}
+.user-link-name {
+    color: #2196F3;
+    text-decoration: underline;
+}
+.project-link-name {
+    font-weight: bold;
+    color: #2B2B2B;
+    text-decoration: none;
 }
 .project-tabs-list {
     font-size: 14px;
@@ -72,3 +81,10 @@
   width: 200px; }
 .dialogdemoBasicUsage div#status {
   color: #c60008; }
+
+  .member-cell:first-child {
+    padding-top: 5px;
+  }
+  .member-cell {
+    padding-bottom: 7px;
+  }
