@@ -8,38 +8,8 @@ console.log(data)
     });
 
 
-/* for popup */
-    $scope.popRegistr = function (ev) {
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
-            $mdDialog.show({
-                    scope: $scope,        // use parent scope in template
-                    preserveScope: true,  // use parent scope
-                    controller: DialogController,
-//                    templateUrl: 'register.tmpl.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    fullscreen: useFullScreen
-                })
-                .then(function (answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
-                }, function () {
-                    $scope.status = 'You cancelled the dialog.';
-                    if($scope.complete){
-                        $scope.registerComplete(ev);
-                    }
-                    $rootScope.$broadcast('registrationComplete', false);
-                });
 
-            $scope.$watch(function () {
-                return $mdMedia('xs') || $mdMedia('sm');
-            }, function (wantsFullScreen) {
-                $scope.customFullscreen = (wantsFullScreen === true);
-            });
-        };
-
-
-    /* ACTIVITY INFO */
+    /* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
     $scope.activitySortDirection = true;  // set the default sort order
     $scope.activityPageSize = 10;
@@ -90,7 +60,176 @@ console.log(data)
     reloadActivity();
 
 
+    /* NOTIFICATION INFO */
+    $scope.notificationSortType = 'created_at'; // set the default sort type
+    $scope.notificationSortDirection = true;  // set the default sort order
+    $scope.notificationPageSize = 10;
+    $scope.notificationPage = 1;
 
+    $scope.viewNotificationVariants = ["5", "10", "20", "50", "All"];
+
+    $scope.notificationSortVariants = [
+        {title: "by Date Asc", type: 'created_at', direction: true},
+        {title: "by Date Desc", type: 'created_at', direction: false},
+        {title: "by Message Asc", type: 'message', direction: true},
+        {title: "by Message Desc", type: 'message', direction: false}
+    ];
+
+    var reloadNotification = function() {
+        var sorting = ($scope.notificationSortDirection ? '' : '-') + $scope.notificationSortType;
+        var params = {
+            'page': $scope.notificationPage,
+            'page_size': $scope.notificationPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+
+        activityListService.get(params, function (data) {
+            $scope.notifications = {}
+            $scope.notifications.data = data.results;
+            $scope.notifications.count = $scope.notifications.data.length;
+        });
+    };
+
+    $scope.notificationSort = function(sortInfo) {
+        $scope.notificationSortType = sortInfo.type;
+        $scope.notificationSortDirection = sortInfo.direction;
+        $scope.notificationPage = 1;
+        reloadNotification();
+    };
+
+    $scope.viewNotification = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.notificationPageSize = undefined;
+        } else {
+            $scope.notificationPageSize = viewInfo;
+        }
+
+        $scope.notificationPage = 1;
+        reloadNotification();
+    };
+
+    reloadNotification();
+
+
+    /* TASK INFO */
+    $scope.taskSortType = 'title'; // set the default sort type
+    $scope.taskSortDirection = true;  // set the default sort order
+    $scope.taskPageSize = 10;
+    $scope.taskPage = 1;
+
+    $scope.viewTaskVariants = ["5", "10", "20", "50", "All"];
+
+//    $scope.taskSortVariants = [
+//        {title: "by Title Asc", type: 'name', direction: true},
+//        {title: "by Title Desc", type: 'name', direction: false},
+//        {title: "by Status Asc", type: 'status', direction: true},
+//        {title: "by Status Desc", type: 'status', direction: false}
+//    ];
+
+    $scope.myTasksSortVariants = [
+        {value: 'created_at',
+         option: 'by Date'},
+        {value: 'created_by',
+         option: 'by Author'},
+//        {value: '',
+//         option: 'by Project'},
+        {value: 'type',
+         option: 'by Type'},
+        {value: 'label',
+         option: 'by Lable'},
+        {value: 'status',
+         option: 'by Status'}
+      ];
+
+    $scope.allTasksSortVariants = [
+        {value: 'members',
+         option: 'by Member'},
+        {value: 'created_at',
+         option: 'by Date'},
+        {value: 'created_by',
+         option: 'by Author'},
+//        {value: '',
+//         option: 'by Project'},
+        {value: 'type',
+         option: 'by Type'},
+        {value: 'label',
+         option: 'by Lable'},
+        {value: 'status',
+         option: 'by Status'}
+      ];
+
+    var reloadTask = function() {
+        var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
+        var params = {
+            'page': $scope.taskPage,
+            'page_size': $scope.taskPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+
+        taskService.get(params, function (data) {
+            $scope.tasks = {}
+            $scope.tasks.data = data.results;
+            $scope.tasks.count = $scope.tasks.data.length;
+        });
+    };
+
+    $scope.taskSort = function(sortInfo) {
+        $scope.taskSortType = sortInfo.type;
+        $scope.taskSortDirection = sortInfo.direction;
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    $scope.viewTask = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.taskPageSize = undefined;
+        } else {
+            $scope.taskPageSize = viewInfo;
+        }
+
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    reloadTask();
+
+
+
+
+
+
+
+/* for popup */
+    $scope.popRegistr = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
+                    controller: DialogController,
+//                    templateUrl: 'register.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                    if($scope.complete){
+                        $scope.registerComplete(ev);
+                    }
+                    $rootScope.$broadcast('registrationComplete', false);
+                });
+
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
 
 
     $scope.getStatuses = function () {
@@ -181,46 +320,7 @@ console.log(data)
         { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
     ];
 
-    $scope.myTasksSortVariants = [
-        {value: 'created_at',
-         option: 'by Date'},
-        {value: 'created_by',
-         option: 'by Author'},
-//        {value: '',
-//         option: 'by Project'},
-        {value: 'type',
-         option: 'by Type'},
-        {value: 'label',
-         option: 'by Lable'},
-        {value: 'status',
-         option: 'by Status'}
-      ];
 
-    $scope.allTasksSortVariants = [
-        {value: 'members',
-         option: 'by Member'},
-        {value: 'created_at',
-         option: 'by Date'},
-        {value: 'created_by',
-         option: 'by Author'},
-//        {value: '',
-//         option: 'by Project'},
-        {value: 'type',
-         option: 'by Type'},
-        {value: 'label',
-         option: 'by Lable'},
-        {value: 'status',
-         option: 'by Status'}
-      ];
-
-
-    $scope.viewVariants = [
-          "5",
-          "10",
-          "20",
-          "50",
-          "All"
-      ];
     /* Test activity data end */
 }]);
 

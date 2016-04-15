@@ -184,31 +184,6 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     };
     /* Test table data end */
 
-    /* Test activity data */
-    $scope.my_tsks = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'assigned you to a new Task to the Project', project: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'assigned you to a new Task to the Project', project: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'assigned you to a new Task to the Project', project: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' },
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'assigned you to a new Task to the Project', project: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'assigned you to a new Task to the Project', project: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'assigned you to a new Task to the Project', project: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' }
-    ];
-
-    $scope.all_tsks = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
-
-    $scope.t_activity = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
 
     $scope.my_notifications = [
         { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },

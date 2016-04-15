@@ -28,9 +28,11 @@
                         <td md-cell>{{task.name}}</td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
-                        <td md-cell ng-repeat="member in task.members">
+                        <td md-cell>
+                            <p ng-repeat="member in task.members">
                             <a ng-href="#" class="user-link-name">{{member.username}}</a> <br>
                             ({{member.email}})
+                            </p>
                         </td>
                         <td md-cell><a ng-href="#" class="user-link-name">{{task.project_obj.name}}</a></td>
                         <td md-cell>{{task.deadline_date}}</td>
