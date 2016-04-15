@@ -121,6 +121,15 @@ angular.module('mainApp', [
                     }]
                 }
             })
+            .when('/user/projects/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'projectSelectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
             .otherwise({
                 redirectTo: '/'
             });
