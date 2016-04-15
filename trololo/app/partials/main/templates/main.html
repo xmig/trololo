@@ -1,4 +1,4 @@
-<md-content layout="column">
+<md-content layout="column" style="width: 100%;">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>
@@ -11,9 +11,6 @@
             <md-button class="md-raised md-warn" ng-show="authenticated" ng-href="#/user/personal">Profile</md-button>
         </div>
     </md-toolbar>
-    <md-content>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Et illum nam omnis quia quibusdam, rerum sint veritatis. Atque dignissimos est hic ipsam iure nostrum repudiandae! Asperiores atque dolore eos est, incidunt ipsa ipsam iure laborum minima officia, quasi sapiente, vel voluptates! Architecto aut, dicta minus porro praesentium quod tempora vel. Culpa eius necessitatibus nemo nihil voluptates. Atque distinctio eius maiores modi voluptates. Aperiam architecto, autem consectetur culpa delectus deserunt dolore dolorum enim eos et eum facere facilis fuga, fugiat labore laboriosam laborum libero odio officiis optio placeat porro praesentium quaerat quia quis quo quos repellendus sit sunt vel veritatis voluptas!
-    </md-content>
     <!--<div layout="column">-->
         <!--<md-content flex>-->
             <!--<h4>Routes</h4>-->
@@ -73,7 +70,7 @@
 
 <!-- Login modal -->
 <script type="text/ng-template" id="login.tmpl.html">
-    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="50" flex-gt-lg="15" id="login_view" ng-controller="LoginCtrl">
        <form role="form" name="loginForm" novalidate ng-submit="login(loginForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">

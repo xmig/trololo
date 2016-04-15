@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mainApp')
-    .controller('MasterCtrl', function ($scope, $location, djangoAuth) {
+    .controller('MasterCtrl', function ($scope, $location, djangoAuth, $rootScope) {
         // Assume user is not logged in until we hear otherwise
         $scope.authenticated = false;
         // Wait for the status of authentication, set scope var to true if it resolves
@@ -31,5 +31,9 @@ angular.module('mainApp')
         $scope.resetPasswordFlag = false;
         $scope.$on('resetPasswordEv', function (ev, data) {
             $scope.resetPasswordFlag = data;
+        });
+
+        $scope.$on('social_links', function (ev, data){
+            $scope.social_links = data;
         });
     });

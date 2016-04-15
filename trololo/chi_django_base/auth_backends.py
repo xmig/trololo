@@ -11,12 +11,12 @@ class EmailAuthBackend(object):
     def authenticate(self, username=None, password=None):
         user_model = get_user_model()
 
-        social_ids = [
-            su.user_id for su in SocialAccount.objects.all()
-        ]
+        # social_ids = [
+        #     su.user_id for su in SocialAccount.objects.all()
+        # ]
 
         try:
-            user = user_model.objects.exclude(id__in=social_ids).get(email=username)
+            user = user_model.objects.get(email=username)
         except user_model.DoesNotExist:
             return None
         except MultipleObjectsReturned:

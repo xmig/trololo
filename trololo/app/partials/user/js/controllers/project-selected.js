@@ -1,13 +1,71 @@
-angular.module('userApp').controller('projectsCtrl', ['$scope', '$http', 'projectService', 'activityListService', 'taskService',
-function($scope, $http, projectService, activityListService, taskService){
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService)
+{
+    $scope.partialPath = '/static/user/templates/project_selected.html';
+
+    $scope.toggleLeft = buildDelayedToggler('left');
+    $scope.toggleRight = buildToggler('right');
+    $scope.isOpenRight = function(){
+        return $mdSidenav('right').isOpen();
+    };
+
+    $scope.leftSidebarList = [
+        {"title": "Personal Info", "link": "personal"},
+        {"title": "Projects", "link": "projects"},
+        {"title": "Tasks", "link": "tasks"}
+    ];
+    $scope.isSectionSelected = function(section){
+        return section === $scope.location;
+    };
+    /**
+     * Supplies a function that will continue to operate until the
+     * time is up.
+     */
+    function debounce(func, wait, context) {
+        var timer;
+
+        return function debounced() {
+            var context = $scope,
+                args = Array.prototype.slice.call(arguments);
+            $timeout.cancel(timer);
+            timer = $timeout(function() {
+                timer = undefined;
+                func.apply(context, args);
+            }, wait || 10);
+        };
+    }
+
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildDelayedToggler(navID) {
+        return debounce(function() {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        }, 200);
+    }
+
+    function buildToggler(navID) {
+        return function() {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        }
+    }
 
 
-    /* PROJECT INFO */
-    projectService.get(function (data) {
-        $scope.projects = {}
-        $scope.projects.data = data.results;
-        $scope.projects.count = $scope.projects.data.length;
+
+    // PROJECT CALCULATE
+    projectSelectedService.get({ id: $routeParams.id }, function (data) {
+        $scope.project = data;
     });
+
 
 
     /* ACTIVITY INFO */
@@ -26,12 +84,12 @@ function($scope, $http, projectService, activityListService, taskService){
     ];
 
     var reloadActivity = function() {
-    console.log();
         var sorting = ($scope.activitySortDirection ? '' : '-') + $scope.activitySortType;
         var params = {
             'page': $scope.activityPage,
             'page_size': $scope.activityPageSize,
-            'ordering': sorting
+            'ordering': sorting,
+            'project_activities': $routeParams.id
         }
 
         activityListService.get(params, function (data) {
@@ -83,7 +141,8 @@ function($scope, $http, projectService, activityListService, taskService){
             'page': $scope.notificationPage,
             'page_size': $scope.notificationPageSize,
             'ordering': sorting,
-            'for_cu':1
+            'for_cu':1,
+            'project_activities': $routeParams.id
         }
 
         activityListService.get(params, function (data) {
@@ -135,7 +194,8 @@ function($scope, $http, projectService, activityListService, taskService){
             'page': $scope.taskPage,
             'page_size': $scope.taskPageSize,
             'ordering': sorting,
-            'for_cu':1
+            'for_cu':1,
+            'project': $routeParams.id
         }
 
         taskService.get(params, function (data) {
@@ -164,4 +224,6 @@ function($scope, $http, projectService, activityListService, taskService){
     };
 
     reloadTask();
+
+
 }]);
