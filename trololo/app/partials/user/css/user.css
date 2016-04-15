@@ -48,6 +48,14 @@
     color: #2196F3;
     text-decoration: underline;
 }
+.user-link-name {
+    color: #2196F3;
+    text-decoration: underline;
+}
+.project-link-name {
+    color: #2B2B2B;
+    text-decoration: none;
+}
 .project-tabs-list {
     font-size: 14px;
 }
