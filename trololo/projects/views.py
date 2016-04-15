@@ -136,7 +136,7 @@ class ProjectTaskFilter(FilterSet):
     class Meta:
         model = Task
         fields = [
-            'name', 'description', 'status', 'type', 'label', 'tags__name'
+            'name', 'description', 'status', 'type', 'label', 'tags__name', 'project'
         ]
 
 

@@ -8,4 +8,4 @@ class ActivityFilter(filters.FilterSet):
     date = django_filters.DateTimeFromToRangeFilter(name='created_at')
     class Meta:
         model = Activity
-        fields = ['message', 'message_like', 'date', 'created_at', 'created_by']
+        fields = ['message', 'message_like', 'date', 'created_at', 'created_by', 'project_activities']
