@@ -1,4 +1,4 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -13,10 +13,20 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
          console.log($scope.task);
     })
+    $scope.new_tag = '';
 
-
-
-
+    $scope.addTag = function() {
+        console.log('add tag' + $scope.new_tag);
+        if ($scope.new_tag !== '') {
+            task_tagService.add_tag(
+                {'id': $routeParams.taskid, 'tag_name': $scope.new_tag}, function(response) {
+                    $scope.task.tags.push({name: $scope.new_tag});
+                    $log.debug($scope.task.tags);
+                    $scope.new_tag = '';
+                }
+            );
+        };
+    };
 
 //// get all data,filter by name of selected object
 //    taskService.get(function (data) {

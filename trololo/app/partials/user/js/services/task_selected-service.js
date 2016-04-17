@@ -12,6 +12,14 @@ angular.module('userApp').factory('task_selectedService', function($resource, $c
     );
 });
 
+angular.module('userApp').factory('task_tagService', function($resource, $cookies) {
+    return $resource("/tasks\/:id\/tag\/:tag_name\/", {},
+        { 'add_tag':    {method:'PUT', params: {id: '@id', tag_name: '@tag_name'}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
+          'delete_tag': {method:'DELETE', params: {id: '@id', tag_name: '@tag_name'}}
+        }
+    );
+});
+
 
 //'use strict';
 //
