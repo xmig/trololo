@@ -1,0 +1,72 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="personalCtrl">
+    <div flex-xs="" flex-gt-xs="50" layout="column">
+        <md-card class="md-padding">
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline"
+                          ng-show="!userPersonalData.first_name">{{ user.username}}</span>
+                    <span class="md-headline" ng-show="userPersonalData.first_name">{{user.first_name}} {{user.last_name}}</span>
+                    <span class="md-subhead">{{user.email}}</span>
+                </md-card-title-text>
+
+                <!--
+                User photo upload
+                -->
+                <md-card-title-media>
+                    <div class="md-media-md card-media">
+                        <label for="file-input">
+                            <img ng-src="{{user.photo}}" class="md-card-image" alt="User avatar" />
+                        </label>
+
+                        <input id="file-input" type="file" file-model="myFile" />
+                    </div>
+                </md-card-title-media>
+
+            </md-card-title>
+        </md-card>
+    </div>
+    <div flex-xs="" flex-gt-xs="50" layout="column">
+        <md-card class="md-padding">
+            <form ng-submit="AdditionalInfoSubmit()">
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline">Additional Info</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div>
+                        <md-input-container class="md-block">
+                            <label>First Name</label>
+                            <input readonly="readonly" type="text" name="first_name" id="user-first-name"
+                                   ng-model="user.first_name">
+                        </md-input-container>
+                        <md-input-container  class="md-block">
+                            <label>Last Name</label>
+                            <input readonly="readonly" type="text" name="last_name" id="user-last-name"
+                                   ng-model="user.last_name">
+                        </md-input-container >
+                        <md-input-container class="md-block">
+                            <label>Department</label>
+                            <input readonly="readonly" type="text" name="department" id="user-department"
+                                   ng-model="user.department">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Specialization</label>
+                            <input readonly="readonly" type="text" name="specialization" id="user-specialization"
+                                   ng-model="user.specialization">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Detailed Info</label>
+                            <textarea readonly="readonly" name="detailed_info" id="user-detailed-info"
+                                      ng-model="user.detailed_info"></textarea>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </form>
+        </md-card>
+
+
+    </div>
+
+
+</md-content>

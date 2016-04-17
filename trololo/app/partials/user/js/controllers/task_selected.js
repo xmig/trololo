@@ -28,6 +28,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
         };
     };
 
+
 //// get all data,filter by name of selected object
 //    taskService.get(function (data) {
 //        $scope.tasks = {}
@@ -193,31 +194,6 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     };
     /* Test table data end */
 
-    /* Test activity data */
-    $scope.my_tsks = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'assigned you to a new Task to the Project', project: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'assigned you to a new Task to the Project', project: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'assigned you to a new Task to the Project', project: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' },
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'assigned you to a new Task to the Project', project: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'assigned you to a new Task to the Project', project: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'assigned you to a new Task to the Project', project: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' }
-    ];
-
-    $scope.all_tsks = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
-
-    $scope.t_activity = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
 
     $scope.my_notifications = [
         { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
@@ -227,12 +203,15 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     ];
 
     $scope.sortVariants = [
-          "by Date",
-          "by User",
-          "by Project",
-          "by Type",
-          "by Label",
-          "by Status"
+          {value: "created_at",
+           option: "by Date"
+          },
+          {value: "created_by",
+           option: "by User"
+          },
+//          {value: "comment",
+//           option: "by Type"
+//          },
       ];
 
     $scope.viewVariants = [
@@ -246,18 +225,18 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 }]);
 
 
-/* for popup */
-function DialogController($scope, $mdDialog) {
-  $scope.hide = function() {
-    $mdDialog.hide();
-  };
-
-  $scope.cancel = function() {
-    $mdDialog.cancel();
-  };
-
-  $scope.answer = function(answer) {
-    $mdDialog.hide(answer);
-  };
-}
-/* end - for popup */
+///* for popup */
+//function DialogController($scope, $mdDialog) {
+//  $scope.hide = function() {
+//    $mdDialog.hide();
+//  };
+//
+//  $scope.cancel = function() {
+//    $mdDialog.cancel();
+//  };
+//
+//  $scope.answer = function(answer) {
+//    $mdDialog.hide(answer);
+//  };
+//}
+///* end - for popup */

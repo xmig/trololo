@@ -1,10 +1,204 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', '$mdDialog', '$mdMedia', function($scope, $rootScope, $http, taskService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia){
     taskService.get(function (data) {
 
+console.log(data)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
     });
+
+
+
+    /* ACTIVITY INFO */  //- sorting, view, pagination
+    $scope.activitySortType = 'created_at'; // set the default sort type
+    $scope.activitySortDirection = true;  // set the default sort order
+    $scope.activityPageSize = 10;
+    $scope.activityPage = 1;
+
+    $scope.viewActivityVariants = ["5", "10", "20", "50", "All"];
+
+    $scope.activitySortVariants = [
+        {title: "by Date Asc", type: 'created_at', direction: true},
+        {title: "by Date Desc", type: 'created_at', direction: false},
+        {title: "by Message Asc", type: 'message', direction: true},
+        {title: "by Message Desc", type: 'message', direction: false}
+    ];
+
+    var reloadActivity = function() {
+        var sorting = ($scope.activitySortDirection ? '' : '-') + $scope.activitySortType;
+        var params = {
+            'page': $scope.activityPage,
+            'page_size': $scope.activityPageSize,
+            'ordering': sorting
+        }
+
+        activityListService.get(params, function (data) {
+            $scope.activities = {}
+            $scope.activities.data = data.results;
+            $scope.activities.count = $scope.activities.data.length;
+            console.log($scope.activities.data);
+        });
+    };
+
+    $scope.activitySort = function(sortInfo) {
+        $scope.activitySortType = sortInfo.type;
+        $scope.activitySortDirection = sortInfo.direction;
+        $scope.activityPage = 1;
+        reloadActivity();
+    };
+
+    $scope.viewActivity = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.activityPageSize = undefined;
+        } else {
+            $scope.activityPageSize = viewInfo;
+        }
+        $scope.activityPage = 1;
+        reloadActivity();
+    };
+
+    reloadActivity();
+
+
+    /* NOTIFICATION INFO */
+    $scope.notificationSortType = 'created_at'; // set the default sort type
+    $scope.notificationSortDirection = true;  // set the default sort order
+    $scope.notificationPageSize = 10;
+    $scope.notificationPage = 1;
+
+    $scope.viewNotificationVariants = ["5", "10", "20", "50", "All"];
+
+    $scope.notificationSortVariants = [
+        {title: "by Date Asc", type: 'created_at', direction: true},
+        {title: "by Date Desc", type: 'created_at', direction: false},
+        {title: "by Message Asc", type: 'message', direction: true},
+        {title: "by Message Desc", type: 'message', direction: false}
+    ];
+
+    var reloadNotification = function() {
+        var sorting = ($scope.notificationSortDirection ? '' : '-') + $scope.notificationSortType;
+        var params = {
+            'page': $scope.notificationPage,
+            'page_size': $scope.notificationPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+
+        activityListService.get(params, function (data) {
+            $scope.notifications = {}
+            $scope.notifications.data = data.results;
+            $scope.notifications.count = $scope.notifications.data.length;
+        });
+    };
+
+    $scope.notificationSort = function(sortInfo) {
+        $scope.notificationSortType = sortInfo.type;
+        $scope.notificationSortDirection = sortInfo.direction;
+        $scope.notificationPage = 1;
+        reloadNotification();
+    };
+
+    $scope.viewNotification = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.notificationPageSize = undefined;
+        } else {
+            $scope.notificationPageSize = viewInfo;
+        }
+
+        $scope.notificationPage = 1;
+        reloadNotification();
+    };
+
+    reloadNotification();
+
+
+    /* TASK INFO */
+    $scope.taskSortType = 'title'; // set the default sort type
+    $scope.taskSortDirection = true;  // set the default sort order
+    $scope.taskPageSize = 10;
+    $scope.taskPage = 1;
+
+    $scope.viewTaskVariants = ["5", "10", "20", "50", "All"];
+
+//    $scope.taskSortVariants = [
+//        {title: "by Title Asc", type: 'name', direction: true},
+//        {title: "by Title Desc", type: 'name', direction: false},
+//        {title: "by Status Asc", type: 'status', direction: true},
+//        {title: "by Status Desc", type: 'status', direction: false}
+//    ];
+
+    $scope.myTasksSortVariants = [
+        {value: 'created_at',
+         option: 'by Date'},
+        {value: 'created_by',
+         option: 'by Author'},
+//        {value: '',
+//         option: 'by Project'},
+        {value: 'type',
+         option: 'by Type'},
+        {value: 'label',
+         option: 'by Lable'},
+        {value: 'status',
+         option: 'by Status'}
+      ];
+
+    $scope.allTasksSortVariants = [
+        {value: 'members',
+         option: 'by Member'},
+        {value: 'created_at',
+         option: 'by Date'},
+        {value: 'created_by',
+         option: 'by Author'},
+//        {value: '',
+//         option: 'by Project'},
+        {value: 'type',
+         option: 'by Type'},
+        {value: 'label',
+         option: 'by Lable'},
+        {value: 'status',
+         option: 'by Status'}
+      ];
+
+    var reloadTask = function() {
+        var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
+        var params = {
+            'page': $scope.taskPage,
+            'page_size': $scope.taskPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+
+        taskService.get(params, function (data) {
+            $scope.tasks = {}
+            $scope.tasks.data = data.results;
+            $scope.tasks.count = $scope.tasks.data.length;
+        });
+    };
+
+    $scope.taskSort = function(sortInfo) {
+        $scope.taskSortType = sortInfo.type;
+        $scope.taskSortDirection = sortInfo.direction;
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    $scope.viewTask = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.taskPageSize = undefined;
+        } else {
+            $scope.taskPageSize = viewInfo;
+        }
+
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    reloadTask();
+
+
+
+
+
 
 
 /* for popup */
@@ -38,7 +232,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         };
 
 
-
     $scope.getStatuses = function () {
         return ['breakthrough', 'in_progress', 'finished', 'undefined'];
     };
@@ -49,45 +242,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
 /* end - for popup */
 
-//angular.module('userApp').controller('tasksCtrl', ['$scope', function($scope){
-
-//    /* Test table data */
-//    $scope.desserts = {
-//        "count": 9,
-//        "data": [
-//            {
-//                "name": "Fifty yogurt",
-//                "type": "Ice cream",
-//                "calories": { "value": 159.0 },
-//                "fat": { "value": 6.0 },
-//                "carbs": { "value": 24.0 },
-//                "protein": { "value": 4.0 },
-//                "sodium": { "value": 87.0 },
-//                "calcium": { "value": 14.0 },
-//                "iron": { "value": 1.0 }
-//            }, {
-//                "name": "Cupcake",
-//                "type": "Pastry",
-//                "calories": { "value":  305.0 },
-//                "fat": { "value": 3.7 },
-//                "carbs": { "value": 67.0 },
-//                "protein": { "value": 4.3 },
-//                "sodium": { "value": 413.0 },
-//                "calcium": { "value": 3.0 },
-//                "iron": { "value": 8.0 }
-//            }, {
-//                "name": "Jelly bean",
-//                "type": "Candy",
-//                "calories": { "value":  375.0 },
-//                "fat": { "value": 0.0 },
-//                "carbs": { "value": 94.0 },
-//                "protein": { "value": 0.0 },
-//                "sodium": { "value": 50.0 },
-//                "calcium": { "value": 0.0 },
-//                "iron": { "value": 0.0 }
-//            }
-//        ]
-//    };
 
     $scope.editComment = function (event, dessert) {
         event.stopPropagation(); // in case autoselect is enabled
@@ -166,22 +320,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
     ];
 
-    $scope.sortVariants = [
-          "by Date",
-          "by User",
-          "by Project",
-          "by Type",
-          "by Label",
-          "by Status"
-      ];
 
-    $scope.viewVariants = [
-          "5",
-          "10",
-          "20",
-          "50",
-          "All"
-      ];
     /* Test activity data end */
 }]);
 
