@@ -14,6 +14,7 @@ from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework import exceptions
 
+from chi_django_base.paginators import StandardResultsSetPagination
 from activity.serializers import ActivitySerializer
 from activity.filters import ActivityFilter
 from activity.models import Activity
@@ -152,6 +153,7 @@ class TaskList(generics.ListCreateAPIView):
     filter_class = ProjectTaskFilter
     search_fields = ('name', 'description', 'status', 'type', 'label', 'tags__name')
     ordering_fields = ('name', 'description', 'status', 'type', 'label')
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
         current_user = self.request.user

@@ -15,10 +15,6 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     })
 
 
-
-
-
-
 //// get all data,filter by name of selected object
 //    taskService.get(function (data) {
 //        $scope.tasks = {}
@@ -204,13 +200,13 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 //          },
       ];
 
-    $scope.viewVariants = [
-          "5",
-          "10",
-          "20",
-          "50",
-          "All"
-      ];
+//    $scope.viewVariants = [
+//          "5",
+//          "10",
+//          "20",
+//          "50",
+//          "All"
+//      ];
 
 }]);
 

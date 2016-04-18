@@ -6,13 +6,7 @@ from rest_framework import filters
 from activity.serializers import ActivitySerializer
 from activity.models import Activity
 from activity.filters import ActivityFilter
-from rest_framework.pagination import PageNumberPagination
-
-
-class StandardResultsSetPagination(PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 1000
+from chi_django_base.paginators import StandardResultsSetPagination
 
 
 class SingleActivity(GenericAPIView):
