@@ -1,4 +1,7 @@
-from serializers import ProjectSerializer, TaskSerializer, ProjectCommentSerializer, TaskCommentSerializer
+from serializers import (
+    ProjectSerializer, TaskSerializer, ProjectCommentSerializer,
+    TaskCommentSerializer, TagSerializer
+)
 from rest_framework import status
 from projects.models import Project, Task, ProjectComment, TaskComment
 from django.db.models import Q
@@ -6,9 +9,6 @@ from django.db.models import Q
 from rest_framework import filters
 from rest_framework import generics
 from django_filters import FilterSet, NumberFilter, CharFilter, IsoDateTimeFilter
-
-from django.http import Http404
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -294,6 +294,8 @@ class ProjectActivity(generics.ListAPIView):
 
 
 class ProjectDetailTag(generics.GenericAPIView):
+    serializer_class = TagSerializer
+
     def get_project(self, pk):
         try:
             pr = Project.objects.get(pk=pk)
@@ -320,10 +322,7 @@ class ProjectDetailTag(generics.GenericAPIView):
         if tag_name not in pr.tags.names():
             pr.tags.add(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully added to project {}.".format(tag_name, pr.name)},
-            status=status.HTTP_200_OK
-        )
+        return Response({"results": TagSerializer(pr.tags, many=True).data})
 
     def delete(self, request, pk, tag_name):
         """
@@ -334,13 +333,12 @@ class ProjectDetailTag(generics.GenericAPIView):
 
         pr.tags.remove(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully removed from project {}.".format(tag_name, pr.name)},
-            status=status.HTTP_204_NO_CONTENT
-        )
+        return Response({"results": TagSerializer(pr.tags, many=True).data})
 
 
 class TaskDetailTag(generics.GenericAPIView):
+    serializer_class = TagSerializer
+
     def get_project(self, pk):
         try:
             task = Task.objects.select_related("project").get(pk=pk)
@@ -367,10 +365,7 @@ class TaskDetailTag(generics.GenericAPIView):
         if tag_name not in task.tags.names():
             task.tags.add(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully added to task {}.".format(tag_name, task.name)},
-            status=status.HTTP_200_OK
-        )
+        return Response({"results": TagSerializer(task.tags, many=True).data})
 
     def delete(self, request, pk, tag_name):
         """
@@ -381,12 +376,7 @@ class TaskDetailTag(generics.GenericAPIView):
 
         task.tags.remove(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully removed from task {}.".format(tag_name, task.name)},
-            status=status.HTTP_204_NO_CONTENT
-        )
-
-
+        return Response({"results": TagSerializer(task.tags, many=True).data})
 
 
 class ProjectCommentFilter(FilterSet):
