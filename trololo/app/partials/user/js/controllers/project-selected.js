@@ -1,5 +1,5 @@
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService)
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log)
 {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
@@ -89,6 +89,13 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
                 $scope.project.tags = response.results;
             }
         ).results;
+    };
+
+    $scope.newTag = function(tag) {
+        $scope.new_tag = tag;
+        return {
+            'name': tag
+        };
     };
 
     /* ACTIVITY INFO */
