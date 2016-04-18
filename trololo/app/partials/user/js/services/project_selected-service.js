@@ -16,3 +16,11 @@ angular.module('userApp').factory('projectSelectedService', function($resource, 
         }
     );
 });
+
+angular.module('userApp').factory('project_tagService', function($resource, $cookies) {
+    return $resource("/projects\/:id\/tag\/:tag_name\/", {},
+        { 'add_tag':    {method:'PUT', params: {id: '@id', tag_name: '@tag_name'}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
+          'delete_tag': {method:'DELETE', params: {id: '@id', tag_name: '@tag_name'}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}}
+        }
+    );
+});

@@ -1,5 +1,5 @@
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService)
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService)
 {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
@@ -66,7 +66,30 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         $scope.project = data;
     });
 
+    // TAG manipulations
+    $scope.new_tag = '';
 
+    $scope.addTag = function() {
+        console.log('add tag' + $scope.new_tag);
+        if ($scope.new_tag !== '') {
+            project_tagService.add_tag(
+                {'id': $routeParams.id, 'tag_name': $scope.new_tag}, function(response) {
+                    $scope.project.tags = response.results;
+                    $scope.new_tag = '';
+                }
+            );
+        };
+    };
+
+    $scope.removeTag = function(tag) {
+        tag_name = tag.name;
+
+        project_tagService.delete_tag(
+            {'id': $routeParams.id, 'tag_name': tag_name}, function(response) {
+                $scope.project.tags = response.results;
+            }
+        ).results;
+    };
 
     /* ACTIVITY INFO */
     $scope.activitySortType = 'created_at'; // set the default sort type

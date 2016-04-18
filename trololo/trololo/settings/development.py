@@ -114,7 +114,7 @@ SWAGGER_SETTINGS = {
     'unauthenticated_user': 'django.contrib.auth.models.AnonymousUser',
     'permission_denied_handler': None,
     'resource_access_handler': None,
-    'base_path':'127.0.0.1:8000/docs',
+    'base_path':'localhost:8000/docs',
     'info': {
         'contact': '',
         'description': '',

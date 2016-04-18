@@ -12,15 +12,26 @@
                 </menu-link>
             </li>
         </ul>
-        <div ng-show="task != undefined">
-            <ul>
-                <li ng-repeat="tag in task.tags track by $index">
-                    {{tag.name}}
+        <div ng-show="task != undefined || project != undefined">
+            <form ng-submit="addTag()">
+                <label>Add tag: <input type="text" ng-model="$parent.new_tag" /></label>
+            </form>
+            <ul id="tag-list">
+                <li ng-if="task != undefined" ng-repeat="tag in task.tags track by $index" class="editing">
+                    <div class="view">
+                        <label>{{tag.name}}</label>
+                        <button class="destroy" ng-click="removeTag(tag)"></button>
+                    </div>
+
+                </li>
+                <li ng-if="project != undefined" ng-repeat="tag in project.tags track by $index" class="editing">
+                    <div class="view">
+                        <label>{{tag.name}}</label>
+                        <button class="destroy" ng-click="removeTag(tag)"></button>
+                    </div>
+
                 </li>
             </ul>
-            <form ng-submit="addTag()">
-                <input type="text" ng-model="$parent.new_tag" />
-            </form>
         </div>
 
     </md-content>
