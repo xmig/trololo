@@ -48,7 +48,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     
     owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
 
-    tags = TagSerializer(many=True, read_only=False)
+    tags = TagSerializer(many=True, read_only=False, required=False)
 
     class Meta:
         model = Project
@@ -186,7 +186,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
-    tags = TagSerializer(many=True, read_only=False)
+    tags = TagSerializer(many=True, read_only=False, required=False)
 
     owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
 
