@@ -9,6 +9,7 @@ angular.module('mainApp')
                     templateUrl: 'login.tmpl.html',
                     parent: angular.element(document.body),
                     targetEvent: ev,
+                    scope: $scope,
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 })
