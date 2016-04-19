@@ -10,24 +10,19 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
     console.log("---", $routeParams.taskid);
 
-    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+    task_selectedService.get({"id": $routeParams.taskid}, function(response) {
          console.log($scope.task);
+         $scope.task = response;
     })
 
     // TAG manipulations
-    $scope.new_tag = '';
-
-    $scope.addTag = function() {
-        console.log('add tag' + $scope.new_tag);
-        if ($scope.new_tag !== '') {
-            task_tagService.add_tag(
-                {'id': $routeParams.taskid, 'tag_name': $scope.new_tag}, function(response) {
-                    $log.debug($scope.task);
-                    $scope.task.tags = response.results;
-                    $scope.new_tag = '';
-                }
-            );
-        };
+    $scope.addTag = function(tag) {
+        task_tagService.add_tag(
+            {'id': $routeParams.taskid, 'tag_name': tag.name}, function(response) {
+            }, function () {
+                $scope.task.tags.splice($scope.task.tags.length - 1, 1);
+            }
+        );
     };
 
     $scope.removeTag = function(tag) {
@@ -35,10 +30,14 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
         task_tagService.delete_tag(
             {'id': $routeParams.taskid, 'tag_name': tag_name}, function(response) {
-                $scope.task.tags = response.results;
-                $log.debug($scope.task);
+            }, function () {
+                $scope.task.tags.push(tag);
             }
-        ).results;
+        );
+    };
+
+    $scope.newTag = function(tag) {
+        return {'name': tag};
     };
 
 //// get all data,filter by name of selected object

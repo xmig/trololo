@@ -67,18 +67,13 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     });
 
     // TAG manipulations
-    $scope.new_tag = '';
-
-    $scope.addTag = function() {
-        console.log('add tag' + $scope.new_tag);
-        if ($scope.new_tag !== '') {
-            project_tagService.add_tag(
-                {'id': $routeParams.id, 'tag_name': $scope.new_tag}, function(response) {
-                    $scope.project.tags = response.results;
-                    $scope.new_tag = '';
-                }
-            );
-        };
+    $scope.addTag = function(tag) {
+        project_tagService.add_tag(
+            {'id': $routeParams.id, 'tag_name': tag.name}, function(response) {
+            }, function () {
+                $scope.project.tags.splice($scope.project.tags.length - 1, 1);
+            }
+        );
     };
 
     $scope.removeTag = function(tag) {
@@ -86,16 +81,14 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 
         project_tagService.delete_tag(
             {'id': $routeParams.id, 'tag_name': tag_name}, function(response) {
-                $scope.project.tags = response.results;
+            }, function () {
+                $scope.project.tags.push(tag);
             }
-        ).results;
+        );
     };
 
     $scope.newTag = function(tag) {
-        $scope.new_tag = tag;
-        return {
-            'name': tag
-        };
+        return {'name': tag};
     };
 
     /* ACTIVITY INFO */
