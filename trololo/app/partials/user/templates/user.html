@@ -12,26 +12,27 @@
                 </menu-link>
             </li>
         </ul>
+
         <div ng-show="task != undefined || project != undefined">
-            <form ng-submit="addTag()">
-                <label>Add tag: <input type="text" ng-model="$parent.new_tag" /></label>
-            </form>
-            <ul id="tag-list">
-                <li ng-if="task != undefined" ng-repeat="tag in task.tags track by $index" class="editing">
-                    <div class="view">
-                        <label>{{tag.name}}</label>
-                        <button class="destroy" ng-click="removeTag(tag)"></button>
-                    </div>
+            <md-chips ng-if="task != undefined" class="custom-chips" ng-model="task.tags" placeholder="Enter a tag"
+                md-transform-chip="newTag($chip)" md-on-add="addTag($chip)"
+                md-on-remove="removeTag($chip)" secondary-placeholder="+Tag">
+              <md-chip-template>
+                <span>
+                  <strong class="tags_list">{{$chip.name}}</strong>
+                </span>
+              </md-chip-template>
+            </md-chips>
 
-                </li>
-                <li ng-if="project != undefined" ng-repeat="tag in project.tags track by $index" class="editing">
-                    <div class="view">
-                        <label>{{tag.name}}</label>
-                        <button class="destroy" ng-click="removeTag(tag)"></button>
-                    </div>
-
-                </li>
-            </ul>
+            <md-chips ng-if="project != undefined" class="custom-chips" ng-model="project.tags" placeholder="Enter a tag"
+                md-transform-chip="newTag($chip)" md-on-add="addTag($chip)"
+                md-on-remove="removeTag($chip)" secondary-placeholder="+Tag">
+              <md-chip-template>
+                <span>
+                  <strong class="tags_list">{{$chip.name}}</strong>
+                </span>
+              </md-chip-template>
+            </md-chips>
         </div>
 
     </md-content>

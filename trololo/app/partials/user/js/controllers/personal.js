@@ -7,6 +7,7 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     $scope.userAdditionData = {};
     $scope.myFile = {};
     $scope.showModal = false;
+    $scope.showSocialLinks = Object.keys($scope.social_links).length > 0;
 
     personalInfoService.get(function (data) {
         $scope.userAdditionData = {

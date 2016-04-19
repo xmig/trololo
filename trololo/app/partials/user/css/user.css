@@ -150,56 +150,6 @@
     color: #ffffff;
 }
 
-#tag-list li {
-	position: relative;
-	font-size: 20px;
-	border-bottom: 1px solid #ededed;
-}
-
-li .destroy {
-	display: none;
-	position: absolute;
-	top: 0;
-	right: 50px;
-	bottom: 0;
-	width: 40px;
-	height: 40px;
-	margin: auto 0;
-	font-size: 30px;
-	color: #cc9a9a;
-	margin-bottom: 0px;
-	transition: color 0.2s ease-out;
-}
-
-li .destroy:hover {
-	color: #af5b5e;
-}
-
-li .destroy:after {
-	content: '×';
-}
-
-li:hover .destroy {
-	display: block;
-}
-
-#tag-list li label {
-	white-space: pre;
-	word-break: break-word;
-	padding: 5px 20px 5px 5px;
-	margin-left: 5px;
-	display: block;
-	line-height: 1.2;
-	transition: color 0.4s;
-}
-
-#tag-list li.editing {
-	border-bottom: none;
-	padding: 0;
-}
-
-#tag-list {
-	margin: 0;
-	padding: 0;
-	list-style: none;
+.tags_list {
+    font-size:13px;
 }
