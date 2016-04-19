@@ -38,7 +38,7 @@
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
                             <div ng-repeat="member in task.members" class="member-cell">
-                                <a ng-href="#" class="user-link-name">{{member.username}}</a> <br>
+                                <a ng-href="#" class="user-link-name">{{member.username}}</a><br>
                                 ({{member.email}})
                             </div>
                         </td>
@@ -60,9 +60,7 @@
                 <!--</div>-->
             <!--</md-toolbar>-->
 
-            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{count.count}}"
-                                 md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
-                                 md-on-paginate="logPagination"></md-table-pagination>
+            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}" md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
         </md-card>
 
         <md-card>

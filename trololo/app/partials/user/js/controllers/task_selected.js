@@ -7,33 +7,11 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     $scope.partialPath = '/static/user/templates/task_selected.html';
 
     //$scope.location = $routeParams.userLocation;
-
-    console.log("---", $routeParams.taskid)
+    //console.log("---", $routeParams.taskid)
 
     $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
          console.log($scope.task);
     })
-
-
-//// get all data,filter by name of selected object
-//    taskService.get(function (data) {
-//        $scope.tasks = {}
-//        $scope.tasks.data = data.results;
-////        $scope.tasks.count = $scope.tasks.data.length;
-////        console.log($routeParams)
-////        console.log($scope.tasks.data)
-//
-//        $scope.name = $routeParams.taskname;
-//
-//        var tasks = data.results;
-//        $scope.task = tasks.filter(function(entry){
-//            return entry.name === $scope.name;
-//        })[0];
-////        console.log(tasks)
-//        console.log($scope.task.activity)
-//
-//    });
-////
 
 
     $scope.leftSidebarList = [
@@ -129,11 +107,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     $scope.getTypes = function () {
         return ['bug', 'feature', 'undefined'];
     };
-
 /* end - for popup */
-
-//angular.module('userApp').controller('tasksCtrl', ['$scope', function($scope){
-
 
 
     $scope.editComment = function (event, dessert) {
@@ -178,15 +152,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     $scope.getTypes = function () {
         return ['Candy', 'Ice cream', 'Other', 'Pastry'];
     };
-    /* Test table data end */
 
-
-    $scope.my_notifications = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
 
     $scope.sortVariants = [
           {value: "created_at",
@@ -200,29 +166,5 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 //          },
       ];
 
-//    $scope.viewVariants = [
-//          "5",
-//          "10",
-//          "20",
-//          "50",
-//          "All"
-//      ];
 
 }]);
-
-
-///* for popup */
-//function DialogController($scope, $mdDialog) {
-//  $scope.hide = function() {
-//    $mdDialog.hide();
-//  };
-//
-//  $scope.cancel = function() {
-//    $mdDialog.cancel();
-//  };
-//
-//  $scope.answer = function(answer) {
-//    $mdDialog.hide(answer);
-//  };
-//}
-///* end - for popup */
