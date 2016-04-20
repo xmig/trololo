@@ -13,9 +13,11 @@
                 User photo upload
                 -->
                 <md-card-title-media>
-                    <div class="md-media-md card-media">
+                    <div class="md-media-md card-media img_block">
                         <label for="file-input">
-                            <img ng-src="{{userPersonalData.photo}}" class="md-card-image" alt="User avatar" />
+                                <img ng-src="{{userPersonalData.photo}}" class="md-card-image" alt="User avatar" />
+                                <div class="over_block"></div>
+                                <span>Upload photo</span>
                         </label>
 
                         <input id="file-input" type="file" file-model="myFile" />
@@ -25,6 +27,15 @@
             </md-card-title>
             <md-card-actions layout="row" layout-align="start center">
                 <md-button class="md-primary md-button md-ink-ripple" ng-click="popChangePwd($event)">Change password</md-button>
+            </md-card-actions>
+            <md-card-actions layout-align="start center" ng-show="showSocialLinks">
+                <span class="md-subhead">Assign social accounts:</span><br /><br />
+                <span ng-repeat="link in social_links | orderBy: 'name' track by $index ">
+                    <md-button class="md-primary md-button md-ink-ripple" target="_blank"
+                               ng-href="{{link.link}}" ng-disabled="checkSocial(link.name)">
+                        {{link.name}}
+                    </md-button>
+                </span>
             </md-card-actions>
 
         </md-card>

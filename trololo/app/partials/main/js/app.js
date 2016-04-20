@@ -112,7 +112,25 @@ angular.module('mainApp', [
                     }]
                 }
             })
-            .when('/user/tasks/:taskname', {
+            .when('/user/profile/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'userinfoCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/404', {
+                templateUrl: '/static/user/templates/404_not_found.html',
+                controller: 'MainCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus();
+                    }]
+                }
+            })
+            .when('/user/tasks/:taskid', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'task_selectedCtrl',
                 resolve: {

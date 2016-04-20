@@ -12,6 +12,29 @@
                 </menu-link>
             </li>
         </ul>
+
+        <div ng-show="task != undefined || project != undefined">
+            <md-chips ng-if="task != undefined" class="custom-chips" ng-model="task.tags" placeholder="Enter a tag"
+                md-transform-chip="newTag($chip)" md-on-add="addTag($chip)"
+                md-on-remove="removeTag($chip)" secondary-placeholder="+Tag">
+              <md-chip-template>
+                <span>
+                  <strong class="tags_list">{{$chip.name}}</strong>
+                </span>
+              </md-chip-template>
+            </md-chips>
+
+            <md-chips ng-if="project != undefined" class="custom-chips" ng-model="project.tags" placeholder="Enter a tag"
+                md-transform-chip="newTag($chip)" md-on-add="addTag($chip)"
+                md-on-remove="removeTag($chip)" secondary-placeholder="+Tag">
+              <md-chip-template>
+                <span>
+                  <strong class="tags_list">{{$chip.name}}</strong>
+                </span>
+              </md-chip-template>
+            </md-chips>
+        </div>
+
     </md-content>
 </md-sidenav>
 <md-content layout="column" flex>

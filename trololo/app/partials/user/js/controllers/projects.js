@@ -26,6 +26,7 @@ function($scope, $http, projectService, activityListService, taskService){
     ];
 
     var reloadActivity = function() {
+    console.log();
         var sorting = ($scope.activitySortDirection ? '' : '-') + $scope.activitySortType;
         var params = {
             'page': $scope.activityPage,

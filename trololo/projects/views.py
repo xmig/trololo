@@ -1,4 +1,7 @@
-from serializers import ProjectSerializer, TaskSerializer, ProjectCommentSerializer, TaskCommentSerializer
+from serializers import (
+    ProjectSerializer, TaskSerializer, ProjectCommentSerializer,
+    TaskCommentSerializer, TagSerializer
+)
 from rest_framework import status
 from projects.models import Project, Task, ProjectComment, TaskComment
 from django.db.models import Q
@@ -6,9 +9,6 @@ from django.db.models import Q
 from rest_framework import filters
 from rest_framework import generics
 from django_filters import FilterSet, NumberFilter, CharFilter, IsoDateTimeFilter
-
-from django.http import Http404
-
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -28,7 +28,10 @@ def api_root(request, format=None):
         'users': reverse('users:user_list', request=request),
         'projects': reverse('projects:projects', request=request),
         'tasks': reverse('tasks:tasks', request=request),
-        'status': reverse('statuses:status', request=request)
+        'status': reverse('statuses:status', request=request),
+        'comments_projects': reverse('comments_projects:comments', request=request),
+        'comments_tasks': reverse('comments_tasks:comments', request=request),
+
     })
 
 
@@ -132,11 +135,12 @@ class ProjectTaskFilter(FilterSet):
     type = CharFilter(name='type', lookup_expr='icontains')
     label = CharFilter(name='label', lookup_expr='icontains')
     tag = CharFilter(name='tags__name')
+    group = NumberFilter(name='group', lookup_expr='exact')
 
     class Meta:
         model = Task
         fields = [
-            'name', 'description', 'status', 'type', 'label', 'tags__name', 'project'
+            'name', 'description', 'status', 'type', 'label', 'tags__name', 'project', 'group'
         ]
 
 
@@ -155,7 +159,9 @@ class TaskList(generics.ListCreateAPIView):
         proj = [
             pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
         ]
-        return Task.objects.filter(project__id__in=proj)
+        return Task.objects.select_related('project', "created_by", "updated_by") \
+                   .prefetch_related("activity", "tags", "members", "task_comments").filter(project__id__in=proj)
+
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data, context={'request': request})
@@ -291,6 +297,8 @@ class ProjectActivity(generics.ListAPIView):
 
 
 class ProjectDetailTag(generics.GenericAPIView):
+    serializer_class = TagSerializer
+
     def get_project(self, pk):
         try:
             pr = Project.objects.get(pk=pk)
@@ -317,10 +325,7 @@ class ProjectDetailTag(generics.GenericAPIView):
         if tag_name not in pr.tags.names():
             pr.tags.add(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully added to project {}.".format(tag_name, pr.name)},
-            status=status.HTTP_200_OK
-        )
+        return Response({"results": TagSerializer(pr.tags, many=True).data})
 
     def delete(self, request, pk, tag_name):
         """
@@ -331,13 +336,12 @@ class ProjectDetailTag(generics.GenericAPIView):
 
         pr.tags.remove(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully removed from project {}.".format(tag_name, pr.name)},
-            status=status.HTTP_204_NO_CONTENT
-        )
+        return Response({"results": TagSerializer(pr.tags, many=True).data})
 
 
 class TaskDetailTag(generics.GenericAPIView):
+    serializer_class = TagSerializer
+
     def get_project(self, pk):
         try:
             task = Task.objects.select_related("project").get(pk=pk)
@@ -364,10 +368,7 @@ class TaskDetailTag(generics.GenericAPIView):
         if tag_name not in task.tags.names():
             task.tags.add(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully added to task {}.".format(tag_name, task.name)},
-            status=status.HTTP_200_OK
-        )
+        return Response({"results": TagSerializer(task.tags, many=True).data})
 
     def delete(self, request, pk, tag_name):
         """
@@ -378,51 +379,199 @@ class TaskDetailTag(generics.GenericAPIView):
 
         task.tags.remove(tag_name)
 
-        return Response(
-            {"detail": "Tag {} was successfully removed from task {}.".format(tag_name, task.name)},
-            status=status.HTTP_204_NO_CONTENT
-        )
+        return Response({"results": TagSerializer(task.tags, many=True).data})
 
 
+class ProjectCommentFilter(FilterSet):
+     title = CharFilter(name='title', lookup_expr='exact')
+     comment = CharFilter(name='comment', lookup_expr='icontains')
+     project = NumberFilter(name='project__id')
 
-#
-# class ProjectCommentFilter(FilterSet):
-#      title = CharFilter(name='title', lookup_expr='exact')
-#      comment = CharFilter(name='comment', lookup_expr='icontains')
-#
-#      class Meta:
-#          model = ProjectComment
-#          fields = ['title', 'comment']
-#
-# class ProjectCommentList(generics.ListAPIView):
-#     serializer_class = ProjectCommentSerializer
-#     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-#     filter_class = ProjectCommentFilter
-#     search_fields = ('title', 'comment')
-#     ordering_fields = ('title')
-#
-#
-#     def get_queryset(self):
-#         current_user = self.request.user
-#         proj = [
-#             pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
-#         ]
-#         return ProjectComment.objects.filter(project__id__in=proj)
-#
-#     def post(self, request):
-#         serializer = ProjectCommentSerializer(data=request.data, context={'request': request})
-#
-#         if serializer.is_valid():
-#             serializer.save()
-#
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-#
-# class ProjectCommentDetail(generics.GenericAPIView):
-#     serializer_class = ProjectCommentSerializer
-#     queryset = ProjectComment.objects.all()
-#
-#     def get_object(self,pk):
-#         try:
-#             comment = ProjectComment.
+     class Meta:
+         model = ProjectComment
+         fields = ['title', 'comment', 'project']
+
+class ProjectCommentList(generics.ListCreateAPIView):
+    serializer_class = ProjectCommentSerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = ProjectCommentFilter
+    search_fields = ('title', 'comment')
+    ordering_fields = ('title', 'id')
+
+
+    def get_queryset(self):
+        current_user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
+
+        return ProjectComment.objects.filter(project__id__in=proj)
+
+    def post(self, request):
+        serializer = self.get_serializer_class()(data=request.data, context={'request': request})
+        user = request.user
+
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+        if serializer.is_valid():
+            project = serializer.validated_data['project'].id
+            if project not in proj:
+                return Response(
+                    {'detail':"You don't have access permissions for project with id {}".format(project)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProjectCommentDetail(generics.GenericAPIView):
+    serializer_class = ProjectCommentSerializer
+    queryset = ProjectComment.objects.all()
+
+    def get_object(self,pk):
+        try:
+            comment = ProjectComment.objects.select_related('project').get(pk=pk)
+        except ProjectComment.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Comment with id {} does not exist.".format(pk)
+            )
+
+        user = self.request.user
+
+        if comment.project.created_by != user and user not in comment.project.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for comment with id {}".format(pk)
+            )
+        return comment
+
+    def get(self, request, pk):
+        comment= self.get_object(pk)
+        serializer = ProjectCommentSerializer(comment, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        comment = self.get_object(pk)
+        serializer = ProjectCommentSerializer(comment, data=request.data, context={'request': request})
+        user = self.request.user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+        if serializer.is_valid():
+            project = serializer.validated_data['project'].id
+
+            if project not in proj:
+                return Response(
+                    {'detail':"You don't have access permissions for project with id {}".format(project)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            serializer.save()
+
+            return Response(serializer.data)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        comment = self.get_object(pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class TaskCommentFilter(FilterSet):
+     title = CharFilter(name='title', lookup_expr='exact')
+     comment = CharFilter(name='comment', lookup_expr='icontains')
+     task = NumberFilter(name='task__id')
+
+     class Meta:
+         model = TaskComment
+         fields = ['title', 'comment', 'task']
+
+
+class TaskCommentList(generics.ListCreateAPIView):
+    serializer_class = TaskCommentSerializer
+    filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
+    filter_class = TaskCommentFilter
+    search_fields = ('title', 'comment')
+    ordering_fields = ('title', 'id')
+
+    def get_queryset(self):
+        current_user = self.request.user
+        tas = [
+            t.id for t in Task.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
+        ]
+
+        return TaskComment.objects.filter(task__id__in=tas)
+
+    def post(self, request):
+        serializer = self.get_serializer_class()(data=request.data, context={'request': request})
+        user = request.user
+
+        tas = [
+            t.id for t in Task.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+
+        if serializer.is_valid():
+            task = serializer.validated_data['task'].id
+
+            if task not in tas:
+                return Response(
+                    {'detail':"You don't have access permissions for task with id {}".format(task)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TaskCommentDetail(generics.GenericAPIView):
+    serializer_class = TaskCommentSerializer
+    queryset = TaskComment.objects.all()
+
+    def get_object(self,pk):
+        try:
+            comment = TaskComment.objects.select_related('task').get(pk=pk)
+        except TaskComment.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Comment with id {} does not exist.".format(pk)
+            )
+
+        user = self.request.user
+
+        if comment.task.created_by != user and user not in comment.task.members.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for comment with id {}".format(pk)
+            )
+        return comment
+
+    def get(self, request, pk):
+        comment= self.get_object(pk)
+        serializer = TaskCommentSerializer(comment, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        comment = self.get_object(pk)
+        serializer = TaskCommentSerializer(comment, data=request.data, context={'request': request})
+        user = self.request.user
+        tas = [
+            t.id for t in Task.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+        if serializer.is_valid():
+            task = serializer.validated_data['task'].id
+
+            if task not in tas:
+                return Response(
+                    {'detail':"You don't have access permissions for project with id {}".format(task)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            serializer.save()
+
+            return Response(serializer.data)
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        comment = self.get_object(pk)
+        comment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
