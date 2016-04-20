@@ -22,6 +22,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
         //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
     ];
+
     $scope.isSectionSelected = function(section){
         return section === $scope.location;
     };

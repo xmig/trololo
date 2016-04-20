@@ -1,84 +1,19 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService', '$mdDialog', '$mdMedia',
-    function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams){
     taskService.get(function (data) {
 
+    $scope.toggleLeft = buildDelayedToggler('left');
+    $scope.toggleRight = buildToggler('right');
+    $scope.isOpenRight = function(){
+        return $mdSidenav('right').isOpen();
+    };
+    $scope.partialPath = '/static/user/templates/task_selected.html';
 
-console.log('data!!', data)
+
+//console.log(data)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
     });
-
-
-// for dropdown in popup <choose projects>
-    $scope.projects = projectService.get(function(data) {
-//        $scope.projects.data = data.results;
-        console.log("---------------", data)
-    })
-
-
-
-/* for datepicker */
-     $scope.myDate = new Date();
-
-     $scope.minDate = new Date(
-         $scope.myDate.getFullYear(),
-         $scope.myDate.getMonth() - 2,
-         $scope.myDate.getDate());
-
-     $scope.maxDate = new Date(
-         $scope.myDate.getFullYear(),
-         $scope.myDate.getMonth() + 2,
-         $scope.myDate.getDate());
-
-     $scope.onlyWeekendsPredicate = function(date) {
-        var day = date.getDay();
-        return day === 0 || day === 6;
-     }
-
-
-
-/* for popup */
-    $scope.popRegistr = function (ev) {
-            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
-            $mdDialog.show({
-                    scope: $scope,        // use parent scope in template
-                    preserveScope: true,  // use parent scope
-                    controller: DialogController,
-                    templateUrl: 'register.tmpl.html',
-                    parent: angular.element(document.body),
-                    targetEvent: ev,
-                    clickOutsideToClose: true,
-                    fullscreen: useFullScreen
-                })
-                .then(function (answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
-                }, function () {
-                    $scope.status = 'You cancelled the dialog.';
-                    if($scope.complete){
-                        $scope.registerComplete(ev);
-                    }
-                    $rootScope.$broadcast('registrationComplete', false);
-                });
-
-            $scope.$watch(function () {
-                return $mdMedia('xs') || $mdMedia('sm');
-            }, function (wantsFullScreen) {
-                $scope.customFullscreen = (wantsFullScreen === true);
-            });
-        };
-
-
-
-    $scope.getStatuses = function () {
-        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-    };
-
-    $scope.getTypes = function () {
-        return ['bug', 'feature', 'undefined'];
-    };
-/* end - for popup */
-
 
 
 
@@ -232,96 +167,6 @@ console.log('data!!', data)
          option: 'by Status'}
       ];
 
-// HARDCODE !!!
-    $scope.labels = [
-        {value: 'undefined',
-         option: 'Undefined'},
-        {value: 'red',
-         option: 'Red'},
-        {value: 'orange',
-         option: 'Orange'},
-        {value: 'green',
-         option: 'Green'},
-    ];
-
-    $scope.types = [
-        {value: 'undefined',
-         option: 'Undefined'},
-        {value: 'bug',
-         option: 'Bug'},
-        {value: 'feature',
-         option: 'Feature'}
-    ];
-
-    $scope.statuses = [
-        {value: 'undefined',
-         option: 'Undefined'},
-        {value: 'breakthrough',
-         option: 'Breakthrough'},
-        {value: 'in progress',
-         option: 'In progress'},
-        {value: 'finished',
-         option: 'Finished'}
-    ];
-
-
-//for checkbox members//
-    $scope.items = [1,2,3,4,5];
-      $scope.selected = [];
-
-      $scope.toggle = function (item, list) {
-        var idx = list.indexOf(item);
-        if (idx > -1) {
-          list.splice(idx, 1);
-        }
-        else {
-          list.push(item);
-        }
-      };
-
-      $scope.exists = function (item, list) {
-        return list.indexOf(item) > -1;
-      };
-
-/* for standard checkboxes */
-//     $scope.items = [1,2,3,4,5];
-//          $scope.selected = [1];
-//          $scope.toggle = function (item, list) {
-//            var idx = list.indexOf(item);
-//            if (idx > -1) {
-//              list.splice(idx, 1);
-//            }
-//            else {
-//              list.push(item);
-//            }
-//          };
-//
-//          $scope.exists = function (item, list) {
-//            return list.indexOf(item) > -1;
-//          };
-//
-//          $scope.isIndeterminate = function() {
-//            return ($scope.selected.length !== 0 &&
-//                $scope.selected.length !== $scope.items.length);
-//          };
-//
-//          $scope.isChecked = function() {
-//            return $scope.selected.length === $scope.items.length;
-//          };
-//
-//          $scope.toggleAll = function() {
-//            if ($scope.selected.length === $scope.items.length) {
-//              $scope.selected = [];
-//            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-//              $scope.selected = $scope.items.slice(0);
-//            }
-
-
-// END HARDCODE !!!
-
-
-
-
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
@@ -362,6 +207,48 @@ console.log('data!!', data)
 
 
 
+
+
+/* for popup */
+    $scope.popRegistr = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
+                    controller: DialogController,
+//                    templateUrl: 'register.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                    if($scope.complete){
+                        $scope.registerComplete(ev);
+                    }
+                    $rootScope.$broadcast('registrationComplete', false);
+                });
+
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+
+
+    $scope.getStatuses = function () {
+        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+    };
+
+    $scope.getTypes = function () {
+        return ['bug', 'feature', 'undefined'];
+    };
+
+/* end - for popup */
 
 
     $scope.editComment = function (event, dessert) {
@@ -407,12 +294,6 @@ console.log('data!!', data)
         return ['Candy', 'Ice cream', 'Other', 'Pastry'];
     };
     /* Test table data end */
-
-
-
-
-
-
 }]);
 
 
@@ -435,3 +316,173 @@ function DialogController($scope, $mdDialog) {
 
 
 
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams){
+    $scope.toggleLeft = buildDelayedToggler('left');
+    $scope.toggleRight = buildToggler('right');
+    $scope.isOpenRight = function(){
+        return $mdSidenav('right').isOpen();
+    };
+    $scope.partialPath = '/static/user/templates/task_selected.html';
+
+    //$scope.location = $routeParams.userLocation;
+    //console.log("---", $routeParams.taskid)
+
+    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+         console.log($scope.task);
+    })
+
+
+    $scope.leftSidebarList = [
+        {"title": "Personal Info", "link": "personal"},
+        {"title": "Projects", "link": "projects"},
+        {"title": "Tasks", "link": "tasks"},
+        //{"title": "Progress", "link": "progress"},
+        //{"title": "Teams", "link": "teams"},
+        //{"title": "Activity", "link": "activity"},
+    ];
+    $scope.isSectionSelected = function(section){
+        return section === $scope.location;
+    };
+    /**
+     * Supplies a function that will continue to operate until the
+     * time is up.
+     */
+    function debounce(func, wait, context) {
+        var timer;
+
+        return function debounced() {
+            var context = $scope,
+                args = Array.prototype.slice.call(arguments);
+            $timeout.cancel(timer);
+            timer = $timeout(function() {
+                timer = undefined;
+                func.apply(context, args);
+            }, wait || 10);
+        };
+    }
+
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildDelayedToggler(navID) {
+        return debounce(function() {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        }, 200);
+    }
+
+    function buildToggler(navID) {
+        return function() {
+            $mdSidenav(navID)
+                .toggle()
+                .then(function () {
+                    $log.debug("toggle " + navID + " is done");
+                });
+        }
+    }
+
+
+/* for popup */
+    $scope.popRegistr = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
+                    controller: DialogController,
+                    templateUrl: 'register.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                    if($scope.complete){
+                        $scope.registerComplete(ev);
+                    }
+                    $rootScope.$broadcast('registrationComplete', false);
+                });
+
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+
+
+
+    $scope.getStatuses = function () {
+        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+    };
+
+    $scope.getTypes = function () {
+        return ['bug', 'feature', 'undefined'];
+    };
+/* end - for popup */
+
+
+    $scope.editComment = function (event, dessert) {
+        event.stopPropagation(); // in case autoselect is enabled
+
+        var editDialog = {
+            modelValue: dessert.comment,
+            placeholder: 'Add a comment',
+            save: function (input) {
+                if(input.$modelValue === 'Donald Trump') {
+                    return $q.reject();
+                }
+                if(input.$modelValue === 'Bernie Sanders') {
+                    return dessert.comment = 'FEEL THE BERN!'
+                }
+                dessert.comment = input.$modelValue;
+            },
+            targetEvent: event,
+            title: 'Add a comment',
+            validators: {
+                'md-maxlength': 30
+            }
+        };
+
+        var promise;
+
+        if($scope.options.largeEditDialog) {
+            promise = $mdEditDialog.large(editDialog);
+        } else {
+            promise = $mdEditDialog.small(editDialog);
+        }
+
+        promise.then(function (ctrl) {
+            var input = ctrl.getInput();
+
+            input.$viewChangeListeners.push(function () {
+                input.$setValidity('task_test', input.$modelValue !== 'task_test');
+            });
+        });
+    };
+
+    $scope.getTypes = function () {
+        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
+    };
+
+
+    $scope.sortVariants = [
+          {value: "created_at",
+           option: "by Date"
+          },
+          {value: "created_by",
+           option: "by User"
+          },
+//          {value: "comment",
+//           option: "by Type"
+//          },
+      ];
+
+
+}]);

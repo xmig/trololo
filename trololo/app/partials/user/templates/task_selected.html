@@ -50,7 +50,6 @@
                     <md-button ng-click="popRegistr($event)">POPUP__create new task</md-button>  <!--ng-hide="authenticated"-->
                 </div>
             </md-toolbar>
-<!-- for popup end button-->
         </md-card>
 
 
@@ -272,8 +271,8 @@
                                         <form name="myForm">
                                             <md-input-container class="md-block">
                                                 <label>Add a commmment</label>
-                                                <textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>
-                                                <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
+                                                <!--<textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>-->
+                                                <!--<span class="alert" ng-repeat="error in errors.username">{{error}}</span>-->
                                             </md-input-container>
                                             <md-card-actions layout="row" layout-align="end center">
                                                 <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
