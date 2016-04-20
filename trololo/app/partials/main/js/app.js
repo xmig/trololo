@@ -121,6 +121,15 @@ angular.module('mainApp', [
                     }]
                 }
             })
+            .when('/user/projects/create', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'projectCreateCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
             .when('/user/projects/:id', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'projectSelectedCtrl',
@@ -130,6 +139,15 @@ angular.module('mainApp', [
                     }]
                 }
             })
+//            .when('/user/projects/:id/:action', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'projectCreateEditCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
             .otherwise({
                 redirectTo: '/'
             });

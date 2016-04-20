@@ -1,0 +1,59 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
+    <div flex layout="column" ng-controller="nutritionController">
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Create Project</span>
+                    <div flex></div>
+                </div>
+            </md-toolbar>
+
+
+                <md-card class="md-padding">
+                    <form ng-submit="saveProject()">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Project Info</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <div>
+                                <md-input-container class="md-block">
+                                    <label>Name</label>
+                                    <input type="text" name="name" id="name" required
+                                           ng-model="projectData.name">
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Status</label>
+                                    <md-select ng-model="projectData.status" name="status" id="status">
+                                        <md-option ng-value="status.id" ng-repeat="status in projectStatuses">{{ status.title }}</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Visible By</label>
+                                    <md-select ng-model="projectData.visible_by" name="visible_by" id="visible_by">
+                                        <md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-datepicker ng-model="projectData.date_started" md-placeholder="Date Started"></md-datepicker>
+                                <md-datepicker ng-model="projectData.date_finished" md-placeholder="Date Finished"></md-datepicker>
+                                <md-input-container class="md-block">
+                                    <label>Description</label>
+                                    <textarea name="description" id="description"
+                                           ng-model="projectData.description" rows="5"></textarea>
+                                </md-input-container>
+                            </div>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                        </md-card-actions>
+                    </form>
+                </md-card>
+        </md-card>
+    </div>
+</md-content>
+
+
+
+
