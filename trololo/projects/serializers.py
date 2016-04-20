@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
 from activity.serializers import ActivitySerializer
+from django.db.models import Q
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -12,6 +13,23 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = ['name']
+
+
+class StatusSerializer(serializers.ModelSerializer):
+
+    project = serializers.HyperlinkedRelatedField(
+        view_name='projects:projects_detail',
+        queryset=Project.objects.all(),
+        required=True,
+        lookup_field='pk'
+    )
+
+    url = serializers.HyperlinkedIdentityField(
+        view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
+    )
+    class Meta:
+        model = Status
+        fields = ('name', 'order_number', 'url', 'project')
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -149,7 +167,27 @@ class TaskCommentSerializer(serializers.ModelSerializer):
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity', 'id')
 
 
-# from activity.serializers import ActivitySerializer
+class GroupRelatedField(serializers.RelatedField):
+    def get_queryset(self):
+        """
+        Used to get filtered by user list of statuses in browsable API
+        """
+        user = self.context['request'].user
+        proj = [
+            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+        return Status.objects.filter(project__id__in=proj)
+
+    def to_internal_value(self, data):
+        try:
+            status = self.get_queryset().get(id=data)
+        except Status.DoesNotExist:
+            raise serializers.ValidationError(detail="Incorrect tasks group id.")
+        return status
+
+    def to_representation(self, value):
+        return value.id
+
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
@@ -186,6 +224,13 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
+    group = GroupRelatedField(required=False, read_only=False)
+    # group = serializers.PrimaryKeyRelatedField(
+    #     read_only=False,
+    #     required=False,
+    #     queryset=Status.objects.all()
+    # )
+
     tags = TagSerializer(many=True, read_only=False, required=False)
 
     owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
@@ -195,7 +240,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'status', 'members', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
 
@@ -233,11 +278,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         return data
 
 
-
-
-
-
-
 class ProjectCommentSerializer(serializers.ModelSerializer):
 
     project = serializers.HyperlinkedRelatedField(
@@ -267,25 +307,4 @@ class ProjectCommentSerializer(serializers.ModelSerializer):
             'created_at', 'updated_by', 'updated_at', 'activity'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
-
-
-
-
-
-
-class StatusSerializer(serializers.ModelSerializer):
-
-    project = serializers.HyperlinkedRelatedField(
-        view_name='projects:projects_detail',
-        queryset=Project.objects.all(),
-        required=True,
-        lookup_field='pk'
-    )
-
-    url = serializers.HyperlinkedIdentityField(
-        view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
-    )
-    class Meta:
-        model = Status
-        fields = ('name', 'order_number', 'url', 'project')
 

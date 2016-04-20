@@ -135,11 +135,12 @@ class ProjectTaskFilter(FilterSet):
     type = CharFilter(name='type', lookup_expr='icontains')
     label = CharFilter(name='label', lookup_expr='icontains')
     tag = CharFilter(name='tags__name')
+    group = NumberFilter(name='group', lookup_expr='exact')
 
     class Meta:
         model = Task
         fields = [
-            'name', 'description', 'status', 'type', 'label', 'tags__name', 'project'
+            'name', 'description', 'status', 'type', 'label', 'tags__name', 'project', 'group'
         ]
 
 
@@ -158,7 +159,9 @@ class TaskList(generics.ListCreateAPIView):
         proj = [
             pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
         ]
-        return Task.objects.filter(project__id__in=proj)
+        return Task.objects.select_related('project', "created_by", "updated_by") \
+                   .prefetch_related("activity", "tags", "members", "task_comments").filter(project__id__in=proj)
+
 
     def post(self, request):
         serializer = TaskSerializer(data=request.data, context={'request': request})
