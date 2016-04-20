@@ -224,7 +224,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
-    group = GroupRelatedField(required=False, read_only=False)
+    group = GroupRelatedField(required=False, read_only=False, queryset=Status.objects.all())
     # group = serializers.PrimaryKeyRelatedField(
     #     read_only=False,
     #     required=False,
