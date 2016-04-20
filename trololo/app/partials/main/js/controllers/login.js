@@ -2,7 +2,6 @@
 
 angular.module('mainApp')
     .controller('LoginCtrl', function ($scope, $rootScope, $location, djangoAuth, Validate) {
-        console.log($scope.social_links);
         $scope.social_login = {
             'google': '/static/img/google_logo_35x35.png',
             'facebook': '/static/img/facebook-logo_35x35.png',
