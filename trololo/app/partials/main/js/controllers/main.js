@@ -10,6 +10,7 @@ angular.module('mainApp')
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     scope: $scope,
+                    preserveScope: true,
                     clickOutsideToClose: true,
                     fullscreen: useFullScreen
                 })
