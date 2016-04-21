@@ -232,6 +232,44 @@ console.log('data!!', data)
          option: 'by Status'}
       ];
 
+
+    var reloadTask = function() {
+        var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
+        var params = {
+            'page': $scope.taskPage,
+            'page_size': $scope.taskPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+
+        taskService.get(params, function (data) {
+            $scope.tasks = {}
+            $scope.tasks.data = data.results;
+            $scope.tasks.count = $scope.tasks.data.length;
+        });
+    };
+
+    $scope.taskSort = function(sortInfo) {
+        $scope.taskSortType = sortInfo.type;
+        $scope.taskSortDirection = sortInfo.direction;
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    $scope.viewTask = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.taskPageSize = undefined;
+        } else {
+            $scope.taskPageSize = viewInfo;
+        }
+
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    reloadTask();
+
+
 // HARDCODE !!!
     $scope.labels = [
         {value: 'undefined',
@@ -263,6 +301,8 @@ console.log('data!!', data)
         {value: 'finished',
          option: 'Finished'}
     ];
+
+
 
 
 //for checkbox members//
@@ -318,48 +358,6 @@ console.log('data!!', data)
 
 
 // END HARDCODE !!!
-
-
-
-
-    var reloadTask = function() {
-        var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
-        var params = {
-            'page': $scope.taskPage,
-            'page_size': $scope.taskPageSize,
-            'ordering': sorting,
-            'for_cu':1
-        }
-
-        taskService.get(params, function (data) {
-            $scope.tasks = {}
-            $scope.tasks.data = data.results;
-            $scope.tasks.count = $scope.tasks.data.length;
-        });
-    };
-
-    $scope.taskSort = function(sortInfo) {
-        $scope.taskSortType = sortInfo.type;
-        $scope.taskSortDirection = sortInfo.direction;
-        $scope.taskPage = 1;
-        reloadTask();
-    };
-
-    $scope.viewTask = function(viewInfo) {
-        if (viewInfo === 'All') {
-            $scope.taskPageSize = undefined;
-        } else {
-            $scope.taskPageSize = viewInfo;
-        }
-
-        $scope.taskPage = 1;
-        reloadTask();
-    };
-
-    reloadTask();
-
-
-
 
 
 

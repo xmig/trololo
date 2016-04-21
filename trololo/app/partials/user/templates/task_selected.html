@@ -103,44 +103,7 @@
                     </md-content>
 
 
-<!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{count.count}}"-->
-                     <!--md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"-->
-                     <!--md-on-paginate="logPagination"></md-table-pagination>-->
-
-
-<!--&lt;!&ndash;select items on page&ndash;&gt;-->
-        <!--<div style align="center" style="padding-top: 20px">-->
-            <!--Items on page:<select ng-model="viewby" ng-change="setItemsPerPage(viewby)">-->
-                <!--<option>3</option><option>5</option><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select>-->
-        <!--</div>-->
-
-
                 </md-tab>
-                <!--<md-tab label="activity">-->
-                    <!--<md-content class="md-padding">-->
-                        <!--<div layout="row">-->
-                            <!--<md-input-container class="sorting-margin">-->
-                                <!--<label>Sort</label>-->
-                                <!--<md-select ng-model="tabSort.tasks">-->
-                                    <!--<md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>-->
-                                <!--</md-select>-->
-                            <!--</md-input-container>-->
-                            <!--<md-input-container class="sorting-margin">-->
-                                <!--<label>View</label>-->
-                                <!--<md-select ng-model="tabView.tasks">-->
-                                    <!--<md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>-->
-                                <!--</md-select>-->
-                            <!--</md-input-container>-->
-                        <!--</div>-->
-                        <!--<md-list class="project-tabs-list">-->
-                                <!--<md-list-item ng-repeat="activity in task.activity | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">-->
-                                    <!--<p>Activity: {{activity}}{{activity.created_at | date : 'medium'}}</p>-->
-                                <!--</md-list-item>-->
-                        <!--</md-list>-->
-                        <!--<span></span>-->
-                    <!--</md-content>-->
-                <!--</md-tab>-->
-
 
                 <md-tab label="activity">
                     <md-content class="md-padding">
@@ -168,8 +131,6 @@
                         <span></span>
                     </md-content>
                 </md-tab>
-
-
 
                 <md-tab label="description">
                     <md-content class="md-padding">
@@ -297,24 +258,13 @@
                                 </md-input-container>
                                 <md-input-container class="sorting-margin">
                                     <label>View</label>
-                                    <md-select ng-model="tabView.tasks">
-                                        <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+                                    <md-select ng-model="tabView.activity">
+                                        <md-option ng-repeat="opt in viewActivityVariants" value="{{opt}}" ng-click="viewActivity(opt)">{{opt}}</md-option>
                                     </md-select>
                                 </md-input-container>
                             </div>
                             <md-list class="project-tabs-list">
 
-
-                                <md-list-item ng-repeat="activity in task.activity | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Activvvity: {{activity}} {{activity.created_at}}</p>
-                                </md-list-item>
-
-
-                            </md-list>
-                            <span></span>
-
-
-                            <md-list>
                             <md-list-item ng-repeat="activity in activities.data">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
                                 <p><b> {{ activity.message }} </b> - {{ activity.owner.username }} <span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>

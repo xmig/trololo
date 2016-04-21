@@ -1,4 +1,5 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams',
+ function($scope, $rootScope, $http, task_selectedService, activityListService, $mdDialog, $mdMedia, $routeParams){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -12,6 +13,58 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
          console.log($scope.task);
     })
+
+
+    /* ACTIVITY INFO */  //- sorting, view, pagination
+    $scope.activitySortType = 'created_at'; // set the default sort type
+    $scope.activitySortDirection = true;  // set the default sort order
+    $scope.activityPageSize = 10;
+    $scope.activityPage = 1;
+
+    $scope.viewActivityVariants = ["5", "10", "20", "50", "All"];
+
+    $scope.activitySortVariants = [
+        {title: "by Date Asc", type: 'created_at', direction: true},
+        {title: "by Date Desc", type: 'created_at', direction: false},
+        {title: "by Message Asc", type: 'message', direction: true},
+        {title: "by Message Desc", type: 'message', direction: false}
+    ];
+
+    var reloadActivity = function() {
+        var sorting = ($scope.activitySortDirection ? '' : '-') + $scope.activitySortType;
+        var params = {
+            'page': $scope.activityPage,
+            'page_size': $scope.activityPageSize,
+            'ordering': sorting
+        }
+
+        activityListService.get(params, function (data) {
+            $scope.activities = {}
+            $scope.activities.data = data.results;
+            $scope.activities.count = $scope.activities.data.length;
+            console.log($scope.activities.data);
+        });
+    };
+
+    $scope.activitySort = function(sortInfo) {
+        $scope.activitySortType = sortInfo.type;
+        $scope.activitySortDirection = sortInfo.direction;
+        $scope.activityPage = 1;
+        reloadActivity();
+    };
+
+    $scope.viewActivity = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.activityPageSize = undefined;
+        } else {
+            $scope.activityPageSize = viewInfo;
+        }
+        $scope.activityPage = 1;
+        reloadActivity();
+    };
+
+    reloadActivity();
+
 
 
     $scope.leftSidebarList = [
