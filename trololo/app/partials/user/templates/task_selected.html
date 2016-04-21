@@ -1,4 +1,4 @@
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
     <div flex layout="column" ng-controller="nutritionController">
 
         <md-card>
@@ -21,6 +21,7 @@
                         <th md-column><span>Project</span></th>
                         <th md-column><span>Deadline date</span></th>
                         <th md-column><span>Estimate minutes</span></th>
+                        <th md-column><span>Status group</span></th>
                     </tr>
                     </thead>
                     <tbody md-body>
@@ -37,6 +38,7 @@
                         <td md-cell><a ng-href="#" class="user-link-name">{{task.project_obj.name}}</a></td>
                         <td md-cell>{{task.deadline_date}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
+                        <td md-cell>{{task.group_data.name}}</td>
                     </tr>
                     </tbody>
                 </table>

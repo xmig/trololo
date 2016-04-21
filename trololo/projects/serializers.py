@@ -29,7 +29,7 @@ class StatusSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Status
-        fields = ('name', 'order_number', 'url', 'project')
+        fields = ('name', 'order_number', 'url', 'project', 'id')
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -88,7 +88,6 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             
         return instance
 
-            
     def to_representation(self, obj):
         data = super(ProjectSerializer, self).to_representation(obj)
         data['task_count'] = Task.objects.all().filter(project=obj).count()
@@ -224,12 +223,13 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
-    group = GroupRelatedField(required=False, read_only=False, queryset=Status.objects.all())
+    group = GroupRelatedField(required=False, write_only=True, queryset=Status.objects.all())
     # group = serializers.PrimaryKeyRelatedField(
     #     read_only=False,
     #     required=False,
     #     queryset=Status.objects.all()
     # )
+    group_data = StatusSerializer(source='group', read_only=True)
 
     tags = TagSerializer(many=True, read_only=False, required=False)
 
@@ -240,9 +240,9 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'status', 'members', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')
 
     # def take_comments(self, task):
     #     comments_list = [x.title for x in task.taskcomment_set.all()]
