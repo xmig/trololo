@@ -1,7 +1,7 @@
-angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectService)
+angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', 'projectService', 'projectSelectedService',
+    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, projectService, projectSelectedService)
 {
-    $scope.action = $routeParams.action;
+    $scope.project_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/project_create.html';
 
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -74,7 +74,6 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
         {'title': 'In_progress', 'id':'in_progress'},
         {'title': 'Finished', 'id':'finished'},
         {'title': 'Undefined', 'id':'undefined'}
-
     ];
 
     $scope.visibleByList = [
@@ -85,11 +84,45 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
 
     ];
 
+    if ($scope.project_id) {
+        // EDIT
+        // PROJECT CALCULATE
+        projectSelectedService.get({ id: $scope.project_id }, function (data) {
+            $scope.projectData = data;
+        });
+    }
+
     $scope.saveProject = function() {
         $scope.projectData.tags = [];
-        projectService.create($scope.projectData, function(response) {
-            $scope.projectData = response;
-        });
+
+        if ($scope.project_id) {
+            // EDIT
+            $scope.projectData.id = $scope.project_id;
+
+            projectSelectedService.update($scope.projectData, function(response) {
+                $scope.projectData = response;
+                if (typeof response.id !== 'undefined' && response.id > 0) {
+                    $window.location.href = '#/user/projects/' + $scope.projectData.id;
+                }
+            });
+        } else {
+            projectService.create($scope.projectData, function(response) {
+                $scope.projectData = response;
+                if (typeof response.id !== 'undefined' && response.id > 0) {
+                    $window.location.href = '#/user/projects/' + response.id + '/edit';
+                }
+            });
+        }
     };
 
-}]);
+}])
+.config(function($mdDateLocaleProvider) {
+  $mdDateLocaleProvider.formatDate = function(date) {
+    return date ? moment(date).format('DD-MM-YYYY') : '';
+  };
+
+  $mdDateLocaleProvider.parseDate = function(dateString) {
+    var m = moment(dateString, 'DD-MM-YYYY', true);
+    return m.isValid() ? m.toDate() : new Date(NaN);
+  };
+});
