@@ -29,8 +29,10 @@
                                 In Progres (35) <br/>
                                 Finished (5)
                             </td>
-                            <td md-cell ng-repeat="member in project.members">
-                                {{member.username}}({{member.email}})
+                            <td md-cell>
+                                <div ng-repeat="member in project.members">
+                                    {{member.username}}({{member.email}})
+                                </div>
                             </td>
                             <td md-cell>
                                 {{project.owner.username}}({{project.owner.email}})
