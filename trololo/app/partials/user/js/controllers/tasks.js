@@ -70,13 +70,13 @@ console.log('data!!', data)
 
 
 
-    $scope.getStatuses = function () {
-        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-    };
-
-    $scope.getTypes = function () {
-        return ['bug', 'feature', 'undefined'];
-    };
+//    $scope.getStatuses = function () {
+//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+//    };
+//
+//    $scope.getTypes = function () {
+//        return ['bug', 'feature', 'undefined'];
+//    };
 /* end - for popup */
 
 
