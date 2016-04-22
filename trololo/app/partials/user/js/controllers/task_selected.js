@@ -6,6 +6,9 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     };
     $scope.partialPath = '/static/user/templates/task_selected.html';
 
+    // patch for tags
+    $scope.task = {tags: []};
+
     //$scope.location = $routeParams.userLocation;
 
     console.log("---", $routeParams.taskid);
