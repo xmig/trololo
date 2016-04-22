@@ -30,7 +30,7 @@
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
                             <p ng-repeat="member in task.members">
-                            <a ng-href="#" class="user-link-name">{{member.username}}</a> <br>
+                            <a ng-href="#/user/profile/{{memeber.id}}" class="user-link-name">{{member.username}}</a> <br>
                             ({{member.email}})
                             </p>
                         </td>
@@ -77,8 +77,8 @@
                         </div>
 
                         <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
-                                    <p><a ng-href="#" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding">
+                                    <p><a href="#" ng-click="changeUserLocation($event, comment.created_by.id)"  class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
                                 </md-list-item>
                         </md-list>
 
@@ -184,12 +184,11 @@
                         </div>
                     </md-content>
                 </md-tab>
-
                 <md-tab label="members">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding" ng-click="action($event)">
-                                <p>member's_pic /<a ng-href="#" class="project-tabs-name">{{member.username}}</a>({{member.email}})</p>
+                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding">
+                                <p>member's_pic /<a ng-href="#" ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}</a>({{member.email}})</p>
                             </md-list-item>
                         </md-list>
 
