@@ -176,7 +176,7 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
 
 
 class Status(AbstractModel):
-
+    # TODO: add created_by/created_at, updated_by/updated_at fields from AbstractTimestampable, AbstractSignable
     project = models.ForeignKey(Project, default=True, null=True, blank=True, related_name='project_statuses')
     name = models.CharField(max_length=30)
     order_number = models.IntegerField()

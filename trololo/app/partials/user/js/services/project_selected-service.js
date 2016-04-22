@@ -28,7 +28,7 @@ angular.module('userApp').factory('project_tagService', function($resource, $coo
 angular.module('userApp').factory('projectStatusService', function($resource, $cookies) {
     return $resource("/status/", {},
         { 'add_status':    {method:'POST', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
-//          'delete_tag': {method:'DELETE', params: {id: '@id', tag_name: '@tag_name'}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}}
+          'get': {method:'GET', params: {ordering: 'order_number'}}
         }
     );
 });
