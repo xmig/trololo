@@ -27,9 +27,12 @@ class StatusSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
     )
+
+    order_number = serializers.IntegerField(required=False)
+
     class Meta:
         model = Status
-        fields = ('name', 'order_number', 'url', 'project')
+        fields = ('name', 'order_number', 'url', 'project', 'id')
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
@@ -84,11 +87,9 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def save_tags(self, instance, tags):
         if tags is not None:
             instance.tags.set(*[tag['name'] for tag in tags])
-            instance.save()
-            
+
         return instance
 
-            
     def to_representation(self, obj):
         data = super(ProjectSerializer, self).to_representation(obj)
         data['task_count'] = Task.objects.all().filter(project=obj).count()
@@ -100,6 +101,14 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
         proj = super(ProjectSerializer, self).create(validated_data)
+
+        stat = Status(
+            project=proj,
+            order_number=1,
+            name='Default status'
+        )
+
+        stat.save()
 
         return self.save_tags(proj, tags)
 
@@ -224,12 +233,13 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
-    group = GroupRelatedField(required=False, read_only=False, queryset=Status.objects.all())
+    group = GroupRelatedField(required=False, write_only=True, queryset=Status.objects.all())
     # group = serializers.PrimaryKeyRelatedField(
     #     read_only=False,
     #     required=False,
     #     queryset=Status.objects.all()
     # )
+    group_data = StatusSerializer(source='group', read_only=True)
 
     tags = TagSerializer(many=True, read_only=False, required=False)
 
@@ -240,9 +250,9 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'status', 'members', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')
 
     # def take_comments(self, task):
     #     comments_list = [x.title for x in task.taskcomment_set.all()]
