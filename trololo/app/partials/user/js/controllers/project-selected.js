@@ -1,3 +1,60 @@
+angular.module('mainApp')
+  .controller('addStatusCtrl', function ($scope, Validate, $mdDialog, $location, projectStatusService) {
+    $scope.status_name = '';
+  	$scope.complete = false;
+
+  	$scope.getErrorText = function (resp) {
+  	    var text = 'Error ' + resp.status + ': ' + resp.statusText + '<br /><br /> ';
+
+  	    Object.keys(resp.data.detail).forEach(function (key, ind) {
+  	        text += ('<b>' + key + '</b>: ' + resp.data.detail[key] + "<br />");
+  	    })
+
+  	    return text;
+  	};
+
+    $scope.addStatsus = function(formData){
+      $scope.errors = [];
+      Validate.form_validation(formData,$scope.errors);
+
+      if(!formData.$invalid) {
+        projectStatusService.add_status(
+            {
+                'name': $scope.status_name,
+                'project': 'http://' + $location.host() + '/projects/' + $scope.project.id + '/'
+            }
+        ).$promise
+        .then(function(resp) {
+            $scope.hide();
+
+            var alert = $mdDialog.alert()
+                .title('Complete')
+                .textContent('Status was added!')
+                .ok('Close');
+            $mdDialog.show(alert)
+                .finally(function() {
+                    alert = undefined;
+                });
+            }, function(resp) {
+                $scope.hide();
+
+                console.log("Status: " + resp.status);
+                if(resp.status !== 200) {
+                    var err = $mdDialog.alert()
+                        .title('Failure')
+                        .htmlContent($scope.getErrorText(resp))
+                        .ok('Close');
+                    $mdDialog.show(err)
+                        .finally(function() {
+                            alert = undefined;
+                        });
+                }
+            })
+        }
+    }
+  });
+
+
 angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log',
     function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log)
 {
@@ -59,12 +116,24 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         }
     }
 
-
-
     // PROJECT CALCULATE
     projectSelectedService.get({ id: $routeParams.id }, function (data) {
         $scope.project = data;
     });
+
+    // Add Status
+    $scope.showAddStatusDialog = function(event) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'add_status.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose: true,
+            fullscreen: false
+        });
+    };
 
     // TAG manipulations
     $scope.addTag = function(tag) {

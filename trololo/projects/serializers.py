@@ -27,6 +27,9 @@ class StatusSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
     )
+
+    order_number = serializers.IntegerField(required=False)
+
     class Meta:
         model = Status
         fields = ('name', 'order_number', 'url', 'project', 'id')
@@ -84,8 +87,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def save_tags(self, instance, tags):
         if tags is not None:
             instance.tags.set(*[tag['name'] for tag in tags])
-            instance.save()
-            
+
         return instance
 
     def to_representation(self, obj):
@@ -99,6 +101,14 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def create(self, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
         proj = super(ProjectSerializer, self).create(validated_data)
+
+        stat = Status(
+            project=proj,
+            order_number=1,
+            name='Default status'
+        )
+
+        stat.save()
 
         return self.save_tags(proj, tags)
 
