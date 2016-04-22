@@ -142,13 +142,35 @@
                         <span></span>
                     </md-content>
                 </md-tab>
+                <md-tab label="Statuses">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.status">
+                                    <md-option ng-repeat="opt in statusSortVariants" value="{{opt.title}}" ng-click="statusSort(opt)">{{opt.title}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.status">
+                                    <md-option ng-repeat="opt in viewStatusVariants" value="{{opt}}" ng-click="viewStatus(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="status in statuses">
+                                <span class="status-ico" ng-class="activity.activity_model"></span>
+                                <p><b> {{ status.name }} </b> - {{ status.order_number }} ({{ status.created_at | date : 'medium' }})</p>
+                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
             </md-tabs>
         </md-card>
     </div>
-
-
-
-
 
 <!-- for popup -->
 <!-- Registration modal -->
