@@ -1,5 +1,62 @@
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService','personalInfoService', '$window','commentSelectedService', 'commentService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, personalInfoService, $window, commentSelectedService, commentService)
+angular.module('userApp')
+  .controller('addStatusCtrl', function ($scope, Validate, $mdDialog, $location, projectStatusService) {
+    $scope.status_name = '';
+  	$scope.complete = false;
+
+  	$scope.getErrorText = function (resp) {
+  	    var text = 'Error ' + resp.status + ': ' + resp.statusText + '<br /><br /> ';
+
+  	    Object.keys(resp.data.detail).forEach(function (key, ind) {
+  	        text += ('<b>' + key + '</b>: ' + resp.data.detail[key] + "<br />");
+  	    })
+
+  	    return text;
+  	};
+
+    $scope.addStatsus = function(formData){
+      $scope.errors = [];
+      Validate.form_validation(formData,$scope.errors);
+
+      if(!formData.$invalid) {
+        projectStatusService.add_status(
+            {
+                'name': $scope.status_name,
+                'project': 'http://' + $location.host() + '/projects/' + $scope.project.id + '/'
+            }
+        ).$promise
+        .then(function(resp) {
+            $scope.hide();
+
+            var alert = $mdDialog.alert()
+                .title('Complete')
+                .textContent('Status was added!')
+                .ok('Close');
+            $mdDialog.show(alert)
+                .finally(function() {
+                    alert = undefined;
+                });
+            }, function(resp) {
+                $scope.hide();
+
+                console.log("Status: " + resp.status);
+                if(resp.status !== 200) {
+                    var err = $mdDialog.alert()
+                        .title('Failure')
+                        .htmlContent($scope.getErrorText(resp))
+                        .ok('Close');
+                    $mdDialog.show(err)
+                        .finally(function() {
+                            alert = undefined;
+                        });
+                }
+            })
+        }
+    }
+  });
+
+
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService)
 {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
@@ -59,14 +116,49 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         }
     }
 
-
-
     // PROJECT CALCULATE
     projectSelectedService.get({ id: $routeParams.id }, function (data) {
         $scope.project = data;
     });
 
+    // Add Status
+    $scope.showAddStatusDialog = function(event) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'add_status.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose: true,
+            fullscreen: false
+        });
+    };
 
+    // TAG manipulations
+    $scope.addTag = function(tag) {
+        project_tagService.add_tag(
+            {'id': $routeParams.id, 'tag_name': tag.name}, function(response) {
+            }, function () {
+                $scope.project.tags.splice($scope.project.tags.length - 1, 1);
+            }
+        );
+    };
+
+    $scope.removeTag = function(tag) {
+        tag_name = tag.name;
+
+        project_tagService.delete_tag(
+            {'id': $routeParams.id, 'tag_name': tag_name}, function(response) {
+            }, function () {
+                $scope.project.tags.push(tag);
+            }
+        );
+    };
+
+    $scope.newTag = function(tag) {
+        return {'name': tag};
+    };
 
     /* ACTIVITY INFO */
     $scope.activitySortType = 'created_at'; // set the default sort type
@@ -264,7 +356,10 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         }
         console.log("---", params);
         commentService.get(params, function (data) {
-            $scope.project = {}
+            if ($scope.project == undefined) {
+                $scope.project = {};
+            };
+
             $scope.project.comments = data.results;
             $scope.project.comments.count = $scope.project.comments.length;
             console.log('data.results', data.results,'-----', $scope.project.comments.count);
@@ -317,10 +412,9 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     }
 
     $scope.commentData = {};
-    console.log("----")
     $scope.saveComment = function() {
 //        $scope.commentData.tags = [];
-        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/'
+        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
         if ($scope.comment_id) {
             // EDIT
             $scope.commentData.id = $scope.comment_id;

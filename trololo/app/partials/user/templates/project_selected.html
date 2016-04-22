@@ -6,7 +6,13 @@
                 <div class="md-toolbar-tools">
                     <span>{{project.name}}</span>
                     <div flex></div>
-                    <md-button ng-click="loadStuff()">EDIT (test)</md-button>
+                    <md-button class="md-primary" ng-click="showAddStatusDialog($event)">
+                        Add status
+                    </md-button>
+
+                    <md-button class="md-primary" ng-href="#/user/projects/{{project.id}}/edit">
+                        Edit({{project.name}})
+                    </md-button>
                 </div>
             </md-toolbar>
 
@@ -331,7 +337,51 @@
 </script>
 <!-- Registration modal end -->
 
-
+    <script type="text/ng-template" id="add_status.tmpl.html">
+        <md-dialog aria-label="Add status form" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="change_pwd_view" ng-controller="addStatusCtrl">
+           <form role="form" name="addStatusForm" novalidate ng-submit="addStatsus(addStatusForm)">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Add status</h2>
+                        <span flex="" class="flex"></span>
+                        <button class="md-icon-button md-button md-ink-ripple" type="button"
+                                ng-click="cancel()">
+                            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                     class="ng-scope ng-isolate-scope" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                     fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                </svg>
+                            </md-icon>
+                        </button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                    <md-content layout-padding="">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Status Name</label>
+                                <input type="text" name="status_name" id="status_name" ng-model="status_name" md-autofocus required>
+                                <div ng-messages="addStatusForm.status_name.$error">
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+                    <md-button type="submit" style="margin-right:20px;">
+                        Add
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
 
 </md-content>
 

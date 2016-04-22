@@ -1,4 +1,4 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', 'personalInfoService', '$window', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, personalInfoService, $window){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -8,16 +8,37 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
     //$scope.location = $routeParams.userLocation;
 
-    console.log("---", $routeParams.taskid)
+    console.log("---", $routeParams.taskid);
 
-    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+    task_selectedService.get({"id": $routeParams.taskid}, function(response) {
          console.log($scope.task);
+         $scope.task = response;
     })
 
+    // TAG manipulations
+    $scope.addTag = function(tag) {
+        task_tagService.add_tag(
+            {'id': $routeParams.taskid, 'tag_name': tag.name}, function(response) {
+            }, function () {
+                $scope.task.tags.splice($scope.task.tags.length - 1, 1);
+            }
+        );
+    };
 
+    $scope.removeTag = function(tag) {
+        tag_name = tag.name;
 
+        task_tagService.delete_tag(
+            {'id': $routeParams.taskid, 'tag_name': tag_name}, function(response) {
+            }, function () {
+                $scope.task.tags.push(tag);
+            }
+        );
+    };
 
-
+    $scope.newTag = function(tag) {
+        return {'name': tag};
+    };
 
 //// get all data,filter by name of selected object
 //    taskService.get(function (data) {

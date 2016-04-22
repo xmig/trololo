@@ -6,7 +6,7 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
 
     $scope.myFile = {};
     $scope.showModal = false;
-    $scope.social_links = $scope.social_links;
+    $scope.showSocialLinks = Object.keys($scope.social_links).length > 0;
 
 //    personalInfoService.get(function (data) {
 //        $scope.userAdditionData = {
@@ -34,17 +34,17 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     };
 
     $scope.compareData = function(firstObj, secondObj){
-        var coincidedElementsArray = [];
+        var check = false;
         if(!$scope.isEmpty(secondObj)){
-            angular.forEach(secondObj, function(svalue, skey){
-                angular.forEach(firstObj, function(fvalue, fkey){
-                    if(skey === fkey && svalue !== fvalue){
-                        coincidedElementsArray.push(skey);
-                    }
-                })
-            })
-        }
-        return coincidedElementsArray;
+            for (var key in secondObj) {
+                if (secondObj.hasOwnProperty(key) && secondObj[key] !== firstObj[key]) {
+                    check = true;
+                    break;
+                }
+            }
+        };
+
+        return check;
     };
 
     $scope.showPersonalToastSave = function() {
@@ -66,7 +66,7 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     };
 
     $scope.AdditionalInfoSubmit = function(){
-        if($scope.compareData($scope.userPersonalData, $scope.userAdditionData).length){
+        if($scope.compareData($scope.userPersonalData, $scope.userAdditionData)){
             $scope.savePersonalForm();
         } else {
             $scope.showPersonalToastReject();
