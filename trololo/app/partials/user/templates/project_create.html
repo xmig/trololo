@@ -35,8 +35,8 @@
                                         <md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-datepicker ng-model="projectData.date_started" md-placeholder="Date Started"></md-datepicker>
-                                <md-datepicker ng-model="projectData.date_finished" md-placeholder="Date Finished"></md-datepicker>
+                                <md-datepicker ng-model="projectData.date_started" md-placeholder="Date Started" required></md-datepicker>
+                                <md-datepicker ng-model="projectData.date_finished" md-placeholder="Date Finished" required></md-datepicker>
                                 <md-input-container class="md-block">
                                     <label>Description</label>
                                     <textarea name="description" id="description"

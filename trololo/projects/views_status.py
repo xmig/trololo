@@ -9,6 +9,8 @@ from rest_framework import filters
 from django_filters import FilterSet, NumberFilter, CharFilter
 from django.db.models import Q
 from rest_framework import exceptions
+from rest_framework.pagination import LimitOffsetPagination
+
 
 class StatusFilter(FilterSet):
     """
@@ -34,6 +36,7 @@ class StatusView(generics.ListCreateAPIView):
     filter_class = StatusFilter
     search_fields = ('name', )
     ordering_fields = ('name', 'order_number', 'project')
+    pagination_class = LimitOffsetPagination
 
     def _get_last_order_number(self, project):
         last_status = Status.objects.filter(project=project) \

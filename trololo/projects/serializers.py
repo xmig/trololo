@@ -82,7 +82,7 @@ class StatusSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
     # activity = ActivitySerializer(source='task_comments', many=True)
-    comments = ProjectCommentSerializer(source='project_comments', many=True) # display dicts of comments
+    comments = ProjectCommentSerializer(source='project_comments', many=True, required=False) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
 
     tasks = serializers.HyperlinkedRelatedField(
