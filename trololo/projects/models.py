@@ -64,7 +64,7 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
 
 class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
     title = models.CharField(max_length=200, blank=True, null=True, default='')
-    project = models.ForeignKey(Project, blank=True, null=True, default='')
+    project = models.ForeignKey(Project, blank=True, null=True, default='', related_name='project_comments')
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):

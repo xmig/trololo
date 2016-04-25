@@ -55,10 +55,12 @@ angular.module('mainApp')
   });
 
 
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'projectStatusService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, projectStatusService)
-{
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService) {
     $scope.partialPath = '/static/user/templates/project_selected.html';
+
+    // patch for tags
+    $scope.project = {tags: []};
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -262,7 +264,6 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 
     reloadActivity();
 
-
     /* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
@@ -366,7 +367,125 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         reloadTask();
     };
 
+    $scope.sortVariants = [
+          {value: "created_at",
+           option: "by Date"
+          },
+          {value: "created_by",
+           option: "by User"
+          },
+//          {value: "comment",
+//           option: "by Type"
+//          },
+      ];
+
+//    $scope.viewVariants = [
+//          "5",
+//          "10",
+//          "20",
+//          "50",
+//          "All"
+//      ];
+
     reloadTask();
 
+
+
+    /* COMMENT */
+    $scope.commentSortType = 'created_at'; // set the default sort type
+    $scope.commentSortDirection = true;  // set the default sort order
+    $scope.commentPageSize = 10;
+    $scope.commentPage = 1;
+
+    $scope.viewCommentVariants = ["5", "10", "20", "50", "All"];
+
+    var reloadComment = function() {
+        var sorting = ($scope.commentSortDirection ? '' : '-') + $scope.commentSortType;
+        var params = {
+            'page': $scope.commentPage,
+            'page_size': $scope.commentPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+        console.log("---", params);
+        commentService.get(params, function (data) {
+            if ($scope.project == undefined) {
+                $scope.project = {};
+            };
+
+            $scope.project.comments = data.results;
+            $scope.project.comments.count = $scope.project.comments.length;
+            console.log('data.results', data.results,'-----', $scope.project.comments.count);
+        });
+    };
+
+    $scope.commentSort = function(sortInfo) {
+        $scope.commentSortType = sortInfo.type;
+        $scope.commentSortDirection = sortInfo.direction;
+        $scope.commentPage = 1;
+        reloadComment();
+    };
+
+
+    $scope.viewComment = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.commentPageSize = 1000000;
+        } else {
+            $scope.commentPageSize = viewInfo;
+        }
+
+        $scope.commentPage = 1;
+        reloadComment();
+    };
+
+    reloadComment();
+
+
+    personalInfoService.get(function (data) {
+        $scope.userAdditionData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            department: data.department,
+            specialization: data.specialization,
+            detailed_info: data.detailed_info,
+            use_gravatar: data.use_gravatar,
+            social_accounts: data.social_accounts
+        };
+        $scope.userPersonalData = data;
+    });
+
+    $scope.changeUserLocation = function(e, id){
+    console.log("-----")
+    e.preventDefault();
+        if($scope.userPersonalData.id !== id){
+            $window.location.href = '#/user/profile/' + id;
+        } else {
+            $window.location.href = '#/user/personal/';
+        }
+    }
+
+    $scope.commentData = {};
+    $scope.saveComment = function() {
+//        $scope.commentData.tags = [];
+        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
+        if ($scope.comment_id) {
+            // EDIT
+            $scope.commentData.id = $scope.comment_id;
+
+            commentSelectedService.update($scope.commentData, function(response) {
+                $scope.commentData = response;
+                if (typeof response.id !== 'undefined' && response.id > 0) {
+                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
+                }
+            });
+        } else {
+            commentService.create($scope.commentData, function(response) {
+                $scope.commentData = response;
+                if (typeof response.id !== 'undefined' && response.id > 0) {
+                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
+                }
+            });
+        }
+    };
 
 }]);

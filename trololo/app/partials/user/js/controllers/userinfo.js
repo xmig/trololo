@@ -8,25 +8,25 @@ angular.module('userApp').controller('userinfoCtrl', ['$scope', '$rootScope', '$
     //$scope.location = $routeParams.userLocation;
 
 
-// get all data,filter by name of selected object
-    taskService.get(function (data) {
-        $scope.tasks = {}
-        $scope.tasks.data = data.results;
-//        $scope.tasks.count = $scope.tasks.data.length;
-//        console.log($routeParams)
-//        console.log($scope.tasks.data)
-
-        $scope.name = $routeParams.taskname;
-
-        var tasks = data.results;
-        $scope.task = tasks.filter(function(entry){
-            return entry.name === $scope.name;
-        })[0];
-//        console.log(tasks)
-        console.log($scope.task.activity)
-
-    });
+//// get all data,filter by name of selected object
+//    taskService.get(function (data) {
+//        $scope.tasks = {}
+//        $scope.tasks.data = data.results;
+////        $scope.tasks.count = $scope.tasks.data.length;
+////        console.log($routeParams)
+////        console.log($scope.tasks.data)
 //
+//        $scope.name = $routeParams.taskname;
+//
+//        var tasks = data.results;
+//        $scope.task = tasks.filter(function(entry){
+//            return entry.name === $scope.name;
+//        })[0];
+////        console.log(tasks)
+//        console.log($scope.task.activity)
+//
+//    });
+////
 
 
     $scope.leftSidebarList = [

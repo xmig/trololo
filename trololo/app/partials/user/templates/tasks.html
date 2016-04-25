@@ -38,11 +38,11 @@
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
                             <div ng-repeat="member in task.members" class="member-cell">
-                                <a ng-href="#" class="user-link-name">{{member.username}}</a> <br>
+                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
                                 ({{member.email}})
                             </div>
                         </td>
-                        <td md-cell><a ng-href="#" class="project-tabs-name">{{task.project_obj.name}}</a></td>
+                        <td md-cell><a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-tabs-name">{{task.project_obj.name}}</a></td>
                         <td md-cell>{{task.deadline_date}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>
@@ -64,7 +64,7 @@
 
 
 
-            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{count.count}}"
+            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}"
                                  md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
                                  md-on-paginate="logPagination"></md-table-pagination>
         </md-card>
@@ -92,8 +92,8 @@
                             <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
-                                            {{task.name}}</a></b> for project <a ng-href="#" class="project-link-name">{{task.project_obj.name}}</a>
-                                            (created by <a ng-href="#" class="user-link-name">{{ task.owner.username }}</a>)
+                                            {{task.name}}</a></b> for project <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a>
+                                            (created by <a href="#" ng-click="changeUserLocation($event, task.owner.id)" class="user-link-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
                             </md-list-item>
                             <!--<md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">-->
@@ -128,9 +128,9 @@
                         <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
-                                            <a ng-href="#" class="project-link-name">({{task.project_obj.name}})</a>
+                                            <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>
                                             user(s) assigned: <span ng-repeat="member in task.members"><a ng-href="#" class="project-tabs-name">{{member.username}}</a></span>
-                                            (created by <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a>)
+                                            (created by <a ng-href="#" ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
                         </md-list-item>
 
@@ -159,7 +159,7 @@
                         <md-list>
                             <md-list-item ng-repeat="activity in activities.data" class="project-tabs-list">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
-                                <p><b> {{ activity.message }} </b> - <a ng-href="#" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
+                                <p><b> {{ activity.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -186,7 +186,7 @@
                         <md-list>
                             <md-list-item ng-repeat="notification in notifications.data" class="project-tabs-list">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
-                                <p><b> {{ notification.message }} </b> - {{ notification.owner.username }} ({{ notification.created_at | date : 'medium' }})</p>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>

@@ -14,7 +14,7 @@ angular.module('userApp').controller('nutritionController', ['$mdEditDialog', '$
     $scope.query = {
         order: 'name',
         limit: 3,
-        page: 2
+        page: 1
     };
 
     $scope.loadStuff = function () {

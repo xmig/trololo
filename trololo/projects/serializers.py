@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
-from django.contrib.auth import get_user_model
 from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
 from activity.serializers import ActivitySerializer
@@ -15,8 +14,53 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ['name']
 
 
-class StatusSerializer(serializers.ModelSerializer):
+class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Project
+        fields = (
+            'id', 'name', 'status',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
 
+        read_only_fields = (
+            'id', 'name', 'status',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
+
+
+class ProjectCommentSerializer(serializers.ModelSerializer):
+    project = serializers.HyperlinkedRelatedField(
+        view_name='projects:projects_detail',
+        queryset=Project.objects.all(),
+        lookup_field='pk'
+    )
+
+    created_by = OnlyUserInfoSerializer(read_only=True)
+    # created_by = serializers.HyperlinkedRelatedField(
+    #     read_only=True,
+    #     view_name='users:single_user',
+    #     required=False,
+    #     lookup_field='id'
+    # )
+    updated_by = serializers.HyperlinkedRelatedField(
+        read_only=True,
+        view_name='users:single_user',
+        required=False,
+        lookup_field='id'
+    )
+
+    class Meta:
+        model = ProjectComment
+        fields = (
+            'title', 'comment', 'id', 'project', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'activity'
+        )
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
+
+
+class StatusSerializer(serializers.ModelSerializer):
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
         queryset=Project.objects.all(),
@@ -36,7 +80,10 @@ class StatusSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
-    comments = serializers.SerializerMethodField('take_comments')
+    activity = serializers.SerializerMethodField('take_activity')
+    # activity = ActivitySerializer(source='task_comments', many=True)
+    comments = ProjectCommentSerializer(source='project_comments', many=True) # display dicts of comments
+    project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
 
     tasks = serializers.HyperlinkedRelatedField(
         many=True,
@@ -76,9 +123,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'status', 'members', 'comments', 'visible_by',
             'tasks', 'date_started', 'date_finished', 'created_by', 'created_at',
-            'updated_by', 'updated_at', 'owner', 'tags'
+            'updated_by', 'updated_at', 'owner', 'tags', 'project_obj', 'activity'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
+
+    def take_activity(self, project):
+        activity_list = [x.message for x in project.activity.all()]
+        return activity_list
 
     def take_comments(self, project):
         comments_list = [x.title for x in project.projectcomment_set.all()]
@@ -89,14 +140,6 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
             instance.tags.set(*[tag['name'] for tag in tags])
 
         return instance
-
-    def to_representation(self, obj):
-        data = super(ProjectSerializer, self).to_representation(obj)
-        data['task_count'] = Task.objects.all().filter(project=obj).count()
-        data['my_task_count'] = Task.objects.all().filter(project=obj)\
-            .filter(created_by=self.context['request'].user).count()
-
-        return data
 
     def create(self, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
@@ -122,24 +165,28 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     def to_representation(self, instance):
         data = super(ProjectSerializer, self).to_representation(instance)
 
+        data['task_count'] = Task.objects.all().filter(project=instance).count()
+        data['my_task_count'] = Task.objects.all().filter(project=instance)\
+            .filter(created_by=self.context['request'].user).count()
+
         data['tags'] = sorted(data['tags'])
         return data
 
 
-class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = Project
-        fields = (
-            'id', 'name', 'status',
-            'date_started', 'date_finished',
-            'visible_by'
-        )
-
-        read_only_fields = (
-            'id', 'name', 'status',
-            'date_started', 'date_finished',
-            'visible_by'
-        )
+# class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Project
+#         fields = (
+#             'id', 'name', 'status',
+#             'date_started', 'date_finished',
+#             'visible_by'
+#         )
+#
+#         read_only_fields = (
+#             'id', 'name', 'status',
+#             'date_started', 'date_finished',
+#             'visible_by'
+#         )
 
 
 class TaskCommentSerializer(serializers.ModelSerializer):
@@ -286,35 +333,4 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         data = super(TaskSerializer, self).to_representation(instance)
         data['tags'] = sorted(data['tags'])
         return data
-
-
-class ProjectCommentSerializer(serializers.ModelSerializer):
-
-    project = serializers.HyperlinkedRelatedField(
-        view_name='projects:projects_detail',
-        queryset=Project.objects.all(),
-        required=False,
-        lookup_field='pk'
-    )
-
-    created_by = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        view_name='users:single_user',
-        required=False,
-        lookup_field='id'
-    )
-    updated_by = serializers.HyperlinkedRelatedField(
-        read_only=True,
-        view_name='users:single_user',
-        required=False,
-        lookup_field='id'
-    )
-
-    class Meta:
-        model = ProjectComment
-        fields = (
-            'title', 'comment', 'id', 'project', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'activity'
-        )
-        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
 

@@ -1,10 +1,13 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
     };
     $scope.partialPath = '/static/user/templates/task_selected.html';
+
+    // patch for tags
+    $scope.task = {tags: []};
 
     //$scope.location = $routeParams.userLocation;
 
@@ -232,6 +235,31 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
           "50",
           "All"
       ];
+
+
+
+    personalInfoService.get(function (data) {
+        $scope.userAdditionData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            department: data.department,
+            specialization: data.specialization,
+            detailed_info: data.detailed_info,
+            use_gravatar: data.use_gravatar,
+            social_accounts: data.social_accounts
+        };
+        $scope.userPersonalData = data;
+    });
+
+    $scope.changeUserLocation = function(e, id){
+    console.log("-----")
+    e.preventDefault();
+        if($scope.userPersonalData.id !== id){
+            $window.location.href = '#/user/profile/' + id;
+        } else {
+            $window.location.href = '#/user/personal/';
+        }
+    }
 
 }]);
 

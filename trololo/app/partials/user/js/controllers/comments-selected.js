@@ -1,22 +1,18 @@
-angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSidenav', '$log', '$routeParams', 'personalInfoService', '$window', function($scope, $timeout, $mdSidenav, $log, $routeParams, personalInfoService, $window){
+angular.module('userApp').controller('commentSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'commentSelectedService', 'activityListService', 'taskService','personalInfoService', '$window',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, commentSelectedService, activityListService, taskService, personalInfoService, $window)
+{
+    $scope.partialPath = '/static/user/templates/project_selected.html';
+
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
     };
-    $scope.partialPath = '/static/user/templates/' + $routeParams.userLocation + '.html';
-    $scope.location = $routeParams.userLocation;
-    console.log("$routeParams.userLocation", $routeParams.userLocation);
-    console.log("$routeParams", $routeParams.id);
-    $scope.userPersonalData = {};
-    $scope.userAdditionData = {};
+
     $scope.leftSidebarList = [
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
-        {"title": "Tasks", "link": "tasks"},
-        //{"title": "Progress", "link": "progress"},
-        //{"title": "Teams", "link": "teams"},
-        //{"title": "Activity", "link": "activity"},
+        {"title": "Tasks", "link": "tasks"}
     ];
     $scope.isSectionSelected = function(section){
         return section === $scope.location;
@@ -63,28 +59,10 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
         }
     }
 
-    personalInfoService.get(function (data) {
-        $scope.userAdditionData = {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            department: data.department,
-            specialization: data.specialization,
-            detailed_info: data.detailed_info,
-            use_gravatar: data.use_gravatar,
-            social_accounts: data.social_accounts
-        };
-        $scope.userPersonalData = data;
+
+
+    // PROJECT CALCULATE
+    projectSelectedService.get({ id: $routeParams.id }, function (data) {
+        $scope.project = data;
     });
-
-    $scope.changeUserLocation = function(e, id){
-//    console.log("-----")
-    e.preventDefault();
-        if($scope.userPersonalData.id !== id){
-            $window.location.href = '#/user/profile/' + id;
-        } else {
-            $window.location.href = '#/user/personal/';
-        }
-    }
-
-///user/profile/{{task.owner.id}}
 }]);

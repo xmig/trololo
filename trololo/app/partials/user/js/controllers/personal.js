@@ -3,24 +3,23 @@
 var isDlgOpen;
 
 angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', '$mdMedia', '$mdDialog', function ($scope, $http, personalInfoService, $mdToast, $mdMedia, $mdDialog) {
-    $scope.userPersonalData = {};
-    $scope.userAdditionData = {};
+
     $scope.myFile = {};
     $scope.showModal = false;
     $scope.showSocialLinks = Object.keys($scope.social_links).length > 0;
 
-    personalInfoService.get(function (data) {
-        $scope.userAdditionData = {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            department: data.department,
-            specialization: data.specialization,
-            detailed_info: data.detailed_info,
-            use_gravatar: data.use_gravatar,
-            social_accounts: data.social_accounts
-        };
-        $scope.userPersonalData = data;
-    });
+//    personalInfoService.get(function (data) {
+//        $scope.userAdditionData = {
+//            first_name: data.first_name,
+//            last_name: data.last_name,
+//            department: data.department,
+//            specialization: data.specialization,
+//            detailed_info: data.detailed_info,
+//            use_gravatar: data.use_gravatar,
+//            social_accounts: data.social_accounts
+//        };
+//        $scope.userPersonalData = data;
+//    });
 
     $scope.isEmpty = function(obj) {
         return Object.keys(obj).length === 0;
