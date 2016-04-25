@@ -126,26 +126,36 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     // GET PROJECT STATUSES
     $scope.statusSortType = 'order_number'; // set the default sort type
     $scope.statusPageSize = 5;
-    $scope.statusPage = 1;
+    $scope.statusLimit = 5;
+    $scope.statusOffset = 0;
 
     var reloadStatuses = function() {
         var params = {
-            'page': $scope.statusPage,
-            'page_size': $scope.statusPageSize,
+            'limit': $scope.statusLimit,
+            'offset': $scope.statusOffset,
             'ordering': $scope.statusSortType,
-            'project_activities': $routeParams.id
+            'project_activities': $routeParams.id,
         }
 
-        projectStatusService.get(params).$promise.then(
-            function(resp) {
-                $scope.statuses = resp.results;
-            },
-            function(resp) {
-                if (resp.status != undefined && resp.status !== 200) {
-                    console.log(resp);
-                }
-            }
-        );
+        var error_func = function (resp) {console.log(resp);};
+
+        if (!$scope.statusLimit) {
+            projectStatusService.get_all(
+                params,
+                function(resp) {
+                    $scope.statuses = resp;
+                },
+                error_func
+            )
+        } else {
+            projectStatusService.get(
+                params,
+                function(resp) {
+                    $scope.statuses = resp.results;
+                },
+                error_func
+            )
+        }
     };
 
     $scope.statusSortVariants = [
@@ -164,9 +174,9 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 
     $scope.viewStatus = function(viewInfo) {
         if (viewInfo === 'All') {
-            $scope.statusPageSize = 1000000;
+            $scope.statusLimit = '';
         } else {
-            $scope.statusPageSize = viewInfo;
+            $scope.statusLimit = viewInfo;
         }
         $scope.statusPage = 1;
         reloadStatuses();
