@@ -139,9 +139,36 @@ angular.module('mainApp', [
                     }]
                 }
             })
+             .when('/user/projects/comments/create', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'projectSelectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
             .when('/user/projects/create', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'projectCreateCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/user/projects/comments/:id/edit', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'projectSelectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/user/projects/comments/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'projectSelectedCtrl',
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);

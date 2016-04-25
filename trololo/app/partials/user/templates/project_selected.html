@@ -36,10 +36,10 @@
                                 Finished (5)
                             </td>
                             <td md-cell ng-repeat="member in project.members">
-                                {{member.username}}({{member.email}})
+                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}({{member.email}})</a>
                             </td>
                             <td md-cell>
-                                {{project.owner.username}}({{project.owner.email}})
+                                <a ng-href="#" ng-click="changeUserLocation($event, project.owner.id)" class="project-tabs-name">{{project.owner.username}}({{project.owner.email}})</a>
                             </td>
                             <td md-cell>{{project.date_started | date : 'medium'}}</td>
                             <td md-cell>{{project.date_finished | date : 'medium'}}</td>
@@ -82,9 +82,9 @@
                             </md-input-container>
                         </div>
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding" ng-click="action($event)">
+                            <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding">
                                 <span class="status-ico" ng-class="task.status"></span>
-                                <p><b><a ng-href="#/user/tasks/{{task.name}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a><b>{{task.project_obj.name}}</b></p>
+                                <p><b><a ng-href="#/user/tasks/{{task.name}}"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a> <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>
                             </md-list-item>
                         </md-list>
                         <span></span>
@@ -109,7 +109,7 @@
                         <md-list>
                             <md-list-item ng-repeat="notification in notifications.data">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
-                                <p><b> {{ notification.message }} </b> - {{ notification.owner.username }} ({{ notification.created_at | date : 'medium' }})</p>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -135,10 +135,69 @@
                         <md-list>
                             <md-list-item ng-repeat="activity in activities.data">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
-                                <p><b> {{ activity.message }} </b> - {{ activity.owner.username }} ({{ activity.created_at | date : 'medium' }})</p>
+                                <p><b> {{ activity.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="comments">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.comments">
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.comments">
+                                    <md-option ng-repeat="opt in viewCommentVariants" value="{{opt}}" ng-click="viewComment(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <!--<pre>{{project.comments | json}}</pre>-->
+                         <md-list class="project-tabs-list">
+                                    <md-list-item ng-repeat="comment in project.comments | orderBy: tabSort.comments" class="secondary-button-padding" >
+                                        <p><a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}: {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                                    </md-list-item>
+                            </md-list>
+                            <span></span>
+
+                        <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
+                                <md-content layout-padding="">
+                                    <div>
+                                         <md-card class="md-padding">
+                                             <form ng-submit="saveComment()">
+                                                <md-card-title>
+                                                    <md-card-title-text>
+                                                        <span class="md-headline">Add comment</span>
+                                                    </md-card-title-text>
+                                                </md-card-title>
+                                                <md-card-content>
+                                                    <div>
+                                                        <md-input-container class="md-block">
+                                                            <label>Title</label>
+                                                            <input type="text" name="title" id="comment-title" required
+                                                                   ng-model="commentData.title">
+                                                        </md-input-container>
+                                                        <md-input-container class="md-block">
+                                                            <label>Comment</label>
+                                                            <input type="text" name="comment" id="comment-comment" required
+                                                                   ng-model="commentData.comment">
+                                                        </md-input-container>
+                                                    </div>
+                                                </md-card-content>
+                                                <md-card-actions layout="row" layout-align="end center">
+                                                    <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                                                </md-card-actions>
+                                            </form>
+                                         </md-card>
+                                    </div>
+                                </md-content>
+                        </md-dialog-content>
                         <span></span>
                     </md-content>
                 </md-tab>
