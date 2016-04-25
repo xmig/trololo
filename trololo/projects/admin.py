@@ -5,8 +5,11 @@ from projects.models import *
 
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'status', 'description', 'visible_by', 'date_started', 'date_finished', 'created_at', 'created_by', 'updated_at', 'updated_by')
+    # list_display = ('name', 'status', 'description', 'visible_by', 'created_at', 'created_by', 'updated_at', 'updated_by')
     fields = ('name', 'members', 'status', 'description', 'visible_by', 'date_started', 'date_finished')
+    # fields = ('name', 'members', 'status', 'description', 'visible_by')
     list_filter = ('name', 'status', 'visible_by', 'date_started', 'date_finished', 'created_at', 'created_by', 'updated_at', 'updated_by')
+    # list_filter = ('name', 'status', 'visible_by', 'created_at', 'created_by', 'updated_at', 'updated_by')
 
 admin.site.register(Project, ProjectAdmin)
 

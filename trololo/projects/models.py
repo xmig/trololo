@@ -4,6 +4,7 @@ from django.conf import settings
 from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
 from taggit.managers import TaggableManager
+from django.utils import timezone
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -37,8 +38,8 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
-    date_started = models.DateTimeField(blank=True, null=True, default='')
-    date_finished = models.DateTimeField(blank=True, null=True, default='')
+    date_started = models.DateTimeField(blank=True, null=True, default=timezone.now)
+    date_finished = models.DateTimeField(blank=True, null=True, default=None)
 
     tags = TaggableManager()
 
