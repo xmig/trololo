@@ -1,4 +1,4 @@
-angular.module('userApp')
+angular.module('mainApp')
   .controller('addStatusCtrl', function ($scope, Validate, $mdDialog, $location, projectStatusService) {
     $scope.status_name = '';
   	$scope.complete = false;
@@ -55,8 +55,8 @@ angular.module('userApp')
   });
 
 
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService) {
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService) {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
     // patch for tags
@@ -122,6 +122,57 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     projectSelectedService.get({ id: $routeParams.id }, function (data) {
         $scope.project = data;
     });
+
+    // GET PROJECT STATUSES
+    $scope.statusSortType = 'order_number'; // set the default sort type
+    $scope.statusPageSize = 5;
+    $scope.statusPage = 1;
+
+    var reloadStatuses = function() {
+        var params = {
+            'page': $scope.statusPage,
+            'page_size': $scope.statusPageSize,
+            'ordering': $scope.statusSortType,
+            'project_activities': $routeParams.id
+        }
+
+        projectStatusService.get(params).$promise.then(
+            function(resp) {
+                $scope.statuses = resp.results;
+            },
+            function(resp) {
+                if (resp.status != undefined && resp.status !== 200) {
+                    console.log(resp);
+                }
+            }
+        );
+    };
+
+    $scope.statusSortVariants = [
+        {title: "by Name Asc", type: 'name'},
+        {title: "by Name Desc", type: '-name'},
+        {title: "by Order Number Asc", type: 'order_number'},
+        {title: "by Order Number Desc", type: '-order_number'}
+    ];
+    $scope.viewStatusVariants = ["5", "10", "20", "50", "All"];
+
+    $scope.statusSort = function(sortInfo) {
+        $scope.statusSortType = sortInfo.type;
+        $scope.statusPage = 1;
+        reloadStatuses();
+    };
+
+    $scope.viewStatus = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.statusPageSize = 1000000;
+        } else {
+            $scope.statusPageSize = viewInfo;
+        }
+        $scope.statusPage = 1;
+        reloadStatuses();
+    };
+
+    reloadStatuses();
 
     // Add Status
     $scope.showAddStatusDialog = function(event) {
