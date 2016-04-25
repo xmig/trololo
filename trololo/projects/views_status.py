@@ -23,7 +23,7 @@ class StatusFilter(FilterSet):
         model = Status
         fields = ['name', 'number', 'project']
 
-from pprint import pprint
+
 class StatusView(generics.ListCreateAPIView):
     """
     Method get returns a list of statuses
@@ -35,6 +35,12 @@ class StatusView(generics.ListCreateAPIView):
     search_fields = ('name', )
     ordering_fields = ('name', 'order_number', 'project')
 
+    def _get_last_order_number(self, project):
+        last_status = Status.objects.filter(project=project) \
+            .order_by('-order_number').first()
+
+        return last_status.order_number if last_status else 0
+
     def get_queryset(self):
         user = self.request.user
         proj = [
@@ -43,7 +49,7 @@ class StatusView(generics.ListCreateAPIView):
         return Status.objects.filter(project__id__in=proj)
 
     def post(self, request):
-        serializer = StatusSerializer(data=request.data, context={'request': request})
+        serializer = StatusSerializer(data=request.data, context={'request': request}, partial=True)
 
         user = self.request.user
         proj = [
@@ -52,7 +58,10 @@ class StatusView(generics.ListCreateAPIView):
 
         if serializer.is_valid():
             project = serializer.validated_data['project'].id
-            order_number = serializer.validated_data['order_number']
+            order_number = serializer.validated_data.get(
+                'order_number', self._get_last_order_number(project) + 1
+            )
+            serializer.validated_data['order_number'] = order_number
 
             stat = Status.objects.filter(
                 project=serializer.validated_data['project'],
@@ -109,7 +118,7 @@ class StatusDetail(generics.GenericAPIView):
        This method rename status
         """
         stat = self.get_object(pk)
-        serializer = StatusSerializer(stat, data=request.data, context={'request': request})
+        serializer = StatusSerializer(stat, data=request.data, context={'request': request}, partial=True)
         user = self.request.user
         proj = [
             pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()

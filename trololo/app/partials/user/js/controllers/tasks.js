@@ -1,5 +1,11 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService', '$mdDialog', '$mdMedia',
-    function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia', function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
+
+////local
+//angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService', '$mdDialog', '$mdMedia', //projectService
+//    function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
+
+
+
     taskService.get(function (data) {
 
 
@@ -15,6 +21,7 @@ console.log('data!!', data)
 //        $scope.projects.data = data.results;
         console.log("---------------", data)
     })
+    
 
 
 
@@ -232,7 +239,6 @@ console.log('data!!', data)
          option: 'by Status'}
       ];
 
-
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
@@ -301,9 +307,53 @@ console.log('data!!', data)
         {value: 'finished',
          option: 'Finished'}
     ];
+    
+// END HARDCODE !!!    
 
 
+/* for popup */
+    $scope.popRegistr = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
+                    controller: DialogController,
+//                    templateUrl: 'register.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                    if($scope.complete){
+                        $scope.registerComplete(ev);
+                    }
+                    $rootScope.$broadcast('registrationComplete', false);
+                });
 
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+
+
+//    $scope.getStatuses = function () {
+//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+//    };
+//
+//    $scope.getTypes = function () {
+//        return ['bug', 'feature', 'undefined'];
+//    };
+
+/* end - for popup */
+
+
+//CHECKBOXES//
 
 //for checkbox members//
     $scope.items = [1,2,3,4,5];
@@ -357,9 +407,6 @@ console.log('data!!', data)
 //            }
 
 
-// END HARDCODE !!!
-
-
 
 
     $scope.editComment = function (event, dessert) {
@@ -406,11 +453,6 @@ console.log('data!!', data)
     };
     /* Test table data end */
 
-
-
-
-
-
 }]);
 
 
@@ -429,7 +471,3 @@ function DialogController($scope, $mdDialog) {
   };
 }
 /* end - for popup */
-
-
-
-

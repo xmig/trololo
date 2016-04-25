@@ -1,5 +1,9 @@
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">
-    <div flex layout="column" ng-controller="nutritionController">
+<!--&lt;!&ndash;local&ndash;&gt;-->
+<!--<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">-->
+    <!--<div flex layout="column" ng-controller="nutritionController">-->
+<!--stage-->
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
+    <div flex layout="column" ng-controller="nutritionController">        
 
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
@@ -21,6 +25,7 @@
                         <th md-column><span>Project</span></th>
                         <th md-column><span>Deadline date</span></th>
                         <th md-column><span>Estimate minutes</span></th>
+                        <th md-column><span>Status group</span></th>
                     </tr>
                     </thead>
                     <tbody md-body>
@@ -30,13 +35,14 @@
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
                             <p ng-repeat="member in task.members">
-                            <a ng-href="#" class="user-link-name">{{member.username}}</a> <br>
+                            <a ng-href="#/user/profile/{{memeber.id}}" class="user-link-name">{{member.username}}</a> <br>
                             ({{member.email}})
                             </p>
                         </td>
                         <td md-cell><a ng-href="#" class="user-link-name">{{task.project_obj.name}}</a></td>
                         <td md-cell>{{task.deadline_date}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
+                        <td md-cell>{{task.group_data.name}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -50,6 +56,7 @@
                     <md-button ng-click="popRegistr($event)">POPUP__create new task</md-button>  <!--ng-hide="authenticated"-->
                 </div>
             </md-toolbar>
+<!-- for popup end button-->
         </md-card>
 
 
@@ -76,9 +83,11 @@
                         </div>
 
                         <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                    <p><a ng-href="#" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
-                                </md-list-item>
+
+                             <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding"> <!--ng-click="action($event)"-->
+                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+
+                            </md-list-item>
                         </md-list>
 
                         <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
@@ -148,8 +157,8 @@
                 <md-tab label="members">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding" ng-click="action($event)">
-                                <p>member's_pic /<a ng-href="#" class="project-tabs-name">{{member.username}}</a>({{member.email}})</p>
+                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding">
+                                <p>member's_pic /<a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)">{{member.username}}</a>({{member.email}})</p> <!--ng-click="changeUserLocation($event, member.id)"-->
                             </md-list-item>
                         </md-list>
 
@@ -232,8 +241,8 @@
                                         <form name="myForm">
                                             <md-input-container class="md-block">
                                                 <label>Add a commmment</label>
-                                                <!--<textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>-->
-                                                <!--<span class="alert" ng-repeat="error in errors.username">{{error}}</span>-->
+                                                <textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>
+                                                <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
                                             </md-input-container>
                                             <md-card-actions layout="row" layout-align="end center">
                                                 <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
@@ -258,13 +267,34 @@
                                 </md-input-container>
                                 <md-input-container class="sorting-margin">
                                     <label>View</label>
-                                    <md-select ng-model="tabView.activity">
-                                        <md-option ng-repeat="opt in viewActivityVariants" value="{{opt}}" ng-click="viewActivity(opt)">{{opt}}</md-option>
+ <!--stage-->
+                                    <md-select ng-model="tabView.tasks">
+                                        <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
+ <!--local-->
+                                       <!--<md-select ng-model="tabView.activity">-->
+                                       <!--<md-option ng-repeat="opt in viewActivityVariants" value="{{opt}}" ng-click="viewActivity(opt)">{{opt}}</md-option>-->
+                                           
                                     </md-select>
                                 </md-input-container>
                             </div>
                             <md-list class="project-tabs-list">
 
+<!--stage-->
+                                <md-list-item ng-repeat="activity in task.activity | orderBy: tabSort.tasks" class="secondary-button-padding" ng-click="action($event)">
+                                    <p>Activvvity: {{activity}} {{activity.created_at}}</p>
+                                </md-list-item>
+<!--local-->
+                                <!--<md-list-item ng-repeat="activity in activities.data">-->
+                                    <!--<span class="status-ico" ng-class="activity.activity_model"></span>-->
+                                    <!--<p><b> {{ activity.message }} </b> - {{ activity.owner.username }} <span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>-->
+                                    <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
+                                <!--</md-list-item>-->
+                                
+                            </md-list>
+                            <span></span>
+
+
+                            <md-list>
                             <md-list-item ng-repeat="activity in activities.data">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
                                 <p><b> {{ activity.message }} </b> - {{ activity.owner.username }} <span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>

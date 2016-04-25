@@ -6,7 +6,13 @@
                 <div class="md-toolbar-tools">
                     <span>{{project.name}}</span>
                     <div flex></div>
-                    <md-button ng-click="loadStuff()">EDIT (test)</md-button>
+                    <md-button class="md-primary" ng-click="showAddStatusDialog($event)">
+                        Add status
+                    </md-button>
+
+                    <md-button class="md-primary" ng-href="#/user/projects/{{project.id}}/edit">
+                        Edit({{project.name}})
+                    </md-button>
                 </div>
             </md-toolbar>
 
@@ -30,10 +36,10 @@
                                 Finished (5)
                             </td>
                             <td md-cell ng-repeat="member in project.members">
-                                {{member.username}}({{member.email}})
+                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}({{member.email}})</a>
                             </td>
                             <td md-cell>
-                                {{project.owner.username}}({{project.owner.email}})
+                                <a ng-href="#" ng-click="changeUserLocation($event, project.owner.id)" class="project-tabs-name">{{project.owner.username}}({{project.owner.email}})</a>
                             </td>
                             <td md-cell>{{project.date_started | date : 'medium'}}</td>
                             <td md-cell>{{project.date_finished | date : 'medium'}}</td>
@@ -76,9 +82,9 @@
                             </md-input-container>
                         </div>
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding" ng-click="action($event)">
+                            <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding">
                                 <span class="status-ico" ng-class="task.status"></span>
-                                <p><b><a ng-href="#/user/tasks/{{task.name}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#" class="project-tabs-name">{{ task.owner.username }}</a><b>{{task.project_obj.name}}</b></p>
+                                <p><b><a ng-href="#/user/tasks/{{task.name}}"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a> <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>
                             </md-list-item>
                         </md-list>
                         <span></span>
@@ -103,7 +109,7 @@
                         <md-list>
                             <md-list-item ng-repeat="notification in notifications.data">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
-                                <p><b> {{ notification.message }} </b> - {{ notification.owner.username }} ({{ notification.created_at | date : 'medium' }})</p>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -129,7 +135,92 @@
                         <md-list>
                             <md-list-item ng-repeat="activity in activities.data">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
-                                <p><b> {{ activity.message }} </b> - {{ activity.owner.username }} ({{ activity.created_at | date : 'medium' }})</p>
+                                <p><b> {{ activity.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
+                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="comments">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.comments">
+                                    <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.comments">
+                                    <md-option ng-repeat="opt in viewCommentVariants" value="{{opt}}" ng-click="viewComment(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <!--<pre>{{project.comments | json}}</pre>-->
+                         <md-list class="project-tabs-list">
+                                    <md-list-item ng-repeat="comment in project.comments | orderBy: tabSort.comments" class="secondary-button-padding" >
+                                        <p><a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}: {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                                    </md-list-item>
+                            </md-list>
+                            <span></span>
+
+                        <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
+                                <md-content layout-padding="">
+                                    <div>
+                                         <md-card class="md-padding">
+                                             <form ng-submit="saveComment()">
+                                                <md-card-title>
+                                                    <md-card-title-text>
+                                                        <span class="md-headline">Add comment</span>
+                                                    </md-card-title-text>
+                                                </md-card-title>
+                                                <md-card-content>
+                                                    <div>
+                                                        <md-input-container class="md-block">
+                                                            <label>Title</label>
+                                                            <input type="text" name="title" id="comment-title" required
+                                                                   ng-model="commentData.title">
+                                                        </md-input-container>
+                                                        <md-input-container class="md-block">
+                                                            <label>Comment</label>
+                                                            <input type="text" name="comment" id="comment-comment" required
+                                                                   ng-model="commentData.comment">
+                                                        </md-input-container>
+                                                    </div>
+                                                </md-card-content>
+                                                <md-card-actions layout="row" layout-align="end center">
+                                                    <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                                                </md-card-actions>
+                                            </form>
+                                         </md-card>
+                                    </div>
+                                </md-content>
+                        </md-dialog-content>
+                        <span></span>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Statuses">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.status">
+                                    <md-option ng-repeat="opt in statusSortVariants" value="{{opt.title}}" ng-click="statusSort(opt)">{{opt.title}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.status">
+                                    <md-option ng-repeat="opt in viewStatusVariants" value="{{opt}}" ng-click="viewStatus(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="status in statuses">
+                                <span class="status-ico" ng-class="activity.activity_model"></span>
+                                <p><b> {{ status.name }} </b> - {{ status.order_number }} ({{ status.created_at | date : 'medium' }})</p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -139,10 +230,6 @@
             </md-tabs>
         </md-card>
     </div>
-
-
-
-
 
 <!-- for popup -->
 <!-- Registration modal -->
@@ -272,7 +359,51 @@
 </script>
 <!-- Registration modal end -->
 
-
+    <script type="text/ng-template" id="add_status.tmpl.html">
+        <md-dialog aria-label="Add status form" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="25" flex-gt-lg="15" id="change_pwd_view" ng-controller="addStatusCtrl">
+           <form role="form" name="addStatusForm" novalidate ng-submit="addStatsus(addStatusForm)">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Add status</h2>
+                        <span flex="" class="flex"></span>
+                        <button class="md-icon-button md-button md-ink-ripple" type="button"
+                                ng-click="cancel()">
+                            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                     class="ng-scope ng-isolate-scope" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                     fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                </svg>
+                            </md-icon>
+                        </button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                    <md-content layout-padding="">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Status Name</label>
+                                <input type="text" name="status_name" id="status_name" ng-model="status_name" md-autofocus required>
+                                <div ng-messages="addStatusForm.status_name.$error">
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+                    <md-button type="submit" style="margin-right:20px;">
+                        Add
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
 
 </md-content>
 

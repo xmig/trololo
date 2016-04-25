@@ -116,31 +116,12 @@
 
 
             <md-dialog-actions layout="row">
-                <!-- links for python-social-auth -->
-                <!--<a href="/login/facebook/?next=/" >-->
-                    <!--&lt;!&ndash; 35 x 35 &ndash;&gt;-->
-                    <!--<img src="http://skimfeed.com/blog/wp-content/plugins/simple-share-buttons-adder/buttons/simple/facebook-small.png" alt="facebook login" hspace="3" />-->
-                <!--</a>-->
-                <!--<a href="/login/linkedin/?next=/" >-->
-                    <!--&lt;!&ndash; 35 x 35 &ndash;&gt;-->
-                    <!--<img src="http://www.smu.ca/webfiles/LinkedIn_Logo_35X35.png" alt="linkedin login" hspace="3" />-->
-                <!--</a>-->
-                <a href="/accounts/facebook/login/?next=/">
-                    <!-- 35 x 35 -->
-                    <img src="/static/img/facebook-logo_35x35.png" alt="facebook login" hspace="3" />
-                </a>
-                <a href="/accounts/linkedin/login/?next=/">
-                    <!-- 35 x 35 -->
-                    <img src="/static/img/linkedIn_logo_35x35.png" alt="linkedin login" hspace="3" />
-                </a>
-                <a href="/accounts/github/login/?next=/">
-                    <!-- 35 x 35 -->
-                    <img src="/static/img/github_logo-35x35.png" alt="github login" hspace="3" />
-                </a>
-                <a href="/accounts/google/login/?next=/">
-                    <!-- 35 x 35 -->
-                    <img src="/static/img/google_logo_35x35.png" alt="google login" hspace="3" />
-                </a>
+                <span ng-repeat="acc in social_links">
+                    <a ng-href="/accounts/{{ acc.name | lowercase }}/login/?next=/">
+                        <!-- 35 x 35 -->
+                        <img ng-src="{{ social_login[acc.name.toLowerCase()] }}" hspace="3" />
+                    </a>
+                </span>
                 <md-button ng-click="cancel()">
                     Cancel
                 </md-button>

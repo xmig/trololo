@@ -3,24 +3,23 @@
 var isDlgOpen;
 
 angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'personalInfoService', '$mdToast', '$mdMedia', '$mdDialog', function ($scope, $http, personalInfoService, $mdToast, $mdMedia, $mdDialog) {
-    $scope.userPersonalData = {};
-    $scope.userAdditionData = {};
+
     $scope.myFile = {};
     $scope.showModal = false;
-    $scope.social_links = $scope.social_links;
+    $scope.showSocialLinks = Object.keys($scope.social_links).length > 0;
 
-    personalInfoService.get(function (data) {
-        $scope.userAdditionData = {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            department: data.department,
-            specialization: data.specialization,
-            detailed_info: data.detailed_info,
-            use_gravatar: data.use_gravatar,
-            social_accounts: data.social_accounts
-        };
-        $scope.userPersonalData = data;
-    });
+//    personalInfoService.get(function (data) {
+//        $scope.userAdditionData = {
+//            first_name: data.first_name,
+//            last_name: data.last_name,
+//            department: data.department,
+//            specialization: data.specialization,
+//            detailed_info: data.detailed_info,
+//            use_gravatar: data.use_gravatar,
+//            social_accounts: data.social_accounts
+//        };
+//        $scope.userPersonalData = data;
+//    });
 
     $scope.isEmpty = function(obj) {
         return Object.keys(obj).length === 0;
@@ -35,17 +34,17 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     };
 
     $scope.compareData = function(firstObj, secondObj){
-        var coincidedElementsArray = [];
+        var check = false;
         if(!$scope.isEmpty(secondObj)){
-            angular.forEach(secondObj, function(svalue, skey){
-                angular.forEach(firstObj, function(fvalue, fkey){
-                    if(skey === fkey && svalue !== fvalue){
-                        coincidedElementsArray.push(skey);
-                    }
-                })
-            })
-        }
-        return coincidedElementsArray;
+            for (var key in secondObj) {
+                if (secondObj.hasOwnProperty(key) && secondObj[key] !== firstObj[key]) {
+                    check = true;
+                    break;
+                }
+            }
+        };
+
+        return check;
     };
 
     $scope.showPersonalToastSave = function() {
@@ -67,7 +66,7 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     };
 
     $scope.AdditionalInfoSubmit = function(){
-        if($scope.compareData($scope.userPersonalData, $scope.userAdditionData).length){
+        if($scope.compareData($scope.userPersonalData, $scope.userAdditionData)){
             $scope.savePersonalForm();
         } else {
             $scope.showPersonalToastReject();

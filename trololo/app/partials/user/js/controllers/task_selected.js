@@ -1,5 +1,10 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams',
- function($scope, $rootScope, $http, task_selectedService, activityListService, $mdDialog, $mdMedia, $routeParams){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', function($scope, $rootScope, $http, task_selectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
+//local 'activityListService',
+//angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, task_selectedService, activityListService, $mdDialog, $mdMedia, $routeParams){
+////stage
+//angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
+
+
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -10,9 +15,53 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     //$scope.location = $routeParams.userLocation;
     //console.log("---", $routeParams.taskid)
 
-    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+
+//local
+//    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+//         console.log($scope.task);
+//    })
+
+
+
+// TAGS
+    // patch for tags
+    $scope.task = {tags: []};
+
+    //$scope.location = $routeParams.userLocation;
+
+    console.log("---", $routeParams.taskid);
+
+    task_selectedService.get({"id": $routeParams.taskid}, function(response) {
          console.log($scope.task);
+         $scope.task = response;
     })
+
+    // TAG manipulations
+    $scope.addTag = function(tag) {
+        task_tagService.add_tag(
+            {'id': $routeParams.taskid, 'tag_name': tag.name}, function(response) {
+            }, function () {
+                $scope.task.tags.splice($scope.task.tags.length - 1, 1);
+            }
+        );
+    };
+
+    $scope.removeTag = function(tag) {
+        tag_name = tag.name;
+
+        task_tagService.delete_tag(
+            {'id': $routeParams.taskid, 'tag_name': tag_name}, function(response) {
+            }, function () {
+                $scope.task.tags.push(tag);
+            }
+        );
+    };
+
+    $scope.newTag = function(tag) {
+        return {'name': tag};
+    };
+//
+
 
 
     /* ACTIVITY INFO */  //- sorting, view, pagination
@@ -64,8 +113,10 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     };
 
     reloadActivity();
-
-
+    
+    
+    
+    
 
     $scope.leftSidebarList = [
         {"title": "Personal Info", "link": "personal"},
@@ -154,13 +205,13 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
 
 
-    $scope.getStatuses = function () {
-        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-    };
-
-    $scope.getTypes = function () {
-        return ['bug', 'feature', 'undefined'];
-    };
+//    $scope.getStatuses = function () {
+//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+//    };
+//
+//    $scope.getTypes = function () {
+//        return ['bug', 'feature', 'undefined'];
+//    };
 /* end - for popup */
 
 
@@ -203,10 +254,17 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
         });
     };
 
-    $scope.getTypes = function () {
-        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
-    };
+//    $scope.getTypes = function () {
+//        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
+//    };
 
+
+//    $scope.my_notifications = [
+//        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
+//        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
+//        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
+//        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
+//    ];
 
     $scope.sortVariants = [
           {value: "created_at",
@@ -220,5 +278,37 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 //          },
       ];
 
+    $scope.viewVariants = [
+          "5",
+          "10",
+          "20",
+          "50",
+          "All"
+      ];
+
+
+
+    personalInfoService.get(function (data) {
+        $scope.userAdditionData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            department: data.department,
+            specialization: data.specialization,
+            detailed_info: data.detailed_info,
+            use_gravatar: data.use_gravatar,
+            social_accounts: data.social_accounts
+        };
+        $scope.userPersonalData = data;
+    });
+
+    $scope.changeUserLocation = function(e, id){
+    console.log("-----")
+    e.preventDefault();
+        if($scope.userPersonalData.id !== id){
+            $window.location.href = '#/user/profile/' + id;
+        } else {
+            $window.location.href = '#/user/personal/';
+        }
+    }
 
 }]);

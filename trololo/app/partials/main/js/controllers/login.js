@@ -2,6 +2,12 @@
 
 angular.module('mainApp')
     .controller('LoginCtrl', function ($scope, $rootScope, $location, djangoAuth, Validate) {
+        $scope.social_login = {
+            'google': '/static/img/google_logo_35x35.png',
+            'facebook': '/static/img/facebook-logo_35x35.png',
+            'github': '/static/img/github_logo-35x35.png',
+            'linkedin': '/static/img/linkedIn_logo_35x35.png'
+        };
         $scope.model = {'username': '', 'password': ''};
         //$scope.complete = false;
         $scope.login = function (formData) {
