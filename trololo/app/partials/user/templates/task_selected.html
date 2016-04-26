@@ -70,22 +70,22 @@
                         <div layout="row">
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
-                                <md-select ng-model="tabSort.tasks">
-                                    <md-option ng-repeat="opt in sortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
+                                <md-select ng-model="tabSort.taskComments">
+                                    <md-option ng-repeat="opt in commentSortVariants" ng-click="commentSort(opt)" value="{{opt.value}}">{{opt.option}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
-                                <md-select ng-model="tabView.tasks">
-                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
+                                <md-select ng-model="tabView.taskComments">
+                                    <md-option ng-repeat="opt in viewCommentVariants" ng-click="viewComment(opt)" value="{{opt}}" >{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
 
                         <md-list class="project-tabs-list">
 
-                             <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.tasks" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                             <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.taskComments" class="secondary-button-padding"> <!--ng-click="action($event)"-->
+                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}} {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
 
                             </md-list-item>
                         </md-list>

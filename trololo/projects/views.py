@@ -495,7 +495,7 @@ class TaskCommentList(generics.ListCreateAPIView):
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = TaskCommentFilter
     search_fields = ('title', 'comment')
-    ordering_fields = ('title', 'id')
+    ordering_fields = ('title', 'id', 'created_by__username')
 
     def get_queryset(self):
         current_user = self.request.user

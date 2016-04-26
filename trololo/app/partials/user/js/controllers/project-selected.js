@@ -379,13 +379,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 //          },
       ];
 
-//    $scope.viewVariants = [
-//          "5",
-//          "10",
-//          "20",
-//          "50",
-//          "All"
-//      ];
+
 
     reloadTask();
 
@@ -403,7 +397,9 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             'page': $scope.commentPage,
             'page_size': $scope.commentPageSize,
             'ordering': sorting,
-            'for_cu':1
+            'for_cu':1,
+            'project': $routeParams.id
+
         }
         console.log("---", params);
         commentService.get(params, function (data) {
