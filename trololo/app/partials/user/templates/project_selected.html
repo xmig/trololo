@@ -217,13 +217,25 @@
                                 </md-select>
                             </md-input-container>
                         </div>
-                        <md-list>
-                            <md-list-item ng-repeat="status in statuses">
-                                <span class="status-ico" ng-class="activity.activity_model"></span>
-                                <p><b> {{ status.name }} </b> - {{ status.order_number }} ({{ status.created_at | date : 'medium' }})</p>
-                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
-                            </md-list-item>
-                        </md-list>
+                        <md-table-container>
+                            <table md-table>
+                                <thead md-head>
+                                    <tr md-row>
+                                        <th md-column><b>#</b></th>
+                                        <th md-column><b>Status name</b></th>
+                                        <th md-column><b>Order number</b></th>
+                                        <th md-column><b>View</b></th>
+                                    </tr>
+                                </thead>
+
+                                <tr md-row ng-repeat="status in statuses">
+                                    <td md-cell>{{ $index + 1 }}</td>
+                                    <td md-cell>{{ status.name }}</td>
+                                    <td md-cell>{{ status.order_number }}</td>
+                                    <td md-cell><md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button></td>
+                                </tr>
+                            </table>
+                        </md-table-container>
                         <span></span>
                     </md-content>
                 </md-tab>
