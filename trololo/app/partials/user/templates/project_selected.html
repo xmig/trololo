@@ -35,8 +35,10 @@
                                 In Progres (35) <br/>
                                 Finished (5)
                             </td>
-                            <td md-cell ng-repeat="member in project.members">
-                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}({{member.email}})</a>
+                            <td md-cell>
+                                <ul class="project-members-list">
+                                    <li ng-repeat="member in project.members"><a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}({{member.email}})</a></li>
+                                </ul>
                             </td>
                             <td md-cell>
                                 <a ng-href="#" ng-click="changeUserLocation($event, project.owner.id)" class="project-tabs-name">{{project.owner.username}}({{project.owner.email}})</a>
