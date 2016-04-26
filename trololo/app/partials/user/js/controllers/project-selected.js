@@ -389,8 +389,6 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 
     reloadTask();
 
-
-
     /* COMMENT */
     $scope.commentSortType = 'created_at'; // set the default sort type
     $scope.commentSortDirection = true;  // set the default sort order
@@ -409,13 +407,9 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         }
         console.log("---", params);
         commentService.get(params, function (data) {
-            if ($scope.project == undefined) {
-                $scope.project = {};
-            };
-
-            $scope.project.comments = data.results;
-            $scope.project.comments.count = $scope.project.comments.length;
-            console.log('data.results', data.results,'-----', $scope.project.comments.count);
+            $scope.comments = data.results;
+            $scope.comments.count = $scope.comments.length;
+            console.log('data.results', data.results,'-----', $scope.comments.count);
         });
     };
 

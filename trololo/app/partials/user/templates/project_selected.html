@@ -160,7 +160,7 @@
                         </div>
                         <!--<pre>{{project.comments | json}}</pre>-->
                          <md-list class="project-tabs-list">
-                                    <md-list-item ng-repeat="comment in project.comments | orderBy: tabSort.comments" class="secondary-button-padding" >
+                                    <md-list-item ng-repeat="comment in comments | orderBy: tabSort.comments" class="secondary-button-padding" >
                                         <p><a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}: {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
                                     </md-list-item>
                             </md-list>

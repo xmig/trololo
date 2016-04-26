@@ -96,7 +96,7 @@
                         </div>
 
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
+                            <md-list-item ng-repeat="task in tasks_bottom_list.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
                                             {{task.name}}</a></b> ({{task.type}}) for project <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a>
@@ -132,7 +132,7 @@
                         </div>
 
                      <md-list>
-                        <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
+                        <md-list-item ng-repeat="task in tasks_bottom_list.data | orderBy: tabSort.tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
                                             <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>

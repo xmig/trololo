@@ -25,7 +25,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
 // TAGS
     // patch for tags
-    $scope.task = {tags: []};
+//    $scope.task = {tags: []};
 
     //$scope.location = $routeParams.userLocation;
 
@@ -34,6 +34,9 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     task_selectedService.get({"id": $routeParams.taskid}, function(response) {
          console.log($scope.task);
          $scope.task = response;
+    }, function(error){
+//        console.log("ERROR"); // if task doesn't exist - go to main page
+        $window.location.href = "#/"
     })
 
     // TAG manipulations
@@ -114,7 +117,57 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
 
     reloadActivity();
     
-    
+
+
+///* COMMENT */
+//    $scope.commentSortType = 'created_at'; // set the default sort type
+//    $scope.commentSortDirection = true;  // set the default sort order
+//    $scope.commentPageSize = 10;
+//    $scope.commentPage = 1;
+//
+//    $scope.viewCommentVariants = ["5", "10", "20", "50", "All"];
+//
+//    var reloadComment = function() {
+//        var sorting = ($scope.commentSortDirection ? '' : '-') + $scope.commentSortType;
+//        var params = {
+//            'page': $scope.commentPage,
+//            'page_size': $scope.commentPageSize,
+//            'ordering': sorting,
+//            'for_cu':1
+//        }
+//        console.log("---", params);
+//        commentService.get(params, function (data) {
+//            if ($scope.project == undefined) {
+//                $scope.project = {};
+//            };
+//
+//            $scope.project.comments = data.results;
+//            $scope.project.comments.count = $scope.project.comments.length;
+//            console.log('data.results', data.results,'-----', $scope.project.comments.count);
+//        });
+//    };
+//
+//    $scope.commentSort = function(sortInfo) {
+//        $scope.commentSortType = sortInfo.type;
+//        $scope.commentSortDirection = sortInfo.direction;
+//        $scope.commentPage = 1;
+//        reloadComment();
+//    };
+//
+//
+//    $scope.viewComment = function(viewInfo) {
+//        if (viewInfo === 'All') {
+//            $scope.commentPageSize = 1000000;
+//        } else {
+//            $scope.commentPageSize = viewInfo;
+//        }
+//
+//        $scope.commentPage = 1;
+//        reloadComment();
+//    };
+//
+//    reloadComment();
+
     
     
 

@@ -249,9 +249,9 @@ console.log('data!!', data)
         }
 
         taskService.get(params, function (data) {
-            $scope.tasks = {}
-            $scope.tasks.data = data.results;
-            $scope.tasks.count = $scope.tasks.data.length;
+            $scope.tasks_bottom_list = {}
+            $scope.tasks_bottom_list.data = data.results;
+            $scope.tasks_bottom_list.count = $scope.tasks_bottom_list.data.length;
         });
     };
 

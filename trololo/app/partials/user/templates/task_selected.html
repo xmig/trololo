@@ -1,9 +1,9 @@
-<!--&lt;!&ndash;local&ndash;&gt;-->
-<!--<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">-->
-    <!--<div flex layout="column" ng-controller="nutritionController">-->
-<!--stage-->
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
-    <div flex layout="column" ng-controller="nutritionController">        
+<!--local-->
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">
+    <div flex layout="column" ng-controller="nutritionController">
+<!--&lt;!&ndash;stage&ndash;&gt;-->
+<!--<md-content layout-xs="column" layout="row" class="md-padding gray-bg">-->
+    <!--<div flex layout="column" ng-controller="nutritionController">        -->
 
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
@@ -77,7 +77,7 @@
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
                                 <md-select ng-model="tabView.tasks">
-                                    <md-option ng-repeat="opt in viewTaskVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
+                                    <md-option ng-repeat="opt in viewVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
