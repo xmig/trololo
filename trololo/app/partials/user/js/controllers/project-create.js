@@ -1,5 +1,5 @@
-angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'projectService', 'projectSelectedService',
-    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, projectService, projectSelectedService)
+angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'projectService', 'projectSelectedService', '$timeout', '$mdSidenav', '$log',
+    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, projectService, projectSelectedService, $timeout, $mdSidenav, $log)
 {
     $scope.project_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/project_create.html';
