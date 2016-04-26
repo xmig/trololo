@@ -153,3 +153,8 @@
 .tags_list {
     font-size:13px;
 }
+
+.project-members-list {
+    padding: 0;
+    list-style: none;
+}
