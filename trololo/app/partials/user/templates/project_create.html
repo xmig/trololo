@@ -10,7 +10,7 @@
 
 
                 <md-card class="md-padding">
-                    <form ng-submit="saveProject()">
+                    <form name="save_project" ng-submit="save_project.$valid && saveProject()">
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">Project Info</span>
@@ -35,8 +35,10 @@
                                         <md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-datepicker ng-model="projectData.date_started" md-placeholder="Date Started" required></md-datepicker>
-                                <md-datepicker ng-model="projectData.date_finished" md-placeholder="Date Finished" required></md-datepicker>
+                                <md-datepicker name="dt_start" ng-model="projectData.date_started" md-placeholder="Date Started" required></md-datepicker>
+                                <span class="alert" ng-show="save_project.$submitted && save_project.dt_start.$invalid">Date Start is required</span>
+                                <md-datepicker name="dt_finished" ng-model="projectData.date_finished" md-placeholder="Date Finished" required></md-datepicker>
+                                <span class="alert" ng-show="save_project.$submitted && save_project.dt_finished.$invalid">Date Finished is required</span>
                                 <md-input-container class="md-block">
                                     <label>Description</label>
                                     <textarea name="description" id="description"

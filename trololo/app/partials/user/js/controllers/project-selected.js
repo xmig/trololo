@@ -27,6 +27,7 @@ angular.module('mainApp')
         .then(function(resp) {
             $scope.hide();
 
+            $scope.reloadStatuses();
             var alert = $mdDialog.alert()
                 .title('Complete')
                 .textContent('Status was added!')
@@ -129,7 +130,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.statusLimit = 5;
     $scope.statusOffset = 0;
 
-    var reloadStatuses = function() {
+    $scope.reloadStatuses = function() {
         var params = {
             'limit': $scope.statusLimit,
             'offset': $scope.statusOffset,
@@ -169,7 +170,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.statusSort = function(sortInfo) {
         $scope.statusSortType = sortInfo.type;
         $scope.statusPage = 1;
-        reloadStatuses();
+        $scope.reloadStatuses();
     };
 
     $scope.viewStatus = function(viewInfo) {
@@ -179,10 +180,10 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             $scope.statusLimit = viewInfo;
         }
         $scope.statusPage = 1;
-        reloadStatuses();
+        $scope.reloadStatuses();
     };
 
-    reloadStatuses();
+    $scope.reloadStatuses();
 
     // Add Status
     $scope.showAddStatusDialog = function(event) {
