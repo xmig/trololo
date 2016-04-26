@@ -228,7 +228,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 
     // Edit status
 
-    $scope.viewStatus = function (ev, id) {
+    $scope.viewSelectedStatus = function (ev, id) {
         $location.url('/user/status/' + id);
     };
 

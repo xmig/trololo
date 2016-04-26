@@ -235,7 +235,7 @@
                                     <td md-cell>{{ $index + 1 }}</td>
                                     <td md-cell>{{ status.name }}</td>
                                     <td md-cell>{{ status.order_number }}</td>
-                                    <td md-cell><md-button class="md-secondary" ng-click="viewStatus($event, status.id)">Edit</md-button></td>
+                                    <td md-cell><md-button class="md-secondary" ng-click="viewSelectedStatus($event, status.id)">Edit</md-button></td>
                                     <td md-cell><md-button class="md-secondary" ng-click="deleteStatusPopup($event, status.id, status.name)">Delete</md-button></td>
                                 </tr>
                             </table>
