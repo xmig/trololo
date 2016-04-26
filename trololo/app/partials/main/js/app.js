@@ -193,6 +193,15 @@ angular.module('mainApp', [
                     }]
                 }
             })
+            .when('/user/status/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'statusSelectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
 
             .otherwise({
                 redirectTo: '/'

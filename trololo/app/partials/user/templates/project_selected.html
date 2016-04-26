@@ -224,9 +224,10 @@
                                 <thead md-head>
                                     <tr md-row>
                                         <th md-column><b>#</b></th>
-                                        <th md-column><b>Status name</b></th>
-                                        <th md-column><b>Order number</b></th>
-                                        <th md-column><b>View</b></th>
+                                        <th md-column><b>STATUS NAME</b></th>
+                                        <th md-column><b>ORDER NUMBER</b></th>
+                                        <th md-column><b>EDIT</b></th>
+                                        <th md-column><b>DELETE</b></th>
                                     </tr>
                                 </thead>
 
@@ -234,7 +235,8 @@
                                     <td md-cell>{{ $index + 1 }}</td>
                                     <td md-cell>{{ status.name }}</td>
                                     <td md-cell>{{ status.order_number }}</td>
-                                    <td md-cell><md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button></td>
+                                    <td md-cell><md-button class="md-secondary" ng-click="viewStatus($event, status.id)">Edit</md-button></td>
+                                    <td md-cell><md-button class="md-secondary" ng-click="deleteStatusPopup($event, status.id, status.name)">Delete</md-button></td>
                                 </tr>
                             </table>
                         </md-table-container>
