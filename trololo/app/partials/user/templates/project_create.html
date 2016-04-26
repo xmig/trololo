@@ -42,6 +42,18 @@
                                     <textarea name="description" id="description"
                                            ng-model="projectData.description" rows="5"></textarea>
                                 </md-input-container>
+                                <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                                    <md-contact-chips
+                                        ng-model="projectData.members_data"
+                                        md-contacts="ctrl.delayedQuerySearch($query)"
+                                        md-contact-name="username"
+                                        md-contact-email="email"
+                                        md-require-match="true"
+                                        md-highlight-flags="i"
+                                        filter-selected="ctrl.filterSelected"
+                                        placeholder="Members">
+                                    </md-contact-chips>
+                                </div>
                             </div>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
