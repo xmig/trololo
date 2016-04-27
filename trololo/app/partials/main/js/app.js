@@ -130,6 +130,19 @@ angular.module('mainApp', [
                     }]
                 }
             })
+
+
+
+            .when('/user/tasks/create', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'taskCreateCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+
             .when('/user/tasks/:taskid', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'task_selectedCtrl',
@@ -139,6 +152,61 @@ angular.module('mainApp', [
                     }]
                 }
             })
+
+
+
+//            .when('/user/tasks/comments/create', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'task_selectedCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
+
+//            .when('/user/tasks/comments/:id/edit', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'task_selectedCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
+//            .when('/user/tasks/comments/:id', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'task_selectedCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
+//            .when('/user/tasks/:id/edit', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'taskCreateCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
+//            .when('/user/tasks/:id', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'task_selectedCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
+
+
+
+
+
+
              .when('/user/projects/comments/create', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'projectSelectedCtrl',

@@ -10,8 +10,9 @@
                 <div class="md-toolbar-tools">
                     <span>{{task.name}} ({{task.project_obj.name}})</span>
                     <div flex></div>
-                    <md-button ng-click="loadStuff()">EDIT (test)</md-button>
-                </div>
+                        <md-button class="md-primary" ng-click="showAddStatusDialog($event)">Add status</md-button>
+                        <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Edit({{task.name}})</md-button>
+                    </div>
             </md-toolbar>
 
             <md-table-container>

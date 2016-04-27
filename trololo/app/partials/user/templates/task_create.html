@@ -1,0 +1,164 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
+    <div flex layout="column" ng-controller="nutritionController">
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Create Task</span>
+                    <div flex></div>
+                </div>
+            </md-toolbar>
+
+
+                <md-card class="md-padding">
+                    <form ng-submit="saveTask()">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Task Info</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <div>
+                                <md-input-container class="md-block">
+                                    <label>Name</label>
+                                    <input type="text" name="name" id="name" required ng-model="taskData.name">
+                                </md-input-container>
+
+<!--<Choose Project>-->
+                            <md-input-container class="md-block">
+                                <label>Choose Project:</label>
+                                        <md-select ng-model="widgetType">
+                                            <md-option ng-repeat="proj in projects.results" ng-value="proj.name">{{ proj.name }}</md-option>
+                                        </md-select>
+                            </md-input-container>
+<!--<Set Task type>-->
+                            <md-input-container class="md-block">
+                                <label>Set Task type:</label>
+                                        <md-select ng-model="taskData.type" name="type" id="type">
+                                            <md-option ng-repeat="type in taskTypes" ng-value="type.id">{{ type.title }}</md-option>
+                                        </md-select>
+                            </md-input-container>
+<!--<Set Task Status>-->
+
+                            <md-input-container class="md-block">
+                                    <label>Status</label>
+                                        <md-select ng-model="taskData.status" name="status" id="status">
+                                            <md-option ng-repeat="status in taskStatuses" ng-value="status.id">{{ status.title }}</md-option>
+                                        </md-select>
+                            </md-input-container>
+<!--<Set Task label>-->
+                            <md-input-container class="md-block">
+                                    <label>Set Task label:</label>
+                                        <md-select ng-model="taskData.label" name="label" id="label">
+                                            <md-option ng-repeat="label in taskLabels" ng-value="label.id">ico+{{ label.title }}</md-option>
+                                        </md-select>
+                            </md-input-container>
+<!--<Enter estimation date>-->
+                            <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date"></md-datepicker>
+                            <md-datepicker ng-model="taskData.estimate_minutes" md-placeholder="Estimate minutes"></md-datepicker>
+
+                            <!--<md-dialog-content>-->
+                                <!--<div style="padding: 40px;" ng-cloak="" class="datepickerdemoBasicUsage" ng-app="MyApp">-->
+                                    <!--<md-content>-->
+                                        <!--<p class="project-link-name">Deadline date:</p>-->
+                                        <!--<md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>-->
+                                    <!--</md-content>-->
+                                <!--</div>-->
+                            <!--</md-dialog-content>-->
+<!--<Task description>-->
+                            <md-input-container class="md-block">
+                                    <label>Description</label>
+                                    <textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>
+                            </md-input-container>
+
+<!--<Members>-->
+                            <!--<md-dialog-content>-->
+                                <!--<p class="project-link-name">Assign member(s):</p>-->
+
+                                <!--<md-input-container class="md-block">-->
+
+                                    <!--<md-content>-->
+                                        <!--<div layout="row">-->
+                                            <!--<p>Choose from existing Projects</p>-->
+                                                <!--<md-select ng-model="widgetType">-->
+                                                    <!--<md-option data-ng-repeat="proj in projects.results" ng-value="proj.name">{{ proj.name }}</md-option>-->
+                                                <!--</md-select>-->
+                                            <!--<p>Add member by name or email</p>-->
+                                                <!--<md-input-container class="md-block">-->
+                                                    <!--<label>Enter name or email</label>-->
+                                                    <!--<textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>-->
+                                                    <!--<span class="alert" ng-repeat="error in errors.username">{{error}}</span>-->
+                                                <!--</md-input-container>-->
+                                        <!--</div>-->
+                                    <!--</md-content>-->
+
+                                <!--</md-input-container>-->
+                            <!--</md-dialog-content>-->
+
+                                    <!--<md-dialog-content>-->
+                                        <!--<div class="md-padding checkboxdemoSyncing" ng-cloak="" style="min-height:270px" ng-app="MyApp">-->
+                                          <!--<div layout="row" layout-wrap="">-->
+                                              <!--<div flex="100" flex-gt-sm="50" layout="column">-->
+                                                  <!--<div>-->
+                                                    <!--<fieldset class="standard">-->
+                                                      <!--<div layout="row" layout-wrap="" flex="">-->
+                                                        <!--<div flex="50" ng-repeat="item in items">-->
+                                                          <!--<md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">-->
+                                                            <!--{{ item }} <span ng-if="exists(item, selected)">selected</span>-->
+                                                          <!--</md-checkbox>-->
+                                                        <!--</div>-->
+                                                      <!--</div>-->
+                                                    <!--</fieldset>-->
+                                                  <!--</div>-->
+                                              <!--</div>-->
+
+                                                    <!--<div flex="100">-->
+                                                        <!--<p>Selected Members</p>-->
+                                                        <!--<code style="display: block; padding: 8px;">{{selected | json}}</code>-->
+                                                    <!--</div>-->
+                                          <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</md-dialog-content>-->
+
+ <!--<Visible by>-->
+
+                                <md-input-container class="md-block">
+                                    <label>Visible By</label>
+                                    <md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">
+                                        <md-option ng-repeat="visibleBy in visibleByList" ng-value="visibleBy.id">{{ visibleBy.title }}</md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                            </div>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                        </md-card-actions>
+
+
+
+                                <!--<md-input-container class="md-block">-->
+                                    <!--<label>Visible By</label>-->
+                                    <!--<md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">-->
+                                        <!--<md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>-->
+                                    <!--</md-select>-->
+                                <!--</md-input-container>-->
+                                <!--<md-datepicker ng-model="taskData.date_started" md-placeholder="Date Started"></md-datepicker>-->
+                                <!--<md-datepicker ng-model="taskData.date_finished" md-placeholder="Date Finished"></md-datepicker>-->
+                                <!--<md-input-container class="md-block">-->
+                                    <!--<label>Description</label>-->
+                                    <!--<textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>-->
+                                <!--</md-input-container>-->
+                            <!--</div>-->
+                        <!--</md-card-content>-->
+                        <!--<md-card-actions layout="row" layout-align="end center">-->
+                            <!--<md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>-->
+                        <!--</md-card-actions>-->
+                    </form>
+                </md-card>
+        </md-card>
+    </div>
+</md-content>
+
+
+
+
