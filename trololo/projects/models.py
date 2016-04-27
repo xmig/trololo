@@ -4,6 +4,7 @@ from django.conf import settings
 from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
 from taggit.managers import TaggableManager
+from django.utils import timezone
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -37,8 +38,8 @@ class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignabl
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED)
     description = models.TextField(max_length=1000, null=True, blank=True, default='')
     visible_by = models.CharField(max_length=30, choices=VISIBILITY, default=UNDEFINED)
-    date_started = models.DateTimeField(blank=True, null=True, default='')
-    date_finished = models.DateTimeField(blank=True, null=True, default='')
+    date_started = models.DateTimeField(blank=True, null=True, default=timezone.now)
+    date_finished = models.DateTimeField(blank=True, null=True, default=None)
 
     tags = TaggableManager()
 
@@ -177,7 +178,7 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
 
 class Status(AbstractModel):
     # TODO: add created_by/created_at, updated_by/updated_at fields from AbstractTimestampable, AbstractSignable
-    project = models.ForeignKey(Project, default=True, null=True, blank=True, related_name='project_statuses')
+    project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
     name = models.CharField(max_length=30)
     order_number = models.IntegerField()
 

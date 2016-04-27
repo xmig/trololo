@@ -13,3 +13,11 @@ angular.module('userApp').factory('personalInfoService', function($resource, $co
         }
     );
 });
+
+angular.module('userApp').factory('usersService', function($resource, $cookies) {
+    return $resource("/users/", null,
+        {
+            'get':    {method:'GET'}
+        }
+    );
+});

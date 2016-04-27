@@ -133,6 +133,7 @@ angular.module('mainApp', [
 
 
 
+
             .when('/user/tasks/create', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'taskCreateCtrl',
@@ -142,7 +143,15 @@ angular.module('mainApp', [
                     }]
                 }
             })
-
+            .when('/user/tasks/:id/edit', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'taskCreateCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
             .when('/user/tasks/:taskid', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'task_selectedCtrl',
@@ -183,15 +192,7 @@ angular.module('mainApp', [
 //                    }]
 //                }
 //            })
-//            .when('/user/tasks/:id/edit', {
-//                templateUrl: '/static/user/templates/user.html',
-//                controller: 'taskCreateCtrl',
-//                resolve: {
-//                    authenticated: ['djangoAuth', function (djangoAuth) {
-//                        return djangoAuth.authenticationStatus(true);
-//                    }]
-//                }
-//            })
+
 //            .when('/user/tasks/:id', {
 //                templateUrl: '/static/user/templates/user.html',
 //                controller: 'task_selectedCtrl',
@@ -255,6 +256,15 @@ angular.module('mainApp', [
             .when('/user/projects/:id', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'projectSelectedCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/user/status/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'statusSelectedCtrl',
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);

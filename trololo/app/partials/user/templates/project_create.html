@@ -10,7 +10,7 @@
 
 
                 <md-card class="md-padding">
-                    <form ng-submit="saveProject()">
+                    <form name="save_project" ng-submit="save_project.$valid && saveProject()">
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">Project Info</span>
@@ -35,13 +35,28 @@
                                         <md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>
                                     </md-select>
                                 </md-input-container>
-                                <md-datepicker ng-model="projectData.date_started" md-placeholder="Date Started"></md-datepicker>
-                                <md-datepicker ng-model="projectData.date_finished" md-placeholder="Date Finished"></md-datepicker>
+                                <!--<pre>{{projectData.date_started | json}}</pre>-->
+                                <md-datepicker name="dt_start" ng-model="projectData.date_started" md-placeholder="Date Started" required></md-datepicker>
+                                <span class="alert" ng-show="save_project.$submitted && save_project.dt_start.$invalid">Date Start is required</span>
+                                <md-datepicker name="dt_finished" ng-model="projectData.date_finished" md-placeholder="Date Finished" required></md-datepicker>
+                                <span class="alert" ng-show="save_project.$submitted && save_project.dt_finished.$invalid">Date Finished is required</span>
                                 <md-input-container class="md-block">
                                     <label>Description</label>
                                     <textarea name="description" id="description"
                                            ng-model="projectData.description" rows="5"></textarea>
                                 </md-input-container>
+                                <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                                    <md-contact-chips
+                                        ng-model="projectData.members_data"
+                                        md-contacts="ctrl.delayedQuerySearch($query)"
+                                        md-contact-name="username"
+                                        md-contact-email="email"
+                                        md-require-match="true"
+                                        md-highlight-flags="i"
+                                        filter-selected="ctrl.filterSelected"
+                                        placeholder="Members">
+                                    </md-contact-chips>
+                                </div>
                             </div>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">

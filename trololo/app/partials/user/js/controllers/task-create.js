@@ -105,6 +105,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', 
         // EDIT
         // PROJECT CALCULATE
         task_selectedService.get({ id: $scope.task_id }, function (data) {
+            data.deadline_date = new Date(data.deadline_date);
             $scope.taskData = data;
         });
     }
@@ -116,7 +117,12 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', 
             // EDIT
             $scope.taskData.id = $scope.task_id;
 
+//            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
+//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+//            });
+
             task_selectedService.update($scope.taskData, function(response) {
+                data.deadline_date = new Date(data.deadline_date);
                 $scope.taskData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/' + $scope.taskData.id;
@@ -124,9 +130,10 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', 
             });
         } else {
             taskService.create($scope.taskData, function(response) {
+                data.deadline_date = new Date(data.deadline_date);
                 $scope.taskData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + response.id + '/edit';
+                    $window.location.href = '#/user/tasks/' + response.id;
                 }
             });
         }

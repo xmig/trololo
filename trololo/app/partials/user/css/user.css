@@ -87,7 +87,7 @@
 }
 .member-cell {
     padding-bottom: 7px;
-  }
+}
 
 
   /** Demo styles for mdCalendar. */ }
@@ -194,4 +194,9 @@
 
 .tags_list {
     font-size:13px;
-}  
+}
+
+.project-members-list {
+    padding: 0;
+    list-style: none;
+}

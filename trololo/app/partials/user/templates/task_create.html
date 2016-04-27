@@ -10,7 +10,7 @@
 
 
                 <md-card class="md-padding">
-                    <form ng-submit="saveTask()">
+                    <form name="save_task" ng-submit="save_task.$valid && saveTask()">
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">Task Info</span>
@@ -24,12 +24,12 @@
                                 </md-input-container>
 
 <!--<Choose Project>-->
-                            <md-input-container class="md-block">
-                                <label>Choose Project:</label>
-                                        <md-select ng-model="widgetType">
-                                            <md-option ng-repeat="proj in projects.results" ng-value="proj.name">{{ proj.name }}</md-option>
-                                        </md-select>
-                            </md-input-container>
+                            <!--<md-input-container class="md-block">-->
+                                <!--<label>Choose Project:</label>-->
+                                        <!--<md-select ng-model="widgetType">-->
+                                            <!--<md-option ng-repeat="proj in projects.results" ng-value="proj.name">{{ proj.name }}</md-option>-->
+                                        <!--</md-select>-->
+                            <!--</md-input-container>-->
 <!--<Set Task type>-->
                             <md-input-container class="md-block">
                                 <label>Set Task type:</label>
@@ -46,15 +46,16 @@
                                         </md-select>
                             </md-input-container>
 <!--<Set Task label>-->
-                            <md-input-container class="md-block">
-                                    <label>Set Task label:</label>
-                                        <md-select ng-model="taskData.label" name="label" id="label">
-                                            <md-option ng-repeat="label in taskLabels" ng-value="label.id">ico+{{ label.title }}</md-option>
-                                        </md-select>
-                            </md-input-container>
+                            <!--<md-input-container class="md-block">-->
+                                    <!--<label>Set Task label:</label>-->
+                                        <!--<md-select ng-model="taskData.label" name="label" id="label">-->
+                                            <!--<md-option ng-repeat="label in taskLabels" ng-value="label.id">ico+{{ label.title }}</md-option>-->
+                                        <!--</md-select>-->
+                            <!--</md-input-container>-->
 <!--<Enter estimation date>-->
                             <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date"></md-datepicker>
-                            <md-datepicker ng-model="taskData.estimate_minutes" md-placeholder="Estimate minutes"></md-datepicker>
+                            <!--<span class="alert" ng-show="save_task.$submitted && save_task.dt_start.$invalid">This field is required</span>-->
+
 
                             <!--<md-dialog-content>-->
                                 <!--<div style="padding: 40px;" ng-cloak="" class="datepickerdemoBasicUsage" ng-app="MyApp">-->
@@ -120,13 +121,27 @@
                                     <!--</md-dialog-content>-->
 
  <!--<Visible by>-->
-
-                                <md-input-container class="md-block">
+                            <md-input-container class="md-block">
                                     <label>Visible By</label>
                                     <md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">
                                         <md-option ng-repeat="visibleBy in visibleByList" ng-value="visibleBy.id">{{ visibleBy.title }}</md-option>
                                     </md-select>
-                                </md-input-container>
+                            </md-input-container>
+
+
+                            <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                                    <md-contact-chips
+                                        ng-model="taskData.members_data"
+                                        md-contacts="ctrl.delayedQuerySearch($query)"
+                                        md-contact-name="username"
+                                        md-contact-email="email"
+                                        md-require-match="true"
+                                        md-highlight-flags="i"
+                                        filter-selected="ctrl.filterSelected"
+                                        placeholder="Members">
+                                    </md-contact-chips>
+                            </div>
+
 
                             </div>
                         </md-card-content>

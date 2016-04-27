@@ -6,31 +6,11 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
 
     $scope.myFile = {};
     $scope.showModal = false;
+    // $scope.social_links - all available social auth providers
     $scope.showSocialLinks = Object.keys($scope.social_links).length > 0;
-
-//    personalInfoService.get(function (data) {
-//        $scope.userAdditionData = {
-//            first_name: data.first_name,
-//            last_name: data.last_name,
-//            department: data.department,
-//            specialization: data.specialization,
-//            detailed_info: data.detailed_info,
-//            use_gravatar: data.use_gravatar,
-//            social_accounts: data.social_accounts
-//        };
-//        $scope.userPersonalData = data;
-//    });
 
     $scope.isEmpty = function(obj) {
         return Object.keys(obj).length === 0;
-    };
-
-    $scope.checkSocial = function(provider) {
-        var val = false;
-        if ($scope.userAdditionData.social_accounts) {
-            val = $scope.userAdditionData.social_accounts.indexOf(provider) > -1;
-        }
-        return val;
     };
 
     $scope.compareData = function(firstObj, secondObj){

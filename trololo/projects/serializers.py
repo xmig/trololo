@@ -4,6 +4,7 @@ from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
 from activity.serializers import ActivitySerializer
 from django.db.models import Q
+from django.contrib.auth import get_user_model
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -82,7 +83,7 @@ class StatusSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
     # activity = ActivitySerializer(source='task_comments', many=True)
-    comments = ProjectCommentSerializer(source='project_comments', many=True) # display dicts of comments
+    comments = ProjectCommentSerializer(source='project_comments', many=True, required=False) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
 
     tasks = serializers.HyperlinkedRelatedField(
@@ -92,14 +93,14 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
-    # members = serializers.HyperlinkedRelatedField(
-    #     many=True,
-    #     view_name='users:single_user',
-    #     queryset=get_user_model().objects.all(),
-    #     required=False,
-    #     lookup_field='id'
-    # )
-    members = OnlyUserInfoSerializer(many=True, read_only=True)
+    members = serializers.HyperlinkedRelatedField(
+        many=True,
+        view_name='users:single_user',
+        queryset=get_user_model().objects.all(),
+        required=False,
+        lookup_field='id'
+    )
+    members_data = OnlyUserInfoSerializer(source='members', many=True, read_only=True)
 
     created_by = serializers.HyperlinkedRelatedField(
         read_only=True,
@@ -123,7 +124,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'status', 'members', 'comments', 'visible_by',
             'tasks', 'date_started', 'date_finished', 'created_by', 'created_at',
-            'updated_by', 'updated_at', 'owner', 'tags', 'project_obj', 'activity'
+            'updated_by', 'updated_at', 'owner', 'tags', 'project_obj', 'activity', 'members_data'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at')
 

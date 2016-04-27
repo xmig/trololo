@@ -28,7 +28,18 @@ angular.module('userApp').factory('project_tagService', function($resource, $coo
 angular.module('userApp').factory('projectStatusService', function($resource, $cookies) {
     return $resource("/status/", {},
         { 'add_status':    {method:'POST', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
-          'get': {method:'GET', params: {ordering: 'order_number'}}
+          'get': {method:'GET', params: {ordering: 'order_number'}},
+          'get_all': {method: 'GET', params: {ordering: 'order_number'}, isArray:true}
+        }
+    );
+});
+
+angular.module('userApp').factory('projectSelectedStatusService', function($resource, $cookies) {
+    return $resource("/status/:id/", {},
+        {
+            'put':    {method:'PUT', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
+            'remove_status': {method: 'DELETE', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
+            'get': {method:'GET'}
         }
     );
 });

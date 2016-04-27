@@ -27,6 +27,7 @@ angular.module('mainApp')
         .then(function(resp) {
             $scope.hide();
 
+            $scope.reloadStatuses();
             var alert = $mdDialog.alert()
                 .title('Complete')
                 .textContent('Status was added!')
@@ -55,8 +56,8 @@ angular.module('mainApp')
   });
 
 
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService) {
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService', 'projectSelectedStatusService', '$location',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService, projectSelectedStatusService, $location) {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
     // patch for tags
@@ -126,26 +127,36 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     // GET PROJECT STATUSES
     $scope.statusSortType = 'order_number'; // set the default sort type
     $scope.statusPageSize = 5;
-    $scope.statusPage = 1;
+    $scope.statusLimit = 5;
+    $scope.statusOffset = 0;
 
-    var reloadStatuses = function() {
+    $scope.reloadStatuses = function() {
         var params = {
-            'page': $scope.statusPage,
-            'page_size': $scope.statusPageSize,
+            'limit': $scope.statusLimit,
+            'offset': $scope.statusOffset,
             'ordering': $scope.statusSortType,
-            'project_activities': $routeParams.id
+            'project_activities': $routeParams.id,
         }
 
-        projectStatusService.get(params).$promise.then(
-            function(resp) {
-                $scope.statuses = resp.results;
-            },
-            function(resp) {
-                if (resp.status != undefined && resp.status !== 200) {
-                    console.log(resp);
-                }
-            }
-        );
+        var error_func = function (resp) {console.log(resp);};
+
+        if (!$scope.statusLimit) {
+            projectStatusService.get_all(
+                params,
+                function(resp) {
+                    $scope.statuses = resp;
+                },
+                error_func
+            )
+        } else {
+            projectStatusService.get(
+                params,
+                function(resp) {
+                    $scope.statuses = resp.results;
+                },
+                error_func
+            )
+        }
     };
 
     $scope.statusSortVariants = [
@@ -159,20 +170,20 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.statusSort = function(sortInfo) {
         $scope.statusSortType = sortInfo.type;
         $scope.statusPage = 1;
-        reloadStatuses();
+        $scope.reloadStatuses();
     };
 
     $scope.viewStatus = function(viewInfo) {
         if (viewInfo === 'All') {
-            $scope.statusPageSize = 1000000;
+            $scope.statusLimit = '';
         } else {
-            $scope.statusPageSize = viewInfo;
+            $scope.statusLimit = viewInfo;
         }
         $scope.statusPage = 1;
-        reloadStatuses();
+        $scope.reloadStatuses();
     };
 
-    reloadStatuses();
+    $scope.reloadStatuses();
 
     // Add Status
     $scope.showAddStatusDialog = function(event) {
@@ -188,10 +199,43 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         });
     };
 
+    // Delete status
+    $scope.deleteStatusPopup = function(ev, id, name) {
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to delete status?')
+              .textContent('Are you sure you mant to delete status ' + name + "?")
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Delete')
+              .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(
+            function() {
+                projectSelectedStatusService.remove_status(
+                    {id: id}, {},
+                    function(resp) {
+                        $scope.reloadStatuses();
+                    },
+                    function(resp) {
+                        $log.debug(
+                            "Status: " + resp.status + " Status text: " + resp.statusText + " Detail: " + resp.data.detail
+                        );
+                    }
+                )
+            }
+        );
+      };
+
+    // Edit status
+
+    $scope.viewSelectedStatus = function (ev, id) {
+        $location.url('/user/status/' + id);
+    };
+
     // TAG manipulations
     $scope.addTag = function(tag) {
         project_tagService.add_tag(
-            {'id': $routeParams.id, 'tag_name': tag.name}, function(response) {
+            {'id': $routeParams.id, 'tag_name': tag.name}, {}, function(response) {
             }, function () {
                 $scope.project.tags.splice($scope.project.tags.length - 1, 1);
             }
@@ -202,7 +246,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         tag_name = tag.name;
 
         project_tagService.delete_tag(
-            {'id': $routeParams.id, 'tag_name': tag_name}, function(response) {
+            {'id': $routeParams.id, 'tag_name': tag_name}, {}, function(response) {
             }, function () {
                 $scope.project.tags.push(tag);
             }
