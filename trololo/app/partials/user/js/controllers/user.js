@@ -74,6 +74,26 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
             social_accounts: data.social_accounts
         };
         $scope.userPersonalData = data;
+
+        $scope.checkSocial = function(provider) {
+            var val = false;
+            console.log("User acc: " + $scope.userAdditionData.social_accounts);
+            if ($scope.userAdditionData.social_accounts) {
+                val = $scope.userAdditionData.social_accounts.indexOf(provider) > -1;
+            }
+            return val;
+        };
+
+        $scope.social_links.forEach(
+            function(val, ind) {
+                if ($scope.checkSocial(val.name)) {
+                    $scope.social_links[ind].link = '/accounts/social/connections/';
+                    $scope.social_links[ind].link_text = "UNLINK " + val.name.toUpperCase();
+                } else {
+                    $scope.social_links[ind].link_text = val.name.toUpperCase();
+                }
+            }
+        )
     });
 
     $scope.changeUserLocation = function(e, id){

@@ -13,3 +13,16 @@ DEFAULT_FROM_EMAIL = 'jonny.john2017@yandex.ru'
 #         'PORT': '5432',
 #     }
 # }
+
+SOCIALACCOUNT_PROVIDERS = {
+    'github': {
+        'METHOD': 'oauth2',
+        'SCOPE': ["user"],
+    }
+}
+
+NOT_INSTALLED_APPS = (
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.linkedin',
+    'allauth.socialaccount.providers.google',
+)
