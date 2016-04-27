@@ -1,5 +1,5 @@
-angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScope', '$window', '$mdDialog', '$mdMedia', '$routeParams', '$mdSidenav', '$timeout', '$log', 'projectSelectedStatusService',
-    function($scope, $rootScope, $window, $mdDialog, $mdMedia, $routeParams, $mdSidenav, $timeout, $log, projectSelectedStatusService)
+angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScope', '$window', '$mdDialog', '$mdMedia', '$routeParams', '$mdSidenav', '$timeout', '$log', 'projectSelectedStatusService', '$mdToast',
+    function($scope, $rootScope, $window, $mdDialog, $mdMedia, $routeParams, $mdSidenav, $timeout, $log, projectSelectedStatusService, $mdToast)
 {
     $scope.status_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/status_selected.html';
@@ -67,6 +67,15 @@ angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScop
         }
     );
 
+    $scope.statusSaveToast = function(text) {
+        $mdToast.show(
+            $mdToast.simple()
+                .textContent(text)
+                .position("top right")
+                .hideDelay(3000)
+        );
+    };
+
     $scope.saveStatus = function() {
         if ($scope.statusDataCopy.name !== $scope.statusData.name || $scope.statusDataCopy.order_number !== $scope.statusData.order_number) {
             projectSelectedStatusService.put(
@@ -74,10 +83,12 @@ angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScop
                 $scope.statusData,
                 function (resp) {
                     $scope.statusDataCopy = resp;
+                    $scope.statusSaveToast('Saved!');
                 },
                 function (resp) {
-                    $log.debug("Status: " + resp.status + " StatusText: " + resp.statusText);
-                    $scope.statusDataCopy = resp;
+                    var err_message = "Error status: " + resp.status + " StatusText: " + resp.statusText;
+                    $log.debug(err_message);
+                    $scope.statusSaveToast('Some error, contact admin.');
                 }
             )
         }
