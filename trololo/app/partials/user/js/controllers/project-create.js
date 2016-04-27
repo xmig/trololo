@@ -1,5 +1,5 @@
-angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', 'projectService', 'projectSelectedService',
-    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, projectService, projectSelectedService)
+angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'projectService', 'projectSelectedService', '$timeout', '$mdSidenav', '$log',
+    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, projectService, projectSelectedService, $timeout, $mdSidenav, $log)
 {
     $scope.project_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/project_create.html';
@@ -98,6 +98,10 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
         if ($scope.project_id) {
             // EDIT
             $scope.projectData.id = $scope.project_id;
+
+            $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
+                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+            });
 
             projectSelectedService.update($scope.projectData, function(response) {
                 $scope.projectData = response;

@@ -21,7 +21,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     // TAG manipulations
     $scope.addTag = function(tag) {
         task_tagService.add_tag(
-            {'id': $routeParams.taskid, 'tag_name': tag.name}, function(response) {
+            {'id': $routeParams.taskid, 'tag_name': tag.name}, {}, function(response) {
             }, function () {
                 $scope.task.tags.splice($scope.task.tags.length - 1, 1);
             }
@@ -32,7 +32,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
         tag_name = tag.name;
 
         task_tagService.delete_tag(
-            {'id': $routeParams.taskid, 'tag_name': tag_name}, function(response) {
+            {'id': $routeParams.taskid, 'tag_name': tag_name}, {}, function(response) {
             }, function () {
                 $scope.task.tags.push(tag);
             }

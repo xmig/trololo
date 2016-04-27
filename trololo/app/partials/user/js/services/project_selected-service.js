@@ -33,3 +33,13 @@ angular.module('userApp').factory('projectStatusService', function($resource, $c
         }
     );
 });
+
+angular.module('userApp').factory('projectSelectedStatusService', function($resource, $cookies) {
+    return $resource("/status/:id/", {},
+        {
+            'put':    {method:'PUT', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
+            'remove_status': {method: 'DELETE', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
+            'get': {method:'GET'}
+        }
+    );
+});

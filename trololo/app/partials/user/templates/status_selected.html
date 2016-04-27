@@ -1,0 +1,44 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
+    <div flex layout="column" ng-controller="nutritionController">
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Edit Status</span>
+                    <div flex></div>
+                </div>
+            </md-toolbar>
+
+
+                <md-card class="md-padding">
+                    <form name="saveStatusForm" ng-submit="saveStatus()">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Status Info</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <div>
+                                <md-input-container class="md-block">
+                                    <label>Status Name</label>
+                                    <input type="text" name="name" id="name" required
+                                           ng-model="statusData.name">
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label for="order_number">Order Number</label>
+                                    <input type="number" name="name" id="order_number" required
+                                           ng-model="statusData.order_number">
+                                </md-input-container>
+                            </div>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                        </md-card-actions>
+                    </form>
+                </md-card>
+        </md-card>
+    </div>
+</md-content>
+
+
+
+

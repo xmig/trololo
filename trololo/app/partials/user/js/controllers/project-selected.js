@@ -27,6 +27,7 @@ angular.module('mainApp')
         .then(function(resp) {
             $scope.hide();
 
+            $scope.reloadStatuses();
             var alert = $mdDialog.alert()
                 .title('Complete')
                 .textContent('Status was added!')
@@ -55,8 +56,8 @@ angular.module('mainApp')
   });
 
 
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService) {
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService', 'projectSelectedStatusService', '$location',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService, projectSelectedStatusService, $location) {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
     // patch for tags
@@ -129,7 +130,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.statusLimit = 5;
     $scope.statusOffset = 0;
 
-    var reloadStatuses = function() {
+    $scope.reloadStatuses = function() {
         var params = {
             'limit': $scope.statusLimit,
             'offset': $scope.statusOffset,
@@ -169,7 +170,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.statusSort = function(sortInfo) {
         $scope.statusSortType = sortInfo.type;
         $scope.statusPage = 1;
-        reloadStatuses();
+        $scope.reloadStatuses();
     };
 
     $scope.viewStatus = function(viewInfo) {
@@ -179,10 +180,10 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             $scope.statusLimit = viewInfo;
         }
         $scope.statusPage = 1;
-        reloadStatuses();
+        $scope.reloadStatuses();
     };
 
-    reloadStatuses();
+    $scope.reloadStatuses();
 
     // Add Status
     $scope.showAddStatusDialog = function(event) {
@@ -198,10 +199,43 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         });
     };
 
+    // Delete status
+    $scope.deleteStatusPopup = function(ev, id, name) {
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to delete status?')
+              .textContent('Are you sure you mant to delete status ' + name + "?")
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Delete')
+              .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(
+            function() {
+                projectSelectedStatusService.remove_status(
+                    {id: id}, {},
+                    function(resp) {
+                        $scope.reloadStatuses();
+                    },
+                    function(resp) {
+                        $log.debug(
+                            "Status: " + resp.status + " Status text: " + resp.statusText + " Detail: " + resp.data.detail
+                        );
+                    }
+                )
+            }
+        );
+      };
+
+    // Edit status
+
+    $scope.viewSelectedStatus = function (ev, id) {
+        $location.url('/user/status/' + id);
+    };
+
     // TAG manipulations
     $scope.addTag = function(tag) {
         project_tagService.add_tag(
-            {'id': $routeParams.id, 'tag_name': tag.name}, function(response) {
+            {'id': $routeParams.id, 'tag_name': tag.name}, {}, function(response) {
             }, function () {
                 $scope.project.tags.splice($scope.project.tags.length - 1, 1);
             }
@@ -212,7 +246,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         tag_name = tag.name;
 
         project_tagService.delete_tag(
-            {'id': $routeParams.id, 'tag_name': tag_name}, function(response) {
+            {'id': $routeParams.id, 'tag_name': tag_name}, {}, function(response) {
             }, function () {
                 $scope.project.tags.push(tag);
             }
