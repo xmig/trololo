@@ -149,3 +149,8 @@ try:
     from local_settings import *
 except ImportError:
     pass
+
+if 'NOT_INSTALLED_APPS' in locals():
+    INSTALLED_APPS = tuple(
+        set(INSTALLED_APPS) - set(NOT_INSTALLED_APPS)
+    )
