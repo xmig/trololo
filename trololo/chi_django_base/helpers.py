@@ -6,6 +6,7 @@ def calculate_cache_key(view_instance, view_method, request, args, kwargs):
     key = '::'.join([
         view_instance.__class__.__name__,
         view_method.__name__,
+        request.path,
         json.dumps(dict(request.query_params)),
         request.user.username
     ])
