@@ -1,9 +1,14 @@
-angular.module('userApp').controller('projectsCtrl', ['$scope', '$http', 'projectService', 'activityListService', 'taskService',
-function($scope, $http, projectService, activityListService, taskService){
+angular.module('userApp').controller('projectsCtrl', ['$scope', '$http', 'projectService', 'activityListService', 'taskService', '$routeParams',
+function($scope, $http, projectService, activityListService, taskService, $routeParams){
 
-
+    $scope.tag = $routeParams.project_tag;
     /* PROJECT INFO */
-    projectService.get(function (data) {
+    var params = {};
+    if ($scope.tag !== undefined) {
+        params.tag = $scope.tag;
+    };
+
+    projectService.get(params, function (data) {
         $scope.projects = {}
         $scope.projects.data = data.results;
         $scope.projects.count = $scope.projects.data.length;

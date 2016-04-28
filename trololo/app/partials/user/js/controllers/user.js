@@ -4,6 +4,14 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
     };
+
+    // search by tags
+    if ($routeParams.project_tag !== undefined) {
+        $routeParams.userLocation = 'projects';
+    } else if ($routeParams.task_tag !== undefined) {
+        $routeParams.userLocation = 'tasks';
+    };
+
     $scope.partialPath = '/static/user/templates/' + $routeParams.userLocation + '.html';
     $scope.location = $routeParams.userLocation;
     console.log("$routeParams.userLocation", $routeParams.userLocation);

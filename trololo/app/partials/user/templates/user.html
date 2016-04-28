@@ -16,7 +16,7 @@
         <div ng-show="task != undefined || project != undefined">
             <md-content class="md-padding" layout="column">
                 <md-chips ng-if="task != undefined" class="custom-chips" ng-model="task.tags" placeholder="Enter a tag"
-                    md-transform-chip="newTag($chip)" md-on-add="addTag($chip)"
+                    md-transform-chip="newTag($chip)" md-on-add="addTag($chip)" md-on-select="searchTag($chip)"
                     md-on-remove="removeTag($chip)" secondary-placeholder="+Tag">
                   <md-chip-template>
                     <span>
@@ -26,7 +26,7 @@
                 </md-chips>
 
                 <md-chips ng-if="project != undefined" class="custom-chips" ng-model="project.tags" placeholder="Enter a tag"
-                    md-transform-chip="newTag($chip)" md-on-add="addTag($chip)"
+                    md-transform-chip="newTag($chip)" md-on-add="addTag($chip)" md-on-select="searchTag($chip)"
                     md-on-remove="removeTag($chip)" secondary-placeholder="+Tag">
                   <md-chip-template>
                     <span>
