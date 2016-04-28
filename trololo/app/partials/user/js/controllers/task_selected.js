@@ -1,4 +1,4 @@
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
+angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -19,6 +19,10 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     })
 
     // TAG manipulations
+    $scope.searchTag = function(tag) {
+        $location.url('/user/tasks/tag/' + tag.name);
+    };
+
     $scope.addTag = function(tag) {
         task_tagService.add_tag(
             {'id': $routeParams.taskid, 'tag_name': tag.name}, {}, function(response) {
