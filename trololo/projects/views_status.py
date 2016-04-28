@@ -11,6 +11,7 @@ from django.db.models import Q
 from rest_framework import exceptions
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework_extensions.cache.decorators import cache_response
+from chi_django_base.helpers import calculate_cache_key, invalidate_cache
 
 
 class StatusFilter(FilterSet):
@@ -25,10 +26,6 @@ class StatusFilter(FilterSet):
     class Meta:
         model = Status
         fields = ['name', 'number', 'project']
-
-
-import json
-from django.core.cache import caches
 
 
 class StatusView(generics.ListCreateAPIView):
@@ -49,22 +46,10 @@ class StatusView(generics.ListCreateAPIView):
 
         return last_status.order_number if last_status else 0
 
-    @cache_response(60 * 15, key_func='calculate_cache_key')
+    @cache_response(60 * 15, key_func=calculate_cache_key)
     def get(self, request, *args, **kwargs):
         print "In status view!!!"
         return self.list(request, *args, **kwargs)
-
-    # TODO: move this to the separate function
-    def calculate_cache_key(self, view_instance, view_method, request, args, kwargs):
-
-        key = '::'.join([
-            view_instance.__class__.__name__,
-            view_method.__name__,
-            json.dumps(dict(request.query_params)).replace(' ', ''),
-            request.user.username
-        ])
-
-        return key
 
     def get_queryset(self):
         user = self.request.user
@@ -73,6 +58,7 @@ class StatusView(generics.ListCreateAPIView):
         ]
         return Status.objects.filter(project__id__in=proj)
 
+    @invalidate_cache(['StatusView'])
     def post(self, request):
         serializer = StatusSerializer(data=request.data, context={'request': request}, partial=True)
 
@@ -107,13 +93,6 @@ class StatusView(generics.ListCreateAPIView):
 
             serializer.save()
 
-            # clear cache, experimental
-            # TODO: create decorator that checks Response status code and clears cache for all 2XX statuses
-            c = caches['default']
-            keys = c.keys("{0}*".format(self.__class__.__name__))
-            for key in keys:
-                c.delete(key)
-
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -138,6 +117,7 @@ class StatusDetail(generics.GenericAPIView):
             )
         return status
 
+    @cache_response(60 * 15, key_func=calculate_cache_key)
     def get(self, request, pk):
         """
         This method returns the status by id
@@ -146,6 +126,7 @@ class StatusDetail(generics.GenericAPIView):
         serializer = StatusSerializer(status, context={'request': request})
         return Response(serializer.data)
 
+    @invalidate_cache(['StatusView', 'StatusDetail'])
     def put(self, request, pk):
         """
        This method rename status
@@ -180,6 +161,7 @@ class StatusDetail(generics.GenericAPIView):
             return Response(serializer.data)
         return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @invalidate_cache(['StatusView', 'StatusDetail'])
     def delete(self, request, pk):
         """
         This method delete status
