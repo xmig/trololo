@@ -135,7 +135,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             'limit': $scope.statusLimit,
             'offset': $scope.statusOffset,
             'ordering': $scope.statusSortType,
-            'project_activities': $routeParams.id,
+            'project': $routeParams.id,
         }
 
         var error_func = function (resp) {console.log(resp);};
