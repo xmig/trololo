@@ -2,7 +2,6 @@ from serializers import StatusSerializer
 from rest_framework import status
 from projects.models import Status, Project
 from rest_framework import generics
-from django.http import Http404
 from rest_framework.response import Response
 
 from rest_framework import filters
@@ -48,7 +47,6 @@ class StatusView(generics.ListCreateAPIView):
 
     @cache_response(60 * 15, key_func=calculate_cache_key)
     def get(self, request, *args, **kwargs):
-        print "In status view!!!"
         return self.list(request, *args, **kwargs)
 
     def get_queryset(self):
@@ -117,7 +115,7 @@ class StatusDetail(generics.GenericAPIView):
             )
         return status
 
-    @cache_response(60 * 15, key_func=calculate_cache_key)
+    @cache_response()
     def get(self, request, pk):
         """
         This method returns the status by id
