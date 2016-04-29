@@ -89,6 +89,14 @@
     padding-bottom: 7px;
 }
 
+img.resize{
+   width:40px;
+   height:40px;
+   display: inline-block;
+    *display: inline; /* for older IE */
+    *zoom: 1; /* for older IE */
+}
+
 .img_block {
     max-width:122;
     height: 122px;
