@@ -154,7 +154,7 @@ angular.module('mainApp', [
             })
             .when('/user/tasks/:taskid', {
                 templateUrl: '/static/user/templates/user.html',
-                controller: 'task_selectedCtrl',
+                controller: 'taskSelectedCtrl',
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);
@@ -166,7 +166,7 @@ angular.module('mainApp', [
 
 //            .when('/user/tasks/comments/create', {
 //                templateUrl: '/static/user/templates/user.html',
-//                controller: 'task_selectedCtrl',
+//                controller: 'taskSelectedCtrl',
 //                resolve: {
 //                    authenticated: ['djangoAuth', function (djangoAuth) {
 //                        return djangoAuth.authenticationStatus(true);
@@ -176,7 +176,7 @@ angular.module('mainApp', [
 
 //            .when('/user/tasks/comments/:id/edit', {
 //                templateUrl: '/static/user/templates/user.html',
-//                controller: 'task_selectedCtrl',
+//                controller: 'taskSelectedCtrl',
 //                resolve: {
 //                    authenticated: ['djangoAuth', function (djangoAuth) {
 //                        return djangoAuth.authenticationStatus(true);
@@ -185,7 +185,7 @@ angular.module('mainApp', [
 //            })
 //            .when('/user/tasks/comments/:id', {
 //                templateUrl: '/static/user/templates/user.html',
-//                controller: 'task_selectedCtrl',
+//                controller: 'taskSelectedCtrl',
 //                resolve: {
 //                    authenticated: ['djangoAuth', function (djangoAuth) {
 //                        return djangoAuth.authenticationStatus(true);
@@ -195,7 +195,7 @@ angular.module('mainApp', [
 
 //            .when('/user/tasks/:id', {
 //                templateUrl: '/static/user/templates/user.html',
-//                controller: 'task_selectedCtrl',
+//                controller: 'taskSelectedCtrl',
 //                resolve: {
 //                    authenticated: ['djangoAuth', function (djangoAuth) {
 //                        return djangoAuth.authenticationStatus(true);

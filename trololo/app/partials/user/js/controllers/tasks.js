@@ -6,13 +6,12 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
 
 
-    taskService.get(function (data) {
-
-
-console.log('data!!', data)
+    taskService.get({page_size: 1000}, function (data) {
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
+        console.log('data!!', $scope.tasks.data)
+
     });
 
 

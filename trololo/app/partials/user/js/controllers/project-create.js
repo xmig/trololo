@@ -114,6 +114,7 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$filter', 
                 }
             });
         } else {
+            console.log("$scope.projectData", $scope.projectData)
             projectService.create($scope.projectData, function(response) {
                 response.date_started = new Date(response.date_started);
                 response.date_finished = new Date(response.date_finished);

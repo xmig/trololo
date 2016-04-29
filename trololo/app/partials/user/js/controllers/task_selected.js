@@ -1,4 +1,5 @@
-angular.module('userApp').controller('task_selectedCtrl', ['task_commentService', '$scope', '$rootScope', '$http', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', function(task_commentService, $scope, $rootScope, $http, task_selectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
+angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window',
+                                                  function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -12,22 +13,24 @@ angular.module('userApp').controller('task_selectedCtrl', ['task_commentService'
     //console.log("---", $routeParams.taskid)
 
 
+
+
 //local
-//    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+//    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
 //         console.log($scope.task);
 //    })
 
 
 
 // TAGS
-    // patch for tags
-//    $scope.task = {tags: []};
+//     patch for tags
+    $scope.task = {tags: []};
 
     //$scope.location = $routeParams.userLocation;
 
     //console.log("---", $routeParams.taskid);
 
-    task_selectedService.get({"id": $routeParams.taskid}, function(response) {
+    taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
 
          $scope.task = response;
          console.log("DDDDD", $scope.task);
@@ -149,7 +152,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['task_commentService'
             'task': $routeParams.taskid
         }
         console.log("params", params);
-        task_commentService.get(params, function (data) {
+        taskCommentService.get(params, function (data) {
             if ($scope.task == undefined) {
                 $scope.task = {};
             };
@@ -183,6 +186,58 @@ angular.module('userApp').controller('task_selectedCtrl', ['task_commentService'
 
     reloadComment();
 
+
+    /* NOTIFICATION INFO */
+    $scope.notificationSortType = 'created_at'; // set the default sort type
+    $scope.notificationSortDirection = true;  // set the default sort order
+    $scope.notificationPageSize = 10;
+    $scope.notificationPage = 1;
+
+    $scope.viewNotificationVariants = ["5", "10", "20", "50", "All"];
+
+    $scope.notificationSortVariants = [
+        {title: "by Date Asc", type: 'created_at', direction: true},
+        {title: "by Date Desc", type: 'created_at', direction: false},
+        {title: "by Message Asc", type: 'message', direction: true},
+        {title: "by Message Desc", type: 'message', direction: false}
+    ];
+
+    var reloadNotification = function() {
+        var sorting = ($scope.notificationSortDirection ? '' : '-') + $scope.notificationSortType;
+        var params = {
+            'page': $scope.notificationPage,
+            'page_size': $scope.notificationPageSize,
+            'ordering': sorting,
+            'for_cu':1,
+            'task_activities': $routeParams.id
+        }
+
+        activityListService.get(params, function (data) {
+            $scope.notifications = {}
+            $scope.notifications.data = data.results;
+            $scope.notifications.count = $scope.notifications.data.length;
+        });
+    };
+
+    $scope.notificationSort = function(sortInfo) {
+        $scope.notificationSortType = sortInfo.type;
+        $scope.notificationSortDirection = sortInfo.direction;
+        $scope.notificationPage = 1;
+        reloadNotification();
+    };
+
+    $scope.viewNotification = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.notificationPageSize = undefined;
+        } else {
+            $scope.notificationPageSize = viewInfo;
+        }
+
+        $scope.notificationPage = 1;
+        reloadNotification();
+    };
+
+    reloadNotification();
 
 //    /* COMMENT */
 //    $scope.commentSortType = 'created_at'; // set the default sort type
@@ -218,7 +273,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['task_commentService'
 //        console.log("params", params);
 //
 //
-//        task_selectedService.get({"id": $routeParams.taskid}, function(response) {
+//        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
 //            if ($scope.task == undefined) {
 //                $scope.task = {};
 //            };

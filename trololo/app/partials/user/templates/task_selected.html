@@ -1,5 +1,5 @@
 <!--local-->
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="task_selectedCtrl">
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="taskSelectedCtrl">
     <div flex layout="column" ng-controller="nutritionController">
 <!--&lt;!&ndash;stage&ndash;&gt;-->
 <!--<md-content layout-xs="column" layout="row" class="md-padding gray-bg">-->
@@ -11,7 +11,7 @@
                     <span>{{task.name}} ({{task.project_obj.name}})</span>
                     <div flex></div>
                         <md-button class="md-primary" ng-click="showAddStatusDialog($event)">Add status</md-button>
-                        <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Edit({{task.name}})</md-button>
+                        <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Edit Task</md-button>
                     </div>
             </md-toolbar>
 
@@ -94,25 +94,64 @@
                         <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
                                 <md-content layout-padding="">
                                     <div>
-
-                                        <form name="myForm">
-                                            <md-input-container class="md-block">
-                                                <label>Add a commmment</label>
-                                                <textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>
-                                                <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
-                                            </md-input-container>
-                                            <md-card-actions layout="row" layout-align="end center">
-                                                <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
-                                            </md-card-actions>
-                                        </form>
-
+                                         <md-card class="md-padding">
+                                             <form ng-submit="saveComment()">
+                                                <md-card-title>
+                                                    <md-card-title-text>
+                                                        <span class="md-headline">Add comment</span>
+                                                    </md-card-title-text>
+                                                </md-card-title>
+                                                <md-card-content>
+                                                    <div>
+                                                        <md-input-container class="md-block">
+                                                            <label>Title</label>
+                                                            <input type="text" name="title" id="comment-title" required
+                                                                   ng-model="commentData.title">
+                                                        </md-input-container>
+                                                        <md-input-container class="md-block">
+                                                            <label>Comment</label>
+                                                            <input type="text" name="comment" id="comment-comment" required
+                                                                   ng-model="commentData.comment">
+                                                        </md-input-container>
+                                                    </div>
+                                                </md-card-content>
+                                                <md-card-actions layout="row" layout-align="end center">
+                                                    <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                                                </md-card-actions>
+                                            </form>
+                                         </md-card>
                                     </div>
                                 </md-content>
                         </md-dialog-content>
                         <span></span>
                     </md-content>
+                </md-tab>
 
-
+                <md-tab label="my notifications">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.notifications">
+                                    <md-option ng-repeat="opt in notificationSortVariants" value="{{opt.title}}" ng-click="notificationSort(opt)">{{opt.title}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.notifications">
+                                    <md-option ng-repeat="opt in viewNotificationVariants" value="{{opt}}" ng-click="viewNotification(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="notification in notifications.data">
+                                <span class="status-ico" ng-class="notification.activity_model"></span>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
+                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
                 </md-tab>
 
                 <md-tab label="activity">
@@ -180,7 +219,7 @@
 <!-- for popup -->
 <!-- Registration modal -->
 <script type="text/ng-template" id="register.tmpl.html">
-    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="250" flex-gt-lg="15" id="register_view" ng-controller="task_selectedCtrl">
+    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="60" flex-gt-lg="60" id="register_view" ng-controller="taskSelectedCtrl">
        <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
@@ -256,6 +295,32 @@
                     </md-content>
                     </md-tab>
 
+                    <md-tab label="my notifications">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.notifications">
+                                    <md-option ng-repeat="opt in notificationSortVariants" value="{{opt.title}}" ng-click="notificationSort(opt)">{{opt.title}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.notifications">
+                                    <md-option ng-repeat="opt in viewNotificationVariants" value="{{opt}}" ng-click="viewNotification(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="notification in notifications.data">
+                                <span class="status-ico" ng-class="notification.activity_model"></span>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
+                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                    </md-tab>
 
                     <md-tab label="activity">
                              <md-content class="md-padding">

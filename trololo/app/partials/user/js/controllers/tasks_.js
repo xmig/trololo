@@ -1,4 +1,4 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'task_selectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams){
     taskService.get(function (data) {
 
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -316,7 +316,7 @@ function DialogController($scope, $mdDialog) {
 
 
 
-angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope', '$http', 'task_selectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, task_selectedService, $mdDialog, $mdMedia, $routeParams){
+angular.module('userApp').controller('taskSelectedCtrl', ['$scope', '$rootScope', '$http', 'taskSelectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskSelectedService, $mdDialog, $mdMedia, $routeParams){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -327,7 +327,7 @@ angular.module('userApp').controller('task_selectedCtrl', ['$scope', '$rootScope
     //$scope.location = $routeParams.userLocation;
     //console.log("---", $routeParams.taskid)
 
-    $scope.task = task_selectedService.get({"id": $routeParams.taskid}, function() {
+    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
          console.log($scope.task);
     })
 

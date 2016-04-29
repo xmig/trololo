@@ -24,52 +24,44 @@
                                 </md-input-container>
 
 <!--<Choose Project>-->
-                            <!--<md-input-container class="md-block">-->
-                                <!--<label>Choose Project:</label>-->
-                                        <!--<md-select ng-model="widgetType">-->
-                                            <!--<md-option ng-repeat="proj in projects.results" ng-value="proj.name">{{ proj.name }}</md-option>-->
-                                        <!--</md-select>-->
-                            <!--</md-input-container>-->
+                                <md-input-container class="md-block">
+                                    <label>Choose Project:</label>
+                                            <md-select ng-model="taskData.project">
+                                                <md-option ng-repeat="proj in projects" ng-value="proj.id" required ng-model="taskData.project">{{ proj.name }}</md-option>
+                                            </md-select>
+                                </md-input-container>
+                                <div style="height:5px"></div>
 <!--<Set Task type>-->
-                            <md-input-container class="md-block">
-                                <label>Set Task type:</label>
-                                        <md-select ng-model="taskData.type" name="type" id="type">
-                                            <md-option ng-repeat="type in taskTypes" ng-value="type.id">{{ type.title }}</md-option>
-                                        </md-select>
-                            </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Set Task type:</label>
+                                            <md-select ng-model="taskData.type" name="type" id="type">
+                                                <md-option ng-repeat="type in taskTypes" ng-value="type.id">{{ type.title }}</md-option>
+                                            </md-select>
+                                </md-input-container>
 <!--<Set Task Status>-->
 
-                            <md-input-container class="md-block">
-                                    <label>Status</label>
-                                        <md-select ng-model="taskData.status" name="status" id="status">
-                                            <md-option ng-repeat="status in taskStatuses" ng-value="status.id">{{ status.title }}</md-option>
-                                        </md-select>
-                            </md-input-container>
+                                <md-input-container class="md-block">
+                                        <label>Status</label>
+                                            <md-select ng-model="taskData.status" name="status" id="status">
+                                                <md-option ng-repeat="status in taskStatuses" ng-value="status.id">{{ status.title }}</md-option>
+                                            </md-select>
+                                </md-input-container>
 <!--<Set Task label>-->
-                            <!--<md-input-container class="md-block">-->
-                                    <!--<label>Set Task label:</label>-->
-                                        <!--<md-select ng-model="taskData.label" name="label" id="label">-->
-                                            <!--<md-option ng-repeat="label in taskLabels" ng-value="label.id">ico+{{ label.title }}</md-option>-->
-                                        <!--</md-select>-->
-                            <!--</md-input-container>-->
+                                <md-input-container class="md-block">
+                                        <label>Set Task label:</label>
+                                            <md-select ng-model="taskData.label" name="label" id="label">
+                                                <md-option ng-repeat="label in taskLabels" ng-value="label.id">ico+{{ label.title }}</md-option>
+                                            </md-select>
+                                </md-input-container>
 <!--<Enter estimation date>-->
-                            <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date"></md-datepicker>
+                                <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date"></md-datepicker>
                             <!--<span class="alert" ng-show="save_task.$submitted && save_task.dt_start.$invalid">This field is required</span>-->
 
-
-                            <!--<md-dialog-content>-->
-                                <!--<div style="padding: 40px;" ng-cloak="" class="datepickerdemoBasicUsage" ng-app="MyApp">-->
-                                    <!--<md-content>-->
-                                        <!--<p class="project-link-name">Deadline date:</p>-->
-                                        <!--<md-datepicker ng-model="myDate" md-placeholder="Enter date"></md-datepicker>-->
-                                    <!--</md-content>-->
-                                <!--</div>-->
-                            <!--</md-dialog-content>-->
 <!--<Task description>-->
-                            <md-input-container class="md-block">
-                                    <label>Description</label>
-                                    <textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>
-                            </md-input-container>
+                                <md-input-container class="md-block">
+                                        <label>Description</label>
+                                        <textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>
+                                </md-input-container>
 
 <!--<Members>-->
                             <!--<md-dialog-content>-->
@@ -120,27 +112,27 @@
                                         <!--</div>-->
                                     <!--</md-dialog-content>-->
 
- <!--<Visible by>-->
-                            <md-input-container class="md-block">
-                                    <label>Visible By</label>
-                                    <md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">
-                                        <md-option ng-repeat="visibleBy in visibleByList" ng-value="visibleBy.id">{{ visibleBy.title }}</md-option>
-                                    </md-select>
-                            </md-input-container>
+ <!--&lt;!&ndash;<Visible by>&ndash;&gt;-->
+                            <!--<md-input-container class="md-block">-->
+                                    <!--<label>Visible By</label>-->
+                                    <!--<md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">-->
+                                        <!--<md-option ng-repeat="visibleBy in visibleByList" ng-value="visibleBy.id">{{ visibleBy.title }}</md-option>-->
+                                    <!--</md-select>-->
+                            <!--</md-input-container>-->
 
 
-                            <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                                    <md-contact-chips
-                                        ng-model="taskData.members_data"
-                                        md-contacts="ctrl.delayedQuerySearch($query)"
-                                        md-contact-name="username"
-                                        md-contact-email="email"
-                                        md-require-match="true"
-                                        md-highlight-flags="i"
-                                        filter-selected="ctrl.filterSelected"
-                                        placeholder="Members">
-                                    </md-contact-chips>
-                            </div>
+                            <!--<div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>-->
+                                    <!--<md-contact-chips-->
+                                        <!--ng-model="taskData.members_data"-->
+                                        <!--md-contacts="ctrl.delayedQuerySearch($query)"-->
+                                        <!--md-contact-name="username"-->
+                                        <!--md-contact-email="email"-->
+                                        <!--md-require-match="true"-->
+                                        <!--md-highlight-flags="i"-->
+                                        <!--filter-selected="ctrl.filterSelected"-->
+                                        <!--placeholder="Members">-->
+                                    <!--</md-contact-chips>-->
+                            <!--</div>-->
 
 
                             </div>

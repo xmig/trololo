@@ -1,8 +1,17 @@
-angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', 'taskService', 'task_selectedService',
-    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, taskService, task_selectedService)
+angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectService', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'taskService', 'taskSelectedService', '$timeout', '$mdSidenav', '$log',
+    function($scope, projectService, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, taskService, taskSelectedService, $timeout, $mdSidenav, $log)
 {
     $scope.task_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/task_create.html';
+
+// for dropdown <choose projects>
+    $scope.projects = {}
+    projectService.get(function(data) {
+        $scope.projects = data.results;
+        console.log("---------------", $scope.projects)
+    })
+
+
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -81,7 +90,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', 
         {'title': 'Particular_user', 'id':'particular_user'},
         {'title': 'All_users', 'id':'all_users'},
         {'title': 'Undefined', 'id':'undefined'}
-
     ];
 
     $scope.taskLabels = [
@@ -104,11 +112,12 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', 
     if ($scope.task_id) {
         // EDIT
         // PROJECT CALCULATE
-        task_selectedService.get({ id: $scope.task_id }, function (data) {
-            data.deadline_date = new Date(data.deadline_date);
-            $scope.taskData = data;
+        taskSelectedService.get({ id: $scope.task_id }, function (response) {
+            response.deadline_date = new Date(response.deadline_date);q
+            $scope.taskData = response;
         });
     }
+
 
     $scope.saveTask = function() {
         $scope.taskData.tags = [];
@@ -121,21 +130,32 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', '$rootScope', 
 //                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
 //            });
 
-            task_selectedService.update($scope.taskData, function(response) {
-                data.deadline_date = new Date(data.deadline_date);
+            console.log("$scope.taskData", $scope.taskData)
+
+
+            taskSelectedService.update($scope.taskData, function(response) {
+                response.deadline_date = new Date(response.deadline_date);
                 $scope.taskData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/' + $scope.taskData.id;
                 }
             });
         } else {
+            console.log("$scope.taskData", $scope.taskData)
+//            $scope.taskData.group = 1;
+//            $scope.taskData.estimate_minutes = 1;
             taskService.create($scope.taskData, function(response) {
-                data.deadline_date = new Date(data.deadline_date);
+                response.deadline_date = new Date(response.deadline_date);
                 $scope.taskData = response;
+                console.log('!!!!!!!!!!!!!!!!', response)
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/' + response.id;
                 }
+
+            }, function(error){
+                console.log("++error++", error)
             });
+
         }
     };
 

@@ -1,5 +1,5 @@
 from serializers import (
-    ProjectSerializer, TaskSerializer, ProjectCommentSerializer,
+    ProjectSerializer, TaskSerializer, TaskCreateSerializer, ProjectCommentSerializer,
     TaskCommentSerializer, TagSerializer
 )
 from rest_framework import status
@@ -149,7 +149,7 @@ class TaskList(generics.ListCreateAPIView):
     """
     Return filtering tasks
     """
-    serializer_class = TaskSerializer
+    serializer_class = TaskCreateSerializer
     filter_backends = (filters.DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = ProjectTaskFilter
     search_fields = ('name', 'description', 'status', 'type', 'label', 'tags__name')
@@ -166,7 +166,7 @@ class TaskList(generics.ListCreateAPIView):
 
 
     def post(self, request):
-        serializer = TaskSerializer(data=request.data, context={'request': request})
+        serializer = self.get_serializer_class()(data=request.data, context={'request': request})
         current_user = self.request.user
         proj = [
             pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
@@ -174,6 +174,7 @@ class TaskList(generics.ListCreateAPIView):
 
         if serializer.is_valid():
             project = serializer.validated_data['project'].id
+
             if project not in proj:
                 return Response(
                     {'detail':"You don't have access permissions for project with id {}".format(project)},

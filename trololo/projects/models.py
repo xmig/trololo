@@ -129,8 +129,8 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')
-    deadline_date = models.DateTimeField(null=True, blank=True, default='')
-    estimate_minutes = models.IntegerField(null=True, blank=True, default='')
+    deadline_date = models.DateTimeField(null=True, blank=True) #, default=''
+    estimate_minutes = models.IntegerField(null=True, blank=True, default=3600 * 48) #, default=''
 
     tags = TaggableManager()
     

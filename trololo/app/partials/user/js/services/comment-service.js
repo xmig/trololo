@@ -15,7 +15,7 @@ angular.module('userApp').factory('commentService', function($resource, $cookies
 
 
 
-angular.module('userApp').factory('task_commentService', function($resource, $cookies) {
+angular.module('userApp').factory('taskCommentService', function($resource, $cookies) {
     return $resource("/tasks/comments/", null,
         { 'get':    {method:'GET'},
           'save':   {method:'POST', data: {}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
