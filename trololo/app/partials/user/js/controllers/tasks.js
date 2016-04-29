@@ -6,7 +6,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
 
 
-    taskService.get({page_size: 1000}, function (data) {
+    taskService.get({page_size: 1000}, function (data) {  //parameter {page_size: 1000} for display pages in table (10 items by default)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;

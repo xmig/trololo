@@ -140,6 +140,7 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
 
  console.log("----");
     $scope.comment_id = $routeParams.id;
+    console.log("$routeParams.id", $routeParams.id)
     $scope.partialPath = '/static/user/templates/task_selected.html';
 
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -205,7 +206,7 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
 //        $scope.project = data;
 //    });
 
-    $scope.commentData = {};
+    $scope.taskCommentData = {};
 
 //    $scope.projectStatuses = [
 //        {'title': 'Breakthrough', 'id':'breakthrough'},
@@ -226,27 +227,27 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
         // EDIT
         // PROJECT CALCULATE
         taskCommentSelectedService.get({ id: $scope.comment_id }, function (data) {
-            $scope.commentData = data;
+            $scope.taskCommentData = data;
         });
     }
 
-    $scope.saveComment = function() {
-        $scope.commentData.tags = [];
+    $scope.savetaskComment = function() {
+        $scope.taskCommentData.tags = [];
         console.log("----");
 
         if ($scope.comment_id) {
             // EDIT
-            $scope.commentData.id = $scope.comment_id;
+            $scope.taskCommentData.id = $scope.comment_id;
 
-            taskCommentSelectedService.update($scope.commentData, function(response) {
-                $scope.commentData = response;
+            taskCommentSelectedService.update($scope.taskCommentData, function(response) {
+                $scope.taskCommentData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/comments/' + $scope.commentData.id;
+                    $window.location.href = '#/user/tasks/comments/' + $scope.taskCommentData.id;
                 }
             });
         } else {
-            taskCommentService.create($scope.commentData, function(response) {
-                $scope.commentData = response;
+            taskCommentService.create($scope.taskCommentData, function(response) {
+                $scope.taskCommentData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/comments/' + response.id + '/edit';
                 }
