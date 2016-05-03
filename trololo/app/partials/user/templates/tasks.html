@@ -4,7 +4,13 @@
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
+                    <label>
                     <span>Tasks</span>
+                        <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
+                        </label>
+                    <tbody>
+                        <tr ng-repeat="task in tasks.data | filter:criteria"></tr>
+                    </tbody>
                     <div flex></div>
                     <md-button ng-click="loadStuff()">Async Operation</md-button>
                 </div>

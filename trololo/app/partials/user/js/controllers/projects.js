@@ -3,7 +3,7 @@ function($scope, $http, projectService, activityListService, taskService){
 
 
     /* PROJECT INFO */
-    projectService.get(function (data) {
+    projectService.get({page_size:10000}, function (data) {
         $scope.projects = {}
         $scope.projects.data = data.results;
         $scope.projects.count = $scope.projects.data.length;
