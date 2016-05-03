@@ -17,6 +17,10 @@ angular.module('userApp').controller('nutritionController', ['$mdEditDialog', '$
         page: 1
     };
 
+    $scope.$watch('filter.search', function(val) {
+        $scope.query.page = 1;
+    });
+
     $scope.loadStuff = function () {
         $scope.promise = $timeout(function () {
             // loading
