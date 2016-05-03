@@ -3,7 +3,7 @@ function($scope, $http, projectService, activityListService, taskService, $route
 
     $scope.tag = $routeParams.project_tag;
     /* PROJECT INFO */
-    var params = {};
+    var params = {page_size:10000};
     if ($scope.tag !== undefined) {
         params.tag = $scope.tag;
     };
