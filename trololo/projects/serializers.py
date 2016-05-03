@@ -249,7 +249,7 @@ class GroupRelatedField(serializers.RelatedField):
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
     # activity = ActivitySerializer(source='task_comments', many=True)
-    comments = TaskCommentSerializer(source='task_comments', many=True) # display dicts of comments
+    comments = TaskCommentSerializer(source='task_comments', many=True, read_only=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -258,14 +258,14 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='pk'
     )
 
-    members = OnlyUserInfoSerializer(many=True, read_only=True) # to display names instead of urls
-    # members = serializers.HyperlinkedRelatedField(
-    #     many=True,
-    #     view_name='users:single_user',
-    #     queryset=get_user_model().objects.all(),
-    #     required=False,
-    #     lookup_field='id'
-    # )
+    members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
+    members = serializers.PrimaryKeyRelatedField(
+        many=True,
+        # view_name='users:single_user',
+        queryset=get_user_model().objects.all(),
+        required=False,
+        # lookup_field='id'
+    )
 
     created_by = serializers.HyperlinkedRelatedField(
         read_only=True,
@@ -296,9 +296,9 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members', 'type', 'label',
+            'name', 'id', 'description', 'status', 'members_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')
 
@@ -328,6 +328,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
         instance = super(TaskSerializer, self).update(instance, validated_data)
+
         return self.save_tags(instance, tags)
 
     def to_representation(self, instance):

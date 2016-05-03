@@ -1,7 +1,7 @@
 angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams){
-    taskService.get(function (data) {
 
-    console.log(data)
+    taskService.get(function (data) {
+        console.log(data)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
@@ -155,8 +155,11 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         {value: 'status',
          option: 'by Status'}
       ];
-
+    $scope.showMyTasks = {
+        checked: false
+    };
     $scope.tag = $routeParams.task_tag;
+
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
@@ -168,6 +171,10 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
         if ($scope.tag !== undefined) {
             params.tag = $scope.tag;
+        };
+
+        if ($scope.showMyTasks.checked) {
+            params.member = $scope.userPersonalData.id;
         };
 
         taskService.get(params, function (data) {
@@ -196,6 +203,10 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     };
 
     reloadTask();
+
+    $scope.myTasks = function() {
+        reloadTask();
+    };
 
 
 

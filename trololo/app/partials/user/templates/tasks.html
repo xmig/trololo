@@ -8,6 +8,10 @@
                     <span>Tasks</span>
                         <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
                         </label>
+                        <label>My tasks<input type="checkbox" ng-model="showMyTasks.checked" ng-change="myTasks()" /></label>
+                        <!--<md-checkbox ng-model="showMyTasks" aria-label="My tasks" ng-click="myTasks()">-->
+                            <!--My tasks-->
+                        <!--</md-checkbox>-->
                     <tbody>
                         <tr ng-repeat="task in tasks.data | filter:criteria"></tr>
                     </tbody>
