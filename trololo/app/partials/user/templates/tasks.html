@@ -70,7 +70,7 @@
 
 
 
-            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}"
+            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(tasks.data | filter: filter.search).length}}"
                                  md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
                                  md-on-paginate="logPagination"></md-table-pagination>
         </md-card>
