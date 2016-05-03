@@ -31,7 +31,8 @@
                     <tr md-row>
                         <th md-column md-order-by="name"><span>Task title</span></th>
                         <th md-column md-order-by="type"><span>Type</span></th>
-                        <th md-column md-order-by="status"><span>Status</span></th>
+                        <th md-column md-order-by="status"><span>Status(1)</span></th>
+                        <th md-column md-order-by="status"><span>Status(2)</span></th>
 
                         <th md-column md-order-by="members.length" md-desc><span>Members</span></th>
                         <th md-column md-order-by="project_obj.name" md-desc><span>Project</span></th>
@@ -46,6 +47,7 @@
                             <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
                         <td md-cell>{{task.type}}</td>
+                        <td md-cell>{{task.status}}</td>
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
                             <div ng-repeat="member in task.members" class="member-cell">
