@@ -70,11 +70,11 @@ class OnlyUserInfoSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'id', 'username', 'first_name', 'last_name',
             'specialization', 'is_active',
-            'email'
+            'email', 'photo'
         )
 
         read_only_fields = (
             'id', 'username', 'first_name', 'last_name',
             'specialization', 'is_active',
-            'email'
+            'email', 'photo'
         )

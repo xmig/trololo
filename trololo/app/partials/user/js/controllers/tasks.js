@@ -1,13 +1,11 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams){
     taskService.get(function (data) {
 
-console.log(data)
+    console.log(data)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
     });
-
-
 
     /* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
@@ -58,7 +56,6 @@ console.log(data)
     };
 
     reloadActivity();
-
 
     /* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
@@ -159,6 +156,7 @@ console.log(data)
          option: 'by Status'}
       ];
 
+    $scope.tag = $routeParams.task_tag;
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
@@ -167,6 +165,10 @@ console.log(data)
             'ordering': sorting,
             'for_cu':1
         }
+
+        if ($scope.tag !== undefined) {
+            params.tag = $scope.tag;
+        };
 
         taskService.get(params, function (data) {
             $scope.tasks = {}

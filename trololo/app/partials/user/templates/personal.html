@@ -32,8 +32,8 @@
                 <span class="md-subhead">Assign social accounts:</span><br /><br />
                 <span ng-repeat="link in social_links | orderBy: 'name' track by $index ">
                     <md-button class="md-primary md-button md-ink-ripple" target="_blank"
-                               ng-href="{{link.link}}" ng-disabled="checkSocial(link.name)">
-                        {{link.name}}
+                               ng-href="{{link.link}}">
+                        {{link.link_text}}
                     </md-button>
                 </span>
             </md-card-actions>

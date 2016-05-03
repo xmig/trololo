@@ -14,6 +14,7 @@ angular.module('mainApp')
         /* END OF CUSTOMIZATION */
         'authenticated': null,
         'authPromise': null,
+        'csrf': null,
         'request': function(args) {
             // Let's retrieve the token from the cookie, if available
             if($cookies.get('token')){
@@ -80,6 +81,14 @@ angular.module('mainApp')
         },
         'login': function(username,password){
             var djangoAuth = this;
+
+            // start, bug fix for 403 CSRF
+            var old_csrf = $cookies.get('csrftoken');
+            if (old_csrf) {
+                djangoAuth.csrf = old_csrf;
+            }
+            // end
+
             return this.request({
                 'method': "POST",
                 'url': "/login/",
@@ -92,6 +101,13 @@ angular.module('mainApp')
                     $http.defaults.headers.common.Authorization = 'Token ' + data.key;
                     $cookies.put('token', data.key);
                 }
+                // start, bug fix for 403 CSRF
+                if (djangoAuth.csrf) {
+                    $cookies.put('csrftoken', djangoAuth.csrf);
+                } else {
+                    djangoAuth.csrf = $cookies.get('csrftoken');
+                }
+                // end
                 djangoAuth.authenticated = true;
                 $rootScope.$broadcast("djangoAuth.logged_in", data);
             });
