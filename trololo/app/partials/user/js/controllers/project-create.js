@@ -88,6 +88,8 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
         // EDIT
         // PROJECT CALCULATE
         projectSelectedService.get({ id: $scope.project_id }, function (data) {
+            data.date_started = new Date(data.date_started)
+            data.date_finished = new Date(data.date_finished)
             $scope.projectData = data;
         });
     }
