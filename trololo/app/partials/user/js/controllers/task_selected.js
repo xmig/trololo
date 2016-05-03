@@ -10,28 +10,18 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     $scope.partialPath = '/static/user/templates/task_selected.html';
 
     //$scope.location = $routeParams.userLocation;
-    //console.log("---", $routeParams.taskid)
+    //console.log("---", $routeParams.taskid);
 
 
+// TAGS - patch for tags
+    $scope.task = {tags: []};
 
 
-//local
 //    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
 //         console.log($scope.task);
 //    })
 
-
-
-// TAGS
-//     patch for tags
-    $scope.task = {tags: []};
-
-    //$scope.location = $routeParams.userLocation;
-
-    //console.log("---", $routeParams.taskid);
-
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-
          $scope.task = response;
          console.log("DDDDD", $scope.task);
     }, function(error){
@@ -118,6 +108,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     };
 
     reloadActivity();
+
 
 /* COMMENT */
     $scope.commentSortType = 'created_at'; // set the default sort type
@@ -239,76 +230,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
     reloadNotification();
 
-//    /* COMMENT */
-//    $scope.commentSortType = 'created_at'; // set the default sort type
-//    $scope.commentSortDirection = true;  // set the default sort order
-//    $scope.commentPageSize = 10;
-//    $scope.commentPage = 1;
-//
-//    $scope.viewCommentVariants = ["5", "10", "20", "50", "All"];
-//
-//    $scope.commentSortVariants = [
-//          {value: "created_at",
-//           option: "by Date",
-//           direction: true
-//          },
-//          {value: "created_by",
-//           option: "by User",
-//           direction: true
-//          },
-////          {value: "comment",
-////           option: "by Type"
-////          },
-//      ];
-//
-//    var reloadComment = function() {
-//        var sorting = ($scope.commentSortDirection ? '' : '-') + $scope.commentSortType;
-//        var params = {
-//            'page': $scope.commentPage,
-//            'page_size': $scope.commentPageSize,
-//            'ordering': sorting,
-//            'for_cu':1
-//        }
-//
-//        console.log("params", params);
-//
-//
-//        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-//            if ($scope.task == undefined) {
-//                $scope.task = {};
-//            };
-//
-//            $scope.task = response;
-//            console.log("DATA", response);
-//            $scope.comments = $scope.task.comments;
-//            console.log("comments", $scope.comments)
-//            $scope.comments.count = $scope.comments.length
-//            console.log('comments.count', $scope.comments.count);
-//        });
-//    };
-//
-//
-//    $scope.commentSort = function(sortInfo) {
-//    console.log("sortInfo", sortInfo)
-//        $scope.commentSortType = sortInfo.value;
-//        $scope.commentSortDirection = sortInfo.direction;
-//        $scope.commentPage = 1;
-//        console.log("11111", $scope.commentSortType)
-//        reloadComment();
-//    };
-//
-//    $scope.viewComment = function(viewInfo) {
-//        if (viewInfo === 'All') {
-//            $scope.commentPageSize = 1000000;
-//        } else {
-//            $scope.commentPageSize = viewInfo;
-//        }
-//        $scope.commentPage = 1;
-//        reloadComment();
-//    };
-//    reloadComment();
-
-    
 
     $scope.leftSidebarList = [
         {"title": "Personal Info", "link": "personal"},
@@ -363,6 +284,12 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
                 });
         }
     }
+
+
+//// TASK CALCULATE
+//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
+//        $scope.task = data;
+//    });
 
 
 /* for popup */
@@ -446,19 +373,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         });
     };
 
-//    $scope.getTypes = function () {
-//        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
-//    };
-
-
-//    $scope.my_notifications = [
-//        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-//        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-//        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-//        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-//    ];
-
-
 
     $scope.viewVariants = [
           "5",
@@ -491,6 +405,33 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         } else {
             $window.location.href = '#/user/personal/';
         }
-    }
+    };
+
+
+    $scope.taskCommentData = {};
+    $scope.savetaskComment = function() {
+        $scope.taskCommentData.tags = [];
+        $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
+        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
+        if ($scope.comment_id) {
+            // EDIT
+            $scope.commentData.id = $scope.comment_id;
+
+            taskCommentSelectedService.update($scope.taskCommentData, function(response) {
+                $scope.taskCommentData = response;
+                if (typeof response.id !== 'undefined' && response.id > 0) {
+                    $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
+                }
+            });
+        } else {
+            taskCommentService.create($scope.taskCommentData, function(response) {
+                $scope.taskCommentData = response;
+                if (typeof response.id !== 'undefined' && response.id > 0) {
+                    $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
+                }
+            });
+        }
+    };
+
 
 }]);

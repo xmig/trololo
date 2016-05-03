@@ -1,9 +1,5 @@
-<!--local-->
 <md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="taskSelectedCtrl">
     <div flex layout="column" ng-controller="nutritionController">
-<!--&lt;!&ndash;stage&ndash;&gt;-->
-<!--<md-content layout-xs="column" layout="row" class="md-padding gray-bg">-->
-    <!--<div flex layout="column" ng-controller="nutritionController">        -->
 
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
@@ -95,7 +91,7 @@
                                 <md-content layout-padding="">
                                     <div>
                                          <md-card class="md-padding">
-                                             <form ng-submit="saveComment()">
+                                             <form ng-submit="savetaskComment()">
                                                 <md-card-title>
                                                     <md-card-title-text>
                                                         <span class="md-headline">Add comment</span>

@@ -502,6 +502,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.saveComment = function() {
 //        $scope.commentData.tags = [];
         $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
+//        console.log('iii',$routeParams.id)
         if ($scope.comment_id) {
             // EDIT
             $scope.commentData.id = $scope.comment_id;
