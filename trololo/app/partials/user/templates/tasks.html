@@ -2,29 +2,18 @@
     <div flex layout="column" ng-controller="nutritionController">
 
         <md-card>
-            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
-                <div class="md-toolbar-tools">
-                    <label>
-                    <span>Tasks</span>
-                        <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
-                        </label>
-                    <tbody>
-                        <tr ng-repeat="task in tasks.data | filter:criteria"></tr>
-                    </tbody>
-                    <div flex></div>
-                    <md-button ng-click="loadStuff()">Async Operation</md-button>
-                </div>
-            </md-toolbar>
-            <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
-                <div class="md-toolbar-tools">
-                    <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
-                </div>
-            </md-toolbar>
+
             <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
                 <!--<div class="md-toolbar-tools">-->
+                    <!--<label>-->
                     <!--<span>Tasks</span>-->
+                        <!--<input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">-->
+                        <!--</label>-->
+                    <!--<tbody>-->
+                        <!--<tr ng-repeat="task in tasks.data | filter:criteria"></tr>-->
+                    <!--</tbody>-->
                     <!--<div flex></div>-->
-                        <!--<a ng-href="#/user/tasks/create">Create New Task</a>-->
+                    <!--<md-button ng-click="loadStuff()">Async Operation</md-button>-->
                 <!--</div>-->
             <!--</md-toolbar>-->
             <!--<md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">-->
@@ -32,6 +21,22 @@
                     <!--<span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>-->
                 <!--</div>-->
             <!--</md-toolbar>-->
+
+
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Tasks</span>
+                    <div flex></div>
+                        <a ng-href="#/user/tasks/create">Create New Task</a>
+                </div>
+            </md-toolbar>
+            <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+                </div>
+            </md-toolbar>
+
+
             <md-table-container>
                 <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
                     <thead md-head md-order="query.order" md-on-reorder="logOrder">

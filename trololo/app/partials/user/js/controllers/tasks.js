@@ -1,22 +1,5 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia',
-                                           function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
-
-////alert();
-////console.log(data)
-//        $scope.tasks = {}
-//        $scope.tasks.data = data.results;
-////        console.log(tasks.data)
-//        $scope.tasks.count = $scope.tasks.data.length;
-//        console.log('data!!', $scope.tasks.data);
-//
-//
-//// for dropdown in popup <choose projects>
-//    $scope.projects = projectService.get(function(data) {
-////        $scope.projects.data = data.results;
-//        console.log("---------------", data)
-//    })
-//
-
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', '$routeParams', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia',
+                                           function($scope, $rootScope, $http, $routeParams, taskService, projectService, activityListService, $mdDialog, $mdMedia){
 
 
     taskService.get({page_size: 1000}, function (data) {  //parameter {page_size: 1000} for display pages in table (10 items by default)
