@@ -196,7 +196,7 @@ class TaskDetail(generics.GenericAPIView):
     """
     Retrieve, update or delete a Task instance.
     """
-    serializer_class = TaskSerializer
+    serializer_class = TaskCreateSerializer
     queryset = Task.objects.all()
 
     def get_object(self, pk):
@@ -222,7 +222,8 @@ class TaskDetail(generics.GenericAPIView):
 
     def put(self, request, pk):
         task = self.get_object(pk)
-        serializer = TaskSerializer(task, data=request.data, context={'request': request}, partial=True)
+        serializer = self.get_serializer_class()(task, data=request.data, context={'request': request}, partial=True)
+
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

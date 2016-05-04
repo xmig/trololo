@@ -27,6 +27,7 @@
     margin-right: 16px;
     border-radius: 50%;
     box-sizing: content-box;
+    display: inline-block;
 }
 .status-ico.red, .status-ico.project {
     background: #F21905;
@@ -36,6 +37,9 @@
 }
 .status-ico.orange {
     background: #F2BD1D;
+}
+.status-ico.undefined {
+    background: #ccc;
 }
 .sorting-margin {
     margin-left: 15px;
