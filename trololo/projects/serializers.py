@@ -348,7 +348,7 @@ class TaskCreateSerializer(TaskSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members', 'type', 'label',
+            'name', 'id', 'description', 'status', 'members', 'type', 'label', 'members_info',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )
