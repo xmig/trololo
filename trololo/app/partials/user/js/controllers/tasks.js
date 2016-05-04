@@ -241,10 +241,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             params.tag = $scope.tag;
         };
 
-        if ($scope.showMyTasks.checked) {
-            params.member = $scope.userPersonalData.id;
-        };
-
         taskService.get(params, function (data) {
             $scope.tasks = {}
             $scope.tasks.data = data.results;
