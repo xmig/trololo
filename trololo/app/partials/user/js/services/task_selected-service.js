@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('userApp').factory('task_selectedService', function($resource, $cookies) {
+angular.module('userApp').factory('taskSelectedService', function($resource, $cookies) {
     return $resource("/tasks\/:id\/.", {},
         { 'get':    {method:'GET', params: {id: '@id'}},
           'save':   {method:'POST', params: {id: '@id'}},
