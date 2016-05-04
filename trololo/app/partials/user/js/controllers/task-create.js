@@ -107,6 +107,42 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
 
 
+//// HARDCODE !!!
+//    $scope.labels = [
+//        {value: 'undefined',
+//         option: 'Undefined'},
+//        {value: 'red',
+//         option: 'Red'},
+//        {value: 'orange',
+//         option: 'Orange'},
+//        {value: 'green',
+//         option: 'Green'},
+//    ];
+//
+//    $scope.types = [
+//        {value: 'undefined',
+//         option: 'Undefined'},
+//        {value: 'bug',
+//         option: 'Bug'},
+//        {value: 'feature',
+//         option: 'Feature'}
+//    ];
+//
+//    $scope.statuses = [
+//        {value: 'undefined',
+//         option: 'Undefined'},
+//        {value: 'breakthrough',
+//         option: 'Breakthrough'},
+//        {value: 'in progress',
+//         option: 'In progress'},
+//        {value: 'finished',
+//         option: 'Finished'}
+//    ];
+//
+//// END HARDCODE !!!
+
+
+
 
 //    if ($scope.project_id) {
 //        // EDIT
@@ -177,7 +213,11 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 //                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
 //            });
 
-            console.log("$scope.taskData", $scope.taskData)
+            console.log("$scope.taskData", $scope.taskData.members)
+
+            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+            });
 
 
             taskSelectedService.update($scope.taskData, function(response) {
