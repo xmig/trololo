@@ -1,11 +1,13 @@
 angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams){
 
-    taskService.get(function (data) {
-        console.log(data)
-        $scope.tasks = {}
-        $scope.tasks.data = data.results;
-        $scope.tasks.count = $scope.tasks.data.length;
-    });
+//    taskService.get(function (data) {
+//        console.log(data)
+//        $scope.tasks = {}
+//        $scope.tasks.data = data.results;
+//        $scope.tasks.count = $scope.tasks.data.length;
+//    });
+//
+//
 
     /* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
@@ -181,6 +183,22 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             $scope.tasks = {}
             $scope.tasks.data = data.results;
             $scope.tasks.count = $scope.tasks.data.length;
+
+            $scope.my_tasks = {};
+            var tasks_list = [];
+
+            for (var i=0; i<data.results.length; i++) {
+                var task_i = data.results[i];
+
+                console.log("Members: ", task_i.members);
+                console.log("User id: ", $scope.userPersonalData.id);
+                if (task_i.members.indexOf($scope.userPersonalData.id) != -1) {
+                    tasks_list.push(task_i);
+                }
+            }
+
+            $scope.my_tasks.data = tasks_list;
+            $scope.my_tasks.count = tasks_list.length;
         });
     };
 
@@ -204,14 +222,14 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
     reloadTask();
 
-    $scope.myTasks = function() {
-        reloadTask();
+    $scope.onlyMyTasks = function(value, index, array) {
+        if (!$scope.showMyTasks.checked) {
+            return true;
+        } else if (value.members.indexOf($scope.userPersonalData.id) != -1) {
+            return true;
+        }
+        return false;
     };
-
-
-
-
-
 
 
 /* for popup */

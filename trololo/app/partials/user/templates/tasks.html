@@ -8,7 +8,7 @@
                     <span>Tasks</span>
                         <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
                         </label>
-                        <label>My tasks<input type="checkbox" ng-model="showMyTasks.checked" ng-change="myTasks()" /></label>
+                        <label>My tasks<input type="checkbox" ng-model="showMyTasks.checked" /></label>
                         <!--<md-checkbox ng-model="showMyTasks" aria-label="My tasks" ng-click="myTasks()">-->
                             <!--My tasks-->
                         <!--</md-checkbox>-->
@@ -40,14 +40,14 @@
                     </thead>
                     <tbody md-body>
                     <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
-                        ng-repeat="task in tasks.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>
                             <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
-                            <div ng-repeat="member in task.members" class="member-cell">
+                            <div ng-repeat="member in task.members_info" class="member-cell">
                                 <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
                                 ({{member.email}})
                             </div>
@@ -99,7 +99,7 @@
                         </div>
 
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
+                                <md-list-item ng-repeat="task in my_tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
                                             {{task.name}}</a></b> for project <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a>
@@ -139,7 +139,7 @@
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
                                             <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>
-                                            user(s) assigned: <span ng-repeat="member in task.members"><a ng-href="#" class="project-tabs-name">{{member.username}}</a></span>
+                                            user(s) assigned: <span ng-repeat="member in task.members_info"><a ng-href="#" class="project-tabs-name">{{member.username}}</a></span>
                                             (created by <a ng-href="#" ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
                         </md-list-item>
