@@ -137,11 +137,12 @@ class ProjectTaskFilter(FilterSet):
     label = CharFilter(name='label', lookup_expr='icontains')
     tag = CharFilter(name='tags__name')
     group = NumberFilter(name='group', lookup_expr='exact')
+    member = NumberFilter(name='members', lookup_expr='exact')
 
     class Meta:
         model = Task
         fields = [
-            'name', 'description', 'status', 'type', 'label', 'project', 'group', 'tag'
+            'name', 'description', 'status', 'type', 'label', 'project', 'group', 'tag', 'member'
         ]
 
 

@@ -1,15 +1,5 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', '$routeParams', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia',
-                                           function($scope, $rootScope, $http, $routeParams, taskService, projectService, activityListService, $mdDialog, $mdMedia){
-
-
-    taskService.get({page_size: 1000}, function (data) {  //parameter {page_size: 1000} for display pages in table (10 items by default)
-        $scope.tasks = {}
-        $scope.tasks.data = data.results;
-        $scope.tasks.count = $scope.tasks.data.length;
-        console.log('data!!', $scope.tasks.data)
-
-    });
-
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', 'projectService',
+    function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams, projectService){
 
 // for dropdown in popup <choose projects>
     $scope.projects = projectService.get(function(data) {
@@ -36,7 +26,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         var day = date.getDay();
         return day === 0 || day === 6;
      }
-
 
 
 /* for popup */
@@ -233,8 +222,12 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
          option: 'by Status'}
       ];
 
+    $scope.showMyTasks = {
+        checked: false
+    };
 
     $scope.tag = $routeParams.task_tag;
+
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
@@ -248,10 +241,28 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             params.tag = $scope.tag;
         };
 
-        taskService.get(params, function (data) {   //tasks to tasks_bottom_list
-            $scope.tasks_bottom_list = {}
-            $scope.tasks_bottom_list.data = data.results;
-            $scope.tasks_bottom_list.count = $scope.tasks_bottom_list.data.length;
+        if ($scope.showMyTasks.checked) {
+            params.member = $scope.userPersonalData.id;
+        };
+
+        taskService.get(params, function (data) {
+            $scope.tasks = {}
+            $scope.tasks.data = data.results;
+            $scope.tasks.count = $scope.tasks.data.length;
+
+            $scope.my_tasks = {};
+            var tasks_list = [];
+
+            for (var i=0; i<data.results.length; i++) {
+                var task_i = data.results[i];
+
+                if (task_i.members.indexOf($scope.userPersonalData.id) != -1) {
+                    tasks_list.push(task_i);
+                }
+            }
+
+            $scope.my_tasks.data = tasks_list;
+            $scope.my_tasks.count = tasks_list.length;
         });
     };
 
@@ -275,6 +286,14 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
     reloadTask();
 
+    $scope.onlyMyTasks = function(value, index, array) {
+        if (!$scope.showMyTasks.checked) {
+            return true;
+        } else if (value.members.indexOf($scope.userPersonalData.id) != -1) {
+            return true;
+        }
+        return false;
+    };
 
 // HARDCODE !!!
     $scope.labels = [
