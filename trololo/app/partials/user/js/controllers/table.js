@@ -13,7 +13,7 @@ angular.module('userApp').controller('nutritionController', ['$mdEditDialog', '$
 
     $scope.query = {
         order: 'name',
-        limit: 3,
+        limit: 5,
         page: 1
     };
 
@@ -38,5 +38,22 @@ angular.module('userApp').controller('nutritionController', ['$mdEditDialog', '$
     $scope.logPagination = function (page, limit) {
         console.log('page: ', page);
         console.log('limit: ', limit);
-    }
+        
+//        $scope.promise = $timeout(function () {
+//        }, 2000);
+    };
+    
+    
+//    $scope.onReorder = function(order) {
+//
+//        console.log('Scope Order: ' + $scope.query.order);
+//        console.log('Order: ' + order);
+//    
+//        $scope.promise = $timeout(function () {
+//    
+//        }, 2000);
+//  };
+    
+    
+    
 }]);

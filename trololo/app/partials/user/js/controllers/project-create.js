@@ -88,8 +88,8 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
         // EDIT
         // PROJECT CALCULATE
         projectSelectedService.get({ id: $scope.project_id }, function (data) {
-            data.date_started = new Date(data.date_started)
-            data.date_finished = new Date(data.date_finished)
+            data.date_started = new Date(data.date_started);
+            data.date_finished = new Date(data.date_finished);
             $scope.projectData = data;
         });
     }
@@ -106,13 +106,18 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
             });
 
             projectSelectedService.update($scope.projectData, function(response) {
+                response.date_started = new Date(response.date_started);
+                response.date_finished = new Date(response.date_finished);
                 $scope.projectData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/projects/' + $scope.projectData.id;
                 }
             });
         } else {
+            console.log("$scope.projectData", $scope.projectData)
             projectService.create($scope.projectData, function(response) {
+                response.date_started = new Date(response.date_started);
+                response.date_finished = new Date(response.date_finished);
                 $scope.projectData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/projects/' + response.id + '/edit';

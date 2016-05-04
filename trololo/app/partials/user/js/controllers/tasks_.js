@@ -1,66 +1,19 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location',
-                                                 function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams){
+    taskService.get(function (data) {
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
         return $mdSidenav('right').isOpen();
     };
-
     $scope.partialPath = '/static/user/templates/task_selected.html';
 
-    //$scope.location = $routeParams.userLocation;
-    //console.log("---", $routeParams.taskid);
 
-
-// TAGS - patch for tags
-    $scope.task = {tags: []};
-
-
-//    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
-//         console.log($scope.task);
-//    })
-
-    taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-         $scope.task = response;
-         console.log("DDDDD", $scope.task);
-    }, function(error){
-//        console.log("ERROR"); // if task doesn't exist - go to main page
-        $window.location.href = "#/"
-    })
-
-
-
-// TAG manipulations
-    // TAG manipulations
-    $scope.searchTag = function(tag) {
-        $location.url('/user/tasks/tag/' + tag.name);
-    };
-
-    $scope.addTag = function(tag) {
-        task_tagService.add_tag(
-            {'id': $routeParams.taskid, 'tag_name': tag.name}, {}, function(response) {
-            }, function () {
-                $scope.task.tags.splice($scope.task.tags.length - 1, 1);
-            }
-        );
-    };
-
-    $scope.removeTag = function(tag) {
-        tag_name = tag.name;
-
-        task_tagService.delete_tag(
-            {'id': $routeParams.taskid, 'tag_name': tag_name}, {}, function(response) {
-            }, function () {
-                $scope.task.tags.push(tag);
-            }
-        );
-    };
-
-    $scope.newTag = function(tag) {
-        return {'name': tag};
-    };
-//
+//console.log(data)
+        $scope.tasks = {}
+        $scope.tasks.data = data.results;
+        $scope.tasks.count = $scope.tasks.data.length;
+    });
 
 
 
@@ -115,74 +68,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     reloadActivity();
 
 
-/* COMMENT */
-    $scope.commentSortType = 'created_at'; // set the default sort type
-    $scope.commentSortDirection = true;  // set the default sort order
-    $scope.commentPageSize = 10;
-    $scope.commentPage = 1;
-
-    $scope.viewCommentVariants = ['1',"5", "10", "20", "50", "All"];
-
-    $scope.commentSortVariants = [
-          {value: "created_at",
-           option: "by Date Asc",
-           direction: true
-          },
-
-          {value: "created_by__username",
-           option: "by User Asc",
-           direction: true
-          }
-//          {value: "comment",
-//           option: "by Type"
-//          },
-    ];
-
-    var reloadComment = function() {
-        var sorting = ($scope.commentSortDirection ? '' : '-') + $scope.commentSortType;
-        var params = {
-            'page': $scope.commentPage,
-            'page_size': $scope.commentPageSize,
-            'ordering': sorting,
-            'for_cu':1,
-            'task': $routeParams.taskid
-        }
-        console.log("params", params);
-        taskCommentService.get(params, function (data) {
-            if ($scope.task == undefined) {
-                $scope.task = {};
-            };
-            console.log("DATA", data);
-            $scope.task.comments = data.results;
-            $scope.task.comments.count = $scope.task.comments.length;
-            console.log('data.results', data.results,'-----', $scope.task.comments.count);
-        });
-    };
-
-    $scope.commentSort = function(sortInfo) {
-    console.log("sortInfo", sortInfo)
-        $scope.commentSortType = sortInfo.value;
-        $scope.commentSortDirection = sortInfo.direction;
-        $scope.commentPage = 1;
-        console.log("11111", $scope.commentSortType)
-        reloadComment();
-    };
-
-
-    $scope.viewComment = function(viewInfo) {
-        if (viewInfo === 'All') {
-            $scope.commentPageSize = 1000000;
-        } else {
-            $scope.commentPageSize = viewInfo;
-        }
-
-        $scope.commentPage = 1;
-        reloadComment();
-    };
-
-    reloadComment();
-
-
     /* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
@@ -204,8 +89,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
             'page': $scope.notificationPage,
             'page_size': $scope.notificationPageSize,
             'ordering': sorting,
-            'for_cu':1,
-            'task_activities': $routeParams.id
+            'for_cu':1
         }
 
         activityListService.get(params, function (data) {
@@ -236,6 +120,218 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     reloadNotification();
 
 
+    /* TASK INFO */
+    $scope.taskSortType = 'title'; // set the default sort type
+    $scope.taskSortDirection = true;  // set the default sort order
+    $scope.taskPageSize = 10;
+    $scope.taskPage = 1;
+
+    $scope.viewTaskVariants = ["5", "10", "20", "50", "All"];
+
+//    $scope.taskSortVariants = [
+//        {title: "by Title Asc", type: 'name', direction: true},
+//        {title: "by Title Desc", type: 'name', direction: false},
+//        {title: "by Status Asc", type: 'status', direction: true},
+//        {title: "by Status Desc", type: 'status', direction: false}
+//    ];
+
+    $scope.myTasksSortVariants = [
+        {value: 'created_at',
+         option: 'by Date'},
+        {value: 'created_by',
+         option: 'by Author'},
+//        {value: '',
+//         option: 'by Project'},
+        {value: 'type',
+         option: 'by Type'},
+        {value: 'label',
+         option: 'by Lable'},
+        {value: 'status',
+         option: 'by Status'}
+      ];
+
+    $scope.allTasksSortVariants = [
+        {value: 'members',
+         option: 'by Member'},
+        {value: 'created_at',
+         option: 'by Date'},
+        {value: 'created_by',
+         option: 'by Author'},
+//        {value: '',
+//         option: 'by Project'},
+        {value: 'type',
+         option: 'by Type'},
+        {value: 'label',
+         option: 'by Lable'},
+        {value: 'status',
+         option: 'by Status'}
+      ];
+
+    var reloadTask = function() {
+        var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
+        var params = {
+            'page': $scope.taskPage,
+            'page_size': $scope.taskPageSize,
+            'ordering': sorting,
+            'for_cu':1
+        }
+
+        taskService.get(params, function (data) {
+            $scope.tasks = {}
+            $scope.tasks.data = data.results;
+            $scope.tasks.count = $scope.tasks.data.length;
+        });
+    };
+
+    $scope.taskSort = function(sortInfo) {
+        $scope.taskSortType = sortInfo.type;
+        $scope.taskSortDirection = sortInfo.direction;
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    $scope.viewTask = function(viewInfo) {
+        if (viewInfo === 'All') {
+            $scope.taskPageSize = undefined;
+        } else {
+            $scope.taskPageSize = viewInfo;
+        }
+
+        $scope.taskPage = 1;
+        reloadTask();
+    };
+
+    reloadTask();
+
+
+
+
+
+
+
+/* for popup */
+    $scope.popRegistr = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
+                    controller: DialogController,
+//                    templateUrl: 'register.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                    if($scope.complete){
+                        $scope.registerComplete(ev);
+                    }
+                    $rootScope.$broadcast('registrationComplete', false);
+                });
+
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+
+
+    $scope.getStatuses = function () {
+        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+    };
+
+    $scope.getTypes = function () {
+        return ['bug', 'feature', 'undefined'];
+    };
+
+/* end - for popup */
+
+
+    $scope.editComment = function (event, dessert) {
+        event.stopPropagation(); // in case autoselect is enabled
+
+        var editDialog = {
+            modelValue: dessert.comment,
+            placeholder: 'Add a comment',
+            save: function (input) {
+                if(input.$modelValue === 'Donald Trump') {
+                    return $q.reject();
+                }
+                if(input.$modelValue === 'Bernie Sanders') {
+                    return dessert.comment = 'FEEL THE BERN!'
+                }
+                dessert.comment = input.$modelValue;
+            },
+            targetEvent: event,
+            title: 'Add a comment',
+            validators: {
+                'md-maxlength': 30
+            }
+        };
+
+        var promise;
+
+        if($scope.options.largeEditDialog) {
+            promise = $mdEditDialog.large(editDialog);
+        } else {
+            promise = $mdEditDialog.small(editDialog);
+        }
+
+        promise.then(function (ctrl) {
+            var input = ctrl.getInput();
+
+            input.$viewChangeListeners.push(function () {
+                input.$setValidity('task_test', input.$modelValue !== 'task_test');
+            });
+        });
+    };
+
+    $scope.getTypes = function () {
+        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
+    };
+    /* Test table data end */
+}]);
+
+
+/* for popup */
+function DialogController($scope, $mdDialog) {
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+  };
+}
+/* end - for popup */
+
+
+
+
+angular.module('userApp').controller('taskSelectedCtrl', ['$scope', '$rootScope', '$http', 'taskSelectedService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskSelectedService, $mdDialog, $mdMedia, $routeParams){
+    $scope.toggleLeft = buildDelayedToggler('left');
+    $scope.toggleRight = buildToggler('right');
+    $scope.isOpenRight = function(){
+        return $mdSidenav('right').isOpen();
+    };
+    $scope.partialPath = '/static/user/templates/task_selected.html';
+
+    //$scope.location = $routeParams.userLocation;
+    //console.log("---", $routeParams.taskid)
+
+    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
+         console.log($scope.task);
+    })
+
+
     $scope.leftSidebarList = [
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
@@ -244,7 +340,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
     ];
-
     $scope.isSectionSelected = function(section){
         return section === $scope.location;
     };
@@ -291,12 +386,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     }
 
 
-//// TASK CALCULATE
-//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
-//        $scope.task = data;
-//    });
-
-
 /* for popup */
     $scope.popRegistr = function (ev) {
             var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
@@ -329,13 +418,13 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
 
 
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
+    $scope.getStatuses = function () {
+        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+    };
+
+    $scope.getTypes = function () {
+        return ['bug', 'feature', 'undefined'];
+    };
 /* end - for popup */
 
 
@@ -378,77 +467,22 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         });
     };
 
+    $scope.getTypes = function () {
+        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
+    };
 
-//    $scope.sortVariants = [
-//          {value: "created_at",
-//           option: "by Date"
+
+    $scope.sortVariants = [
+          {value: "created_at",
+           option: "by Date"
+          },
+          {value: "created_by",
+           option: "by User"
+          },
+//          {value: "comment",
+//           option: "by Type"
 //          },
-//          {value: "created_by",
-//           option: "by User"
-//          },
-////          {value: "comment",
-////           option: "by Type"
-////          },
-//      ];
-
-
-    $scope.viewVariants = [
-          "5",
-          "10",
-          "20",
-          "50",
-          "All"
       ];
-
-
-
-    personalInfoService.get(function (data) {
-        $scope.userAdditionData = {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            department: data.department,
-            specialization: data.specialization,
-            detailed_info: data.detailed_info,
-            use_gravatar: data.use_gravatar,
-            social_accounts: data.social_accounts
-        };
-        $scope.userPersonalData = data;
-    });
-
-    $scope.changeUserLocation = function(e, id){
-    console.log("-----")
-    e.preventDefault();
-        if($scope.userPersonalData.id !== id){
-            $window.location.href = '#/user/profile/' + id;
-        } else {
-            $window.location.href = '#/user/personal/';
-        }
-    };
-
-    $scope.taskCommentData = {};
-    $scope.savetaskComment = function() {
-        $scope.taskCommentData.tags = [];
-        $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
-        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
-        if ($scope.comment_id) {
-            // EDIT
-            $scope.commentData.id = $scope.comment_id;
-
-            taskCommentSelectedService.update($scope.taskCommentData, function(response) {
-                $scope.taskCommentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
-                }
-            });
-        } else {
-            taskCommentService.create($scope.taskCommentData, function(response) {
-                $scope.taskCommentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
-                }
-            });
-        }
-    };
 
 
 }]);

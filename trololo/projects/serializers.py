@@ -249,7 +249,7 @@ class GroupRelatedField(serializers.RelatedField):
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
     # activity = ActivitySerializer(source='task_comments', many=True)
-    comments = TaskCommentSerializer(source='task_comments', many=True) # display dicts of comments
+    comments = TaskCommentSerializer(source='task_comments', required=False, many=True, read_only=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -292,6 +292,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     tags = TagSerializer(many=True, read_only=False, required=False)
 
     owner = OnlyUserInfoSerializer(source='created_by', read_only=True)
+    # estimate_minutes = serializers.IntegerField(default=3600 * 48, required=False)
 
     class Meta:
         model = Task
@@ -335,3 +336,20 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         data['tags'] = sorted(data['tags'])
         return data
 
+
+class TaskCreateSerializer(TaskSerializer):
+    project = serializers.PrimaryKeyRelatedField(
+        # view_name='projects:projects_detail',
+        queryset=Project.objects.all(),
+        required=True,
+        # lookup_field='pk'
+    )
+
+    class Meta:
+        model = Task
+        fields = (
+            'name', 'id', 'description', 'status', 'members', 'type', 'label',
+            'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
+        )
+        read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')

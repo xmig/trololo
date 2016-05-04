@@ -1,11 +1,87 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams){
-    taskService.get(function (data) {
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', '$routeParams', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia',
+                                           function($scope, $rootScope, $http, $routeParams, taskService, projectService, activityListService, $mdDialog, $mdMedia){
 
-    console.log(data)
+
+    taskService.get({page_size: 1000}, function (data) {  //parameter {page_size: 1000} for display pages in table (10 items by default)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
         $scope.tasks.count = $scope.tasks.data.length;
+        console.log('data!!', $scope.tasks.data)
+
     });
+
+
+// for dropdown in popup <choose projects>
+    $scope.projects = projectService.get(function(data) {
+//        $scope.projects.data = data.results;
+        console.log("---------------", data)
+    })
+
+
+
+/* for datepicker */
+     $scope.myDate = new Date();
+
+     $scope.minDate = new Date(
+         $scope.myDate.getFullYear(),
+         $scope.myDate.getMonth() - 2,
+         $scope.myDate.getDate());
+
+     $scope.maxDate = new Date(
+         $scope.myDate.getFullYear(),
+         $scope.myDate.getMonth() + 2,
+         $scope.myDate.getDate());
+
+     $scope.onlyWeekendsPredicate = function(date) {
+        var day = date.getDay();
+        return day === 0 || day === 6;
+     }
+
+
+
+/* for popup */
+    $scope.popRegistr = function (ev) {
+            var useFullScreen = ($mdMedia('sm') || $mdMedia('xs')) && $scope.customFullscreen;
+            $mdDialog.show({
+                    scope: $scope,        // use parent scope in template
+                    preserveScope: true,  // use parent scope
+                    controller: DialogController,
+                    templateUrl: 'register.tmpl.html',
+                    parent: angular.element(document.body),
+                    targetEvent: ev,
+                    clickOutsideToClose: true,
+                    fullscreen: useFullScreen
+                })
+                .then(function (answer) {
+                    $scope.status = 'You said the information was "' + answer + '".';
+                }, function () {
+                    $scope.status = 'You cancelled the dialog.';
+                    if($scope.complete){
+                        $scope.registerComplete(ev);
+                    }
+                    $rootScope.$broadcast('registrationComplete', false);
+                });
+
+            $scope.$watch(function () {
+                return $mdMedia('xs') || $mdMedia('sm');
+            }, function (wantsFullScreen) {
+                $scope.customFullscreen = (wantsFullScreen === true);
+            });
+        };
+
+
+
+//    $scope.getStatuses = function () {
+//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+//    };
+//
+//    $scope.getTypes = function () {
+//        return ['bug', 'feature', 'undefined'];
+//    };
+/* end - for popup */
+
+
+
 
     /* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
@@ -56,6 +132,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     };
 
     reloadActivity();
+
 
     /* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
@@ -156,6 +233,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
          option: 'by Status'}
       ];
 
+
     $scope.tag = $routeParams.task_tag;
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
@@ -170,10 +248,10 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             params.tag = $scope.tag;
         };
 
-        taskService.get(params, function (data) {
-            $scope.tasks = {}
-            $scope.tasks.data = data.results;
-            $scope.tasks.count = $scope.tasks.data.length;
+        taskService.get(params, function (data) {   //tasks to tasks_bottom_list
+            $scope.tasks_bottom_list = {}
+            $scope.tasks_bottom_list.data = data.results;
+            $scope.tasks_bottom_list.count = $scope.tasks_bottom_list.data.length;
         });
     };
 
@@ -198,8 +276,39 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     reloadTask();
 
 
+// HARDCODE !!!
+    $scope.labels = [
+        {value: 'undefined',
+         option: 'Undefined'},
+        {value: 'red',
+         option: 'Red'},
+        {value: 'orange',
+         option: 'Orange'},
+        {value: 'green',
+         option: 'Green'},
+    ];
 
+    $scope.types = [
+        {value: 'undefined',
+         option: 'Undefined'},
+        {value: 'bug',
+         option: 'Bug'},
+        {value: 'feature',
+         option: 'Feature'}
+    ];
 
+    $scope.statuses = [
+        {value: 'undefined',
+         option: 'Undefined'},
+        {value: 'breakthrough',
+         option: 'Breakthrough'},
+        {value: 'in progress',
+         option: 'In progress'},
+        {value: 'finished',
+         option: 'Finished'}
+    ];
+    
+// END HARDCODE !!!    
 
 
 
@@ -234,15 +343,71 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         };
 
 
-    $scope.getStatuses = function () {
-        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-    };
-
-    $scope.getTypes = function () {
-        return ['bug', 'feature', 'undefined'];
-    };
+//    $scope.getStatuses = function () {
+//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
+//    };
+//
+//    $scope.getTypes = function () {
+//        return ['bug', 'feature', 'undefined'];
+//    };
 
 /* end - for popup */
+
+
+//CHECKBOXES//
+
+//for checkbox members//
+    $scope.items = [1,2,3,4,5];
+      $scope.selected = [];
+
+      $scope.toggle = function (item, list) {
+        var idx = list.indexOf(item);
+        if (idx > -1) {
+          list.splice(idx, 1);
+        }
+        else {
+          list.push(item);
+        }
+      };
+
+      $scope.exists = function (item, list) {
+        return list.indexOf(item) > -1;
+      };
+
+/* for standard checkboxes */
+//     $scope.items = [1,2,3,4,5];
+//          $scope.selected = [1];
+//          $scope.toggle = function (item, list) {
+//            var idx = list.indexOf(item);
+//            if (idx > -1) {
+//              list.splice(idx, 1);
+//            }
+//            else {
+//              list.push(item);
+//            }
+//          };
+//
+//          $scope.exists = function (item, list) {
+//            return list.indexOf(item) > -1;
+//          };
+//
+//          $scope.isIndeterminate = function() {
+//            return ($scope.selected.length !== 0 &&
+//                $scope.selected.length !== $scope.items.length);
+//          };
+//
+//          $scope.isChecked = function() {
+//            return $scope.selected.length === $scope.items.length;
+//          };
+//
+//          $scope.toggleAll = function() {
+//            if ($scope.selected.length === $scope.items.length) {
+//              $scope.selected = [];
+//            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
+//              $scope.selected = $scope.items.slice(0);
+//            }
+
+
 
 
     $scope.editComment = function (event, dessert) {
@@ -289,41 +454,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     };
     /* Test table data end */
 
-    /* Test activity data */
-    $scope.my_tsks = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'assigned you to a new Task to the Project', project: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'assigned you to a new Task to the Project', project: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'assigned you to a new Task to the Project', project: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' },
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'assigned you to a new Task to the Project', project: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'assigned you to a new Task to the Project', project: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'assigned you to a new Task to the Project', project: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', project: 'WTF' }
-    ];
-
-    $scope.all_tsks = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
-
-    $scope.t_activity = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
-
-    $scope.my_notifications = [
-        { name: 'Customers Import from Shopify, Customers missing in Nucleus', wanted: true, status: 'low', user: 'Masha-Masha', action: 'new Task to the Project', task: 'Villabajo' },
-        { name: 'Billing', wanted: false, status: 'high', user: 'Sergey', action: 'new Task to the Project', task: 'Villaribo' },
-        { name: 'Markup for tasks page 5 s/p', wanted: true, status: 'high', user: 'Masha', action: 'new Task to the Project', task: 'Trololo' },
-        { name: 'Markup for projects page 5 s/p', wanted: false, status: 'middle', user: 'Max', action: 'added comment to your reply', task: 'WTF' }
-    ];
-
-
-    /* Test activity data end */
 }]);
 
 
@@ -342,4 +472,3 @@ function DialogController($scope, $mdDialog) {
   };
 }
 /* end - for popup */
-

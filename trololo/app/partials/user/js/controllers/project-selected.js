@@ -427,17 +427,9 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 //          },
       ];
 
-//    $scope.viewVariants = [
-//          "5",
-//          "10",
-//          "20",
-//          "50",
-//          "All"
-//      ];
+
 
     reloadTask();
-
-
 
     /* COMMENT */
     $scope.commentSortType = 'created_at'; // set the default sort type
@@ -453,17 +445,15 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             'page': $scope.commentPage,
             'page_size': $scope.commentPageSize,
             'ordering': sorting,
-            'for_cu':1
+            'for_cu':1,
+            'project': $routeParams.id
+
         }
         console.log("---", params);
         commentService.get(params, function (data) {
-            if ($scope.project == undefined) {
-                $scope.project = {};
-            };
-
-            $scope.project.comments = data.results;
-            $scope.project.comments.count = $scope.project.comments.length;
-            console.log('data.results', data.results,'-----', $scope.project.comments.count);
+            $scope.comments = data.results;
+            $scope.comments.count = $scope.comments.length;
+            console.log('data.results', data.results,'-----', $scope.comments.count);
         });
     };
 
@@ -516,6 +506,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     $scope.saveComment = function() {
 //        $scope.commentData.tags = [];
         $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
+//        console.log('iii',$routeParams.id)
         if ($scope.comment_id) {
             // EDIT
             $scope.commentData.id = $scope.comment_id;
