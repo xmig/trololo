@@ -4,6 +4,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
     $scope.task_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/task_create.html';
 
+
 // for dropdown <choose projects>
     $scope.projects = {}
     projectService.get(function(data) {
@@ -209,10 +210,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
             // EDIT
             $scope.taskData.id = $scope.task_id;
 
-//            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
-
             console.log("$scope.taskData", $scope.taskData.members)
 
             $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
@@ -228,7 +225,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
                 }
             });
         } else {
-            console.log("$scope.taskData", $scope.taskData)
 //            $scope.taskData.group = 1;
 //            $scope.taskData.estimate_minutes = 1;
             taskService.create($scope.taskData, function(response) {
@@ -247,6 +243,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
     };
 
 }])
+
 .config(function($mdDateLocaleProvider) {
   $mdDateLocaleProvider.formatDate = function(date) {
     return date ? moment(date).format('DD-MM-YYYY') : '';

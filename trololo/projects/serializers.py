@@ -250,6 +250,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     # activity = ActivitySerializer(source='task_comments', many=True)
     comments = TaskCommentSerializer(source='task_comments', required=False, many=True, read_only=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
+
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
         queryset=Project.objects.all(),
@@ -259,20 +260,20 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
     members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
 
-    members = serializers.PrimaryKeyRelatedField(
-        many=True,
-        # view_name='users:single_user',
-        queryset=get_user_model().objects.all(),
-        required=False,
-        # lookup_field='id'
-    )
-    # members = serializers.HyperlinkedRelatedField(
+    # members = serializers.PrimaryKeyRelatedField(
     #     many=True,
-    #     view_name='users:single_user',
+    #     # view_name='users:single_user',
     #     queryset=get_user_model().objects.all(),
     #     required=False,
-    #     lookup_field='id'
+    #     # lookup_field='id'
     # )
+    members = serializers.HyperlinkedRelatedField(
+        many=True,
+        view_name='users:single_user',
+        queryset=get_user_model().objects.all(),
+        required=False,
+        lookup_field='id'
+    )
 
     created_by = serializers.HyperlinkedRelatedField(
         read_only=True,
