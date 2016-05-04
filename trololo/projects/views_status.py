@@ -2,7 +2,6 @@ from serializers import StatusSerializer
 from rest_framework import status
 from projects.models import Status, Project
 from rest_framework import generics
-from django.http import Http404
 from rest_framework.response import Response
 
 from rest_framework import filters
@@ -10,6 +9,8 @@ from django_filters import FilterSet, NumberFilter, CharFilter
 from django.db.models import Q
 from rest_framework import exceptions
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework_extensions.cache.decorators import cache_response
+from chi_django_base.helpers import calculate_cache_key, invalidate_cache
 
 
 class StatusFilter(FilterSet):
@@ -44,6 +45,10 @@ class StatusView(generics.ListCreateAPIView):
 
         return last_status.order_number if last_status else 0
 
+    @cache_response(60 * 15, key_func=calculate_cache_key)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
     def get_queryset(self):
         user = self.request.user
         proj = [
@@ -51,6 +56,7 @@ class StatusView(generics.ListCreateAPIView):
         ]
         return Status.objects.filter(project__id__in=proj)
 
+    @invalidate_cache(['StatusView'])
     def post(self, request):
         serializer = StatusSerializer(data=request.data, context={'request': request}, partial=True)
 
@@ -60,6 +66,7 @@ class StatusView(generics.ListCreateAPIView):
         ]
 
         if serializer.is_valid():
+
             project = serializer.validated_data['project'].id
             order_number = serializer.validated_data.get(
                 'order_number', self._get_last_order_number(project) + 1
@@ -108,6 +115,7 @@ class StatusDetail(generics.GenericAPIView):
             )
         return status
 
+    @cache_response()
     def get(self, request, pk):
         """
         This method returns the status by id
@@ -116,6 +124,7 @@ class StatusDetail(generics.GenericAPIView):
         serializer = StatusSerializer(status, context={'request': request})
         return Response(serializer.data)
 
+    @invalidate_cache(['StatusView', 'StatusDetail'])
     def put(self, request, pk):
         """
        This method rename status
@@ -150,6 +159,7 @@ class StatusDetail(generics.GenericAPIView):
             return Response(serializer.data)
         return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    @invalidate_cache(['StatusView', 'StatusDetail'])
     def delete(self, request, pk):
         """
         This method delete status

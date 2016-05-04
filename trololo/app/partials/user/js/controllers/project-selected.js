@@ -135,7 +135,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             'limit': $scope.statusLimit,
             'offset': $scope.statusOffset,
             'ordering': $scope.statusSortType,
-            'project_activities': $routeParams.id,
+            'project': $routeParams.id,
         }
 
         var error_func = function (resp) {console.log(resp);};
@@ -233,6 +233,10 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     };
 
     // TAG manipulations
+    $scope.searchTag = function(tag) {
+        $location.url('/user/projects/tag/' + tag.name);
+    };
+
     $scope.addTag = function(tag) {
         project_tagService.add_tag(
             {'id': $routeParams.id, 'tag_name': tag.name}, {}, function(response) {

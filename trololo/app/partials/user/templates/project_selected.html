@@ -162,11 +162,31 @@
                         </div>
                         <!--<pre>{{project.comments | json}}</pre>-->
                          <md-list class="project-tabs-list">
-                                    <md-list-item ng-repeat="comment in comments | orderBy: tabSort.comments" class="secondary-button-padding" >
-                                        <p><a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}: {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
-                                    </md-list-item>
-                            </md-list>
-                            <span></span>
+                             
+                            <!--<md-list-item ng-repeat="comment in comments | orderBy: tabSort.comments" class="secondary-button-padding" >-->
+                                    <!--<p><a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a ng-href="#" class="project-link-name">{{comment.title}}: {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>-->
+                                    <!--</md-list-item>-->
+                            <!--</md-list>-->
+                            <!--<span></span>-->
+                             
+                            <md-list-item ng-repeat="comment in project.comments | orderBy: tabSort.comments" class="secondary-button-padding" >
+                                <p>
+                                    <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">
+                                        <span ng-if="comment.created_by.photo">
+                                            <img ng-src="{{ comment.created_by.photo }}" class="resize" title="{{comment.created_by.username}}" />
+                                        </span>
+                                        <span ng-if="!comment.created_by.photo">
+                                            {{comment.created_by.username}}
+                                        </span>
+                                    </a> added comment:
+                                    <a ng-href="#" class="project-link-name">
+                                        {{comment.title}}: {{comment.comment}}
+                                    </a>
+                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span>
+                                </p>
+                            </md-list-item>
+                         </md-list>
+                         <span></span>
 
                         <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
                                 <md-content layout-padding="">
@@ -203,46 +223,46 @@
                         <span></span>
                     </md-content>
                 </md-tab>
-                <!--<md-tab label="Statuses">-->
-                    <!--<md-content class="md-padding">-->
-                        <!--<div layout="row">-->
-                            <!--<md-input-container class="sorting-margin">-->
-                                <!--<label>Sort</label>-->
-                                <!--<md-select ng-model="tabSort.status">-->
-                                    <!--<md-option ng-repeat="opt in statusSortVariants" value="{{opt.title}}" ng-click="statusSort(opt)">{{opt.title}}</md-option>-->
-                                <!--</md-select>-->
-                            <!--</md-input-container>-->
-                            <!--<md-input-container class="sorting-margin">-->
-                                <!--<label>View</label>-->
-                                <!--<md-select ng-model="tabView.status">-->
-                                    <!--<md-option ng-repeat="opt in viewStatusVariants" value="{{opt}}" ng-click="viewStatus(opt)">{{opt}}</md-option>-->
-                                <!--</md-select>-->
-                            <!--</md-input-container>-->
-                        <!--</div>-->
-                        <!--<md-table-container>-->
-                            <!--<table md-table>-->
-                                <!--<thead md-head>-->
-                                    <!--<tr md-row>-->
-                                        <!--<th md-column><b>#</b></th>-->
-                                        <!--<th md-column><b>STATUS NAME</b></th>-->
-                                        <!--<th md-column><b>ORDER NUMBER</b></th>-->
-                                        <!--<th md-column><b>EDIT</b></th>-->
-                                        <!--<th md-column><b>DELETE</b></th>-->
-                                    <!--</tr>-->
-                                <!--</thead>-->
+                <md-tab label="Statuses">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-input-container class="sorting-margin">
+                                <label>Sort</label>
+                                <md-select ng-model="tabSort.status">
+                                    <md-option ng-repeat="opt in statusSortVariants" value="{{opt.title}}" ng-click="statusSort(opt)">{{opt.title}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="sorting-margin">
+                                <label>View</label>
+                                <md-select ng-model="tabView.status">
+                                    <md-option ng-repeat="opt in viewStatusVariants" value="{{opt}}" ng-click="viewStatus(opt)">{{opt}}</md-option>
+                                </md-select>
+                            </md-input-container>
+                        </div>
+                        <md-table-container>
+                            <table md-table>
+                                <thead md-head>
+                                    <tr md-row>
+                                        <th md-column><b>#</b></th>
+                                        <th md-column><b>STATUS NAME</b></th>
+                                        <th md-column><b>ORDER NUMBER</b></th>
+                                        <th md-column><b>EDIT</b></th>
+                                        <th md-column><b>DELETE</b></th>
+                                    </tr>
+                                </thead>
 
-                                <!--<tr md-row ng-repeat="status in statuses">-->
-                                    <!--<td md-cell>{{ $index + 1 }}</td>-->
-                                    <!--<td md-cell>{{ status.name }}</td>-->
-                                    <!--<td md-cell>{{ status.order_number }}</td>-->
-                                    <!--<td md-cell><md-button class="md-secondary" ng-click="viewSelectedStatus($event, status.id)">Edit</md-button></td>-->
-                                    <!--<td md-cell><md-button class="md-secondary" ng-click="deleteStatusPopup($event, status.id, status.name)">Delete</md-button></td>-->
-                                <!--</tr>-->
-                            <!--</table>-->
-                        <!--</md-table-container>-->
-                        <!--<span></span>-->
-                    <!--</md-content>-->
-                <!--</md-tab>-->
+                                <tr md-row ng-repeat="status in statuses">
+                                    <td md-cell>{{ $index + 1 }}</td>
+                                    <td md-cell>{{ status.name }}</td>
+                                    <td md-cell>{{ status.order_number }}</td>
+                                    <td md-cell><md-button class="md-secondary" ng-click="viewSelectedStatus($event, status.id)">Edit</md-button></td>
+                                    <td md-cell><md-button class="md-secondary" ng-click="deleteStatusPopup($event, status.id, status.name)">Delete</md-button></td>
+                                </tr>
+                            </table>
+                        </md-table-container>
+                        <span></span>
+                    </md-content>
+                </md-tab>
             </md-tabs>
         </md-card>
     </div>

@@ -13,7 +13,14 @@
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
-                    <span>Projects</span>
+                    <label>
+                        <span>Projects</span>
+                        <input class="search-style" type='text' ng-model='filter.search' placeholder="Search project">
+                        </label>
+                        <tbody>
+                        <tr ng-repeat="project in projects.data | filter:criteria"></tr>
+                        </tbody>
+                    <!--<span>Projects</span>-->
                     <div flex></div>
                     <md-button ng-href="#/user/projects/create">Create New Project</md-button>
                     <!--<a ng-href="#/user/projects/create" >Create New Project</a>-->
@@ -61,7 +68,7 @@
                     </tbody>
                 </table>
             </md-table-container>
-            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{projects.count}}"
+            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(projects.data | filter: filter.search).length}}"
                                  md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
                                  md-on-paginate="logPagination"></md-table-pagination>
         </md-card>
@@ -150,5 +157,3 @@
         </md-card>
     </div>
 </md-content>
-
-

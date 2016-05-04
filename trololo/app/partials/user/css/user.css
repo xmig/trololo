@@ -89,6 +89,14 @@
     padding-bottom: 7px;
 }
 
+img.resize{
+   width:40px;
+   height:40px;
+   display: inline-block;
+    *display: inline; /* for older IE */
+    *zoom: 1; /* for older IE */
+}
+
 
   /** Demo styles for mdCalendar. */ }
 
@@ -199,4 +207,8 @@
 .project-members-list {
     padding: 0;
     list-style: none;
+}
+.search-style{
+    font-size:15px;
+
 }

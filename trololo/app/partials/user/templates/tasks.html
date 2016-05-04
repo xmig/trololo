@@ -4,20 +4,15 @@
         <md-card>
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
+                    <label>
                     <span>Tasks</span>
+                        <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
+                        </label>
+                    <tbody>
+                        <tr ng-repeat="task in tasks.data | filter:criteria"></tr>
+                    </tbody>
                     <div flex></div>
-                        <a ng-href="#/user/tasks/create">Create New Task</a>
-
-                    <!--<md-button ng-click="loadStuff()">Async Operation</md-button>-->
-
-                        <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
-                        <!--<div class="md-toolbar-tools">-->
-                        <!--<div flex></div>-->
-                        <!--<md-button ng-click="popRegistr($event)">CREATE NEW TASK</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
-                        <!--</div>-->
-                        <!--</md-toolbar>-->
-
-
+                    <md-button ng-click="loadStuff()">Async Operation</md-button>
                 </div>
             </md-toolbar>
             <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
@@ -25,6 +20,18 @@
                     <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
                 </div>
             </md-toolbar>
+            <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<span>Tasks</span>-->
+                    <!--<div flex></div>-->
+                        <!--<a ng-href="#/user/tasks/create">Create New Task</a>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
+            <!--<md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
             <md-table-container>
                 <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
                     <thead md-head md-order="query.order" md-on-reorder="logOrder">
@@ -75,7 +82,10 @@
             <!--</md-toolbar>-->
 
 
-            <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}"
+
+
+                        <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(tasks.data | filter: filter.search).length}}"
+                        <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}"                                             -->
                                  md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
                                  md-on-paginate="logPagination"></md-table-pagination>
 
@@ -198,7 +208,7 @@
                         <md-list>
                             <md-list-item ng-repeat="notification in notifications.data" class="project-tabs-list">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
-                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a> ({{ notification.created_at | date : 'medium' }})</p>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -397,8 +407,6 @@
        </form>
     </md-dialog>
 </script>
-<!-- Registration modal end -->
-
 
 </md-content>
 

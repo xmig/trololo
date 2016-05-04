@@ -245,6 +245,24 @@ angular.module('mainApp', [
                     }]
                 }
             })
+            .when('/user/projects/tag/:project_tag', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'userCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/user/tasks/tag/:task_tag', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'userCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
             .when('/user/projects/:id/edit', {
                 templateUrl: '/static/user/templates/user.html',
                 controller: 'projectCreateCtrl',

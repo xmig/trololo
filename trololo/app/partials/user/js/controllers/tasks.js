@@ -1,18 +1,13 @@
-angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia', function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
+angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService',  '$mdDialog', '$mdMedia',
+                                           function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
 
-////local
-//angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'projectService', 'activityListService', '$mdDialog', '$mdMedia', //projectService
-//    function($scope, $rootScope, $http, taskService, projectService, activityListService, $mdDialog, $mdMedia){
-
-
-
-    taskService.get({page_size: 1000}, function (data) {  //parameter {page_size: 1000} for display pages in table (10 items by default)
+//alert();
+//console.log(data)
         $scope.tasks = {}
         $scope.tasks.data = data.results;
+//        console.log(tasks.data)
         $scope.tasks.count = $scope.tasks.data.length;
-        console.log('data!!', $scope.tasks.data)
-
-    });
+        console.log('data!!', $scope.tasks.data);
 
 
 // for dropdown in popup <choose projects>
@@ -238,6 +233,8 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
          option: 'by Status'}
       ];
 
+
+    $scope.tag = $routeParams.task_tag;
     var reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
@@ -247,7 +244,11 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             'for_cu':1
         }
 
-        taskService.get(params, function (data) {
+        if ($scope.tag !== undefined) {
+            params.tag = $scope.tag;
+        };
+
+        taskService.get(params, function (data) {   //tasks to tasks_bottom_list
             $scope.tasks_bottom_list = {}
             $scope.tasks_bottom_list.data = data.results;
             $scope.tasks_bottom_list.count = $scope.tasks_bottom_list.data.length;
@@ -308,6 +309,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     ];
     
 // END HARDCODE !!!    
+
 
 
 /* for popup */

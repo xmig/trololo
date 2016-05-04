@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window',
-                                                  function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window){
+angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location',
+                                                 function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location){
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -32,6 +32,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
 
 // TAG manipulations
+    // TAG manipulations
+    $scope.searchTag = function(tag) {
+        $location.url('/user/tasks/tag/' + tag.name);
+    };
+
     $scope.addTag = function(tag) {
         task_tagService.add_tag(
             {'id': $routeParams.taskid, 'tag_name': tag.name}, {}, function(response) {
@@ -374,6 +379,19 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     };
 
 
+//    $scope.sortVariants = [
+//          {value: "created_at",
+//           option: "by Date"
+//          },
+//          {value: "created_by",
+//           option: "by User"
+//          },
+////          {value: "comment",
+////           option: "by Type"
+////          },
+//      ];
+
+
     $scope.viewVariants = [
           "5",
           "10",
@@ -406,7 +424,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
             $window.location.href = '#/user/personal/';
         }
     };
-
 
     $scope.taskCommentData = {};
     $scope.savetaskComment = function() {

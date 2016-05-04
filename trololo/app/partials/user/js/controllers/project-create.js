@@ -1,5 +1,5 @@
-angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$filter', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'projectService', 'projectSelectedService', '$timeout', '$mdSidenav', '$log',
-    function($scope, $filter, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, projectService, projectSelectedService, $timeout, $mdSidenav, $log)
+angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'projectService', 'projectSelectedService', '$timeout', '$mdSidenav', '$log',
+    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, projectService, projectSelectedService, $timeout, $mdSidenav, $log)
 {
     $scope.project_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/project_create.html';
@@ -120,13 +120,12 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$filter', 
                 response.date_finished = new Date(response.date_finished);
                 $scope.projectData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + response.id;
+                    $window.location.href = '#/user/projects/' + response.id + '/edit';
                 }
             });
         }
     };
-//    $scope.projectData.date_started = $filter('date')($scope.projectData.date_started, "dd/MM/yyyy");
-//    $scope.projectData.date_finished = $filter('date')($scope.projectData.date_finished, "dd/MM/yyyy");
+
 }])
 .config(function($mdDateLocaleProvider) {
   $mdDateLocaleProvider.formatDate = function(date) {
