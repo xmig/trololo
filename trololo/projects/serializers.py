@@ -2,7 +2,6 @@ from rest_framework import serializers
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
-from activity.serializers import ActivitySerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
@@ -258,14 +257,14 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='pk'
     )
 
-    members = OnlyUserInfoSerializer(many=True, read_only=True) # to display names instead of urls
-    # members = serializers.HyperlinkedRelatedField(
-    #     many=True,
-    #     view_name='users:single_user',
-    #     queryset=get_user_model().objects.all(),
-    #     required=False,
-    #     lookup_field='id'
-    # )
+    members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
+    members = serializers.PrimaryKeyRelatedField(
+        many=True,
+        # view_name='users:single_user',
+        queryset=get_user_model().objects.all(),
+        required=False,
+        # lookup_field='id'
+    )
 
     created_by = serializers.HyperlinkedRelatedField(
         read_only=True,
@@ -297,9 +296,9 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members', 'type', 'label',
+            'name', 'id', 'description', 'status', 'members_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')
 
@@ -329,6 +328,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
         instance = super(TaskSerializer, self).update(instance, validated_data)
+
         return self.save_tags(instance, tags)
 
     def to_representation(self, instance):
@@ -348,7 +348,7 @@ class TaskCreateSerializer(TaskSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members', 'type', 'label',
+            'name', 'id', 'description', 'status', 'members', 'type', 'label', 'members_info',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )

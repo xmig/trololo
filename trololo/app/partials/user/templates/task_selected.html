@@ -31,7 +31,7 @@
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
                         <td md-cell>
-                            <p ng-repeat="member in task.members">
+                            <p ng-repeat="member in task.members_info">
                             <a ng-href="#/user/profile/{{memeber.id}}" class="user-link-name">{{member.username}}</a> <br>
                             ({{member.email}})
                             </p>
