@@ -159,6 +159,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
         // TASK CALCULATE
         taskSelectedService.get({ id: $scope.task_id }, function (response) {
             response.deadline_date = new Date(response.deadline_date);
+            response.project = response.project_obj.id  // substitute for task.project which gives a url instead of pk :)
             $scope.taskData = response;
 //            $scope.taskData.project
             console.log('EDIT', response.project)
@@ -182,7 +183,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
             taskSelectedService.update($scope.taskData, function(response) {
                 response.deadline_date = new Date(response.deadline_date);
-                response.project = response.project_obj.id  // substitute for task.project which gives a url instead of pk :)
                 $scope.taskData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/' + $scope.taskData.id;

@@ -258,12 +258,19 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     )
 
     members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
-    members = serializers.PrimaryKeyRelatedField(
+    # members = serializers.PrimaryKeyRelatedField(
+    #     many=True,
+    #     # view_name='users:single_user',
+    #     queryset=get_user_model().objects.all(),
+    #     required=False,
+    #     # lookup_field='id'
+    # )
+    members = serializers.HyperlinkedRelatedField(
         many=True,
-        # view_name='users:single_user',
+        view_name='users:single_user',
         queryset=get_user_model().objects.all(),
         required=False,
-        # lookup_field='id'
+        lookup_field='id'
     )
 
     created_by = serializers.HyperlinkedRelatedField(
