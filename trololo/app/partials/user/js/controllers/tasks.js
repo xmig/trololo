@@ -1,6 +1,16 @@
 angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', 'projectService',
     function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams, projectService){
 
+
+    taskService.get({page_size: 1000}, function (data) {  //parameter {page_size: 1000} for display pages in table (10 items by default)
+        $scope.tasks = {}
+        $scope.tasks.data = data.results;
+        $scope.tasks.count = $scope.tasks.data.length;
+        console.log('data!!', $scope.tasks.data)
+
+    });
+
+
 // for dropdown in popup <choose projects>
     $scope.projects = projectService.get(function(data) {
 //        $scope.projects.data = data.results;
