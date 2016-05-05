@@ -1,5 +1,10 @@
 #!/bin/bash
+#
+# Script to install all required system packages on ubuntu
+#
+
 set -ex
+
 # RUN this script as superuser from PROJECT ROOT
 if [ "${UID}" != 0 ]; then
     echo "This script must be run as root"
@@ -17,7 +22,22 @@ else
 fi
 
 # install required packages
-sudo apt-get install python-dev python-pip postgresql-9.3 postgresql-server-dev-9.3
+sudo apt-get install redis-server libjpeg-dev zlib1g-dev python-dev python-pip
+
+# Install and configure postgresql-server-9.3
+INCORRECT=true;
+
+while [ "$INCORRECT" = "true" ]; do
+    read -p "Do you want to install and configure postgresql server? [Y|n]" RESP
+
+    case "$RESP" in
+        "n" | "no" | "N" | "No" ) INCORRECT=false; echo "Exiting ..."; exit 0;;
+        "y" | "Y" | "Yes" | "yes" ) INCORRECT=false; echo "Configure postgresql server 9.3 ...";;
+        * ) echo "Incorrect choice!";&
+    esac
+done
+
+sudo apt-get install postgresql-9.3 postgresql-server-dev-9.3
 
 # allow postgres user login to DB
 sudo sed -i 's/local   all             postgres                                peer/local   all             postgres                                trust/g' /etc/postgresql/9.3/main/pg_hba.conf
