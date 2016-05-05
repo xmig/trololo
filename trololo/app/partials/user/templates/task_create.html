@@ -26,9 +26,7 @@
 <!--<Choose Project>-->
                                 <md-input-container class="md-block">
                                     <label>Choose Project:</label>
-
-                                    <pre>{{taskData.project}}</pre>
-
+                                    <!--<pre>{{taskData.project}}</pre>-->
                                             <md-select ng-model="taskData.project">
                                                 <md-option ng-repeat="proj in projects" ng-value="proj.id" required ng-model="taskData.project">{{ proj.name }}</md-option>
                                             </md-select>
@@ -81,79 +79,6 @@
                                         placeholder="Members">
                                     </md-contact-chips>
                                 </div>
-
-<!--<Members>-->
-                            <!--<md-dialog-content>-->
-                                <!--<p class="project-link-name">Assign member(s):</p>-->
-
-                                <!--<md-input-container class="md-block">-->
-
-                                    <!--<md-content>-->
-                                        <!--<div layout="row">-->
-                                            <!--<p>Choose from existing Projects</p>-->
-                                                <!--<md-select ng-model="widgetType">-->
-                                                    <!--<md-option data-ng-repeat="proj in projects.results" ng-value="proj.name">{{ proj.name }}</md-option>-->
-                                                <!--</md-select>-->
-                                            <!--<p>Add member by name or email</p>-->
-                                                <!--<md-input-container class="md-block">-->
-                                                    <!--<label>Enter name or email</label>-->
-                                                    <!--<textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>-->
-                                                    <!--<span class="alert" ng-repeat="error in errors.username">{{error}}</span>-->
-                                                <!--</md-input-container>-->
-                                        <!--</div>-->
-                                    <!--</md-content>-->
-
-                                <!--</md-input-container>-->
-                            <!--</md-dialog-content>-->
-
-                                    <!--<md-dialog-content>-->
-                                        <!--<div class="md-padding checkboxdemoSyncing" ng-cloak="" style="min-height:270px" ng-app="MyApp">-->
-                                          <!--<div layout="row" layout-wrap="">-->
-                                              <!--<div flex="100" flex-gt-sm="50" layout="column">-->
-                                                  <!--<div>-->
-                                                    <!--<fieldset class="standard">-->
-                                                      <!--<div layout="row" layout-wrap="" flex="">-->
-                                                        <!--<div flex="50" ng-repeat="item in items">-->
-                                                          <!--<md-checkbox ng-checked="exists(item, selected)" ng-click="toggle(item, selected)">-->
-                                                            <!--{{ item }} <span ng-if="exists(item, selected)">selected</span>-->
-                                                          <!--</md-checkbox>-->
-                                                        <!--</div>-->
-                                                      <!--</div>-->
-                                                    <!--</fieldset>-->
-                                                  <!--</div>-->
-                                              <!--</div>-->
-
-                                                    <!--<div flex="100">-->
-                                                        <!--<p>Selected Members</p>-->
-                                                        <!--<code style="display: block; padding: 8px;">{{selected | json}}</code>-->
-                                                    <!--</div>-->
-                                          <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</md-dialog-content>-->
-
- <!--&lt;!&ndash;<Visible by>&ndash;&gt;-->
-                            <!--<md-input-container class="md-block">-->
-                                    <!--<label>Visible By</label>-->
-                                    <!--<md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">-->
-                                        <!--<md-option ng-repeat="visibleBy in visibleByList" ng-value="visibleBy.id">{{ visibleBy.title }}</md-option>-->
-                                    <!--</md-select>-->
-                            <!--</md-input-container>-->
-
-
-                            <!--<div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>-->
-                                    <!--<md-contact-chips-->
-                                        <!--ng-model="taskData.members_data"-->
-                                        <!--md-contacts="ctrl.delayedQuerySearch($query)"-->
-                                        <!--md-contact-name="username"-->
-                                        <!--md-contact-email="email"-->
-                                        <!--md-require-match="true"-->
-                                        <!--md-highlight-flags="i"-->
-                                        <!--filter-selected="ctrl.filterSelected"-->
-                                        <!--placeholder="Members">-->
-                                    <!--</md-contact-chips>-->
-                            <!--</div>-->
-
-
                             </div>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">

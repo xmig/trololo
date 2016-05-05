@@ -1,7 +1,12 @@
 angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectService', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'taskService', 'taskSelectedService', '$timeout', '$mdSidenav', '$log',
     function($scope, projectService, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, taskService, taskSelectedService, $timeout, $mdSidenav, $log)
 {
+
+
     $scope.task_id = $routeParams.id;
+    console.log('$scope.task_id', $scope.task_id)
+
+//    project_obj
     $scope.partialPath = '/static/user/templates/task_create.html';
 
 
@@ -188,17 +193,17 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 //    };
 
 
-
-
-
     if ($scope.task_id) {
         // EDIT
         // TASK CALCULATE
         taskSelectedService.get({ id: $scope.task_id }, function (response) {
             response.deadline_date = new Date(response.deadline_date);
+            response.project = response.project_obj.id  // substitute for task.project which gives a url instead of pk :)
             $scope.taskData = response;
 //            $scope.taskData.project
-            console.log('EDIT', response.project)
+//            console.log('EDIT', response.project)
+//            console.log('OBJ', response.project_obj.id)
+
         });
     }
 
