@@ -66,7 +66,6 @@ function($scope, $http, projectService, activityListService, taskService, $route
 
     reloadActivity();
 
-
     /* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
