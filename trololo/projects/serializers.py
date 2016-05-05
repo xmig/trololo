@@ -2,6 +2,7 @@ from rest_framework import serializers
 from projects.models import Project, Task, TaskComment, ProjectComment, Status
 from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
+from activity.serializers import ActivitySerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
 
@@ -337,7 +338,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags') if 'tags' in validated_data else None
         instance = super(TaskSerializer, self).update(instance, validated_data)
-
         return self.save_tags(instance, tags)
 
     def to_representation(self, instance):
