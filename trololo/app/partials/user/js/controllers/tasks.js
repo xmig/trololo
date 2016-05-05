@@ -256,16 +256,10 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         };
 
 
-//        taskService.get(params, function (data) {   //tasks to tasks_bottom_list
-//            $scope.tasks_bottom_list = {}
-//            $scope.tasks_bottom_list.data = data.results;
-//            $scope.tasks_bottom_list.count = $scope.tasks_bottom_list.data.length;
-//        });
-
-        taskService.get(params, function (data) {
-            $scope.tasks = {}
-            $scope.tasks.data = data.results;
-            $scope.tasks.count = $scope.tasks.data.length;
+        taskService.get(params, function (data) {   //tasks to tasks_bottom_list
+            $scope.tasks_bottom_list = {}
+            $scope.tasks_bottom_list.data = data.results;
+            $scope.tasks_bottom_list.count = $scope.tasks_bottom_list.data.length;
 
             $scope.my_tasks = {};
             var tasks_list = [];

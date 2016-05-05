@@ -94,20 +94,20 @@
                         <div layout="row">
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
-                                <md-select ng-model="tabSort.tasks_bottom_list">
+                                <md-select ng-model="tabSort.my_tasks">
                                     <md-option ng-repeat="opt in myTasksSortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
-                                <md-select ng-model="tabView.tasks_bottom_list">
+                                <md-select ng-model="tabView.my_tasks">
                                     <md-option ng-repeat="opt in viewTaskVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
 
                         <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="task in tasks_bottom_list.data | orderBy: tabSort.tasks_bottom_list" class="secondary-button-padding">  <!--ng-click="action($event)"-->
+                                <md-list-item ng-repeat="task in tasks_bottom_list.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
                                             {{task.name}}</a></b> ({{task.type}}) for project <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a>
@@ -130,20 +130,20 @@
                         <div layout="row">
                             <md-input-container class="sorting-margin">
                                 <label>Sort</label>
-                                <md-select ng-model="tabSort.tasks_bottom_list">
+                                <md-select ng-model="tabSort.all_tasks">
                                     <md-option ng-repeat="opt in allTasksSortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
                                 </md-select>
                             </md-input-container>
                             <md-input-container class="sorting-margin">
                                 <label>View</label>
-                                <md-select ng-model="tabView.tasks_bottom_list">
+                                <md-select ng-model="tabView.all_tasks">
                                     <md-option ng-repeat="opt in viewTaskVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
                                 </md-select>
                             </md-input-container>
                         </div>
 
                      <md-list>
-                        <md-list-item ng-repeat="task in tasks_bottom_list.data | orderBy: tabSort.tasks_bottom_list" class="project-tabs-list"> <!-- ng-click="action($event)"-->
+                        <md-list-item ng-repeat="task in tasks_bottom_list.data | orderBy: tabSort.all_tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
                                             <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>
