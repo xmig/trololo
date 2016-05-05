@@ -305,6 +305,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         }
         return false;
     };
+    
 
 // HARDCODE !!!
     $scope.labels = [
@@ -371,15 +372,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
                 $scope.customFullscreen = (wantsFullScreen === true);
             });
         };
-
-
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
 
 /* end - for popup */
 
@@ -479,9 +471,9 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         });
     };
 
-    $scope.getTypes = function () {
-        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
-    };
+//    $scope.getTypes = function () {
+//        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
+//    };
     /* Test table data end */
 
 }]);
