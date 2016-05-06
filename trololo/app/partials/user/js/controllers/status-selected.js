@@ -83,6 +83,7 @@ angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScop
                 $scope.statusData,
                 function (resp) {
                     $scope.statusDataCopy = resp;
+                    $window.location = '#/user/projects/' + $scope.statusData.project_id;
                     $scope.statusSaveToast('Saved!');
                 },
                 function (resp) {

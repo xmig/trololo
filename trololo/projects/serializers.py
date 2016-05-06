@@ -67,6 +67,10 @@ class StatusSerializer(serializers.ModelSerializer):
         required=True,
         lookup_field='pk'
     )
+    project_id = serializers.PrimaryKeyRelatedField(
+        source="project",
+        read_only=True,
+    )
 
     url = serializers.HyperlinkedIdentityField(
         view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
@@ -76,7 +80,7 @@ class StatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Status
-        fields = ('name', 'order_number', 'url', 'project', 'id')
+        fields = ('name', 'order_number', 'url', 'project', 'id', 'project_id')
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
