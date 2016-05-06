@@ -25,6 +25,16 @@ angular.module('mainApp')
             //{"title": "Activity", "link": "activity"},
         ];
 
+        $scope.getTaskProject = function(activity) {
+            if (activity.task) {
+                return '#/user/tasks/' + activity.task.id ;
+            };
+
+            if (activity.project) {
+                return '#/user/projects/' + activity.project.id ;
+            };
+        };
+
         // Assume user is not logged in until we hear otherwise
         $scope.authenticated = false;
         // Wait for the status of authentication, set scope var to true if it resolves

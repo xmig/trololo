@@ -112,7 +112,7 @@
                             <md-list-item ng-repeat="notification in notifications.data">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
                                 <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
-                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                                <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
                             </md-list-item>
                         </md-list>
                         <span></span>
@@ -138,7 +138,7 @@
                             <md-list-item ng-repeat="activity in activities.data">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
                                 <p><b> {{ activity.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
-                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                                <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
                             </md-list-item>
                         </md-list>
                         <span></span>

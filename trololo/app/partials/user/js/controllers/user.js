@@ -105,16 +105,6 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
         )
     });
 
-    $scope.getTaskProject = function(activity) {
-        if (activity.task) {
-            return '#/user/tasks/' + activity.task.id ;
-        };
-
-        if (activity.project) {
-            return '#/user/projects/' + activity.project.id ;
-        };
-    };
-
     $scope.changeUserLocation = function(e, id){
 //    console.log("-----")
     e.preventDefault();
