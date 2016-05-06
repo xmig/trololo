@@ -53,6 +53,7 @@
                     <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
                         ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | filter: onlyMyProjectTasks | filter: selectedUserTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>
+                            <span class="status-ico" ng-class="task.label"></span>
                             <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
                         <td md-cell>{{task.type}}</td>

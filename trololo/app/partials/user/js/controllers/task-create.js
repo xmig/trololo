@@ -108,57 +108,12 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
 
 
-//    if ($scope.project_id) {
-//        // EDIT
-//        // PROJECT CALCULATE
-//        projectSelectedService.get({ id: $scope.project_id }, function (data) {
-//            data.date_started = new Date(data.date_started);
-//            data.date_finished = new Date(data.date_finished);
-//            $scope.projectData = data;
-//        });
-//    }
-//
-//    $scope.saveProject = function() {
-//        $scope.projectData.tags = [];
-//
-//        if ($scope.project_id) {
-//            // EDIT
-//            $scope.projectData.id = $scope.project_id;
-//
-//            $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
-//
-//            projectSelectedService.update($scope.projectData, function(response) {
-//                response.date_started = new Date(response.date_started);
-//                response.date_finished = new Date(response.date_finished);
-//                $scope.projectData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/projects/' + $scope.projectData.id;
-//                }
-//            });
-//        } else {
-//            console.log("$scope.projectData", $scope.projectData)
-//            projectService.create($scope.projectData, function(response) {
-//                response.date_started = new Date(response.date_started);
-//                response.date_finished = new Date(response.date_finished);
-//                $scope.projectData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/projects/' + response.id;
-//                }
-//            });
-//        }
-//    };
-
-
-
-
-
     if ($scope.task_id) {
         // EDIT
         // TASK CALCULATE
         taskSelectedService.get({ id: $scope.task_id }, function (response) {
             response.deadline_date = new Date(response.deadline_date);
+            response.project = response.project_obj.id
             $scope.taskData = response;
 //            $scope.taskData.project
             console.log('EDIT', response.project)
@@ -173,9 +128,9 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
             // EDIT
             $scope.taskData.id = $scope.task_id;
 
-//            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
+            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
+                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+            });
 
             console.log("$scope.taskData", $scope.taskData)
 
