@@ -37,6 +37,10 @@
 .status-ico.orange {
     background: #F2BD1D;
 }
+.status-ico.undefined {
+    background: #ccc;
+}
+
 .sorting-margin {
     margin-left: 15px;
     margin-right: 15px;
