@@ -40,9 +40,9 @@
                         <th md-column md-order-by="name"><span>Project name</span></th>
                         <th md-column md-order-by="type"><span>Tasks</span></th>
                         <th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>
-                        <th md-column md-numeric md-order-by="owner.username.value"><span>Owner</span></th>
-                        <th md-column md-numeric md-order-by="date_started.value"><span>Date started</span></th>
-                        <th md-column md-numeric md-order-by="date_finished.value"><span>Estimate date</span></th>
+                        <th md-column md-numeric md-order-by="owner.username"><span>Owner</span></th>
+                        <th md-column md-numeric md-order-by="date_started"><span>Date started</span></th>
+                        <th md-column md-numeric md-order-by="date_finished"><span>Estimate date</span></th>
                     </tr>
                     </thead>
                     <tbody md-body>
@@ -121,8 +121,8 @@
                         <md-list>
                             <md-list-item ng-repeat="notification in notifications.data">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
-                                <p><b> {{ notification.message }} </b> [ <span ng-bind-html="getTaskProject(notification)"></span> ] - <a ng-href="#"  ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
-                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                                <p><b> {{ notification.message }} </b> - <a ng-href="#"  ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
+                                <md-button class="md-secondary" ng-href="{{getTaskProject(notification)}}">View</md-button>
                             </md-list-item>
                         </md-list>
                         <span></span>
@@ -147,8 +147,8 @@
                         <md-list>
                             <md-list-item ng-repeat="activity in activities.data">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
-                                <p><b> {{ activity.message }} </b>[ <span ng-bind-html="getTaskProject(activity)"></span> ] -  <a ng-href="#"  ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
-                                <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
+                                <p><b> {{ activity.message }} </b> -  <a ng-href="#"  ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
+                                <md-button class="md-secondary" ng-href="{{getTaskProject(activity)}}">View</md-button>
                             </md-list-item>
                         </md-list>
                         <span></span>
