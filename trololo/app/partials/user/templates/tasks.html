@@ -1,4 +1,4 @@
-<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="tasksCtrl">
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="tasksCtrl" >
     <div flex layout="column" ng-controller="nutritionController">
 
         <md-card>
@@ -13,6 +13,14 @@
                         <!--<md-checkbox ng-model="showMyTasks" aria-label="My tasks" ng-click="myTasks()">-->
                             <!--My tasks-->
                         <!--</md-checkbox>-->
+                        <md-select ng-controller="projectsCtrl" placeholder="select projects" ng-model="showMyProjectTasks.project">
+                        <md-option  ng-value="project.id" ng-repeat="project in projects.data">{{project.name}}</md-option>
+                        </md-select>
+
+                         <md-select placeholder="select user" ng-model="showMyUserTasks.user">
+                        <md-option  ng-value="task.owner.id" ng-repeat="task in tasks.data | filter: onlyMyUserTasks">{{task.owner.username}}</md-option>
+                        </md-select>
+
                     <tbody>
                         <tr ng-repeat="task in tasks.data | filter:criteria"></tr>
                     </tbody>
@@ -44,7 +52,7 @@
                     </thead>
                     <tbody md-body>
                     <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
-                        ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | filter: onlyMyProjectTasks | filter: selectedUserTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>
                             <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
