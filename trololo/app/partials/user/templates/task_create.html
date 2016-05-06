@@ -65,20 +65,20 @@
 
 <!--<Members>-->
 
-                        <!--<div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>-->
-                                    <!--<md-contact-chips-->
-                                        <!--ng-model="taskData.members_info"-->
-                                        <!--md-contacts="ctrl.delayedQuerySearch($query)"-->
-                                        <!--md-contact-name="username"-->
-                                        <!--md-contact-email="email"-->
-                                        <!--md-require-match="true"-->
-                                        <!--md-highlight-flags="i"-->
-                                        <!--filter-selected="ctrl.filterSelected"-->
-                                        <!--placeholder="Members">-->
-                                    <!--</md-contact-chips>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</md-card-content>-->
+                        <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                                    <md-contact-chips
+                                        ng-model="taskData.members_info"
+                                        md-contacts="ctrl.delayedQuerySearch($query)"
+                                        md-contact-name="username"
+                                        md-contact-email="email"
+                                        md-require-match="true"
+                                        md-highlight-flags="i"
+                                        filter-selected="ctrl.filterSelected"
+                                        placeholder="Members">
+                                    </md-contact-chips>
+                                </div>
+                            </div>
+                        </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
                         </md-card-actions>

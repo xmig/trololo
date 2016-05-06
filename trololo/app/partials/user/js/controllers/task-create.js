@@ -128,9 +128,9 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
             // EDIT
             $scope.taskData.id = $scope.task_id;
 
-//            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
+            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
+                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+            });
 
             console.log("$scope.taskData", $scope.taskData)
 
