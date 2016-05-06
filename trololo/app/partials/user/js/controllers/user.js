@@ -105,17 +105,13 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
     });
 
     $scope.getTaskProject = function(activity) {
-        task_data = '';
         if (activity.task) {
-            task_data = 'Task: ' + '<a href="#/user/tasks/' + activity.task.id + '">' + activity.task.name + '</a>';
+            return '#/user/tasks/' + activity.task.id ;
         };
 
-        proj_data = '';
         if (activity.project) {
-            proj_data = 'Project: ' + '<a href="#/user/projects/' + activity.project.id + '">' + activity.project.name + '</a>';
+            return '#/user/projects/' + activity.project.id ;
         };
-
-        return proj_data + ' ' + task_data;
     };
 
     $scope.changeUserLocation = function(e, id){
