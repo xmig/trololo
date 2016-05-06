@@ -67,15 +67,6 @@ angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScop
         }
     );
 
-    $scope.statusSaveToast = function(text) {
-        $mdToast.show(
-            $mdToast.simple()
-                .textContent(text)
-                .position("top right")
-                .hideDelay(3000)
-        );
-    };
-
     $scope.saveStatus = function() {
         if ($scope.statusDataCopy.name !== $scope.statusData.name || $scope.statusDataCopy.order_number !== $scope.statusData.order_number) {
             projectSelectedStatusService.put(
