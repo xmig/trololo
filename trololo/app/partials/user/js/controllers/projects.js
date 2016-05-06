@@ -3,17 +3,21 @@ function($scope, $http, projectService, activityListService, taskService, $route
 
     $scope.tag = $routeParams.project_tag;
     /* PROJECT INFO */
-    var params = {page_size:10000};
-    if ($scope.tag !== undefined) {
-        params.tag = $scope.tag;
+
+    $scope.reloadProjects = function() {
+        var params = {page_size:10000};
+        if ($scope.tag !== undefined) {
+            params.tag = $scope.tag;
+        };
+
+        projectService.get(params, function (data) {
+            $scope.projects = {}
+            $scope.projects.data = data.results;
+            $scope.projects.count = $scope.projects.data.length;
+        });
     };
 
-    projectService.get(params, function (data) {
-        $scope.projects = {}
-        $scope.projects.data = data.results;
-        $scope.projects.count = $scope.projects.data.length;
-    });
-
+    $scope.reloadProjects();
 
     /* ACTIVITY INFO */
     $scope.activitySortType = 'created_at'; // set the default sort type

@@ -47,7 +47,21 @@
             </md-button>
             <span flex=""></span>
             <h2 flex="" class="text-center">
-                <md-icon md-font-icon="toys" aria-label="toys">toys</md-icon>
+
+                <md-menu md-offset="50 50">
+                  <md-button aria-label="Open menu" class="md-icon-button" ng-click="openMenu($mdOpenMenu, $event)">
+                    <!--<md-icon md-menu-origin md-svg-icon="call:ring-volume"></md-icon>-->
+                      <md-icon md-font-icon="toys" aria-label="toys">toys</md-icon>
+                  </md-button>
+                  <md-menu-content width="4">
+                    <md-menu-item ng-repeat="item in leftSidebarList">
+                      <md-button ng-class="{'active' : isSectionSelected(item.link)}"
+                                 ng-href="#/user/{{item.link}}">
+                          <span md-menu-align-target>{{ item.title | uppercase }}</span>
+                      </md-button>
+                    </md-menu-item>
+                  </md-menu-content>
+                </md-menu>
             </h2>
             <span flex=""></span>
             <md-button class="md-icon-button" aria-label="More" ng-click="toggleRight()">

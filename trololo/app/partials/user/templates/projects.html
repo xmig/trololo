@@ -24,7 +24,8 @@
                     <div flex></div>
                     <md-button ng-href="#/user/projects/create">Create New Project</md-button>
                     <!--<a ng-href="#/user/projects/create" >Create New Project</a>-->
-                    <md-button ng-click="loadStuff()">Async Operation</md-button>
+                    <!--<md-button ng-click="reloadProjects()">Refresh</md-button>-->
+                    <i onMouseOver="this.style.cursor='pointer'" class="material-icons" ng-click="loadStuff(); reloadProjects()" title="Refresh">replay</i>
                 </div>
             </md-toolbar>
             <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">

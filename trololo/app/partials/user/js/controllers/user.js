@@ -26,6 +26,7 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
         //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
     ];
+//    TODO: move this function it to the masterCtrl
     $scope.isSectionSelected = function(section){
         return section === $scope.location;
     };
