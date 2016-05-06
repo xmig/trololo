@@ -91,6 +91,8 @@ angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScop
                     $scope.statusSaveToast('Some error, contact admin.');
                 }
             )
+        } else {
+            $scope.statusSaveToast('Any change!');
         }
     };
 

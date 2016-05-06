@@ -184,7 +184,7 @@
                         <md-list>
                             <md-list-item ng-repeat="activity in activities.data" class="project-tabs-list">
                                 <span class="status-ico" ng-class="activity.activity_model"></span>
-                                <p><b> {{ activity.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
+                                <p><b> {{ activity.message }} </b> [ <span ng-bind-html="getTaskProject(activity)"></span> ] - <a ng-href="#" ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -211,7 +211,7 @@
                         <md-list>
                             <md-list-item ng-repeat="notification in notifications.data" class="project-tabs-list">
                                 <span class="status-ico" ng-class="notification.activity_model"></span>
-                                <p><b> {{ notification.message }} </b> - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
+                                <p><b> {{ notification.message }} </b> [ <span ng-bind-html="getTaskProject(notification)"></span> ] - <a ng-href="#" ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>
                             </md-list-item>
                         </md-list>
@@ -230,7 +230,7 @@
 <!-- for popup -->
 <!-- Registration modal -->
 <script type="text/ng-template" id="register.tmpl.html">
-    <md-dialog aria-label="login" flex-gt-xs="80" flex-gt-sm="60" flex-gt-md="60" flex-gt-lg="60" id="register_view" ng-controller="taskSelectedCtrl">
+    <md-dialog aria-label="login" flex="100" flex-xs="100" fkex-sm="100" flex-md="70" flex-lg="40" flex-gt-lg="40" id="register_view" ng-controller="taskSelectedCtrl">
        <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
             <md-toolbar>
                 <div class="md-toolbar-tools">
