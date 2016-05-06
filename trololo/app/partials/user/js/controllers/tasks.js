@@ -4,7 +4,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 // for dropdown in popup <choose projects>
     $scope.projects = projectService.get(function(data) {
 //        $scope.projects.data = data.results;
-        console.log("---------------", data)
+//        console.log("---------------", data.results)
     })
 
 
@@ -99,7 +99,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
-            console.log($scope.activities.data);
+//            console.log($scope.activities.data);
         });
     };
 
@@ -226,6 +226,14 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         checked: false
     };
 
+    $scope.showMyProjectTasks = {
+        project: null
+    };
+
+    $scope.showMyUserTasks = {
+        user: null
+    };
+
     $scope.tag = $routeParams.task_tag;
 
     var reloadTask = function() {
@@ -258,6 +266,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
             }
 
             $scope.my_tasks.data = tasks_list;
+            console.log("=++++=", tasks_list)
             $scope.my_tasks.count = tasks_list.length;
         });
     };
@@ -282,6 +291,25 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
     reloadTask();
 
+
+//    taskService.get(params, function (data) {
+//            $scope.tasks = {}
+//            $scope.tasks.data = data.results;
+//            $scope.tasks.count = $scope.tasks.data.length;
+//
+//            $scope.my_tasks_ovner = {};
+//            var tasks_list_owner = [];
+//
+//            if (tasks_list_owner.members.indexOf($scope.userPersonalData.id) == -1) {
+//                tasks_list.push(task_i);
+//            }
+//          }
+//
+//            $scope.my_tasks_ovner.data = tasks_list;
+//            $scope.my_tasks.count = tasks_list.length;
+//        });
+
+
     $scope.onlyMyTasks = function(value, index, array) {
         if (!$scope.showMyTasks.checked) {
             return true;
@@ -290,6 +318,37 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         }
         return false;
     };
+
+    $scope.onlyMyProjectTasks = function(value, index, array) {
+        if (!$scope.showMyProjectTasks.project) {
+            return true;
+        } else if ($scope.showMyProjectTasks.project == value.project_obj.id) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.onlyMyUserTasks = function(value, index, array) {
+        for ( var j=0; j<index; j++) {
+            if (value.owner.id === array[j].owner.id) {
+                return false;
+            }
+        }
+
+        return true
+    };
+
+    $scope.selectedUserTasks = function(value, index, array) {
+        if (!$scope.showMyUserTasks.user) {
+            return true;
+        } else if ($scope.showMyUserTasks.user == value.owner.id) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
 // HARDCODE !!!
     $scope.labels = [
