@@ -9,10 +9,9 @@
                     <span>Tasks</span>
                         <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
                         </label>
-                        <label>My tasks<input type="checkbox" ng-model="showMyTasks.checked" /></label>
-                        <!--<md-checkbox ng-model="showMyTasks" aria-label="My tasks" ng-click="myTasks()">-->
-                            <!--My tasks-->
-                        <!--</md-checkbox>-->
+                        <md-switch ng-model="showMyTasks.checked" aria-label="Switch 2" ng-true-value="true" ng-false-value="false" class="md-warn">
+                            My tasks
+                        </md-switch>
                         <md-select ng-controller="projectsCtrl" placeholder="select projects" ng-model="showMyProjectTasks.project">
                         <md-option  ng-value="project.id" ng-repeat="project in projects.data">{{project.name}}</md-option>
                         </md-select>
