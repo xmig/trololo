@@ -1,6 +1,7 @@
 angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$http', 'taskService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', 'projectService',
     function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams, projectService){
 
+    $scope.tasks = {data: []};
 // for dropdown in popup <choose projects>
     $scope.projects = projectService.get(function(data) {
 //        $scope.projects.data = data.results;
@@ -256,6 +257,9 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
             $scope.my_tasks = {};
             var tasks_list = [];
+            $scope.members_ids = [];
+            $scope.members = [];
+
 
             for (var i=0; i<data.results.length; i++) {
                 var task_i = data.results[i];
@@ -263,10 +267,16 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
                 if (task_i.members.indexOf($scope.userPersonalData.id) != -1) {
                     tasks_list.push(task_i);
                 }
+                for (var index=0; index<task_i.members_info.length; index++){
+                    current_member = task_i.members_info[index];
+                    if ($scope.members_ids.indexOf(current_member.id) == -1) {
+                        $scope.members.push(current_member);
+                        $scope.members_ids.push(current_member.id);
+                    }
+                }
             }
 
             $scope.my_tasks.data = tasks_list;
-            console.log("=++++=", tasks_list)
             $scope.my_tasks.count = tasks_list.length;
         });
     };
@@ -310,6 +320,11 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 //        });
 
 
+    $scope.all_members = [{'id': undefined, 'username': 'All'}];
+
+
+    $scope.all_project = [{project_obj: {'id': undefined, 'name': 'All'}}];
+
     $scope.onlyMyTasks = function(value, index, array) {
         if (!$scope.showMyTasks.checked) {
             return true;
@@ -319,10 +334,35 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         return false;
     };
 
+//    $scope.onlyMyProjectTasks = function(value, index, array) {
+//        if (!$scope.showMyProjectTasks.project) {
+//            return true;
+//        } else if ($scope.showMyProjectTasks.project == value.project_obj.id) {
+//
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    };
+
+
     $scope.onlyMyProjectTasks = function(value, index, array) {
+        if (value === undefined) {
+        }
+        for ( var j=0; j<index; j++) {
+            if (value.project_obj.id === array[j].project_obj.id) {
+                return false;
+            }
+        }
+
+        return true
+    };
+
+    $scope.selectedProjectTasks = function(value, index, array) {
         if (!$scope.showMyProjectTasks.project) {
             return true;
         } else if ($scope.showMyProjectTasks.project == value.project_obj.id) {
+
             return true;
         } else {
             return false;
@@ -330,6 +370,8 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     };
 
     $scope.onlyMyUserTasks = function(value, index, array) {
+        if (value === undefined) {
+        }
         for ( var j=0; j<index; j++) {
             if (value.owner.id === array[j].owner.id) {
                 return false;
@@ -342,9 +384,13 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     $scope.selectedUserTasks = function(value, index, array) {
         if (!$scope.showMyUserTasks.user) {
             return true;
-        } else if ($scope.showMyUserTasks.user == value.owner.id) {
-            return true;
         } else {
+            for (var i=0; i<value.members_info.length; i++){
+                if ($scope.showMyUserTasks.user == value.members_info[i].id){
+                    return true;
+                }
+            }
+
             return false;
         }
     }
