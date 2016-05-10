@@ -154,3 +154,8 @@ if 'NOT_INSTALLED_APPS' in locals():
     INSTALLED_APPS = tuple(
         set(INSTALLED_APPS) - set(NOT_INSTALLED_APPS)
     )
+
+USE_GLOBAL_SEARCH = True
+PROJECT_INDEX = 'project_rt'
+TASK_INDEX = 'task_rt'
+TASK_COMMENT_INDEX = 'task_comment_rt'

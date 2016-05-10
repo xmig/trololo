@@ -1,11 +1,12 @@
 from django.db import connection
+from django.conf import settings
 
 
 def project_del_callback(**kwargs):
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT sphinx_delete('project_rt', %s);", [kwargs["instance"].id]
+        "SELECT sphinx_delete(%s, %s);", [settings.PROJECT_INDEX, kwargs["instance"].id]
     )
 
     cursor.fetchall()
@@ -17,14 +18,14 @@ def project_save_callback(**kwargs):
     cursor.execute(
         """
         SELECT sphinx_replace(
-            'project_rt', %s,
+            %s, %s,
             ARRAY[
                 'name', %s,
                 'description', %s,
                 'status', %s
             ]
         );
-        """, [getattr(kwargs["instance"], attr) for attr in ('id', 'name', 'description', 'status')]
+        """, [settings.PROJECT_INDEX] + [getattr(kwargs["instance"], attr) for attr in ('id', 'name', 'description', 'status')]
     )
 
     cursor.fetchall()
@@ -34,7 +35,7 @@ def task_del_callback(**kwargs):
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT sphinx_delete('task_rt', %s);", [kwargs['instance'].id]
+        "SELECT sphinx_delete(%s, %s);", [settings.TASK_INDEX, kwargs['instance'].id]
     )
 
     cursor.fetchall()
@@ -46,7 +47,7 @@ def task_save_callback(**kwargs):
     cursor.execute(
         """
         SELECT sphinx_replace(
-            'task_rt', %s,
+            %s, %s,
             ARRAY[
                 'name', %s,
                 'description', %s,
@@ -54,7 +55,7 @@ def task_save_callback(**kwargs):
                 'type', %s
             ]
         );
-        """, [
+        """, [settings.TASK_INDEX] + [
             getattr(kwargs["instance"], attr) for attr in ('id', 'name', 'description', 'label', 'type')
         ]
     )
@@ -66,7 +67,7 @@ def task_comment_del_callback(**kwargs):
     cursor = connection.cursor()
 
     cursor.execute(
-        "SELECT sphinx_delete('task_comment_rt', %s);", [kwargs["instance"].id]
+        "SELECT sphinx_delete(%s, %s);", [settings.TASK_COMMENT_INDEX, kwargs["instance"].id]
     )
 
     cursor.fetchall()
@@ -78,13 +79,13 @@ def task_comment_save_callback(**kwargs):
     cursor.execute(
         """
         SELECT sphinx_replace(
-            'task_comment_rt', %s,
+            %s, %s,
             ARRAY[
                 'title', %s,
                 'comment', %s
             ]
         );
-        """, [getattr(kwargs["instance"], attr) for attr in ('id', 'title', 'comment')]
+        """, [settings.TASK_COMMENT_INDEX] + [getattr(kwargs["instance"], attr) for attr in ('id', 'title', 'comment')]
     )
 
     cursor.fetchall()

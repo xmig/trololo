@@ -4,6 +4,7 @@ from projects.signals import (
     project_del_callback, project_save_callback, task_save_callback,
     task_del_callback, task_comment_save_callback, task_comment_del_callback
 )
+from django.conf import settings
 
 
 class ProjectsAppConfig(AppConfig):
@@ -14,7 +15,7 @@ class ProjectsAppConfig(AppConfig):
         self.ready_runned = False
 
     def ready(self):
-        if not getattr(self, 'ready_runned'):
+        if not getattr(self, 'ready_runned') and settings.USE_GLOBAL_SEARCH:
             Project = self.get_model('Project')
             Task = self.get_model('Task')
             TaskComment = self.get_model("TaskComment")
