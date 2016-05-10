@@ -1,0 +1,39 @@
+# http://sphinxsearch.com/blog/2015/09/09/sphinx-2-2-10-release/
+
+# http://andy128k.blogspot.com/2012/10/postgresql-sphinx-search.html
+# https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-sphinx-on-ubuntu-14-04
+# http://sphinxsearch.com/forum/view.html?id=13001
+
+# http://eax.me/postgresql-install/
+
+# https://github.com/andy128k/pg-sphinx
+
+#####################
+###### INSTALL ######
+#####################
+
+sudo apt-get install postgresql-server-dev-all
+sudo apt-get install postgresql-common
+
+# Installing Sphinx is much easier from Sphinxsearch PPA repository, because you
+# will get all dependencies and can also update Sphinx to the latest version with
+# the same command.
+
+# First, add Sphinxsearch repository and update the list of packages:
+
+sudo add-apt-repository -y ppa:builds/sphinxsearch-rel22
+sudo apt-get update
+
+# Install/update sphinxsearch package:
+
+sudo apt-get install sphinxsearch
+
+echo 'CREATE EXTENSION sphinx;' | psql -U test_user test_db
+
+# Sphinx searchd daemon can be started/stopped using service command:
+# $ sudo service sphinxsearch start
+
+# sudo su postgres
+# CREATE DATABASE nucleus_test_db;
+# CREATE USER nucleusAdmin WITH password '^Nucleus#1Admin$';
+# GRANT ALL privileges ON DATABASE nucleus_test_db TO nucleusAdmin;

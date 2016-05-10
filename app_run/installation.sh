@@ -22,6 +22,8 @@ else
 fi
 
 # install required packages
+sudo apt-get update
+
 sudo apt-get install redis-server libjpeg-dev zlib1g-dev python-dev python-pip
 
 # Install and configure postgresql-server-9.3
@@ -68,3 +70,24 @@ sudo service postgresql restart
 sudo echo "local   all             ${LOCAL_DB_USER}                                md5" >> /etc/postgresql/9.3/main/pg_hba.conf
 sudo sed -i 's/local   all             postgres                                trust/local   all             postgres                                peer/g' /etc/postgresql/9.3/main/pg_hba.conf
 sudo service postgresql restart
+
+##################
+# Sphinx install #
+##################
+sudo apt-get install postgresql-server-dev-all
+sudo apt-get install postgresql-common
+
+# Installing Sphinx is much easier from Sphinxsearch PPA repository, because you
+# will get all dependencies and can also update Sphinx to the latest version with
+# the same command.
+
+# First, add Sphinxsearch repository and update the list of packages:
+
+sudo add-apt-repository -y ppa:builds/sphinxsearch-rel22
+sudo apt-get update
+
+# Install/update sphinxsearch package:
+
+sudo apt-get install sphinxsearch
+
+echo 'CREATE EXTENSION sphinx;' | psql -U ${LOCAL_DB_USER} ${LOCAL_DB_NAME}
