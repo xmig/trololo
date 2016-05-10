@@ -1,7 +1,40 @@
 'use strict';
 
 angular.module('mainApp')
-    .controller('MasterCtrl', function ($scope, $location, djangoAuth, $rootScope) {
+    .controller('MasterCtrl', function ($scope, $location, djangoAuth, $rootScope, $mdToast) {
+        $scope.openMenu = function($mdOpenMenu, ev) {
+            var originatorEv = ev;
+            $mdOpenMenu(ev);
+        };
+
+        $scope.statusSaveToast = function(text) {
+            $mdToast.show(
+                $mdToast.simple()
+                    .textContent(text)
+                    .position("top right")
+                    .hideDelay(3000)
+            );
+        };
+
+        $scope.leftSidebarList = [
+            {"title": "Personal Info", "link": "personal"},
+            {"title": "Projects", "link": "projects"},
+            {"title": "Tasks", "link": "tasks"},
+            //{"title": "Progress", "link": "progress"},
+            //{"title": "Teams", "link": "teams"},
+            //{"title": "Activity", "link": "activity"},
+        ];
+
+        $scope.getTaskProject = function(activity) {
+            if (activity.task) {
+                return '#/user/tasks/' + activity.task.id ;
+            };
+
+            if (activity.project) {
+                return '#/user/projects/' + activity.project.id ;
+            };
+        };
+
         // Assume user is not logged in until we hear otherwise
         $scope.authenticated = false;
         // Wait for the status of authentication, set scope var to true if it resolves

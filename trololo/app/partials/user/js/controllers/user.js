@@ -26,6 +26,7 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
         //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
     ];
+//    TODO: move this function it to the masterCtrl
     $scope.isSectionSelected = function(section){
         return section === $scope.location;
     };
@@ -103,20 +104,6 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
             }
         )
     });
-
-    $scope.getTaskProject = function(activity) {
-        task_data = '';
-        if (activity.task) {
-            task_data = 'Task: ' + '<a href="#/user/tasks/' + activity.task.id + '">' + activity.task.name + '</a>';
-        };
-
-        proj_data = '';
-        if (activity.project) {
-            proj_data = 'Project: ' + '<a href="#/user/projects/' + activity.project.id + '">' + activity.project.name + '</a>';
-        };
-
-        return proj_data + ' ' + task_data;
-    };
 
     $scope.changeUserLocation = function(e, id){
 //    console.log("-----")
