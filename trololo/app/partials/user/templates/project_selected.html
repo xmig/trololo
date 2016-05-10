@@ -13,6 +13,7 @@
                     <md-button class="md-primary" ng-href="#/user/projects/{{project.id}}/edit">
                         Edit({{project.name}})
                     </md-button>
+                    <md-button ng-href="#/user/tasks/create?project_id={{project.id}}">Create New Task</md-button>
                 </div>
             </md-toolbar>
 
@@ -30,10 +31,10 @@
                     <tbody md-body>
                         <tr md-row md-select="task" md-on-select="logItem">
                             <td md-cell>
-                                By Status<br/>
-                                New (2) <br/>
-                                In Progres (35) <br/>
-                                Finished (5)
+                                <div>By Status</div>
+                                <div ng-repeat="status_info in project.my_task_grouped_by_status_count">
+                                    {{ status_info.status }}&nbsp({{ status_info.dcount }})
+                                </div>
                             </td>
                             <td md-cell>
                                 <ul class="project-members-list">

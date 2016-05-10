@@ -78,6 +78,9 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
     $scope.taskData = {};
 
+    // set project_id
+    $scope.taskData.project = $routeParams.project_id;
+
     $scope.taskStatuses = [
         {'title': 'Breakthrough', 'id':'breakthrough'},
         {'title': 'In_progress', 'id':'in_progress'},
