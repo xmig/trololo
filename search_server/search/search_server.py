@@ -24,12 +24,18 @@ class Finder(tornado.web.RequestHandler):
     def get(self, *args):
         # resp = SERVER_PARAMS['not_found_request']
         # indexes to search
-        search_where_lst = ["project_rt", "task_rt", "task_comment_rt"]
+        search_where_dict = {
+            'stage': ["project_rt", "task_rt", "task_comment_rt"],
+            'prod': ["project_prod_rt", "task_prod_rt", "task_comment_prod_rt"]
+        }
         search_results = {}
 
         try:
             # search_where_lst = self.request.arguments.get('index', ('*',))
             phrase_for_search_lst = self.request.arguments.get('word', [])
+            search_where_lst = search_where_dict.get(
+                self.request.arguments.get('where', ['stage'])[0], search_where_dict['stage']
+            )
 
             if phrase_for_search_lst:
                 phrase_for_search = phrase_for_search_lst[0]
