@@ -7,6 +7,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.gen
 import json
+from collections import defaultdict
 
 from settings import SEARCH_PARAMS, SERVER_PARAMS
 
@@ -22,25 +23,30 @@ class Finder(tornado.web.RequestHandler):
     @tornado.web.asynchronous
     def get(self, *args):
         # resp = SERVER_PARAMS['not_found_request']
+        # indexes to search
+        search_where_lst = ["project_rt", "task_rt", "task_comment_rt"]
+        search_results = {}
+
         try:
             # search_where_lst = self.request.arguments.get('index', ('*',))
-            search_where_lst = ["project_rt", "task_rt", "task_comment_rt"]
-            phrase_for_search_lst = self.request.arguments.get('word', None)
-            if phrase_for_search_lst and len(phrase_for_search_lst) > 0:
+            phrase_for_search_lst = self.request.arguments.get('word', [])
+
+            if phrase_for_search_lst:
                 phrase_for_search = phrase_for_search_lst[0]
                 search_where = search_where_lst[0]
 
-            # phrase_for_search = "test"
-            # search_where = "*"
-            resp = perform_search(
-                phrase_for_search, search_where, SEARCH_PARAMS['host'], SEARCH_PARAMS['port']
-            )
-        except Exception as e:
-            resp = SERVER_PARAMS['system_error_message'].format(e.message, traceback.format_exc())
-        if isinstance(resp, list):
-            resp = [int(id) for id in resp]
+                for search_where in search_where_lst:
+                    resp = perform_search(
+                        phrase_for_search, search_where, SEARCH_PARAMS['host'], SEARCH_PARAMS['port']
+                    )
 
-        self.finish(json.dumps(resp))
+                    if isinstance(resp, list):
+                        search_results[search_where.replace('_rt', '')] = [int(id) for id in resp]
+
+        except Exception as e:
+            search_results = SERVER_PARAMS['system_error_message'].format(e.message, traceback.format_exc())
+
+        self.finish(json.dumps(search_results))
         # self.finish(resp)
 
 

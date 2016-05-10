@@ -8,7 +8,7 @@ from projects import urls_statuses as statuses_urls
 from projects import urls_comments_projects as comments_projects_urls
 from projects import urls_comments_tasks as comments_tasks_urls
 
-from projects.views import api_root
+from projects.views import api_root, GlobalSearchView
 from activity import urls as activity_urls
 
 from users.views import (
@@ -48,6 +48,7 @@ urlpatterns = [
         name='password_reset_confirm'
     ),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^global_search/(?P<query_string>.*)/$', GlobalSearchView.as_view()),
     url('^', include('django.contrib.auth.urls')),
 ]
 

@@ -1,3 +1,8 @@
+import requests
+from django.conf import settings
+from logging import getLogger
+import json
+
 from serializers import (
     ProjectSerializer, TaskSerializer, TaskCreateSerializer, ProjectCommentSerializer,
     TaskCommentSerializer, TagSerializer
@@ -18,6 +23,9 @@ from chi_django_base.paginators import StandardResultsSetPagination
 from activity.serializers import ActivitySerializer
 from activity.filters import ActivityFilter
 from activity.models import Activity
+
+
+_logger = getLogger('app')
 
 
 @api_view(['GET'])
@@ -579,3 +587,73 @@ class TaskCommentDetail(generics.GenericAPIView):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+def get_my_proj(me):
+    proj = [
+        pr.id for pr in Project.objects.filter(Q(members=me) | Q(created_by=me))
+    ]
+
+    return proj
+
+
+def get_projects(pr_ids, request, my_proj):
+    proj = set(my_proj) & set(pr_ids)
+
+    return ProjectSerializer(
+        Project.objects.filter(id__in=proj).all(), many=True, context={'request': request}
+    ).data
+
+
+def get_tasks(task_ids, request, my_proj):
+    tasks = Task.objects.select_related('project', "created_by", "updated_by") \
+                .prefetch_related("activity", "tags", "members", "task_comments") \
+                .filter(id__in=task_ids).filter(project__id__in=my_proj)
+
+    return TaskSerializer(tasks, many=True, context={'request': request}).data
+
+
+def get_task_comments(t_comments_ids, request, my_proj):
+    my_tasks = Task.objects.filter(project__id__in=my_proj)
+    comments = TaskComment.objects.select_related("task").filter(id__in=t_comments_ids).filter(task__id__in=my_tasks)
+
+    return TaskCommentSerializer(comments, many=True, context={'request': request}).data
+
+
+class GlobalSearchView(generics.ListAPIView):
+    def get(self, request, query_string):
+        """
+        Makes full text search by tasks, projects & task comments for given search string
+
+        Args:
+            query_string: string for searching by
+
+        Returns: object with 3 keys:
+
+            - list of projects
+            - list of tasks
+            - list of task comments
+
+        """
+        func_map = {
+            "project": get_projects,
+            "task":get_tasks,
+            "task_comment": get_task_comments
+        }
+
+        resp = requests.get(settings.GLOBAL_SEARCH_URL, params={'word': query_string})
+
+        results = {}
+        if resp.ok:
+            data = resp.json()
+
+            my_proj = get_my_proj(request.user)
+
+            for key, val in data.iteritems():
+                results[key] = []
+                if val:
+                    results[key] = func_map[key](val, request, my_proj)
+        else:
+            _logger.debug('Global Search error {}: {}'.format(resp.status_code, resp.content))
+            raise exceptions.APIException(detail='Some error', status=resp.status_code)
+
+        return Response(results)
