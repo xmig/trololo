@@ -142,7 +142,7 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
  console.log("----");
     $scope.comment_id = $routeParams.id;
     console.log("$routeParams.id", $routeParams.id)
-    $scope.partialPath = '/static/user/templates/task_selected.html';
+    $scope.partialPath = '/static/user/templates/comment_task_selected.html';
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -229,6 +229,7 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
         // PROJECT CALCULATE
         taskCommentSelectedService.get({ id: $scope.comment_id }, function (data) {
             $scope.taskCommentData = data;
+            console.log("taskCommentData:::", $scope.taskCommentData)
         });
     }
 

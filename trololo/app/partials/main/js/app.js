@@ -186,7 +186,7 @@ angular.module('mainApp', [
 
             .when('/user/tasks/comments/:id', {
                 templateUrl: '/static/user/templates/user.html',
-                controller: 'taskSelectedCtrl',
+                controller: 'taskCommentCreateCtrl',
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);

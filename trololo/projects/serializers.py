@@ -211,6 +211,11 @@ class TaskCommentSerializer(serializers.ModelSerializer):
         lookup_field='pk'
     )
 
+    task_id = serializers.PrimaryKeyRelatedField(
+        source="task",
+        read_only=True,
+    )
+
     created_by = OnlyUserInfoSerializer(read_only=True)
     # created_by = serializers.HyperlinkedRelatedField(
     #     read_only=True,
@@ -231,7 +236,7 @@ class TaskCommentSerializer(serializers.ModelSerializer):
         unique_together = ('task')
         fields = (
             'title', 'comment', 'id', 'task', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'activity'
+            'created_at', 'updated_by', 'updated_at', 'activity', 'task_id'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity', 'id')
 
