@@ -1,0 +1,205 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="searchCtrl">
+    <div flex layout="column" ng-controller="nutritionController">
+
+        <md-card>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="projects">
+                    <md-content>
+                        <div ng-hide="project.length">
+                            <p align="center">
+                                No projects for "{{ search_text }}"
+                                <img class="resize2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDBcmTmG79faFSzdOO6gbB5oyihPkYjZU_qipWtrrgKoQDlglt" />
+                            </p>
+                        </div>
+                        <ul ng-repeat="pr in project">
+                            <li>
+                                <a ng-href="#/user/projects/{{ pr.id }}">{{ pr.name }}</a> - {{ pr.status }} {{ pr.description }}
+                            </li>
+                        </ul>
+                    </md-content>
+
+                </md-tab>
+
+                <md-tab label="tasks">
+                    <md-content>
+                        <div ng-hide="task.length">
+                            <p align="center">
+                                No tasks for "{{ search_text }}"
+                                <img class="resize2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDBcmTmG79faFSzdOO6gbB5oyihPkYjZU_qipWtrrgKoQDlglt" />
+                            </p>
+                        </div>
+
+                        <ul ng-repeat="pr in task">
+                            <li>
+                                <a ng-href="#/user/tasks/{{ task.id }}">{{ task.name }}</a> - {{ task.description }} {{ task.label }}
+                            </li>
+                        </ul>
+                    </md-content>
+
+                </md-tab>
+                <md-tab label="task comments">
+                    <md-content>
+                        <div ng-hide="task_comment.length">
+                            <p align="center">
+                                No comments for "{{ search_text }}"
+                                <img class="resize2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDBcmTmG79faFSzdOO6gbB5oyihPkYjZU_qipWtrrgKoQDlglt" />
+                            </p>
+                        </div>
+
+                        <ul ng-repeat="tc in task_comment">
+                            <li>
+                                <!--<a ng-href="#/user/tasks/{{ tc.id }}">{{ tc.title }}</a> - {{ tc.comment }}-->
+                                <b>{{ tc.title }}</b> - {{ tc.comment }}
+                            </li>
+                        </ul>
+                    </md-content>
+
+                </md-tab>
+            </md-tabs>
+            <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<label>-->
+                        <!--<span>Projects</span>-->
+                        <!--<input class="search-style" type='text' ng-model='filter.search' placeholder="Search project">-->
+                        <!--</label>-->
+                        <!--<tbody>-->
+                        <!--<tr ng-repeat="project in projects.data | filter:criteria"></tr>-->
+                        <!--</tbody>-->
+                    <!--&lt;!&ndash;<span>Projects</span>&ndash;&gt;-->
+                    <!--<div flex></div>-->
+                    <!--<md-button ng-href="#/user/projects/create">Create New Project</md-button>-->
+                    <!--&lt;!&ndash;<a ng-href="#/user/projects/create" >Create New Project</a>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<md-button ng-click="reloadProjects()">Refresh</md-button>&ndash;&gt;-->
+                    <!--<i onMouseOver="this.style.cursor='pointer'" class="material-icons" ng-click="loadStuff(); reloadProjects()" title="Refresh">replay</i>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
+            <!--<md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
+            <!--<md-table-container>-->
+                <!--<table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">-->
+                    <!--<thead md-head md-order="query.order" md-on-reorder="logOrder">-->
+                    <!--<tr md-row>-->
+                        <!--<th md-column md-order-by="name"><span>Project name</span></th>-->
+                        <!--<th md-column md-order-by="type"><span>Tasks</span></th>-->
+                        <!--<th md-column md-numeric md-order-by="members.length" md-desc><span>Members</span></th>-->
+                        <!--<th md-column md-numeric md-order-by="owner.username"><span>Owner</span></th>-->
+                        <!--<th md-column md-numeric md-order-by="date_started"><span>Date started</span></th>-->
+                        <!--<th md-column md-numeric md-order-by="date_finished"><span>Estimate date</span></th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody md-body>-->
+                    <!--<tr md-row md-select="project" md-on-select="logItem" md-auto-select="options.autoSelect"-->
+                        <!--ng-disabled="project.status = 'undefined'"-->
+                        <!--ng-repeat="project in projects.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">-->
+                        <!--<td md-cell>-->
+                            <!--<a ng-href="#/user/projects/{{project.id}}" class="project-tabs-name">{{project.name}}</a>-->
+
+                        <!--</td>-->
+                        <!--<td md-cell>-->
+                            <!--<div>{{project.task_count}} - all tasks</div>-->
+                            <!--<div>{{project.my_task_count}} - my tasks</div>-->
+                        <!--</td>-->
+                        <!--<td md-cell>-->
+                            <!--<div ng-repeat="member in project.members_data">-->
+                                <!--<a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}({{member.email}})</a>-->
+                            <!--</div>-->
+                        <!--</td>-->
+                        <!--<td md-cell><a ng-href="#"  ng-click="changeUserLocation($event, project.owner.id)" class="project-tabs-name">{{project.owner.username}}({{project.owner.email}})</a>-->
+                        <!--<td md-cell>{{project.date_started | date : 'medium'}}</td>-->
+                        <!--<td md-cell>{{project.date_finished | date : 'medium'}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</md-table-container>-->
+            <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(projects.data | filter: filter.search).length}}"-->
+                                 <!--md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"-->
+                                 <!--md-on-paginate="logPagination"></md-table-pagination>-->
+        </md-card>
+        <!--<md-card>-->
+            <!--<md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">-->
+                <!--<md-tab label="my tasks">-->
+                    <!--<md-content class="md-padding">-->
+                        <!--<div layout="row">-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>Sort</label>-->
+                                <!--<md-select ng-model="tabSort.tasks">-->
+                                    <!--<md-option ng-repeat="opt in taskSortVariants" value="{{opt.title}}" ng-click="taskSort(opt)">{{opt.title}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>View</label>-->
+                                <!--<md-select ng-model="tabView.tasks">-->
+                                    <!--<md-option ng-repeat="opt in viewTaskVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                        <!--</div>-->
+                        <!--<md-list class="project-tabs-list">-->
+                            <!--<md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding">-->
+                                <!--<span class="status-ico" ng-class="task.label"></span>-->
+                                <!--<p><b><a ng-href="#/user/tasks/{{task.name}}"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>-->
+                                <!--</b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a>-->
+                                    <!--<a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>-->
+                            <!--</md-list-item>-->
+                        <!--</md-list>-->
+                        <!--<span></span>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+                <!--<md-tab label="my notifications">-->
+                    <!--<md-content class="md-padding">-->
+                        <!--<div layout="row">-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>Sort</label>-->
+                                <!--<md-select ng-model="tabSort.notifications">-->
+                                    <!--<md-option ng-repeat="opt in notificationSortVariants" value="{{opt.title}}" ng-click="notificationSort(opt)">{{opt.title}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>View</label>-->
+                                <!--<md-select ng-model="tabView.notifications">-->
+                                    <!--<md-option ng-repeat="opt in viewNotificationVariants" value="{{opt}}" ng-click="viewNotification(opt)">{{opt}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                        <!--</div>-->
+                        <!--<md-list>-->
+                            <!--<md-list-item ng-repeat="notification in notifications.data">-->
+                                <!--<span class="status-ico" ng-class="notification.activity_model"></span>-->
+                                <!--<p><b> {{ notification.message }} </b> - <a ng-href="#"  ng-click="changeUserLocation($event, notification.owner.id)" class="project-tabs-name">{{ notification.owner.username }}</a><span style="color:grey">({{ notification.created_at | date : 'medium' }})</span></p>-->
+                                <!--<md-button class="md-secondary" ng-href="{{getTaskProject(notification)}}">View</md-button>-->
+                            <!--</md-list-item>-->
+                        <!--</md-list>-->
+                        <!--<span></span>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+                <!--<md-tab label="activity">-->
+                    <!--<md-content class="md-padding">-->
+                        <!--<div layout="row">-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>Sort</label>-->
+                                <!--<md-select ng-model="tabSort.activity">-->
+                                    <!--<md-option ng-repeat="opt in activitySortVariants" value="{{opt.title}}" ng-click="activitySort(opt)">{{opt.title}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                            <!--<md-input-container class="sorting-margin">-->
+                                <!--<label>View</label>-->
+                                <!--<md-select ng-model="tabView.activity">-->
+                                    <!--<md-option ng-repeat="opt in viewActivityVariants" value="{{opt}}" ng-click="viewActivity(opt)">{{opt}}</md-option>-->
+                                <!--</md-select>-->
+                            <!--</md-input-container>-->
+                        <!--</div>-->
+                        <!--<md-list>-->
+                            <!--<md-list-item ng-repeat="activity in activities.data">-->
+                                <!--<span class="status-ico" ng-class="activity.activity_model"></span>-->
+                                <!--<p><b> {{ activity.message }} </b> -  <a ng-href="#"  ng-click="changeUserLocation($event, activity.owner.id)" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>-->
+                                <!--<md-button class="md-secondary" ng-href="{{getTaskProject(activity)}}">View</md-button>-->
+                            <!--</md-list-item>-->
+                        <!--</md-list>-->
+                        <!--<span></span>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+            <!--</md-tabs>-->
+        <!--</md-card>-->
+    </div>
+</md-content>

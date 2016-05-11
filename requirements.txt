@@ -13,3 +13,5 @@ django-suit==0.2.18
 
 drf-extensions
 django-redis
+
+tornado

@@ -1,3 +1,8 @@
+import requests
+from django.conf import settings
+from logging import getLogger
+import json
+
 from serializers import (
     ProjectSerializer, TaskSerializer, TaskCreateSerializer, ProjectCommentSerializer,
     TaskCommentSerializer, TagSerializer
@@ -18,6 +23,17 @@ from chi_django_base.paginators import StandardResultsSetPagination
 from activity.serializers import ActivitySerializer
 from activity.filters import ActivityFilter
 from activity.models import Activity
+
+
+_logger = getLogger('app')
+
+
+def get_my_proj(me):
+    proj = [
+        pr.id for pr in Project.objects.filter(Q(members=me) | Q(created_by=me))
+    ]
+
+    return proj
 
 
 @api_view(['GET'])
@@ -69,11 +85,7 @@ class ProjectsList(generics.ListCreateAPIView):
     ordering_fields = ('name', 'id', 'description', 'date_started')
 
     def get_queryset(self):
-        current_user = self.request.user
-        proj = [
-            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
-        ]
-        return Project.objects.filter(id__in=proj)
+        return Project.objects.filter(id__in=get_my_proj(self.request.user))
 
     def post(self, request):
         serializer = ProjectSerializer(data=request.data, context={'request': request})
@@ -158,20 +170,16 @@ class TaskList(generics.ListCreateAPIView):
     pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-        current_user = self.request.user
-        proj = [
-            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
-        ]
+
         return Task.objects.select_related('project', "created_by", "updated_by") \
-                   .prefetch_related("activity", "tags", "members", "task_comments").filter(project__id__in=proj)
+                   .prefetch_related("activity", "tags", "members", "task_comments")\
+                   .filter(project__id__in=get_my_proj(self.request.user))
 
 
     def post(self, request):
         serializer = self.get_serializer_class()(data=request.data, context={'request': request})
-        current_user = self.request.user
-        proj = [
-            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
-        ]
+
+        proj = get_my_proj(self.request.user)
 
         if serializer.is_valid():
             project = serializer.validated_data['project'].id
@@ -404,20 +412,14 @@ class ProjectCommentList(generics.ListCreateAPIView):
 
 
     def get_queryset(self):
-        current_user = self.request.user
-        proj = [
-            pr.id for pr in Project.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
-        ]
 
-        return ProjectComment.objects.filter(project__id__in=proj)
+        return ProjectComment.objects.filter(project__id__in=get_my_proj(self.request.user))
 
     def post(self, request):
         serializer = self.get_serializer_class()(data=request.data, context={'request': request})
-        user = request.user
 
-        proj = [
-            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
-        ]
+        proj = get_my_proj(self.request.user)
+
         if serializer.is_valid():
             project = serializer.validated_data['project'].id
             if project not in proj:
@@ -459,10 +461,8 @@ class ProjectCommentDetail(generics.GenericAPIView):
     def put(self, request, pk):
         comment = self.get_object(pk)
         serializer = ProjectCommentSerializer(comment, data=request.data, context={'request': request})
-        user = self.request.user
-        proj = [
-            pr.id for pr in Project.objects.filter(Q(members=user) | Q(created_by=user)).all()
-        ]
+        proj = get_my_proj(self.request.user)
+
         if serializer.is_valid():
             project = serializer.validated_data['project'].id
 
@@ -579,3 +579,69 @@ class TaskCommentDetail(generics.GenericAPIView):
         comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+def get_projects(pr_ids, request):
+
+    return ProjectSerializer(
+        Project.objects.filter(id__in=pr_ids).all(), many=True, context={'request': request}
+    ).data
+
+
+def get_tasks(task_ids, request):
+    tasks = Task.objects.select_related('project', "created_by", "updated_by") \
+                .prefetch_related("activity", "tags", "members", "task_comments") \
+                .filter(id__in=task_ids)
+
+    return TaskSerializer(tasks, many=True, context={'request': request}).data
+
+
+def get_task_comments(t_comments_ids, request):
+    comments = TaskComment.objects.select_related("task")\
+                          .filter(id__in=t_comments_ids)
+
+    return TaskCommentSerializer(comments, many=True, context={'request': request}).data
+
+
+class GlobalSearchView(generics.ListAPIView):
+    def get(self, request, query_string):
+        """
+        Makes full text search by tasks, projects & task comments for given search string
+
+        Args:
+            query_string: string for searching by
+
+        Returns: object with 3 keys:
+
+            - list of projects
+            - list of tasks
+            - list of task comments
+
+        """
+        func_map = {
+            "project": get_projects,
+            "task":get_tasks,
+            "task_comment": get_task_comments
+        }
+        results = {k: [] for k in func_map.keys()}
+
+        my_proj = ','.join([str(pr_id) for pr_id in get_my_proj(request.user)])
+        url_params = {'word': query_string}
+
+        if not my_proj:
+            return Response(results)
+
+        url_params['proj'] = my_proj
+
+        resp = requests.get(settings.GLOBAL_SEARCH_URL, params=url_params)
+
+        if resp.ok:
+            data = resp.json()
+
+            for key, val in data.iteritems():
+                if val:
+                    results[key] = func_map[key](val, request)
+        else:
+            _logger.debug('Global Search error {}: {}'.format(resp.status_code, resp.content))
+            raise exceptions.APIException(detail='Some error', status=resp.status_code)
+
+        return Response(results)

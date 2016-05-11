@@ -34,6 +34,12 @@ angular.module('mainApp')
                 return '#/user/projects/' + activity.project.id ;
             };
         };
+        $rootScope.searchPhrase = '';
+
+        $scope.globalSearch = function(searchText) {
+            $rootScope.searchPhrase = searchText;
+            $location.url('/user/search/');
+        };
 
         // Assume user is not logged in until we hear otherwise
         $scope.authenticated = false;

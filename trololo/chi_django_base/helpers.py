@@ -1,4 +1,5 @@
 import json
+from functools import wraps
 from django.core.cache import caches
 
 
@@ -23,6 +24,7 @@ def remove_cache_key(key_prefix, cache):
 
 def invalidate_cache(cache_keys_prefixes):
     def decorator(func):
+        @wraps(func)
         def wrapper(*args, **kwargs):
             resp = func(*args, **kwargs)
 
