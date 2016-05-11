@@ -476,6 +476,28 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         reloadComment();
     };
 
+    $scope.deleteCommentPopup = function(ev, id, name) {
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to delete comment?')
+              .textContent('Are you sure you mant to delete comment ' + name + "?")
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Delete')
+              .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(
+            function() {
+                commentSelectedService.remove_comment(
+                    {id: id}, {},
+                    function(resp) {
+
+                        reloadComment();
+                    }
+                )
+            }
+        );
+      };
+
     reloadComment();
 
 
@@ -526,5 +548,4 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             });
         }
     };
-
 }]);

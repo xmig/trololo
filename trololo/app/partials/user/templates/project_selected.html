@@ -170,7 +170,7 @@
                             <!--</md-list>-->
                             <!--<span></span>-->
                              
-                            <md-list-item ng-repeat="comment in project.comments | orderBy: tabSort.comments" class="secondary-button-padding" >
+                            <md-list-item ng-repeat="comment in comments | orderBy: tabSort.comments" class="secondary-button-padding" >
                                 <p>
                                     <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">
                                         <span ng-if="comment.created_by.photo">
@@ -183,7 +183,7 @@
                                     <a class="project-link-name">
                                         {{comment.title}}: {{comment.comment}}
                                     </a>
-                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a ng-href="">Delete</a></span>
+                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/projects/comments/{{comment.id}}"><button> Edit </button></a> <button ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</button></span>
                                     <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
                                 </p>
                             </md-list-item>
