@@ -38,6 +38,11 @@ class ProjectCommentSerializer(serializers.ModelSerializer):
         lookup_field='pk'
     )
 
+    project_id = serializers.PrimaryKeyRelatedField(
+        source="project",
+        read_only=True,
+    )
+
     created_by = OnlyUserInfoSerializer(read_only=True)
     # created_by = serializers.HyperlinkedRelatedField(
     #     read_only=True,
@@ -56,7 +61,7 @@ class ProjectCommentSerializer(serializers.ModelSerializer):
         model = ProjectComment
         fields = (
             'title', 'comment', 'id', 'project', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'activity'
+            'created_at', 'updated_by', 'updated_at', 'activity', 'project_id'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
 

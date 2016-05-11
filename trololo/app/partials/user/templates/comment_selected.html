@@ -1,0 +1,41 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg">
+    <div flex layout="column" ng-controller="nutritionController">
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>Edit Comment</span>
+                    <div flex></div>
+                </div>
+            </md-toolbar>
+
+
+                <md-card class="md-padding">
+                    <form name="saveCommentForm" ng-submit="saveComment()">
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline">Comment Info</span>
+                            </md-card-title-text>
+                        </md-card-title>
+                        <md-card-content>
+                            <div>
+                                <md-input-container class="md-block">
+                                    <label>Comment Title</label>
+                                    <input type="text" name="name" id="title" required
+                                           ng-model="commentData.title">
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Comment</label>
+                                    <input type="text" name="name" id="comment" required
+                                           ng-model="commentData.comment">
+                                </md-input-container>
+                            </div>
+                        </md-card-content>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-secondary md-button" ng-href="#/user/projects/{{ commentData.project_id }}">Go to project</md-button>
+                            <md-button class="md-primary md-button" type="submit">Save</md-button>
+                        </md-card-actions>
+                    </form>
+                </md-card>
+        </md-card>
+    </div>
+</md-content>
