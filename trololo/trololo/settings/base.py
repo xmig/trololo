@@ -51,7 +51,7 @@ INSTALLED_APPS = (
     'cuser',
     'chi_django_base',
     'activity',
-    'projects',
+    'projects.projects_app.ProjectsAppConfig',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.linkedin',
@@ -224,3 +224,5 @@ CACHES = {
 }
 
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
+
+GLOBAL_SEARCH_URL = 'http://127.0.0.1:8005/find/'

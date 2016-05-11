@@ -127,7 +127,7 @@ class StatusDetail(generics.GenericAPIView):
     @invalidate_cache(['StatusView', 'StatusDetail'])
     def put(self, request, pk):
         """
-       This method rename status
+       This method implements status rename and order number update.
         """
         stat = self.get_object(pk)
         serializer = StatusSerializer(stat, data=request.data, context={'request': request}, partial=True)

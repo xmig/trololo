@@ -80,10 +80,10 @@
         <h1 class="md-toolbar-tools">Sidenav Right</h1>
     </md-toolbar>
     <md-content ng-controller="rightCtrl" layout-padding="">
-        <form>
+        <form name="searchForm" ng-submit="globalSearch(searchText)">
             <md-input-container>
-                <label for="testInput">Test input</label>
-                <input type="text" id="testInput" ng-model="data" md-autofocus="">
+                <label for="searchInput">Search text</label>
+                <input type="text" id="searchInput" ng-model="searchText" md-autofocus="">
             </md-input-container>
         </form>
         <md-button ng-click="close()" class="md-primary">

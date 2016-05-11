@@ -131,8 +131,15 @@ angular.module('mainApp', [
                 }
             })
 
-
-
+//            .when('/search/', {
+//                templateUrl: '/static/user/templates/user.html',
+//                controller: 'userCtrl',
+//                resolve: {
+//                    authenticated: ['djangoAuth', function (djangoAuth) {
+//                        return djangoAuth.authenticationStatus(true);
+//                    }]
+//                }
+//            })
 
             .when('/user/tasks/create', {
                 templateUrl: '/static/user/templates/user.html',
@@ -298,3 +305,7 @@ angular.module('mainApp', [
     .run(function (djangoAuth, $window) {
         djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
     });
+
+angular.module('mainApp').config(function($resourceProvider) {
+  $resourceProvider.defaults.stripTrailingSlashes = false;
+});
