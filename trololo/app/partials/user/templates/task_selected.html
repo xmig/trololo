@@ -82,7 +82,8 @@
                         <md-list class="project-tabs-list">
 
                              <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.taskComments" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a class="project-link-name">{{comment.title}} {{comment.comment}}</a><span style="color:grey"> ({{comment.created_at | date : 'medium'}}) </span></p>
+                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a class="project-link-name">{{comment.title}} {{comment.comment}}</a>
+                                        <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a ng-href="">Delete</a></span></p>
 
                             </md-list-item>
                         </md-list>
