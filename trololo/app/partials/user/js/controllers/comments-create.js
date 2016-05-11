@@ -4,7 +4,7 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
 
  console.log("----");
     $scope.comment_id = $routeParams.id;
-    $scope.partialPath = '/static/user/templates/project_selected.html';
+    $scope.partialPath = '/static/user/templates/comment_selected.html';
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -91,6 +91,7 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
         // PROJECT CALCULATE
         commentSelectedService.get({ id: $scope.comment_id }, function (data) {
             $scope.commentData = data;
+            console.log("commentData:::", $scope.commentData)
         });
     }
 

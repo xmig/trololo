@@ -12,12 +12,12 @@
                         <md-switch ng-model="showMyTasks.checked" aria-label="Switch 2" ng-true-value="true" ng-false-value="false" class="md-warn">
                             My tasks
                         </md-switch>
-                        <md-select ng-controller="projectsCtrl" placeholder="select projects" ng-model="showMyProjectTasks.project">
-                        <md-option  ng-value="project.id" ng-repeat="project in projects.data">{{project.name}}</md-option>
+                        <md-select placeholder="select projects" ng-model="showMyProjectTasks.project">
+                        <md-option  ng-value="task.project_obj.id" ng-repeat="task in task_list = all_project.concat(tasks.data) | filter: onlyMyProjectTasks">{{task.project_obj.name}}</md-option>
                         </md-select>
 
                          <md-select placeholder="select user" ng-model="showMyUserTasks.user">
-                        <md-option  ng-value="task.owner.id" ng-repeat="task in tasks.data | filter: onlyMyUserTasks">{{task.owner.username}}</md-option>
+                        <md-option  ng-value="memb.id" ng-repeat="memb in all_members.concat(members)">{{memb.username}}</md-option>
                         </md-select>
 
                     <tbody>
@@ -51,7 +51,7 @@
                     </thead>
                     <tbody md-body>
                     <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
-                        ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | filter: onlyMyProjectTasks | filter: selectedUserTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | filter: selectedUserTasks | filter:selectedProjectTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
                         <td md-cell>
                             <span class="status-ico" ng-class="task.label"></span>
                             <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>

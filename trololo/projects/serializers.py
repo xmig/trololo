@@ -4,6 +4,7 @@ from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
 from django.db.models import Q
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -37,6 +38,11 @@ class ProjectCommentSerializer(serializers.ModelSerializer):
         lookup_field='pk'
     )
 
+    project_id = serializers.PrimaryKeyRelatedField(
+        source="project",
+        read_only=True,
+    )
+
     created_by = OnlyUserInfoSerializer(read_only=True)
     # created_by = serializers.HyperlinkedRelatedField(
     #     read_only=True,
@@ -55,7 +61,7 @@ class ProjectCommentSerializer(serializers.ModelSerializer):
         model = ProjectComment
         fields = (
             'title', 'comment', 'id', 'project', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'activity'
+            'created_at', 'updated_by', 'updated_at', 'activity', 'project_id'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'activity')
 
@@ -172,6 +178,9 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         data['task_count'] = Task.objects.all().filter(project=instance).count()
         data['my_task_count'] = Task.objects.all().filter(project=instance)\
             .filter(created_by=self.context['request'].user).count()
+
+        data['my_task_grouped_by_status_count'] = Task.objects.all().filter(project=instance)\
+            .filter(created_by=self.context['request'].user).values('status').annotate(dcount=Count('status')).order_by()
 
         data['tags'] = sorted(data['tags'])
         return data
