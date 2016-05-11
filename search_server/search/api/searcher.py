@@ -17,13 +17,13 @@ def parse_search_respond(data):
 
     return result
 
-def perform_search(phrase_for_search, index='*', host='localhost', port=10312):
+def perform_search(phrase_for_search, index='*', host='localhost', port=10312, proj_ids_list=[]):
     """    Perform search itself
     """
     result = []
 
     if phrase_for_search:
-        finder = SphinxSearchClient(host, port)
+        finder = SphinxSearchClient(host, port, proj_ids_list)
         data = finder.search(phrase_for_search, index)
         result.extend(parse_search_respond(data))
     return result

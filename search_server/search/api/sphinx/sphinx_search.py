@@ -9,9 +9,11 @@ from ..full_text_serach import ISearchClient
 class SphinxSearchClient(ISearchClient):
     DEFAULT_WEIGHTS = [100, 1]
 
-    def __init__(self, host, port):
+    def __init__(self, host, port, proj_ids_list):
         self._client = SphinxClient()
         self._client.SetServer(host, port)
+        if proj_ids_list:
+            self._client.SetFilter('project_id', proj_ids_list)
         self._client.SetWeights(self.DEFAULT_WEIGHTS)
 
     def search(self, words_for_search, where='*', mode=SPH_MATCH_EXTENDED):

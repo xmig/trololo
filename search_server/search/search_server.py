@@ -32,6 +32,7 @@ class Finder(tornado.web.RequestHandler):
 
         try:
             # search_where_lst = self.request.arguments.get('index', ('*',))
+            proj_ids_list = [int(v) for v in self.request.arguments.get('proj', [''])[0].split(',') if v]
             phrase_for_search_lst = self.request.arguments.get('word', [])
             search_where_lst = search_where_dict.get(
                 self.request.arguments.get('where', ['stage'])[0], search_where_dict['stage']
@@ -39,11 +40,11 @@ class Finder(tornado.web.RequestHandler):
 
             if phrase_for_search_lst:
                 phrase_for_search = phrase_for_search_lst[0]
-                search_where = search_where_lst[0]
 
                 for search_where in search_where_lst:
                     resp = perform_search(
-                        phrase_for_search, search_where, SEARCH_PARAMS['host'], SEARCH_PARAMS['port']
+                        phrase_for_search, search_where, SEARCH_PARAMS['host'],
+                        SEARCH_PARAMS['port'], proj_ids_list
                     )
 
                     if isinstance(resp, list):

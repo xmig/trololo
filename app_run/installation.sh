@@ -74,8 +74,8 @@ sudo service postgresql restart
 ##################
 # Sphinx install #
 ##################
-sudo apt-get install postgresql-server-dev-all
-sudo apt-get install postgresql-common
+sudo apt-get install -y postgresql-server-dev-all
+sudo apt-get install -y postgresql-common
 
 # Installing Sphinx is much easier from Sphinxsearch PPA repository, because you
 # will get all dependencies and can also update Sphinx to the latest version with
@@ -88,6 +88,12 @@ sudo apt-get update
 
 # Install/update sphinxsearch package:
 
-sudo apt-get install sphinxsearch
+sudo apt-get install -y sphinxsearch
+
+# install pg_sphinx extension
+
+cd ~ && git clone https://github.com/andy128k/pg-sphinx
+cd pg-sphinx/
+make && sudo make install
 
 echo 'CREATE EXTENSION sphinx;' | psql -U ${LOCAL_DB_USER} ${LOCAL_DB_NAME}
