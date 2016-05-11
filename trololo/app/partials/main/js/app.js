@@ -238,7 +238,7 @@ angular.module('mainApp', [
             })
             .when('/user/projects/comments/:id', {
                 templateUrl: '/static/user/templates/user.html',
-                controller: 'projectSelectedCtrl',
+                controller: 'commentCreateCtrl',
                 resolve: {
                     authenticated: ['djangoAuth', function (djangoAuth) {
                         return djangoAuth.authenticationStatus(true);
