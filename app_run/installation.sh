@@ -76,8 +76,7 @@ sudo service postgresql restart
 ##################
 # Sphinx install #
 ##################
-sudo apt-get install -y postgresql-server-dev-all
-sudo apt-get install -y postgresql-common
+apt-get install -y postgresql-server-dev-all postgresql-common libmysqlclient-dev mysql-client-5.6
 
 # Installing Sphinx is much easier from Sphinxsearch PPA repository, because you
 # will get all dependencies and can also update Sphinx to the latest version with

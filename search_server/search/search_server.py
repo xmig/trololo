@@ -41,6 +41,7 @@ class Finder(tornado.web.RequestHandler):
             if phrase_for_search_lst:
                 phrase_for_search = phrase_for_search_lst[0]
 
+                print unicode(phrase_for_search.decode('utf-8'))
                 for search_where in search_where_lst:
                     resp = perform_search(
                         phrase_for_search, search_where, SEARCH_PARAMS['host'],
