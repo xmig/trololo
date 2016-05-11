@@ -15,7 +15,7 @@ class ProjectsAppConfig(AppConfig):
         self.ready_runned = False
 
     def ready(self):
-        if not getattr(self, 'ready_runned') and settings.USE_GLOBAL_SEARCH:
+        if not getattr(self, 'ready_runned') and getattr(settings, 'USE_GLOBAL_SEARCH', False):
             Project = self.get_model('Project')
             Task = self.get_model('Task')
             TaskComment = self.get_model("TaskComment")
