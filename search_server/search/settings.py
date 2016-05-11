@@ -11,7 +11,7 @@ SEARCH_PARAMS = {
 }
 
 SERVER_PARAMS = {
-    'port': 8001,
+    'port': 8005,
     # 'port': 8555,
     'not_found_request':    "NOTHING WAS REQUESTED",
     'not_found_response':   "NOTHING FOUND FOR '{0}'",
