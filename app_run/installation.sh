@@ -21,6 +21,8 @@ else
     exit 1
 fi
 
+PROJ_DIR="${PWD}"
+
 # install required packages
 sudo apt-get update
 
@@ -95,5 +97,12 @@ sudo apt-get install -y sphinxsearch
 cd ~ && git clone https://github.com/andy128k/pg-sphinx
 cd pg-sphinx/
 make && sudo make install
+
+cd ${PROJ_DIR}
+
+sudo cp /etc/sphinxsearch/sphinx.conf /etc/sphinxsearch/sphinx.conf.old
+sudo cp search_server/Sphinx/search.conf /etc/sphinxsearch/sphinx.conf
+
+sudo service sphinxsearch restart
 
 echo 'CREATE EXTENSION sphinx;' | psql -U ${LOCAL_DB_USER} ${LOCAL_DB_NAME}
