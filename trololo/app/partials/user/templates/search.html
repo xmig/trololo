@@ -1,7 +1,61 @@
 <md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="searchCtrl">
-    <!--<div flex layout="column" ng-controller="nutritionController">-->
+    <div flex layout="column" ng-controller="nutritionController">
 
-        <!--<md-card>-->
+        <md-card>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="projects">
+                    <md-content>
+                        <div ng-hide="project.length">
+                            <p align="center">
+                                No projects for "{{ search_text }}"
+                                <img class="resize2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDBcmTmG79faFSzdOO6gbB5oyihPkYjZU_qipWtrrgKoQDlglt" />
+                            </p>
+                        </div>
+                        <ul ng-repeat="pr in project">
+                            <li>
+                                <a ng-href="#/user/projects/{{ pr.id }}">{{ pr.name }}</a> - {{ pr.status }} {{ pr.description }}
+                            </li>
+                        </ul>
+                    </md-content>
+
+                </md-tab>
+
+                <md-tab label="tasks">
+                    <md-content>
+                        <div ng-hide="task.length">
+                            <p align="center">
+                                No tasks for "{{ search_text }}"
+                                <img class="resize2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDBcmTmG79faFSzdOO6gbB5oyihPkYjZU_qipWtrrgKoQDlglt" />
+                            </p>
+                        </div>
+
+                        <ul ng-repeat="pr in task">
+                            <li>
+                                <a ng-href="#/user/tasks/{{ task.id }}">{{ task.name }}</a> - {{ task.description }} {{ task.label }}
+                            </li>
+                        </ul>
+                    </md-content>
+
+                </md-tab>
+                <md-tab label="task comments">
+                    <md-content>
+                        <div ng-hide="task_comment.length">
+                            <p align="center">
+                                No comments for "{{ search_text }}"
+                                <img class="resize2" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDBcmTmG79faFSzdOO6gbB5oyihPkYjZU_qipWtrrgKoQDlglt" />
+                            </p>
+                        </div>
+
+                        <ul ng-repeat="tc in task_comment">
+                            <li>
+                                <!--<a ng-href="#/user/tasks/{{ tc.id }}">{{ tc.title }}</a> - {{ tc.comment }}-->
+                                <b>{{ tc.title }}</b> - {{ tc.comment }}
+                            </li>
+                        </ul>
+                    </md-content>
+
+                </md-tab>
+            </md-tabs>
             <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
                 <!--<div class="md-toolbar-tools">-->
                     <!--<label>-->
@@ -63,7 +117,7 @@
             <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(projects.data | filter: filter.search).length}}"-->
                                  <!--md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"-->
                                  <!--md-on-paginate="logPagination"></md-table-pagination>-->
-        <!--</md-card>-->
+        </md-card>
         <!--<md-card>-->
             <!--<md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">-->
                 <!--<md-tab label="my tasks">-->
@@ -147,5 +201,5 @@
                 <!--</md-tab>-->
             <!--</md-tabs>-->
         <!--</md-card>-->
-    <!--</div>-->
+    </div>
 </md-content>

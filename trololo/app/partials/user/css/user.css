@@ -104,6 +104,14 @@ img.resize{
 }
 
 
+img.resize2{
+   width:100px;
+   height:100px;
+   display: inline-block;
+    *display: inline; /* for older IE */
+    *zoom: 1; /* for older IE */
+}
+
   /** Demo styles for mdCalendar. */ }
 
 .datepickerdemoBasicUsage {}
