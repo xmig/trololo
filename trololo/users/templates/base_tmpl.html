@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+      <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+      <style>
+        html{height:100%;}
+        body{
+            margin:0;
+            height:100%;
+        }
+        #wrapper{
+            font-size: 20px;
+            letter-spacing: .005em;
+            box-sizing: border-box;
+            font-weight: 400;
+            width:100%;
+            height:64px;
+            display:table;
+            table-layout: fixed;
+            margin:0 auto;
+            color: white;
+            background-color:rgb(33,150,243);
+            flex-direction: row;
+            max-height: 64px;
+            padding: 0 16px;
+            padding-top: 0px;
+            padding-right: 16px;
+            padding-bottom: 0px;
+            padding-left: 16px;
+        }
+        #footer{
+            width:100%;
+            overflow:hidden; /*for FF on Windows 7*/
+            display:table-footer-group;
+            height:1%;
+        }
+    </style>
+    <title>{% block head_title %}{% endblock %}</title>
+    {% block extra_head %}
+    {% endblock %}
+  </head>
+  <body>
+    <div id="wrapper">
+        <div class="md-toolbar-tools">
+            <h2><span>Trololo</span></h2>
+        </div>
+    </div>
+
+    {% block body %}
+
+    {% if messages %}
+    <div>
+      <strong>Messages:</strong>
+      <ul>
+	{% for message in messages %}
+	<li>{{message}}</li>
+	{% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <div style="margin-left: 20px; margin-top: 10px;">
+      <strong>Menu:</strong>
+      <ul>
+	    <li><a href="/">Main page</a></li>
+      </ul>
+    </div>
+    <div style="margin-left: 20px;">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% endblock %}
+    {% block extra_body %}
+    {% endblock %}
+  </body>
+</html>
