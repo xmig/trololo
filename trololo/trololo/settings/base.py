@@ -130,7 +130,7 @@ STATICFILES_DIRS = [
     os.path.abspath(os.path.join(BASE_DIR, os.path.pardir, 'app', 'partials')),
 ]
 
-LOGIN_URL = '/users/login/'
+LOGIN_URL = '/'
 
 
 REST_FRAMEWORK = {

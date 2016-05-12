@@ -14,6 +14,7 @@ from django_filters import FilterSet, NumberFilter, IsoDateTimeFilter
 from rest_framework.permissions import AllowAny
 from django.template import Template, Context
 from allauth.socialaccount.models import SocialApp
+from allauth.socialaccount.views import ConnectionsView
 
 
 # class CsrfExemptSessionAuthentication(SessionAuthentication):
@@ -154,3 +155,7 @@ class SocialLinksAddUser(APIView):
             )
 
         return Response(links)
+
+
+class SocialConnectionsView(ConnectionsView):
+    template_name = 'social_connections.html'
