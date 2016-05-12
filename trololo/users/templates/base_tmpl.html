@@ -48,32 +48,35 @@
         </div>
     </div>
 
-    {% block body %}
-
-    {% if messages %}
-    <div>
-      <strong>Messages:</strong>
-      <ul>
-	{% for message in messages %}
-	<li>{{message}}</li>
-	{% endfor %}
-      </ul>
-    </div>
-    {% endif %}
-
     <div style="margin-left: 20px; margin-top: 10px;">
-      <strong>Menu:</strong>
-      <ul>
-	    <li><a href="/">Main page</a></li>
-      </ul>
-    </div>
-    <div style="margin-left: 20px;">
-        {% block content %}
+        {% block body %}
+        {% if messages %}
+        <div>
+            <strong>Messages:</strong>
+            <ul>
+                {% for message in messages %}
+                <li>{{message}}</li>
+                {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <div>
+          <strong>Menu:</strong>
+          <ul>
+            <li><a href="/">Main page</a></li>
+          </ul>
+        </div>
+        <div>
+            {% block content %}
+            {% endblock %}
+        </div>
+
         {% endblock %}
+        {% block extra_body %}
+        {% endblock %}
+
     </div>
 
-    {% endblock %}
-    {% block extra_body %}
-    {% endblock %}
   </body>
 </html>
