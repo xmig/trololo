@@ -477,6 +477,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     };
 
     $scope.deleteCommentPopup = function(ev, id, name) {
+    ev.preventDefault();
         var confirm = $mdDialog.confirm()
               .title('Would you like to delete comment?')
               .textContent('Are you sure you mant to delete comment ' + name + "?")

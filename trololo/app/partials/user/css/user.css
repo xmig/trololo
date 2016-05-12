@@ -226,3 +226,11 @@ img.resize2{
     font-size:15px;
 
 }
+a {
+    color: #ccc;
+    text-decoration: none;
+}
+a:hover {
+    color: #696969;
+    text-decoration: underline;
+}

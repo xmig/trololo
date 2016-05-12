@@ -22,6 +22,7 @@ angular.module('userApp').factory('taskCommentSelectedService', function($resour
           'update': {method:'PUT', data: {}, headers: {'X-CSRFToken': $cookies.get('csrftoken')}, params: {id: '@id'}},
           'query':  {method:'GET', isArray:true, params: {id: '@id'}},
 //          'delete': {method:'DELETE', params: {id: '@id'}};
+          'put':    {method:'PUT', headers: {'X-CSRFToken': $cookies.get('csrftoken')}},
           'remove_comment_task': {method: 'DELETE', headers: {'X-CSRFToken': $cookies.get('csrftoken')}}
         }
     );
