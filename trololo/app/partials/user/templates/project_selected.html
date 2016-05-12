@@ -179,11 +179,8 @@
                                         <span ng-if="!comment.created_by.photo">
                                             {{comment.created_by.username}}
                                         </span>
-                                    </a> added comment:
-                                    <a class="project-link-name">
-                                        {{comment.title}}: {{comment.comment}}
-                                    </a>
-                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/projects/comments/{{comment.id}}"><button> Edit </button></a> <button ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</button></span>
+                                    </a> added comment:<b>{{comment.title}}: {{comment.comment}}</b>
+                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
                                     <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
                                 </p>
                             </md-list-item>
