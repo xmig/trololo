@@ -42,6 +42,7 @@
     {% endblock %}
   </head>
   <body>
+    {% load i18n %}
     <div id="wrapper">
         <div class="md-toolbar-tools">
             <h2><span>Trololo</span></h2>
@@ -52,7 +53,7 @@
         {% block body %}
         {% if messages %}
         <div>
-            <strong>Messages:</strong>
+            <strong>{% trans "Messages" %}:</strong>
             <ul>
                 {% for message in messages %}
                 <li>{{message}}</li>
@@ -62,9 +63,9 @@
         {% endif %}
 
         <div>
-          <strong>Menu:</strong>
+          <strong>{% trans "Menu" %}:</strong>
           <ul>
-            <li><a href="/">Main page</a></li>
+            <li><a href="/">{% trans "Main page" %}</a></li>
           </ul>
         </div>
         <div>

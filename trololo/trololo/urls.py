@@ -54,6 +54,7 @@ urlpatterns = [
     ),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^global_search/(?P<query_string>.*)/$', GlobalSearchView.as_view()),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
     url('^', include('django.contrib.auth.urls')),
 ]
 
