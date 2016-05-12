@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location',
-                                                 function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location){
+angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
+                                                 function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -179,6 +179,28 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         $scope.commentPage = 1;
         reloadComment();
     };
+
+    $scope.deleteTaskCommentPopup = function(ev, id, name) {
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to delete comment?')
+              .textContent('Are you sure you mant to delete comment ' + name + "?")
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Delete')
+              .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(
+            function() {
+                taskCommentSelectedService.remove_comment_task(
+                    {id: id}, {},
+                    function(resp) {
+
+                        reloadComment();
+                    }
+                )
+            }
+        );
+      };
 
     reloadComment();
 
