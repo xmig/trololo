@@ -73,12 +73,12 @@ DATABASES = {
 
 SITE_ID = 3
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
 USE_GLOBAL_SEARCH = False
 PROJECT_INDEX = 'project_prod_rt'
 TASK_INDEX = 'task_prod_rt'
 TASK_COMMENT_INDEX = 'task_comment_prod_rt'
+
+try:
+    from local_settings import *
+except ImportError:
+    pass

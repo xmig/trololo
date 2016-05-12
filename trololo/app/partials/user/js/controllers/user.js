@@ -80,15 +80,14 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
             specialization: data.specialization,
             detailed_info: data.detailed_info,
             use_gravatar: data.use_gravatar,
-            social_accounts: data.social_accounts
         };
         $scope.userPersonalData = data;
 
         $scope.checkSocial = function(provider) {
             var val = false;
             console.log("User acc: " + $scope.userAdditionData.social_accounts);
-            if ($scope.userAdditionData.social_accounts) {
-                val = $scope.userAdditionData.social_accounts.indexOf(provider) > -1;
+            if ($scope.userPersonalData.social_accounts) {
+                val = $scope.userPersonalData.social_accounts.indexOf(provider) > -1;
             }
             return val;
         };
