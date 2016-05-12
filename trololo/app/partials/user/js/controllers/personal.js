@@ -56,7 +56,15 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
     $scope.savePersonalForm = function () {
         personalInfoService.update($scope.userAdditionData, function(response) {
             $scope.userPersonalData = response;
-             $scope.showPersonalToastSave();
+            $scope.userAdditionData = {
+                first_name: response.first_name,
+                last_name: response.last_name,
+                department: response.department,
+                specialization: response.specialization,
+                detailed_info: response.detailed_info,
+                use_gravatar: response.use_gravatar,
+            };
+            $scope.showPersonalToastSave();
         });
     };
 
@@ -72,13 +80,13 @@ angular.module('userApp').controller('personalCtrl', ['$scope', '$http', 'person
 
     $scope.popChangePwd = function (ev) {
         $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'change_pwd.tmpl.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                fullscreen: false
-            });
+            controller: DialogController,
+            templateUrl: 'change_pwd.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true,
+            fullscreen: false
+        });
     };
 }]);
 
