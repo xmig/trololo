@@ -145,6 +145,11 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher'
 ]
 
+USE_GLOBAL_SEARCH = False
+PROJECT_INDEX = 'project_rt'
+TASK_INDEX = 'task_rt'
+TASK_COMMENT_INDEX = 'task_comment_rt'
+
 try:
     from local_settings import *
 except ImportError:
@@ -154,8 +159,3 @@ if 'NOT_INSTALLED_APPS' in locals():
     INSTALLED_APPS = tuple(
         set(INSTALLED_APPS) - set(NOT_INSTALLED_APPS)
     )
-
-USE_GLOBAL_SEARCH = True
-PROJECT_INDEX = 'project_rt'
-TASK_INDEX = 'task_rt'
-TASK_COMMENT_INDEX = 'task_comment_rt'

@@ -71,12 +71,12 @@ DATABASES = {
     }
 }
 
-try:
-    from local_settings import *
-except ImportError:
-    pass
-
 USE_GLOBAL_SEARCH = True
 PROJECT_INDEX = 'project_rt'
 TASK_INDEX = 'task_rt'
 TASK_COMMENT_INDEX = 'task_comment_rt'
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
