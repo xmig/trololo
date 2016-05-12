@@ -12,10 +12,11 @@ from projects.views import api_root, GlobalSearchView
 from activity import urls as activity_urls
 
 from users.views import (
-    AccountConfirmEmailView, MainView, EmailVerificationSentView
+    AccountConfirmEmailView, MainView, EmailVerificationSentView, SocialConnectionsView
 )
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
@@ -46,6 +47,10 @@ urlpatterns = [
         'django.contrib.auth.views.password_reset_confirm',
         {'template_name': 'password_reset_form.html', 'post_reset_redirect': '/'},
         name='password_reset_confirm'
+    ),
+    url(r'^accounts/social/connections/$',
+        login_required(SocialConnectionsView.as_view()),
+        name='socialaccount_connections'
     ),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^global_search/(?P<query_string>.*)/$', GlobalSearchView.as_view()),
