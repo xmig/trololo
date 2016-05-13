@@ -37,7 +37,7 @@
                             </p>
                         </td>
                         <td md-cell><a ng-href="#" class="user-link-name">{{task.project_obj.name}}</a></td>
-                        <td md-cell>{{task.deadline_date}}</td>
+                        <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                         <td md-cell>{{task.group_data.name}}</td>
                     </tr>
