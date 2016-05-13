@@ -130,13 +130,11 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
         if ($scope.task_id) {
             // EDIT
             $scope.taskData.id = $scope.task_id;
-
-            $scope.taskData.members = $scope.taskData.members_data.map(function (user, index) {
+            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                 return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
             });
 
-            console.log("$scope.taskData", $scope.taskData)
-
+            $scope.taskData.project = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/projects/' + $scope.taskData.project + '/';
 
             taskSelectedService.update($scope.taskData, function(response) {
                 response.deadline_date = new Date(response.deadline_date);

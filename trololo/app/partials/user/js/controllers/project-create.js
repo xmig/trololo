@@ -100,7 +100,6 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
         if ($scope.project_id) {
             // EDIT
             $scope.projectData.id = $scope.project_id;
-
             $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
                 return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
             });
