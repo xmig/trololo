@@ -237,3 +237,15 @@ CACHES = {
 SOCIALACCOUNT_EMAIL_VERIFICATION = False
 
 GLOBAL_SEARCH_URL = 'http://127.0.0.1:8005/find/'
+
+# from sphinxapi
+# http://sphinxsearch.com/docs/current.html#extended-syntax
+SPHINX_MATCH_MODE = 2  # SPH_MATCH_EXTENDED2
+
+SPHINX_SEARCH_PARAMS = {
+    'mode':     SPHINX_MATCH_MODE,
+    'host':     'localhost',
+    'port':     10312,
+    'index':    '*',
+    'weights':  [10, 1],
+}

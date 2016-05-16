@@ -78,6 +78,8 @@ PROJECT_INDEX = 'project_prod_rt'
 TASK_INDEX = 'task_prod_rt'
 TASK_COMMENT_INDEX = 'task_comment_prod_rt'
 
+SPHINX_INDEXES = [PROJECT_INDEX, TASK_INDEX, TASK_COMMENT_INDEX]
+
 try:
     from local_settings import *
 except ImportError:
