@@ -37,7 +37,7 @@
                             </p>
                         </td>
                         <td md-cell><a ng-href="#" class="user-link-name">{{task.project_obj.name}}</a></td>
-                        <td md-cell>{{task.deadline_date}}</td>
+                        <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                         <td md-cell>{{task.group_data.name}}</td>
                     </tr>
@@ -82,8 +82,8 @@
                         <md-list class="project-tabs-list">
 
                              <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.taskComments" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <a class="project-link-name">{{comment.title}} {{comment.comment}}</a>
-                                        <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}"><button>Edit</button></a> <button ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</button></span></p>
+                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <b>{{comment.title}}: {{comment.comment}}</b>
+                                        <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span></p>
 
                             </md-list-item>
                         </md-list>

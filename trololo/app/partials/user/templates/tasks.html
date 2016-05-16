@@ -66,7 +66,7 @@
                             </div>
                         </td>
                         <td md-cell><a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-tabs-name">{{task.project_obj.name}}</a></td>
-                        <td md-cell>{{task.deadline_date}}</td>
+                        <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>
                     </tbody>

@@ -64,6 +64,7 @@ angular.module('userApp').controller('statusSelectedCtrl', ['$scope', '$rootScop
         {id: $scope.status_id},
         function (data) {
             $scope.statusDataCopy = JSON.parse(JSON.stringify(data));
+            console.log("DataCopy:",$scope.statusDataCopy )
         }
     );
 

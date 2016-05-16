@@ -69,7 +69,13 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
 //        $scope.project = data;
 //    });
 
-    $scope.commentData = {};
+//    $scope.commentData = {};
+    $scope.commentData = commentSelectedService.get(
+                {id: $scope.comment_id},
+                function (data) {
+                    $scope.commentDataCopy = JSON.parse(JSON.stringify(data));
+                }
+            );
 
 //    $scope.projectStatuses = [
 //        {'title': 'Breakthrough', 'id':'breakthrough'},
@@ -95,30 +101,53 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
         });
     }
 
-    $scope.saveComment = function() {
+//    $scope.saveComment = function() {
+//        $scope.commentData.tags = [];
+//        console.log("----");
+//
+//        if ($scope.comment_id) {
+//            // EDIT
+//            $scope.commentData.id = $scope.comment_id;
+//
+//            commentSelectedService.update($scope.commentData, function(response) {
+//                $scope.commentData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location = '#/user/projects/comments/' + $scope.commentData.id;
+//                    $scope.statusSaveToast('Saved!');
+//                }
+//            });
+//        } else {
+//            commentService.create($scope.commentData, function(response) {
+//                $scope.commentData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location.href = '#/user/projects/comments/' + response.id + '/edit';
+//                }
+//            });
+//        }
+//    };
+//
+//}])
+    $scope.saveComment = function(){
         $scope.commentData.tags = [];
-        console.log("----");
-
-        if ($scope.comment_id) {
-            // EDIT
-            $scope.commentData.id = $scope.comment_id;
-
-            commentSelectedService.update($scope.commentData, function(response) {
-                $scope.commentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/comments/' + $scope.commentData.id;
+        if ($scope.commentDataCopy.title !== $scope.commentData.title || $scope.commentDataCopy.comment !== $scope.commentData.comment){
+            commentSelectedService.put(
+                {id: $scope.comment_id},
+                $scope.commentData,
+                function (response){
+                    $scope.commentDataCopy = response;
+                    $window.location = '#/user/projects/' + $scope.commentData.project_id;
+                    $scope.statusSaveToast('Saved!');
+                },
+                function (response){
+                    var err_message = "Error comment: " + response.comment + " CommentText: " + response.commentText;
+                    $log.debug(err_message);
+                    $scope.statusSaveToast('Some error, contact admin.');
                 }
-            });
+            )
         } else {
-            commentService.create($scope.commentData, function(response) {
-                $scope.commentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/comments/' + response.id + '/edit';
-                }
-            });
+            $scope.statusSaveToast('Any change!');
         }
     };
-
 }])
 .config(function($mdDateLocaleProvider) {
   $mdDateLocaleProvider.formatDate = function(date) {
@@ -207,7 +236,14 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
 //        $scope.project = data;
 //    });
 
-    $scope.taskCommentData = {};
+//    $scope.taskCommentData = {};
+
+    $scope.taskCommentData = taskCommentSelectedService.get(
+                {id: $scope.comment_id},
+                function (data) {
+                    $scope.taskCommentDataCopy = JSON.parse(JSON.stringify(data));
+                }
+            );
 
 //    $scope.projectStatuses = [
 //        {'title': 'Breakthrough', 'id':'breakthrough'},
@@ -233,31 +269,55 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
         });
     }
 
-    $scope.savetaskComment = function() {
+//    $scope.savetaskComment = function() {
+//        $scope.taskCommentData.tags = [];
+//        console.log("----");
+//
+//        if ($scope.comment_id) {
+//            // EDIT
+//            $scope.taskCommentData.id = $scope.comment_id;
+//
+//            taskCommentSelectedService.update($scope.taskCommentData, function(response) {
+//                $scope.taskCommentData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location.href = '#/user/tasks/comments/' + $scope.taskCommentData.id;
+//                }
+//            });
+//        } else {
+//            taskCommentService.create($scope.taskCommentData, function(response) {
+//                $scope.taskCommentData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location.href = '#/user/tasks/comments/' + response.id + '/edit';
+//                }
+//            });
+//        }
+//    };
+//
+//}])
+
+     $scope.savetaskComment = function(){
         $scope.taskCommentData.tags = [];
-        console.log("----");
-
-        if ($scope.comment_id) {
-            // EDIT
-            $scope.taskCommentData.id = $scope.comment_id;
-
-            taskCommentSelectedService.update($scope.taskCommentData, function(response) {
-                $scope.taskCommentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/comments/' + $scope.taskCommentData.id;
+        if ($scope.taskCommentDataCopy.title !== $scope.taskCommentData.title || $scope.taskCommentDataCopy.comment !== $scope.taskCommentData.comment){
+            taskCommentSelectedService.put(
+                {id: $scope.comment_id},
+                $scope.taskCommentData,
+                function (response){
+                    $scope.taskCommentDataCopy = response;
+                    $window.location = '#/user/tasks/' + $scope.taskCommentData.task_id;
+                    $scope.statusSaveToast('Saved!');
+                },
+                function (response){
+                    var err_message = "Error comment: " + response.comment + " CommentText: " + response.commentText;
+                    $log.debug(err_message);
+                    $scope.statusSaveToast('Some error, contact admin.');
                 }
-            });
+            )
         } else {
-            taskCommentService.create($scope.taskCommentData, function(response) {
-                $scope.taskCommentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/comments/' + response.id + '/edit';
-                }
-            });
+            $scope.statusSaveToast('Any change!');
         }
     };
-
 }])
+
 .config(function($mdDateLocaleProvider) {
   $mdDateLocaleProvider.formatDate = function(date) {
     return date ? moment(date).format('DD-MM-YYYY') : '';

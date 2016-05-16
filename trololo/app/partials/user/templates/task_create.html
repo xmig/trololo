@@ -62,7 +62,11 @@
                                         <label>Description</label>
                                         <textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>
                                 </md-input-container>
-
+                                <md-input-container class="md-block">
+                                    <label>Estimate minutes</label>
+                                    <input type="number" name="estimate_minutes" id="estimate_minutes"
+                                           ng-model="taskData.estimate_minutes" rows="5" />
+                                </md-input-container>
 <!--<Members>-->
 
                         <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
