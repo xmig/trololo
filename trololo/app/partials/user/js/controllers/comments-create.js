@@ -1,5 +1,5 @@
-angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', 'commentService', 'commentSelectedService',
-    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, commentService,commentSelectedService)
+angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', '$mdSidenav', 'commentService', 'commentSelectedService',
+    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, $mdSidenav, commentService,commentSelectedService)
 {
 
  console.log("----");
@@ -135,8 +135,8 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
 
 
 
-angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', 'taskCommentService', 'taskCommentSelectedService',
-    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, taskCommentService, taskCommentSelectedService)
+angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$routeParams', '$mdSidenav', '$log', 'taskCommentService', 'taskCommentSelectedService',
+    function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, $mdSidenav, $log, taskCommentService, taskCommentSelectedService)
 {
 
  console.log("----");
