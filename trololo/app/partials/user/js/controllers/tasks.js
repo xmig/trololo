@@ -179,7 +179,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     /* TASK INFO */
     $scope.taskSortType = 'title'; // set the default sort type
     $scope.taskSortDirection = true;  // set the default sort order
-    $scope.taskPageSize = 10;
+    $scope.taskPageSize = 500000000;
     $scope.taskPage = 1;
 
     $scope.viewTaskVariants = ["5", "10", "20", "50", "All"];
