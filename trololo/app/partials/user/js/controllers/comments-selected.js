@@ -1,5 +1,5 @@
-angular.module('userApp').controller('commentSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'commentSelectedService', 'activityListService', 'taskService','personalInfoService', '$window',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, commentSelectedService, activityListService, taskService, personalInfoService, $window)
+angular.module('userApp').controller('commentSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', '$mdSidenav', 'commentSelectedService', 'activityListService', 'taskService','personalInfoService', '$window',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, $mdSidenav, commentSelectedService, activityListService, taskService, personalInfoService, $window)
 {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 

@@ -49,7 +49,7 @@
                         <ul ng-repeat="tc in task_comment">
                             <li>
                                 <!--<a ng-href="#/user/tasks/{{ tc.id }}">{{ tc.title }}</a> - {{ tc.comment }}-->
-                                <b>{{ tc.title }}</b> - {{ tc.comment }}
+                                <a href="#/user/tasks/comments/{{ tc.id }}">{{ tc.title }}</a> - {{ tc.comment }}
                             </li>
                         </ul>
                     </md-content>

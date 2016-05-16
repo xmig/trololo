@@ -1,7 +1,6 @@
 import requests
 from django.conf import settings
 from logging import getLogger
-import json
 
 from serializers import (
     ProjectSerializer, TaskSerializer, TaskCreateSerializer, ProjectCommentSerializer,
@@ -20,9 +19,12 @@ from rest_framework.reverse import reverse
 from rest_framework import exceptions
 
 from chi_django_base.paginators import StandardResultsSetPagination
+from chi_django_base.sphinx_perform_search import perform_search
+
 from activity.serializers import ActivitySerializer
 from activity.filters import ActivityFilter
 from activity.models import Activity
+from django.conf import settings
 
 
 _logger = getLogger('app')
@@ -608,7 +610,7 @@ class GlobalSearchView(generics.ListAPIView):
         Makes full text search by tasks, projects & task comments for given search string
 
         Args:
-            query_string: string for searching by
+            query_string: string to search by
 
         Returns: object with 3 keys:
 
@@ -624,24 +626,27 @@ class GlobalSearchView(generics.ListAPIView):
         }
         results = {k: [] for k in func_map.keys()}
 
-        my_proj = ','.join([str(pr_id) for pr_id in get_my_proj(request.user)])
-        url_params = {'word': query_string}
+        my_proj = get_my_proj(request.user)
 
-        if not my_proj:
+        if not settings.USE_GLOBAL_SEARCH or not my_proj:
             return Response(results)
 
-        url_params['proj'] = my_proj
+        try:
+            for search_where in settings.SPHINX_INDEXES:
+                resp = perform_search(
+                    query_string,
+                    index=search_where,
+                    host=settings.SPHINX_SEARCH_PARAMS['host'],
+                    port=settings.SPHINX_SEARCH_PARAMS['port'],
+                    search_filters=[{'project_id': my_proj}],
+                    mode=settings.SPHINX_SEARCH_PARAMS['mode']
+                )
 
-        resp = requests.get(settings.GLOBAL_SEARCH_URL, params=url_params)
-
-        if resp.ok:
-            data = resp.json()
-
-            for key, val in data.iteritems():
-                if val:
-                    results[key] = func_map[key](val, request)
-        else:
-            _logger.debug('Global Search error {}: {}'.format(resp.status_code, resp.content))
+                if isinstance(resp, list):
+                    key = search_where.replace('_rt', '')
+                    results[key] = func_map[key]([int(id) for id in resp], request)
+        except Exception as e:
+            _logger.error(e)
             raise exceptions.APIException(detail='Some error', status=resp.status_code)
 
         return Response(results)
