@@ -123,7 +123,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
         });
     }
 
-
+    $scope.taskData = {members_info: []};
     $scope.saveTask = function() {
         $scope.taskData.tags = [];
 
@@ -150,13 +150,13 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
             taskService.create($scope.taskData, function(response) {
                 response.deadline_date = new Date(response.deadline_date);
                 $scope.taskData = response;
-                console.log('!!!!!!!!!!!!!!!!', response)
+//                console.log('!!!!!!!!!!!!!!!!', response)
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/' + response.id;
                 }
 
             }, function(error){
-                console.log("++error++", error)
+//                console.log("++error++", error)
             });
 
         }
