@@ -67,14 +67,14 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
 //        $scope.project = data;
 //    });
 
-    $scope.projectData = {};
+//    $scope.projectData = {};
 
-//    $scope.projectData = projectSelectedService.get(
-//                {id: $scope.project_id},
-//                function (data) {
-//                    $scope.projectDataCopy = JSON.parse(JSON.stringify(data));
-//                }
-//            );
+    $scope.projectData = projectSelectedService.get(
+                {id: $scope.project_id},
+                function (data) {
+                    $scope.projectDataCopy = JSON.parse(JSON.stringify(data));
+                }
+            );
 
     $scope.projectStatuses = [
         {'title': 'Breakthrough', 'id':'breakthrough'},
@@ -102,25 +102,43 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
     }
 
     $scope.projectData = {members_data:[]}
-    $scope.saveProject = function() {
-        $scope.projectData.tags = [];
-
+    
+    $scope.saveProject = function(){
+        $scope.saveProject.tags = [];
+        var mem = angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data)
+//        console.log("mem:::", mem)
+//        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
         if ($scope.project_id) {
-            // EDIT
-            $scope.projectData.id = $scope.project_id;
-            $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
-                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-            });
+            if ($scope.projectDataCopy.name !== $scope.projectData.name ||
+                $scope.projectDataCopy.description !== $scope.projectData.description ||
+                $scope.projectDataCopy.visible_by !== $scope.projectData.visible_by ||
+                $scope.projectDataCopy.status !== $scope.projectData.status ||
+                (new Date($scope.projectDataCopy.date_started) - $scope.projectData.date_started) !== 0 ||
+                (new Date($scope.projectDataCopy.date_finished) - $scope.projectData.date_finished) !== 0 || mem !== true){
+//                console.log("$scope.projectDataCopy.name", $scope.projectData.name, $scope.projectDataCopy.date_started)
+                $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
+                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+                });
 
-            projectSelectedService.update($scope.projectData, function(response) {
-                response.date_started = new Date(response.date_started);
-                response.date_finished = new Date(response.date_finished);
-                $scope.projectData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + $scope.projectData.id;
-                    $scope.statusSaveToast('Saved!');
-                }
-            });
+                projectSelectedService.update(
+                    {id: $scope.project_id},
+                    $scope.projectData,
+                    function (response){
+                        response.date_started = new Date(response.date_started);
+                        response.date_finished = new Date(response.date_finished);
+                        $scope.projectDataCopy = response;
+                        $window.location = '#/user/projects/' + $scope.projectDataCopy.id;
+                        $scope.statusSaveToast('Saved!');
+                    },
+                    function (response){
+                        var err_message = "Error project: " + response.project + " ProjectText: " + response.projectText;
+                        $log.debug(err_message);
+                        $scope.statusSaveToast('Some error, contact admin.');
+                    }
+                )
+            } else {
+                $scope.statusSaveToast('Any change!');
+            }
         } else {
             $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
                 return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
@@ -130,46 +148,12 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
                 response.date_finished = new Date(response.date_finished);
                 $scope.projectData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + response.id + '/edit';
+                    $window.location.href = '#/user/projects/' + response.id + '/';
                 }
             });
         }
     };
-
 }])
-//
-//    $scope.saveProject = function(){
-//        $scope.saveProject.tags = [];
-//        if ($scope.projectDataCopy.name !== $scope.projectData.name || $scope.projectDataCopy.description !== $scope.projectData.description ||
-//            $scope.projectDataCopy.members_data !== $scope.projectData.members_data || $scope.projectDataCopy.date_started !== $scope.projectData.date_started ||
-//            $scope.projectDataCopy.date_finished !== $scope.projectData.date_finished ||
-//            $scope.projectDataCopy.visible_by !== $scope.projectData.visible_by || $scope.projectDataCopy.status !== $scope.projectData.status
-//            ){
-////                $scope.projectData.id = $scope.project_id;
-////                $scope.projectData.members = $scope.projectData.members_data.map(function (user, index) {
-////                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-////                });
-//            projectSelectedService.update(
-//                {id: $scope.project_id},
-//                $scope.projectData,
-//                function (response){
-//                    response.date_started = new Date(response.date_started);
-//                    response.date_finished = new Date(response.date_finished);
-//                    $scope.projectDataCopy = response;
-//                    $window.location = '#/user/projects/' + $scope.projectDataCopy.id;
-//                    $scope.statusSaveToast('Saved!');
-//                },
-//                function (response){
-//                    var err_message = "Error project: " + response.project + " ProjectText: " + response.projectText;
-//                    $log.debug(err_message);
-//                    $scope.statusSaveToast('Some error, contact admin.');
-//                }
-//            )
-//        } else {
-//            $scope.statusSaveToast('Any change!');
-//        }
-//    };
-//}])
 
 .config(function($mdDateLocaleProvider) {
   $mdDateLocaleProvider.formatDate = function(date) {
