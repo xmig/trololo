@@ -549,27 +549,5 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             });
         }
     };
-//
-//    $scope.projectData = {};
-//    $scope.saveProject = function(){
-//        $scope.projectData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
-//        console.log("Project Data::::", $scope.projectData.project)
-//        if ($scope.project_id) {
-//            $scope.projectData.id = $scope.project_id;
-//            projectSelectedService.update($scope.projectData, function(response){
-//                $scope.projectData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
-//                }
-//            });
-//        } else {
-//            projectService.create($scope.projectData, function(response) {
-//                $scope.projectData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
-//                }
-//            });
-//        }
-//    };
 
 }]);
