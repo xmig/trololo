@@ -75,6 +75,7 @@ USE_GLOBAL_SEARCH = True
 PROJECT_INDEX = 'project_rt'
 TASK_INDEX = 'task_rt'
 TASK_COMMENT_INDEX = 'task_comment_rt'
+SPHINX_INDEXES = [PROJECT_INDEX, TASK_INDEX, TASK_COMMENT_INDEX]
 
 try:
     from local_settings import *
