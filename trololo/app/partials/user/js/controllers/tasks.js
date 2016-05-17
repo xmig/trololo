@@ -326,9 +326,15 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     $scope.all_project = [{project_obj: {'id': undefined, 'name': 'All'}}];
 
     $scope.onlyMyTasks = function(value, index, array) {
+
+        var members_id_list = [];
+        for (var i=0; i<value.members_info.length; i++) {
+            members_id = value.members_info[i];
+            members_id_list.push(members_id.id)
+        }
         if (!$scope.showMyTasks.checked) {
             return true;
-        } else if (value.members.indexOf($scope.userPersonalData.id) != -1) {
+        } else if (members_id_list.indexOf($scope.userPersonalData.id) != -1) {
             return true;
         }
         return false;
