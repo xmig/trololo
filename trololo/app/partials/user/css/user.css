@@ -18,6 +18,10 @@
     cursor: pointer;
 }
 
+.small_pic {
+    size: 10%;
+}
+
 /* Tabs */
 .status-ico {
     height: 12px;

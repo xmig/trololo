@@ -9,7 +9,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     })
 
 
-
 /* for datepicker */
      $scope.myDate = new Date();
 
@@ -124,7 +123,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     reloadActivity();
 
 
-    /* NOTIFICATION INFO */
+/* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
     $scope.notificationPageSize = 10;
@@ -176,7 +175,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     reloadNotification();
 
 
-    /* TASK INFO */
+/* TASK INFO */
     $scope.taskSortType = 'title'; // set the default sort type
     $scope.taskSortDirection = true;  // set the default sort order
     $scope.taskPageSize = 500000000;
@@ -302,6 +301,9 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     reloadTask();
 
 
+//    $scope.reloadTasks();
+
+
 //    taskService.get(params, function (data) {
 //            $scope.tasks = {}
 //            $scope.tasks.data = data.results;
@@ -321,9 +323,8 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
 
     $scope.all_members = [{'id': undefined, 'username': 'All'}];
-
-
     $scope.all_project = [{project_obj: {'id': undefined, 'name': 'All'}}];
+
 
     $scope.onlyMyTasks = function(value, index, array) {
 

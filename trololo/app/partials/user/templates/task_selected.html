@@ -194,8 +194,11 @@
                 <md-tab label="members">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding">
-                                <p>member's_pic /<a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)">{{member.username}}</a>({{member.email}})</p> <!--ng-click="changeUserLocation($event, member.id)"-->
+                            <md-list-item ng-repeat="member in task.members_info" class="secondary-button-padding">
+                                <div >
+                                    <img src={{member.photo}} class='small_pic' alt="User avatar" />
+                                </div>
+                                <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)">{{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
                             </md-list-item>
                         </md-list>
 

@@ -25,6 +25,7 @@
                     </tbody>
                     <div flex></div>
                     <md-button ng-href="#/user/tasks/create">Create New Task</md-button>
+                    <i onMouseOver="this.style.cursor='pointer'" class="material-icons" ng-click="loadStuff(); reloadProjects()" title="Refresh">replay</i>
                 </div>
             </md-toolbar>
             <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
@@ -96,41 +97,6 @@
 
         <md-card>
             <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
-                <md-tab label="my tasks">
-                    <md-content class="md-padding">
-                        <div layout="row">
-                            <md-input-container class="sorting-margin">
-                                <label>Sort</label>
-                                <md-select ng-model="tabSort.my_tasks">
-                                    <md-option ng-repeat="opt in myTasksSortVariants" value="{{opt.value}}">{{opt.option}}</md-option>
-                                </md-select>
-                            </md-input-container>
-                            <md-input-container class="sorting-margin">
-                                <label>View</label>
-                                <md-select ng-model="tabView.my_tasks">
-                                    <md-option ng-repeat="opt in viewTaskVariants" value="{{opt}}" ng-click="viewTask(opt)">{{opt}}</md-option>
-                                </md-select>
-                            </md-input-container>
-                        </div>
-
-                        <md-list class="project-tabs-list">
-                                <md-list-item ng-repeat="task in my_tasks.data | orderBy: tabSort.my_tasks" class="secondary-button-padding">  <!--ng-click="action($event)"-->
-                                <span class="status-ico" ng-class="task.label"></span>
-                                <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">
-                                            {{task.name}}</a></b> ({{task.type}}) for project <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a>
-                                            (created by <a ng-href="#" ng-click="changeUserLocation($event, task.owner.id)" class="user-link-name">{{ task.owner.username }}</a>)
-                                            - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
-                            </md-list-item>
-                            <!--<md-list-item ng-repeat="tsk in all_tsks" class="secondary-button-padding" ng-click="action($event)">-->
-                                <!--<span class="status-ico" ng-class="tsk.status"></span>-->
-                                <!--<p><b> {{ tsk.name }} </b> - {{ tsk.user }} {{tsk.action}} for <b>{{tsk.task}}</b></p>-->
-                                <!--<md-button class="md-secondary" ng-click="doSecondaryAction($event)">View</md-button>-->
-                            <!--</md-list-item>-->
-                        </md-list>
-
-                        <span></span>
-                    </md-content>
-                </md-tab>
 
                 <md-tab label="all tasks">
                     <md-content class="md-padding">
@@ -158,7 +124,6 @@
                                             (created by <a ng-href="#" ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
                         </md-list-item>
-
 
                         <span></span>
                      </md-list>
