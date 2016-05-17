@@ -2,6 +2,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams, projectService){
 
     $scope.tasks = {data: []};
+
 // for dropdown in popup <choose projects>
     $scope.projects = projectService.get(function(data) {
 //        $scope.projects.data = data.results;
@@ -57,17 +58,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
                 $scope.customFullscreen = (wantsFullScreen === true);
             });
         };
-
-
-
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
-/* end - for popup */
 
 
 
@@ -236,7 +226,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
     $scope.tag = $routeParams.task_tag;
 
-    var reloadTask = function() {
+    $scope.reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
             'page': $scope.taskPage,
@@ -284,7 +274,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         $scope.taskSortType = sortInfo.type;
         $scope.taskSortDirection = sortInfo.direction;
         $scope.taskPage = 1;
-        reloadTask();
+        $scope.reloadTask();
     };
 
     $scope.viewTask = function(viewInfo) {
@@ -295,13 +285,12 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         }
 
         $scope.taskPage = 1;
-        reloadTask();
+        $scope.reloadTask();
     };
 
-    reloadTask();
+    $scope.reloadTask();
 
 
-//    $scope.reloadTasks();
 
 
 //    taskService.get(params, function (data) {
