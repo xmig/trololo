@@ -25,10 +25,12 @@
 
 <!--<Choose Project>-->
                                 <md-input-container class="md-block">
+
                                     <label>Choose Project:</label>
                                             <md-select ng-model="taskData.project">
                                                 <md-option ng-repeat="proj in projects" ng-value="proj.id" required ng-model="taskData.project">{{ proj.name }}</md-option>
                                             </md-select>
+                                            <!--<pre>{{proj}}</pre>-->
                                 </md-input-container>
                                 <div style="height:5px"></div>
 <!--<Set Task type>-->

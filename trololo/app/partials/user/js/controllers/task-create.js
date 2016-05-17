@@ -110,39 +110,102 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
 
 
-
     if ($scope.task_id) {
         // EDIT
         // TASK CALCULATE
-        taskSelectedService.get({ id: $scope.task_id }, function (response) {
+        $scope.taskData = taskSelectedService.get({ id: $scope.task_id }, function (response) {
             response.deadline_date = new Date(response.deadline_date);
             response.project = response.project_obj.id
             $scope.taskData = response;
+            $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
 //            $scope.taskData.project
-            console.log('EDIT', response.project)
+//            console.log('EDIT', response.project)
         });
     }
 
+
     $scope.taskData = {members_info: []};
-    $scope.saveTask = function() {
-        $scope.taskData.tags = [];
 
+//    $scope.saveTask = function() {
+//        $scope.taskData.tags = [];
+//
+//        if ($scope.task_id) {
+//            // EDIT
+//            $scope.taskData.id = $scope.task_id;
+//            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+//            });
+//
+//            $scope.taskData.project = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/projects/' + $scope.taskData.project + '/';
+//
+//            taskSelectedService.update($scope.taskData, function(response) {
+//                response.deadline_date = new Date(response.deadline_date);
+//                $scope.taskData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location.href = '#/user/tasks/' + $scope.taskData.id;
+//                }
+//            });
+//        } else {
+//            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+//            });
+//            taskService.create($scope.taskData, function(response) {
+//                response.deadline_date = new Date(response.deadline_date);
+//                $scope.taskData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location.href = '#/user/tasks/' + response.id;
+//                }
+//
+//            }, function(error){
+////                console.log("++error++", error)
+//            });
+//
+//        }
+//    };
+
+
+    $scope.saveTask = function(){
+        $scope.saveTask.tags = [];
+
+        var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info)
+//        console.log("mem:::", mem)
+//        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
         if ($scope.task_id) {
-            // EDIT
-            $scope.taskData.id = $scope.task_id;
-            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
-                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-            });
+            if ($scope.taskDataCopy.name !== $scope.taskData.name ||
+                $scope.taskDataCopy.description !== $scope.taskData.description ||
+                $scope.taskDataCopy.project !== $scope.taskData.project ||
+                $scope.taskDataCopy.status !== $scope.taskData.status ||
+                $scope.taskDataCopy.type !== $scope.taskData.type ||
+                $scope.taskDataCopy.label !== $scope.taskData.label ||
+                $scope.taskDataCopy.estimate_minutes !== $scope.taskData.estimate_minutes ||
+                (new Date($scope.taskDataCopy.deadline_date) - $scope.taskData.deadline_date) !== 0 || mem !== true){
+//                console.log("$scope.projectDataCopy.name", $scope.projectData.name, $scope.projectDataCopy.date_started)
+                $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+                });
+                console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
 
-            $scope.taskData.project = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/projects/' + $scope.taskData.project + '/';
+                taskSelectedService.update(
+                    {id: $scope.task_id},
+                    $scope.taskData,
+                    function (response){
+                        response.deadline_date = new Date(response.deadline_date);
+                        $scope.taskDataCopy = response;
+                        $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
+                        $scope.statusSaveToast('Saved!');
+                    },
+                    function (response){
+//                        console.log('response', response)
 
-            taskSelectedService.update($scope.taskData, function(response) {
-                response.deadline_date = new Date(response.deadline_date);
-                $scope.taskData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + $scope.taskData.id;
-                }
-            });
+                        console.log('taskDataCopy.project', $scope.taskDataCopy.project_obj.id, $scope.taskData.project_obj.id)
+                        var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
+                        $log.debug(err_message);
+                        $scope.statusSaveToast('Some error, contact admin.');
+                    }
+                )
+            } else {
+                $scope.statusSaveToast('Any change!');
+            }
         } else {
             $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                 return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
@@ -151,15 +214,14 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
                 response.deadline_date = new Date(response.deadline_date);
                 $scope.taskData = response;
                 if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + response.id;
+                    $window.location.href = '#/user/tasks/' + response.id + '/';
                 }
-
-            }, function(error){
-//                console.log("++error++", error)
             });
-
         }
     };
+
+
+
 
 }])
 .config(function($mdDateLocaleProvider) {
