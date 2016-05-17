@@ -227,10 +227,10 @@ img.resize2{
 
 }
 a {
-    color: #ccc;
+    color: #696969;
     text-decoration: none;
 }
 a:hover {
-    color: #696969;
+    color: #363636;
     text-decoration: underline;
 }
