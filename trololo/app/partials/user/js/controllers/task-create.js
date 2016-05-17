@@ -12,7 +12,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
     })
 
 
-
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -115,9 +114,13 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
         // TASK CALCULATE
         $scope.taskData = taskSelectedService.get({ id: $scope.task_id }, function (response) {
             response.deadline_date = new Date(response.deadline_date);
-            response.project = response.project_obj.id
+//            response.project = response.project_obj.id
             $scope.taskData = response;
+                        console.log('[[[$scope.taskData]]]', $scope.taskData)
+
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
+                        console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
+
 //            $scope.taskData.project
 //            console.log('EDIT', response.project)
         });
@@ -167,10 +170,10 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-        var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info)
-//        console.log("mem:::", mem)
-//        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
         if ($scope.task_id) {
+            var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info);
+            //        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
+
             if ($scope.taskDataCopy.name !== $scope.taskData.name ||
                 $scope.taskDataCopy.description !== $scope.taskData.description ||
                 $scope.taskDataCopy.project !== $scope.taskData.project ||

@@ -90,7 +90,7 @@
 
                                     <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">
                                         <div ng-if="comment.created_by.photo"><img ng-src="{{ comment.created_by.photo }}" class="resize" title="{{comment.created_by.username}}" /></div>
-                                    </a> - 
+                                    </a> -
                                     <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a>
                                     added comment:<b>"{{comment.title}}": </b> {{comment.comment}}
                                     <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>

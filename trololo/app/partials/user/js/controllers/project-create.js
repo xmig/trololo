@@ -107,10 +107,11 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
     $scope.saveProject = function(){
         $scope.saveProject.tags = [];
 
-        var mem = angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data)
+        if ($scope.project_id) {
+            var mem = angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data);
 //        console.log("mem:::", mem)
 //        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
-        if ($scope.project_id) {
+
             if ($scope.projectDataCopy.name !== $scope.projectData.name ||
                 $scope.projectDataCopy.description !== $scope.projectData.description ||
                 $scope.projectDataCopy.visible_by !== $scope.projectData.visible_by ||
