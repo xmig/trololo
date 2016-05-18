@@ -46,13 +46,13 @@
             </md-table-container>
 
 <!-- for popup button-->
-            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
-                <div class="md-toolbar-tools">
-                    <div flex></div>
-                    <md-button ng-click="popRegistr($event)">POPUP__open in popup</md-button>  <!--ng-hide="authenticated"-->
-                    <md-button ng-click="popRegistr($event)">POPUP__create new task</md-button>  <!--ng-hide="authenticated"-->
-                </div>
-            </md-toolbar>
+            <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<div flex></div>-->
+                    <!--<md-button ng-click="popRegistr($event)">POPUP__open in popup</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
+                    <!--<md-button ng-click="popRegistr($event)">POPUP__create new task</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
 <!-- for popup end button-->
         </md-card>
 
@@ -82,8 +82,19 @@
                         <md-list class="project-tabs-list">
 
                              <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.taskComments" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                    <p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a> added comment: <b>{{comment.title}}: {{comment.comment}}</b>
-                                        <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span></p>
+                                    <!--<p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">-->
+                                        <!--{{comment.created_by.username}}</a> added comment: <b>{{comment.title}}: {{comment.comment}}</b>-->
+                                        <!--<span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a>-->
+                                        <!--<a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span>-->
+                                    <!--</p>-->
+
+                                    <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">
+                                        <div ng-if="comment.created_by.photo"><img ng-src="{{ comment.created_by.photo }}" class="resize" title="{{comment.created_by.username}}" /></div>
+                                    </a> -
+                                    <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a>
+                                    added comment:<b>"{{comment.title}}": </b> {{comment.comment}}
+                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
+                                    <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
 
                             </md-list-item>
                         </md-list>
@@ -191,11 +202,32 @@
                     </md-content>
                 </md-tab>
 
-                <md-tab label="members">
+                <!--<md-tab label="members">-->
+                    <!--<md-content class="md-padding">-->
+                        <!--<md-list class="project-tabs-list">-->
+                            <!--<md-list-item ng-repeat="member in task.members_info" class="secondary-button-padding">-->
+                                <!--<div >-->
+                                    <!--<img ng-src='{{member.photo}}' class='small_pic' alt="User avatar" />-->
+                                <!--</div>-->
+                                <!--<a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)">{{member.username}}</a>({{member.email}})&lt;!&ndash;ng-click="changeUserLocation($event, member.id)"&ndash;&gt;-->
+                            <!--</md-list-item>-->
+                        <!--</md-list>-->
+
+                        <!--<div class="md-toolbar-tools">-->
+                            <!--<div flex></div>-->
+                            <!--<md-button ng-click="">EDD / DELETE (test)</md-button>-->
+                        <!--</div>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+
+                 <md-tab label="members">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="member in task.members" class="secondary-button-padding">
-                                <p>member's_pic /<a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)">{{member.username}}</a>({{member.email}})</p> <!--ng-click="changeUserLocation($event, member.id)"-->
+                            <md-list-item ng-repeat="member in task.members_info" class="secondary-button-padding">
+                                <div>
+                                    <img ng-src='{{member.photo}}' class='resize' alt="User avatar" />
+                                </div>
+                                <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> - {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
                             </md-list-item>
                         </md-list>
 
@@ -205,6 +237,11 @@
                         </div>
                     </md-content>
                 </md-tab>
+
+
+
+
+
                 <!--<md-tab label="Statuses">-->
                     <!--<md-content class="md-padding">-->
                         <!--<div layout="row">-->
