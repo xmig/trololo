@@ -5,6 +5,7 @@ from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
 from taggit.managers import TaggableManager
 from django.utils import timezone
+from chi_django_base.storage import OverwriteStorage
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -152,6 +153,18 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
 
     class Meta:
         ordering = ['pk']
+
+
+def task_directory_path(instance, filename):
+    return 'task_{0}/{1}'.format(instance.task.id, filename)
+
+
+class TaskPicture(models.Model):
+    task = models.ForeignKey(Task, related_name='files')
+    file_upload = models.FileField(upload_to=task_directory_path, blank=True)
+
+    def save(self, *args, **kwargs):
+        super(TaskPicture, self).save(*args, **kwargs)
 
 
 class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):

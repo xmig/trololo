@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from projects.models import Project, Task, TaskComment, ProjectComment, Status
+from projects.models import Project, Task, TaskComment, ProjectComment, Status, TaskPicture
 from taggit.models import Tag
 from users.serializers import OnlyUserInfoSerializer
 from django.db.models import Q
@@ -263,6 +263,24 @@ class GroupRelatedField(serializers.RelatedField):
         return value.id
 
 
+class UploadFileSerializer(serializers.ModelSerializer):
+
+    task = serializers.PrimaryKeyRelatedField(
+        queryset=Task.objects.all()
+    )
+
+
+    class Meta:
+        model = TaskPicture
+        fields = (
+            'id','task', 'file_upload'
+        )
+
+        read_only_fields = (
+            'id'
+        )
+
+
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
     # activity = ActivitySerializer(source='task_comments', many=True)
@@ -274,6 +292,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=False,
         lookup_field='pk'
     )
+    files = UploadFileSerializer( many=True, read_only=True)
 
     # members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
     members = serializers.HyperlinkedRelatedField(
@@ -318,7 +337,8 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'status', 'members_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members',
+            'files'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')
 

@@ -1,4 +1,4 @@
-angular.module('userApp', ['md.data.table']);
+angular.module('userApp', ['md.data.table', 'ngMaterial', 'lfNgMdFileInput']);
 
 angular.module('userApp').config(['$mdThemingProvider', function ($mdThemingProvider) {
     'use strict';

@@ -205,6 +205,19 @@
                         </div>
                     </md-content>
                 </md-tab>
+                <md-tab label="upload files">
+                    <md-content class="md-padding">
+                        <md-list class="project-tabs-list">
+                             <md-list-item ng-repeat="file in task.files" class="secondary-button-padding"> <!--ng-click="action($event)"-->
+                                <p><a target="_self" class="user-link-name" ng-href="{{file.file_upload}}" download="{{getFileName(file.file_upload)}}">{{getFileName(file.file_upload)}}</a><a href="#" ng-click="deleteFilePopup($event, file.id, file.file_upload, $index)">Delete</a></p>
+                                        <!--<span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span></p>-->
+                            </md-list-item>
+                        </md-list>
+                        <lf-ng-md-file-input lf-files="files" multiple preview></lf-ng-md-file-input>
+                        <md-button type="button"  class="md-raised md-primary" ng-click="onSubmit()">Submit</md-button>
+                    </md-content>
+
+                </md-tab>
                 <!--<md-tab label="Statuses">-->
                     <!--<md-content class="md-padding">-->
                         <!--<div layout="row">-->
