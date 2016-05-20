@@ -28,7 +28,7 @@ sudo -u ubuntu bash StageRun.sh
 
 echo "*** Restart supervisorctl and nginx ***"
 
-sudo supervisorctl update
 sudo supervisorctl start trololo
+sudo supervisorctl update
 
 sudo service nginx restart
