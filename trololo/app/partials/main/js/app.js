@@ -304,7 +304,10 @@ angular.module('mainApp', [
     })
     .run(function (djangoAuth, $window) {
         djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
+
     });
+
+
 
 angular.module('mainApp').config(function($resourceProvider) {
   $resourceProvider.defaults.stripTrailingSlashes = false;

@@ -117,6 +117,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 //            response.project = response.project_obj.id
             $scope.taskData = response;
                         console.log('[[[$scope.taskData]]]', $scope.taskData)
+                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
@@ -187,6 +188,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
                 console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
+
 
                 taskSelectedService.update(
                     {id: $scope.task_id},

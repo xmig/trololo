@@ -24,10 +24,13 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
          $scope.task = response;
          console.log("DDDDD", $scope.task);
+
+
     }, function(error){
 //        console.log("ERROR"); // if task doesn't exist - go to main page
         $window.location.href = "#/"
     })
+
 
 
 
@@ -64,7 +67,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
 
 
-    /* ACTIVITY INFO */  //- sorting, view, pagination
+/* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
     $scope.activitySortDirection = true;  // set the default sort order
     $scope.activityPageSize = 10;
@@ -351,55 +354,47 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         };
 
 
-
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
 /* end - for popup */
 
 
-    $scope.editComment = function (event, dessert) {
-        event.stopPropagation(); // in case autoselect is enabled
-
-        var editDialog = {
-            modelValue: dessert.comment,
-            placeholder: 'Add a comment',
-            save: function (input) {
-                if(input.$modelValue === 'Donald Trump') {
-                    return $q.reject();
-                }
-                if(input.$modelValue === 'Bernie Sanders') {
-                    return dessert.comment = 'FEEL THE BERN!'
-                }
-                dessert.comment = input.$modelValue;
-            },
-            targetEvent: event,
-            title: 'Add a comment',
-            validators: {
-                'md-maxlength': 30
-            }
-        };
-
-        var promise;
-
-        if($scope.options.largeEditDialog) {
-            promise = $mdEditDialog.large(editDialog);
-        } else {
-            promise = $mdEditDialog.small(editDialog);
-        }
-
-        promise.then(function (ctrl) {
-            var input = ctrl.getInput();
-
-            input.$viewChangeListeners.push(function () {
-                input.$setValidity('task_test', input.$modelValue !== 'task_test');
-            });
-        });
-    };
+//    $scope.editComment = function (event, dessert) {
+//        event.stopPropagation(); // in case autoselect is enabled
+//
+//        var editDialog = {
+//            modelValue: dessert.comment,
+//            placeholder: 'Add a comment',
+//            save: function (input) {
+//                if(input.$modelValue === 'Donald Trump') {
+//                    return $q.reject();
+//                }
+//                if(input.$modelValue === 'Bernie Sanders') {
+//                    return dessert.comment = 'FEEL THE BERN!'
+//                }
+//                dessert.comment = input.$modelValue;
+//            },
+//            targetEvent: event,
+//            title: 'Add a comment',
+//            validators: {
+//                'md-maxlength': 30
+//            }
+//        };
+//
+//        var promise;
+//
+//        if($scope.options.largeEditDialog) {
+//            promise = $mdEditDialog.large(editDialog);
+//        } else {
+//            promise = $mdEditDialog.small(editDialog);
+//        }
+//
+//        promise.then(function (ctrl) {
+//            var input = ctrl.getInput();
+//
+//            input.$viewChangeListeners.push(function () {
+//                input.$setValidity('task_test', input.$modelValue !== 'task_test');
+//            });
+//        });
+//    };
 
 
 //    $scope.sortVariants = [
@@ -472,6 +467,94 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
             });
         }
     };
+
+
+
+
+
+
+    $scope.taskData = {members_info: []};
+
+
+    $scope.saveTask = function(){
+        $scope.saveTask.tags = [];
+
+        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
+            $scope.task = response;
+            $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
+                            console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
+                            console.log('taskDataCopy', $scope.taskDataCopy)
+
+        if ($scope.taskDataCopy.members_info !== $scope.taskData.members_info) {
+//            $scope.taskData.id = $scope.task_id;
+
+
+                $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+                });
+
+                taskSelectedService.update({id: $scope.task_id}, $scope.taskData, function(response) {
+                    $scope.taskData = response;
+                    $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
+                    $scope.statusSaveToast('Saved!');
+                },
+                    function (response){
+//                        console.log('response', response)
+
+                        var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
+                        $log.debug(err_message);
+                        $scope.statusSaveToast('Some error, contact admin.');
+                    }
+                )
+            } else {
+                $scope.statusSaveToast('Any change!');
+            }
+        })
+        }
+
+//    $scope.saveTask = function(){
+//        $scope.saveTask.tags = [];
+//
+//        if ($scope.task_id) {
+//            $scope.taskData.id = $scope.task_id;
+//
+//
+//                $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+//                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+//                });
+//
+//                taskSelectedService.update({id: $scope.task_id}, $scope.taskData, function(response) {
+//                    $scope.taskData = response;
+//                    $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
+//                    $scope.statusSaveToast('Saved!');
+//                },
+//                    function (response){
+////                        console.log('response', response)
+//
+//                        var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
+//                        $log.debug(err_message);
+//                        $scope.statusSaveToast('Some error, contact admin.');
+//                    }
+//                )
+//            } else {
+//                $scope.statusSaveToast('Any change!');
+//            }
+//        }
+
+//        else {
+//            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+//            });
+//            taskService.create($scope.taskData, function(response) {
+//                $scope.taskData = response;
+//                if (typeof response.id !== 'undefined' && response.id > 0) {
+//                    $window.location.href = '#/user/tasks/' + response.id + '/';
+//                }
+//            });
+//        }
+
+
+
 
 
 }]);

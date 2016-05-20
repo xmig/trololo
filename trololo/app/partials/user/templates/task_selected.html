@@ -57,9 +57,6 @@
         </md-card>
 
 
-
-
-
         <md-card>
             <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
                 <md-tab label="comments">
@@ -93,7 +90,7 @@
                                     </a> -
                                     <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">{{comment.created_by.username}}</a>
                                     added comment:<b>"{{comment.title}}": </b> {{comment.comment}}
-                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
+                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> | <a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span>
                                     <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
 
                             </md-list-item>
@@ -189,11 +186,37 @@
                     </md-content>
                 </md-tab>
 
+                <!--<md-tab label="description">-->
+                    <!--<md-content class="md-padding">-->
+                        <!--<md-list class="project-tabs-list">-->
+                                <!--<p><b>Task description</b></p>-->
+                                <!--<p>{{task.description}}</p>-->
+                        <!--</md-list>-->
+                        <!--<div class="md-toolbar-tools">-->
+                            <!--<div flex></div>-->
+                            <!--<md-button ng-click="">edit description (test)</md-button>-->
+                        <!--</div>-->
+                    <!--</md-content>-->
+                <!--</md-tab>-->
+
+
                 <md-tab label="description">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
                                 <p><b>Task description</b></p>
-                                <p>{{task.description}}</p>
+                                    <!--<div ng-controller="TextBtnCtrl">-->
+                                      <!--<a href="#" editable-text="task.description">-->
+                                        <!--{{ task.description || 'empty' }}-->
+                                      <!--</a>-->
+                                    <!--</div>-->
+                                    <div ng-controller="TextBtnCtrl">
+                                          <span editable-text="task.description" e-form="textBtnForm">
+                                            {{ task.description || 'empty' }}
+                                          </span>
+                                          <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
+                                            edit
+                                          </button>
+                                    </div>
                         </md-list>
                         <div class="md-toolbar-tools">
                             <div flex></div>
@@ -201,7 +224,6 @@
                         </div>
                     </md-content>
                 </md-tab>
-
                 <!--<md-tab label="members">-->
                     <!--<md-content class="md-padding">-->
                         <!--<md-list class="project-tabs-list">-->
@@ -222,25 +244,55 @@
 
                  <md-tab label="members">
                     <md-content class="md-padding">
+
                         <md-list class="project-tabs-list">
                             <md-list-item ng-repeat="member in task.members_info" class="secondary-button-padding">
                                 <div>
                                     <img ng-src='{{member.photo}}' class='resize' alt="User avatar" />
                                 </div>
-                                <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> - {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
+                                -
+                                <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
                             </md-list-item>
                         </md-list>
 
-                        <div class="md-toolbar-tools">
-                            <div flex></div>
-                            <md-button ng-click="">EDD / DELETE (test)</md-button>
-                        </div>
+                            <md-card class="md-padding">
+                                <form name="save_task" ng-submit="save_task.$valid && saveTask()">
+                                    <md-card-title>
+                                        <md-card-title-text>
+                                            <span class="md-headline">Add members</span>
+                                        </md-card-title-text>
+                                    </md-card-title>
+                                    <md-card-content>
+                                        <div>
+                                            <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                                        <!--<pre>{{taskData}}</pre>-->
+                                                <md-contact-chips
+                                                    ng-model="taskData.members_info"
+                                                    md-contacts="ctrl.delayedQuerySearch($query)"
+                                                    md-contact-name="username"
+                                                    md-contact-email="email"
+                                                    md-require-match="true"
+                                                    md-highlight-flags="i"
+                                                    filter-selected="ctrl.filterSelected"
+                                                    placeholder="Members">
+                                                </md-contact-chips>
+                                            </div>
+                                        </div>
+                                    </md-card-content>
+                                    <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
+                                    </md-card-actions>
+                                </form>
+                            </md-card>
                     </md-content>
-                </md-tab>
+                 </md-tab>
+            </md-tabs>
+
+        </md-card>
 
 
 
-
+    </div>
 
                 <!--<md-tab label="Statuses">-->
                     <!--<md-content class="md-padding">-->
@@ -282,12 +334,6 @@
                         <!--<span></span>-->
                     <!--</md-content>-->
                 <!--</md-tab>-->
-
-            </md-tabs>
-        </md-card>
-    </div>
-
-
 
 
 
