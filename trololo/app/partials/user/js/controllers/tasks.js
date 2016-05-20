@@ -2,12 +2,12 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     function($scope, $rootScope, $http, taskService, activityListService, $mdDialog, $mdMedia, $routeParams, projectService){
 
     $scope.tasks = {data: []};
+
 // for dropdown in popup <choose projects>
     $scope.projects = projectService.get(function(data) {
 //        $scope.projects.data = data.results;
 //        console.log("---------------", data.results)
     })
-
 
 
 /* for datepicker */
@@ -58,17 +58,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
                 $scope.customFullscreen = (wantsFullScreen === true);
             });
         };
-
-
-
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
-/* end - for popup */
 
 
 
@@ -124,7 +113,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     reloadActivity();
 
 
-    /* NOTIFICATION INFO */
+/* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
     $scope.notificationPageSize = 10;
@@ -176,7 +165,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     reloadNotification();
 
 
-    /* TASK INFO */
+/* TASK INFO */
     $scope.taskSortType = 'title'; // set the default sort type
     $scope.taskSortDirection = true;  // set the default sort order
     $scope.taskPageSize = 500000000;
@@ -237,7 +226,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
     $scope.tag = $routeParams.task_tag;
 
-    var reloadTask = function() {
+    $scope.reloadTask = function() {
         var sorting = ($scope.taskSortDirection ? '' : '-') + $scope.taskSortType;
         var params = {
             'page': $scope.taskPage,
@@ -285,7 +274,7 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         $scope.taskSortType = sortInfo.type;
         $scope.taskSortDirection = sortInfo.direction;
         $scope.taskPage = 1;
-        reloadTask();
+        $scope.reloadTask();
     };
 
     $scope.viewTask = function(viewInfo) {
@@ -296,10 +285,12 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         }
 
         $scope.taskPage = 1;
-        reloadTask();
+        $scope.reloadTask();
     };
 
-    reloadTask();
+    $scope.reloadTask();
+
+
 
 
 //    taskService.get(params, function (data) {
@@ -321,9 +312,8 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
 
     $scope.all_members = [{'id': undefined, 'username': 'All'}];
-
-
     $scope.all_project = [{project_obj: {'id': undefined, 'name': 'All'}}];
+
 
     $scope.onlyMyTasks = function(value, index, array) {
 

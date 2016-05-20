@@ -25,10 +25,12 @@
 
 <!--<Choose Project>-->
                                 <md-input-container class="md-block">
+
                                     <label>Choose Project:</label>
                                             <md-select ng-model="taskData.project">
                                                 <md-option ng-repeat="proj in projects" ng-value="proj.id" required ng-model="taskData.project">{{ proj.name }}</md-option>
                                             </md-select>
+                                            <!--<pre>{{proj}}</pre>-->
                                 </md-input-container>
                                 <div style="height:5px"></div>
 <!--<Set Task type>-->
@@ -70,6 +72,7 @@
 <!--<Members>-->
 
                         <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                            <pre>{{taskData}}</pre>
                                     <md-contact-chips
                                         ng-model="taskData.members_info"
                                         md-contacts="ctrl.delayedQuerySearch($query)"

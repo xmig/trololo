@@ -286,13 +286,21 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     # activity = ActivitySerializer(source='task_comments', many=True)
     comments = TaskCommentSerializer(source='task_comments', required=False, many=True, read_only=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
-    project = serializers.HyperlinkedRelatedField(
-        view_name='projects:projects_detail',
+
+    project = serializers.PrimaryKeyRelatedField(  #id
+        # view_name='projects:projects_detail',
         queryset=Project.objects.all(),
-        required=False,
-        lookup_field='pk'
+        required=True,
+        # lookup_field='pk'
     )
     files = UploadFileSerializer( many=True, read_only=True)
+
+    # project = serializers.HyperlinkedRelatedField(  #url
+    #     view_name='projects:projects_detail',
+    #     queryset=Project.objects.all(),
+    #     required=False,
+    #     lookup_field='pk'
+    # )
 
     # members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
     members = serializers.HyperlinkedRelatedField(
@@ -378,12 +386,19 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TaskCreateSerializer(TaskSerializer):
-    project = serializers.PrimaryKeyRelatedField(
+    project = serializers.PrimaryKeyRelatedField(  #id
         # view_name='projects:projects_detail',
         queryset=Project.objects.all(),
         required=True,
         # lookup_field='pk'
     )
+
+    # project = serializers.HyperlinkedRelatedField(  #url
+    #     view_name='projects:projects_detail',
+    #     queryset=Project.objects.all(),
+    #     required=False,
+    #     lookup_field='pk'
+    # )
 
     class Meta:
         model = Task

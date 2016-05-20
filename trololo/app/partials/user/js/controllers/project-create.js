@@ -69,12 +69,12 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
 
 //    $scope.projectData = {};
 
-    $scope.projectData = projectSelectedService.get(
-                {id: $scope.project_id},
-                function (data) {
-                    $scope.projectDataCopy = JSON.parse(JSON.stringify(data));
-                }
-            );
+//    $scope.projectData = projectSelectedService.get(
+//                {id: $scope.project_id},
+//                function (data) {
+//                    $scope.projectDataCopy = JSON.parse(JSON.stringify(data));
+//                }
+//            );
 
     $scope.projectStatuses = [
         {'title': 'Breakthrough', 'id':'breakthrough'},
@@ -94,10 +94,11 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
     if ($scope.project_id) {
         // EDIT
         // PROJECT CALCULATE
-        projectSelectedService.get({ id: $scope.project_id }, function (data) {
+        $scope.projectData = projectSelectedService.get({ id: $scope.project_id }, function (data) {
             data.date_started = new Date(data.date_started);
             data.date_finished = new Date(data.date_finished);
             $scope.projectData = data;
+            $scope.projectDataCopy = JSON.parse(JSON.stringify(data));
         });
     }
 
@@ -105,10 +106,12 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
     
     $scope.saveProject = function(){
         $scope.saveProject.tags = [];
-        var mem = angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data)
+
+        if ($scope.project_id) {
+            var mem = angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data);
 //        console.log("mem:::", mem)
 //        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
-        if ($scope.project_id) {
+
             if ($scope.projectDataCopy.name !== $scope.projectData.name ||
                 $scope.projectDataCopy.description !== $scope.projectData.description ||
                 $scope.projectDataCopy.visible_by !== $scope.projectData.visible_by ||
@@ -131,7 +134,7 @@ angular.module('userApp').controller('projectCreateCtrl', ['$scope', '$rootScope
                         $scope.statusSaveToast('Saved!');
                     },
                     function (response){
-                        var err_message = "Error project: " + response.project + " ProjectText: " + response.projectText;
+                        var err_message = "Error status: " + response.status + " StatusText: " + response.statusText;
                         $log.debug(err_message);
                         $scope.statusSaveToast('Some error, contact admin.');
                     }
