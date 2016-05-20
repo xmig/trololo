@@ -8,7 +8,8 @@ angular.module('mainApp', [
         'ngMaterial',
         'ngMessages',
         'material.svgAssetsCache',
-        'userApp'
+        'userApp',
+        'lfNgMdFileInput'
     ])
     .config(function ($routeProvider) {
         $routeProvider
@@ -201,6 +202,15 @@ angular.module('mainApp', [
                 }
             })
 
+            .when('/user/tasks/files/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'fileUploadCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
 //            .when('/user/tasks/:id', {
 //                templateUrl: '/static/user/templates/user.html',
 //                controller: 'taskSelectedCtrl',

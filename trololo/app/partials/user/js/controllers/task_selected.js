@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
-                                                 function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
+angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', 'taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
+                                                 function($window, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -23,7 +23,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
          $scope.task = response;
-         console.log("DDDDD", $scope.task);
+         console.log("DDDDD", $scope.task.files);
     }, function(error){
 //        console.log("ERROR"); // if task doesn't exist - go to main page
         $window.location.href = "#/"
@@ -473,5 +473,61 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         }
     };
 
+    //File upload
+    $scope.$on(
+        'filesAdded', function(event, files) {
+            $scope.files = files;
+        }
+    )
 
+    $scope.onSubmit = function(){
+        for (var i=0; i<$scope.files.length; i++) {
+            var file = $scope.files[i];
+
+            var formData = new FormData()
+            formData.append('file_upload', file.lfFile);
+            formData.append('task', $routeParams.taskid);
+
+            taskSelectedFileUploadService.save(
+                {},
+                formData,
+                function(data) {
+                    $scope.task.files.push(data);
+                    $scope.statusSaveToast('File added!');
+                },
+                function(err) {
+                    var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
+                    $log.debug(err_message);
+                    $scope.statusSaveToast('Some error, contact admin.');
+                }
+            );
+        }
+    };
+
+
+    $scope.deleteFilePopup = function(ev, id, name, index) {
+    ev.preventDefault();
+        var confirm = $mdDialog.confirm()
+              .title('Would you like to delete file?')
+              .textContent('Are you sure you mant to delete file ' + name + "?")
+              .ariaLabel('Lucky day')
+              .targetEvent(ev)
+              .ok('Delete')
+              .cancel('Cancel');
+
+        $mdDialog.show(confirm).then(
+            function() {
+                taskFilesSelectedService.delete_file(
+                    {id: id},
+                    function(resp) {
+                        $scope.task.files.splice(index, 1);
+                    }
+                )
+            }
+        );
+    };
+
+    $scope.getFileName = function(file_address) {
+        return file_address.substring(file_address.lastIndexOf('/') + 1);
+    }
 }]);
