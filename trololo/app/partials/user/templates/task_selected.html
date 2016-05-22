@@ -254,20 +254,20 @@
                                 <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
                             </md-list-item>
                         </md-list>
-
                             <md-card class="md-padding">
                                 <form name="save_task" ng-submit="save_task.$valid && saveTask()">
                                     <md-card-title>
                                         <md-card-title-text>
-                                            <span class="md-headline">Add members</span>
+                                            <span class="md-headline">Add/delete members</span>
                                         </md-card-title-text>
                                     </md-card-title>
                                     <md-card-content>
                                         <div>
                                             <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                                        <!--<pre>{{taskData}}</pre>-->
+                                        <!--<pre>{{task.members_info}}</pre>-->
+                                        <!--<pre>{{task}}</pre>-->
                                                 <md-contact-chips
-                                                    ng-model="taskData.members_info"
+                                                    ng-model="task.members_info"
                                                     md-contacts="ctrl.delayedQuerySearch($query)"
                                                     md-contact-name="username"
                                                     md-contact-email="email"

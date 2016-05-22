@@ -475,17 +475,17 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
     $scope.taskData = {members_info: []};
 
-
+console.log('TESTING TASK - comment&activity??', $scope.task)
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
         taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
             $scope.task = response;
-            $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
-                            console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
-                            console.log('taskDataCopy', $scope.taskDataCopy)
+            $scope.taskCopy = JSON.parse(JSON.stringify(response));
+                            console.log('[[[$scope.taskCopy]]]', $scope.taskCopy)
+                            console.log('taskCopy', $scope.taskCopy)
 
-        if ($scope.taskDataCopy.members_info !== $scope.taskData.members_info) {
+        if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
 //            $scope.taskData.id = $scope.task_id;
 
 
