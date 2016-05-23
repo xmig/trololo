@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
-                                                 function(taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
+angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 'personalInfoService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
+                                                 function(taskCommentService, personalInfoService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -469,8 +469,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     };
 
 
+//get authorized user
 
-
+    $scope.user = personalInfoService.update($scope.userAdditionData, function(response) {
+            $scope.userData = response;
+            });
 
 
     $scope.taskData = {members_info: []};

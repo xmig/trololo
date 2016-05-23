@@ -18,6 +18,7 @@
                         <th md-column><span>Task title</span></th>
                         <th md-column><span>Type</span></th>
                         <th md-column><span>Status</span></th>
+                        <!--<th md-column><span>Task owner</span></th>-->
                         <th md-column><span>Members</span></th>
                         <th md-column><span>Project</span></th>
                         <th md-column><span>Deadline date</span></th>
@@ -30,6 +31,9 @@
                         <td md-cell class="project-link-name">{{task.name}}</td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
+                        <!--<td md-cell>-->
+                            <!--<div ng-repeat="activity in activities.data">{{ activity.owner.username }}</div>-->
+                        <!--</td>-->
                         <td md-cell>
                             <p ng-repeat="member in task.members_info">
                             <a ng-href="#/user/profile/{{memeber.id}}" class="user-link-name">{{member.username}}</a> <br>
@@ -224,23 +228,6 @@
                         </div>
                     </md-content>
                 </md-tab>
-                <!--<md-tab label="members">-->
-                    <!--<md-content class="md-padding">-->
-                        <!--<md-list class="project-tabs-list">-->
-                            <!--<md-list-item ng-repeat="member in task.members_info" class="secondary-button-padding">-->
-                                <!--<div >-->
-                                    <!--<img ng-src='{{member.photo}}' class='small_pic' alt="User avatar" />-->
-                                <!--</div>-->
-                                <!--<a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)">{{member.username}}</a>({{member.email}})&lt;!&ndash;ng-click="changeUserLocation($event, member.id)"&ndash;&gt;-->
-                            <!--</md-list-item>-->
-                        <!--</md-list>-->
-
-                        <!--<div class="md-toolbar-tools">-->
-                            <!--<div flex></div>-->
-                            <!--<md-button ng-click="">EDD / DELETE (test)</md-button>-->
-                        <!--</div>-->
-                    <!--</md-content>-->
-                <!--</md-tab>-->
 
                  <md-tab label="members">
                     <md-content class="md-padding">
@@ -254,6 +241,9 @@
                                 <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
                             </md-list-item>
                         </md-list>
+
+                        <div ng-show="user.url == task.created_by">
+
                             <md-card class="md-padding">
                                 <form name="save_task" ng-submit="save_task.$valid && saveTask()">
                                     <md-card-title>
@@ -284,6 +274,9 @@
                                     </md-card-actions>
                                 </form>
                             </md-card>
+
+                        </div>
+
                     </md-content>
                  </md-tab>
             </md-tabs>

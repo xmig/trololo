@@ -268,130 +268,130 @@
 
 <!-- for popup -->
 <!-- Registration modal -->
-<script type="text/ng-template" id="register.tmpl.html">
-    <md-dialog aria-label="login" flex="100" flex-xs="100" fkex-sm="100" flex-md="70" flex-lg="40" flex-gt-lg="40" id="register_view" ng-controller="taskSelectedCtrl">
-       <form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">
-            <md-toolbar>
-                <div class="md-toolbar-tools">
-                    <h2>{{task.name}}</h2>
-                    <span flex="" class="flex"></span>
-                    <button class="md-icon-button md-button md-ink-ripple" type="button"
-                            ng-click="cancel()">
-                        <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
-                                 class="ng-scope ng-isolate-scope" aria-hidden="true">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
-                                 fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
-                            </svg>
-                        </md-icon>
-                    </button>
-                </div>
-            </md-toolbar>
+<!--<script type="text/ng-template" id="register.tmpl.html">-->
+    <!--<md-dialog aria-label="login" flex="100" flex-xs="100" fkex-sm="100" flex-md="70" flex-lg="40" flex-gt-lg="40" id="register_view" ng-controller="taskSelectedCtrl">-->
+       <!--<form role="form" name="registerForm" novalidate ng-submit="register(registerForm)">-->
+            <!--<md-toolbar>-->
+                <!--<div class="md-toolbar-tools">-->
+                    <!--<h2>{{task.name}}</h2>-->
+                    <!--<span flex="" class="flex"></span>-->
+                    <!--<button class="md-icon-button md-button md-ink-ripple" type="button"-->
+                            <!--ng-click="cancel()">-->
+                        <!--<md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"-->
+                                 <!--class="ng-scope ng-isolate-scope" aria-hidden="true">-->
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"-->
+                                 <!--fit="" preserveAspectRatio="xMidYMid meet" focusable="false">-->
+                                <!--<path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>-->
+                            <!--</svg>-->
+                        <!--</md-icon>-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</md-toolbar>-->
 
 
 
-                <md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">
+                <!--<md-tabs md-dynamic-height="" md-border-bottom="" class="project-tabs-box">-->
 
 
-                    <md-tab label="comments & activity">
-                        <md-content class="md-padding">
-                            <div layout="row">
-                                <md-input-container class="sorting-margin">
-                                    <label>Sort</label>
-                                    <md-select ng-model="tabSort.tasks">
-                                        <md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>
-                                    </md-select>
-                                </md-input-container>
-                                <md-input-container class="sorting-margin">
-                                    <label>View</label>
-                                    <md-select ng-model="tabView.tasks">
-                                        <md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>
-                                    </md-select>
-                                </md-input-container>
-                            </div>
-                            <md-list class="project-tabs-list">
+                    <!--<md-tab label="comments & activity">-->
+                        <!--<md-content class="md-padding">-->
+                            <!--<div layout="row">-->
+                                <!--<md-input-container class="sorting-margin">-->
+                                    <!--<label>Sort</label>-->
+                                    <!--<md-select ng-model="tabSort.tasks">-->
+                                        <!--<md-option ng-repeat="opt in sortVariants" value="{{opt}}">{{opt}}</md-option>-->
+                                    <!--</md-select>-->
+                                <!--</md-input-container>-->
+                                <!--<md-input-container class="sorting-margin">-->
+                                    <!--<label>View</label>-->
+                                    <!--<md-select ng-model="tabView.tasks">-->
+                                        <!--<md-option ng-repeat="opt in viewVariants" value="{{opt}}">{{opt}}</md-option>-->
+                                    <!--</md-select>-->
+                                <!--</md-input-container>-->
+                            <!--</div>-->
+                            <!--<md-list class="project-tabs-list">-->
 
-                                <md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Comment: <b>{{comment}}</b></p>
-                                </md-list-item>
-
-                                <md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">
-                                    <p>Activity: {{activity}}</p>
-                                </md-list-item>
-
-                                <!--<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">-->
-                                    <!--<span class="status-ico" ng-class="my_tsk.status"></span>-->
-                                    <!--<p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>-->
+                                <!--<md-list-item ng-repeat="comment in task.comments" class="secondary-button-padding" ng-click="action($event)">-->
+                                    <!--<p>Comment: <b>{{comment}}</b></p>-->
                                 <!--</md-list-item>-->
 
-                            </md-list>
-                            <span></span>
+                                <!--<md-list-item ng-repeat="activity in task.activity" class="secondary-button-padding" ng-click="action($event)">-->
+                                    <!--<p>Activity: {{activity}}</p>-->
+                                <!--</md-list-item>-->
+
+                                <!--&lt;!&ndash;<md-list-item ng-repeat="my_tsk in my_tsks" class="secondary-button-padding" ng-click="action($event)">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<span class="status-ico" ng-class="my_tsk.status"></span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<p><b> {{ my_tsk.name }} </b> - <a ng-href="#" class="project-tabs-name">{{ my_tsk.user }}</a> {{my_tsk.action}} for <b> {{my_tsk.project}} </b></p>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</md-list-item>&ndash;&gt;-->
+
+                            <!--</md-list>-->
+                            <!--<span></span>-->
 
 
-                            <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
-                                <md-content layout-padding="">
-                                    <div>
+                            <!--<md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">-->
+                                <!--<md-content layout-padding="">-->
+                                    <!--<div>-->
 
-                                        <form name="myForm">
-                                            <md-input-container class="md-block">
-                                                <label>Add a commmment</label>
-                                                <textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>
-                                                <span class="alert" ng-repeat="error in errors.username">{{error}}</span>
-                                            </md-input-container>
-                                            <md-card-actions layout="row" layout-align="end center">
-                                                <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
-                                            </md-card-actions>
-                                        </form>
+                                        <!--<form name="myForm">-->
+                                            <!--<md-input-container class="md-block">-->
+                                                <!--<label>Add a commmment</label>-->
+                                                <!--<textarea md-autofocus ng-keydown="resetErrors('username')"></textarea>-->
+                                                <!--<span class="alert" ng-repeat="error in errors.username">{{error}}</span>-->
+                                            <!--</md-input-container>-->
+                                            <!--<md-card-actions layout="row" layout-align="end center">-->
+                                                <!--<md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>-->
+                                            <!--</md-card-actions>-->
+                                        <!--</form>-->
 
-                                    </div>
-                                </md-content>
-                            </md-dialog-content>
-
-
+                                    <!--</div>-->
+                                <!--</md-content>-->
+                            <!--</md-dialog-content>-->
 
 
-                        </md-content>
-                    </md-tab>
 
 
-                    <md-tab label="description">
-                             <md-content class="md-padding">
-                                 <md-list class="project-tabs-list">
-                                         <p><b> Task description </b></p>
-                                         <p>{{task.description}}</p>
-                                 </md-list>
-                                 <div class="md-toolbar-tools">
-                                     <div flex></div>
-                                     <md-button ng-click="">edit description (test)</md-button>
-                                 </div>
-                             </md-content>
-                    </md-tab>
+                        <!--</md-content>-->
+                    <!--</md-tab>-->
 
 
-                    <md-tab label="members">
-                             <md-content class="md-padding">
-                                 <md-list class="project-tabs-list">
-                                    <md-list-item ng-repeat="member in task.members" class="secondary-button-padding" ng-click="action($event)">
-                                        <p>member's_pic /<b>{{member.username}} ({{member.email}})</b></p>
-                                    </md-list-item>
-                                 </md-list>
-                                 <div class="md-toolbar-tools">
-                                     <div flex></div>
-                                     <md-button ng-click="">EDD / DELETE (test)</md-button>
-                                 </div>
-                             </md-content>
-                    </md-tab>
+                    <!--<md-tab label="description">-->
+                             <!--<md-content class="md-padding">-->
+                                 <!--<md-list class="project-tabs-list">-->
+                                         <!--<p><b> Task description </b></p>-->
+                                         <!--<p>{{task.description}}</p>-->
+                                 <!--</md-list>-->
+                                 <!--<div class="md-toolbar-tools">-->
+                                     <!--<div flex></div>-->
+                                     <!--<md-button ng-click="">edit description (test)</md-button>-->
+                                 <!--</div>-->
+                             <!--</md-content>-->
+                    <!--</md-tab>-->
 
-                </md-tabs>
 
-            <md-dialog-actions layout="row">
-                <md-button type="submit" style="margin-right:20px;">
-                    Open as a full page
-                </md-button>
-            </md-dialog-actions>
-       </form>
-    </md-dialog>
-</script>
+                    <!--<md-tab label="members">-->
+                             <!--<md-content class="md-padding">-->
+                                 <!--<md-list class="project-tabs-list">-->
+                                    <!--<md-list-item ng-repeat="member in task.members" class="secondary-button-padding" ng-click="action($event)">-->
+                                        <!--<p>member's_pic /<b>{{member.username}} ({{member.email}})</b></p>-->
+                                    <!--</md-list-item>-->
+                                 <!--</md-list>-->
+                                 <!--<div class="md-toolbar-tools">-->
+                                     <!--<div flex></div>-->
+                                     <!--<md-button ng-click="">EDD / DELETE (test)</md-button>-->
+                                 <!--</div>-->
+                             <!--</md-content>-->
+                    <!--</md-tab>-->
+
+                <!--</md-tabs>-->
+
+            <!--<md-dialog-actions layout="row">-->
+                <!--<md-button type="submit" style="margin-right:20px;">-->
+                    <!--Open as a full page-->
+                <!--</md-button>-->
+            <!--</md-dialog-actions>-->
+       <!--</form>-->
+    <!--</md-dialog>-->
+<!--</script>-->
 <!-- Registration modal end -->
 
     <script type="text/ng-template" id="add_status.tmpl.html">
