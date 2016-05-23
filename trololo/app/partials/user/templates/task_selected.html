@@ -18,7 +18,7 @@
                         <th md-column><span>Task title</span></th>
                         <th md-column><span>Type</span></th>
                         <th md-column><span>Status</span></th>
-                        <!--<th md-column><span>Task owner</span></th>-->
+                        <th md-column><span>Created by</span></th>
                         <th md-column><span>Members</span></th>
                         <th md-column><span>Project</span></th>
                         <th md-column><span>Deadline date</span></th>
@@ -31,9 +31,9 @@
                         <td md-cell class="project-link-name">{{task.name}}</td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status}}</td>
-                        <!--<td md-cell>-->
-                            <!--<div ng-repeat="activity in activities.data">{{ activity.owner.username }}</div>-->
-                        <!--</td>-->
+                        <td md-cell>
+                            {{task.owner.username }}
+                        </td>
                         <td md-cell>
                             <p ng-repeat="member in task.members_info">
                             <a ng-href="#/user/profile/{{memeber.id}}" class="user-link-name">{{member.username}}</a> <br>
