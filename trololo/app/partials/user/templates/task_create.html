@@ -73,7 +73,6 @@
 <!--<Members>-->
 
                                 <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                            <!--<pre>{{taskData}}</pre>-->
                                     <md-contact-chips
                                         ng-model="taskData.members_info"
                                         md-contacts="ctrl.delayedQuerySearch($query)"
@@ -85,6 +84,8 @@
                                         placeholder="Members">
                                     </md-contact-chips>
                                 </div>
+                                <!--<pre>{{taskData.members_info}}</pre>-->
+
                             </div>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">

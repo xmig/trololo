@@ -185,6 +185,11 @@
                                 <p><b> {{ activity.message }} </b> - <a ng-href="#" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-href="{{getTaskProject(activity)}}">View</md-button>
                             </md-list-item>
+                            <!--<md-list-item class="project-tabs-list" ng-repeat="activity in task.activity">-->
+                                <!--&lt;!&ndash;<span class="status-ico" ng-class="activity.activity_model"></span>&ndash;&gt;-->
+                                <!--<p><b> {{ activity }} </b>-->
+                                <!--&lt;!&ndash;<md-button class="md-secondary" ng-href="{{getTaskProject(activity)}}">View</md-button>&ndash;&gt;-->
+                            <!--</md-list-item>-->
                         </md-list>
                         <span></span>
                     </md-content>
@@ -233,12 +238,15 @@
                     <md-content class="md-padding">
 
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="member in task.members_info" class="secondary-button-padding">
+                            <md-list-item ng-repeat="member in taskData.members_info" class="secondary-button-padding">
                                 <div>
                                     <img ng-src='{{member.photo}}' class='resize' alt="User avatar" />
                                 </div>
                                 -
                                 <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
+
+                                <!--<pre>{{taskCopy}}</pre>-->
+
                             </md-list-item>
                         </md-list>
 
@@ -254,10 +262,10 @@
                                     <md-card-content>
                                         <div>
                                             <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                                        <!--<pre>{{task.members_info}}</pre>-->
+                                        <!--<pre>{{taskData.members_info}}</pre>-->
                                         <!--<pre>{{task}}</pre>-->
                                                 <md-contact-chips
-                                                    ng-model="task.members_info"
+                                                    ng-model="taskData.members_info"
                                                     md-contacts="ctrl.delayedQuerySearch($query)"
                                                     md-contact-name="username"
                                                     md-contact-email="email"
@@ -266,6 +274,8 @@
                                                     filter-selected="ctrl.filterSelected"
                                                     placeholder="Members">
                                                 </md-contact-chips>
+                                        <!--<pre>{{taskData.members_info}}</pre>-->
+
                                             </div>
                                         </div>
                                     </md-card-content>

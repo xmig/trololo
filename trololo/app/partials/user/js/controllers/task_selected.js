@@ -90,11 +90,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
             'ordering': sorting
         }
 
-        activityListService.get(params, function (data) {
+        activityListService.get(params, function (data) { //{"created_by": $routeParams.taskid.created_by},
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
-            console.log($scope.activities.data);
+            console.log("$scope.activities.data", $scope.activities.data);
         });
     };
 
@@ -476,34 +476,56 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
             });
 
 
-    $scope.taskData = {members_info: []};
 
-console.log('TESTING TASK - comment&activity??', $scope.task)
+
+// TASK CALCULATE
+    $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
+        $scope.taskData = response;
+                        console.log('----$scope.taskData----', $scope.taskData)
+                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
+
+        $scope.taskCopy = JSON.parse(JSON.stringify(response));
+                        console.log('----$scope.taskCopy----', $scope.taskCopy)
+        });
+
+
+
+// TASK SAVE
+
+    $scope.taskData = {members_info: []};
+    console.log('TESTING TASK', $scope.taskData)
+
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-            $scope.task = response;
-            $scope.taskCopy = JSON.parse(JSON.stringify(response));
-                            console.log('[[[$scope.taskCopy]]]', $scope.taskCopy)
-                            console.log('taskCopy', $scope.taskCopy)
+//        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
+//            $scope.taskData = response;
+//                            console.log('[[[ response ]]]', response)
+//            $scope.taskCopy = JSON.parse(JSON.stringify(response));
+//                            console.log('[[[ taskData ]]]', $scope.taskData)
+//                            console.log('[[[ taskCopy ]]]', $scope.taskCopy)
 
-        if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
-//            $scope.taskData.id = $scope.task_id;
+            if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
+                            console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
 
+                $scope.taskData.id = $routeParams.taskid;
+                                console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
 
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
+                                            console.log('$scope.taskData.members', $scope.taskData.members)
 
-                taskSelectedService.update({id: $scope.task_id}, $scope.taskData, function(response) {
+
+                taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {
                     $scope.taskData = response;
-                    $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
+                            console.log('$scope.taskData', $scope.taskData)
+                    $window.location = '#/user/tasks/' + $scope.taskCopy.id;
                     $scope.statusSaveToast('Saved!');
                 },
-                    function (response){
-//                        console.log('response', response)
 
+                    function (response){
+                        console.log('response', response)
                         var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
                         $log.debug(err_message);
                         $scope.statusSaveToast('Some error, contact admin.');
@@ -511,53 +533,8 @@ console.log('TESTING TASK - comment&activity??', $scope.task)
                 )
             } else {
                 $scope.statusSaveToast('Any change!');
-            }
-        })
-        }
-
-//    $scope.saveTask = function(){
-//        $scope.saveTask.tags = [];
-//
-//        if ($scope.task_id) {
-//            $scope.taskData.id = $scope.task_id;
-//
-//
-//                $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
-//                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//                });
-//
-//                taskSelectedService.update({id: $scope.task_id}, $scope.taskData, function(response) {
-//                    $scope.taskData = response;
-//                    $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
-//                    $scope.statusSaveToast('Saved!');
-//                },
-//                    function (response){
-////                        console.log('response', response)
-//
-//                        var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
-//                        $log.debug(err_message);
-//                        $scope.statusSaveToast('Some error, contact admin.');
-//                    }
-//                )
-//            } else {
-//                $scope.statusSaveToast('Any change!');
-//            }
-//        }
-
-//        else {
-//            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
-//            taskService.create($scope.taskData, function(response) {
-//                $scope.taskData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/tasks/' + response.id + '/';
-//                }
-//            });
-//        }
-
-
-
+            };
+        };
 
 
 }]);
