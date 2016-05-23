@@ -36,7 +36,7 @@
                             ({{member.email}})
                             </p>
                         </td>
-                        <td md-cell><a ng-href="#" class="user-link-name">{{task.project_obj.name}}</a></td>
+                        <td md-cell><a ng-href="#/user/projects/{{task.project_obj.id}}" class="user-link-name">{{task.project_obj.name}}</a></td>
                         <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                         <td md-cell>{{task.group_data.name}}</td>
@@ -241,9 +241,18 @@
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
                              <md-list-item ng-repeat="file in task.files" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                <p><a target="_self" class="user-link-name" ng-href="{{file.file_upload}}" download="{{getFileName(file.file_upload)}}">{{getFileName(file.file_upload)}}</a><a href="#" ng-click="deleteFilePopup($event, file.id, file.file_upload, $index)">Delete</a></p>
+                                 <img ng-src="{{file.file_upload}}" class="resize2" alt="{{getFileName(file.file_upload)}}" >
+                                 <p><a target="_self" class="user-link-name" ng-href="{{file.file_upload}}" download="{{getFileName(file.file_upload)}}"> {{getFileName(file.file_upload)}}</a><a href="#" ng-click="deleteFilePopup($event, file.id, file.file_upload, $index)"> Delete</a></p>
                                         <!--<span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span></p>-->
-                            </md-list-item>
+                                <!--<img ng-src="{{file.file_upload}}" class="resize2" alt="{{getFileName(file.file_upload)}}">-->
+                             </md-list-item>
+                            <!--<md-list-item class="md-3-line" ng-repeat="file in task.files">-->
+                                <!--<img ng-src="{{getFileName(file.file_upload)}}" class="md-avatar" alt="{{getFileName(file.file_upload)}}">-->
+                                <!--<div class="md-list-item-text" layout="column">-->
+
+                                <!--</div>-->
+                              <!--</md-list-item>-->
+                            <!--<pre>{{task.files | json}}</pre>-->
                         </md-list>
                         <lf-ng-md-file-input lf-files="files" multiple preview></lf-ng-md-file-input>
                         <md-button type="button"  class="md-raised md-primary" ng-click="onSubmit()">Submit</md-button>
