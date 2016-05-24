@@ -8,7 +8,7 @@
                     <div flex></div>
                         <md-button class="md-primary" ng-click="showAddStatusDialog($event)">Add status</md-button>
                         <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Edit Task</md-button>
-                    </div>
+                </div>
             </md-toolbar>
 
             <md-table-container>
@@ -210,11 +210,16 @@
 
 
                 <md-tab label="description">
+                    <div class="md-toolbar-tools">
+                        <span>Description for {{task.name}} </span>
+                        <div flex></div>
+                            <md-button class="md-primary" ng-click="showAddStatusDialog($event)">Edit description</md-button>
+                            <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Edit description</md-button>
+                    </div>
+
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                                <p><b>Task description</b></p>
-
-
+                                <!--<p><b>Task description</b></p>-->
 
                             <!--<button class="md-primary md-button md-ink-ripple md-raised md-button" type="submit" ng-transclude=""><span class="ng-scope">Save</span><div class="md-ripple-container"></div></button>-->
 
@@ -236,6 +241,14 @@
                 </md-tab>
 
                  <md-tab label="members">
+
+                     <div class="md-toolbar-tools">
+                        <span>Users assigned to {{task.name}}</span>
+                        <div flex></div>
+                            <md-button class="md-primary" ng-click="showAddStatusDialog($event)">Add/delete members</md-button>
+                            <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Add/delete members</md-button>
+                    </div>
+
                     <md-content class="md-padding">
 
                         <md-list class="project-tabs-list">
