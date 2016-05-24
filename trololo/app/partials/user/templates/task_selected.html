@@ -213,24 +213,25 @@
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
                                 <p><b>Task description</b></p>
-                                    <!--<div ng-controller="TextBtnCtrl">-->
-                                      <!--<a href="#" editable-text="task.description">-->
-                                        <!--{{ task.description || 'empty' }}-->
-                                      <!--</a>-->
-                                    <!--</div>-->
-                                    <div ng-controller="TextBtnCtrl">
-                                          <span editable-text="task.description" e-form="textBtnForm">
+
+
+
+                            <!--<button class="md-primary md-button md-ink-ripple md-raised md-button" type="submit" ng-transclude=""><span class="ng-scope">Save</span><div class="md-ripple-container"></div></button>-->
+
+                                    <div ng-controller="TextBtnCtrl" class="ng-scope">
+                                          <span editable-text="task.description" e-form="textBtnForm" class="ng-scope ng-binding editable">
                                             {{ task.description || 'empty' }}
                                           </span>
-                                          <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
+                                          <button class="md-primary md-button md-ink-ripple md-raised md-button" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
                                             edit
                                           </button>
                                     </div>
+
                         </md-list>
-                        <div class="md-toolbar-tools">
-                            <div flex></div>
-                            <md-button ng-click="">edit description (test)</md-button>
-                        </div>
+                        <!--<div class="md-toolbar-tools">-->
+                            <!--<div flex></div>-->
+                            <!--<md-button ng-click="">edit description (test)</md-button>-->
+                        <!--</div>-->
                     </md-content>
                 </md-tab>
 

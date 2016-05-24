@@ -8,7 +8,8 @@ angular.module('mainApp', [
         'ngMaterial',
         'ngMessages',
         'material.svgAssetsCache',
-        'userApp'
+        'userApp',
+        'xeditable'
     ])
     .config(function ($routeProvider) {
         $routeProvider
@@ -302,9 +303,15 @@ angular.module('mainApp', [
                 redirectTo: '/'
             });
     })
+//    .run(function (djangoAuth, $window) {
+//        djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
+//    });
+
     .run(function (djangoAuth, $window) {
         djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
-
+    },
+        function(editableOptions) {
+        editableOptions.theme = 'bs3';
     });
 
 
