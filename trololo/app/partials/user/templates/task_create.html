@@ -64,6 +64,7 @@
                                         <label>Description</label>
                                         <textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>
                                 </md-input-container>
+ <!--Estimate minutes-->
                                 <md-input-container class="md-block">
                                     <label>Estimate minutes</label>
                                     <input type="number" name="estimate_minutes" id="estimate_minutes"
@@ -71,8 +72,7 @@
                                 </md-input-container>
 <!--<Members>-->
 
-                        <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                            <pre>{{taskData}}</pre>
+                                <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
                                     <md-contact-chips
                                         ng-model="taskData.members_info"
                                         md-contacts="ctrl.delayedQuerySearch($query)"
@@ -84,6 +84,8 @@
                                         placeholder="Members">
                                     </md-contact-chips>
                                 </div>
+                                <!--<pre>{{taskData.members_info}}</pre>-->
+
                             </div>
                         </md-card-content>
                         <md-card-actions layout="row" layout-align="end center">

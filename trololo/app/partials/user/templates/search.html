@@ -3,7 +3,7 @@
 
         <md-card>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="projects">
+                <md-tab label="projects" ng-disabled="project.length === 0">
                     <md-content>
                         <div ng-hide="project.length">
                             <p align="center">
@@ -20,7 +20,7 @@
 
                 </md-tab>
 
-                <md-tab label="tasks">
+                <md-tab label="tasks" ng-disabled="task.length === 0">
                     <md-content>
                         <div ng-hide="task.length">
                             <p align="center">
@@ -29,15 +29,15 @@
                             </p>
                         </div>
 
-                        <ul ng-repeat="pr in task">
+                        <ul ng-repeat="t in task">
                             <li>
-                                <a ng-href="#/user/tasks/{{ task.id }}">{{ task.name }}</a> - {{ task.description }} {{ task.label }}
+                                <a ng-href="#/user/tasks/{{ t.id }}">{{ t.name }}</a> - {{ t.description }} {{ t.label }}
                             </li>
                         </ul>
                     </md-content>
 
                 </md-tab>
-                <md-tab label="task comments">
+                <md-tab label="task comments" ng-disabled="task_comment.length === 0">
                     <md-content>
                         <div ng-hide="task_comment.length">
                             <p align="center">
