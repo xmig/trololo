@@ -4,10 +4,10 @@ from logging import getLogger
 
 from serializers import (
     ProjectSerializer, TaskSerializer, TaskCreateSerializer, ProjectCommentSerializer,
-    TaskCommentSerializer, TagSerializer
+    TaskCommentSerializer, TagSerializer, UploadFileSerializer
 )
 from rest_framework import status
-from projects.models import Project, Task, ProjectComment, TaskComment
+from projects.models import Project, Task, ProjectComment, TaskComment, TaskPicture
 from django.db.models import Q
 
 from rest_framework import filters
@@ -201,6 +201,36 @@ class TaskList(generics.ListCreateAPIView):
         #
         #     return Response(serializer.data, status=status.HTTP_201_CREATED)
         # return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class TaskFileList(generics.ListCreateAPIView):
+    serializer_class = UploadFileSerializer
+    queryset = TaskPicture.objects.all()
+
+
+class TaskFileDetail(generics.GenericAPIView):
+    serializer_class = UploadFileSerializer
+    queryset = TaskPicture.objects.all()
+
+    def get_object(self, pk):
+        try:
+            files = TaskPicture.objects.select_related("task").get(pk=pk)
+        except Task.DoesNotExist:
+            raise exceptions.NotFound(
+                detail="Task with id {} does not exist.".format(pk)
+            )
+        return files
+
+    def get(self, request, pk):
+        files = self.get_object(pk)
+        serializer = UploadFileSerializer(files, context={'request': request})
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        files = self.get_object(pk)
+        files.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 
 class TaskDetail(generics.GenericAPIView):

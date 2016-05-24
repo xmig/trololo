@@ -20,6 +20,24 @@ angular.module('userApp').factory('task_tagService', function($resource, $cookie
     );
 });
 
+angular.module('userApp').factory('taskFilesSelectedService', function($resource, $cookies) {
+    return $resource("/tasks/files\/:id\/", {},
+        {
+          'get':    {method:'GET', params: {id: '@id'}},
+          'delete_file': {method: 'DELETE', headers: {'X-CSRFToken': $cookies.get('csrftoken')}}
+        }
+    );
+});
+
+
+angular.module('userApp').factory('taskSelectedFileUploadService', function($resource, $cookies) {
+    return $resource("/tasks/files/", {},
+        {
+          'save':   {method:'POST', data: {}, headers: {'X-CSRFToken': $cookies.get('csrftoken'), 'Content-Type': undefined, transformRequest: angular.identity,}}
+
+        }
+    );
+});
 
 //'use strict';
 //

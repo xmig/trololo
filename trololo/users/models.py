@@ -1,7 +1,10 @@
 from chi_django_base.storage import OverwriteStorage
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from trololo.helpers import resize_logo
+from django.core.files import File
+from chi_django_base.helpers import generate_image, resize_logo
+import os
+from uuid import uuid4
 
 
 def user_photo_directory_path(object, filename):
@@ -18,10 +21,28 @@ class TrololoUser(AbstractUser):
     use_gravatar = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
-        super(TrololoUser, self).save(*args, **kwargs)
-
         if self.photo:
             resize_logo(self)
+        else:
+            file_ext = '.jpeg'
+            file_name = self.username + str(uuid4()) + file_ext
+            file_path = os.path.join('/tmp', file_name)
+            if self.first_name or self.last_name:
+                text = ''.join(
+                    [getattr(self, attr)[0].upper() for attr in ("first_name", "last_name") if getattr(self, attr)]
+                )
+            else:
+                text = self.username[0].upper()
+            generate_image(text, file_path)
+
+            with open(file_path, 'rb') as f:
+                file_to_save = File(f)
+                self.photo.save('logo' + file_ext, file_to_save, save=False)
+
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        super(TrololoUser, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['id']

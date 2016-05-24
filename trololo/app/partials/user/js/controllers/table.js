@@ -1,6 +1,9 @@
 angular.module('userApp').controller('nutritionController', ['$mdEditDialog', '$q', '$scope', '$timeout', function ($mdEditDialog, $q, $scope, $timeout) {
     'use strict';
 
+    $scope.$watch('files.length',function(newVal,oldVal){
+        $scope.$emit('filesAdded', $scope.files);
+    });
     $scope.selected = [];
 
     $scope.options = {

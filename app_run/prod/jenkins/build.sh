@@ -30,6 +30,6 @@ sudo -u ubuntu bash ProdRun.sh
 echo "*** Restart supervisorctl and nginx ***"
 
 sudo supervisorctl start trololo_prod
-sudo supervisorctl reread
+sudo supervisorctl update
 
 sudo service nginx restart
