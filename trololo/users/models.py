@@ -25,7 +25,7 @@ class TrololoUser(AbstractUser):
             resize_logo(self)
         else:
             file_ext = '.jpeg'
-            file_name = str(self.id) + str(uuid4()) + file_ext
+            file_name = self.username + str(uuid4()) + file_ext
             file_path = os.path.join('/tmp', file_name)
             if self.first_name or self.last_name:
                 text = ''.join(
@@ -38,6 +38,9 @@ class TrololoUser(AbstractUser):
             with open(file_path, 'rb') as f:
                 file_to_save = File(f)
                 self.photo.save('logo' + file_ext, file_to_save, save=False)
+
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
         super(TrololoUser, self).save(*args, **kwargs)
 

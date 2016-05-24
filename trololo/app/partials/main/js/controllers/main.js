@@ -114,11 +114,6 @@ angular.module('mainApp')
                 }, handleError);
         };
 
-        $scope.logout = function () {
-            djangoAuth.logout()
-                .then(handleSuccess, handleError);
-        };
-
         $scope.resetPassword = function () {
             djangoAuth.resetPassword(prompt('Email'))
                 .then(handleSuccess, handleError);
@@ -164,14 +159,6 @@ angular.module('mainApp')
 
         $scope.goConfirmReset = function () {
             $location.path("/passwordResetConfirm/" + prompt("Code 1") + "/" + prompt("Code 2"))
-        };
-
-        var handleSuccess = function (data) {
-            $scope.response = data;
-        };
-
-        var handleError = function (data) {
-            $scope.response = data;
         };
 
         $scope.show_login = true;
