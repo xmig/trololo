@@ -179,47 +179,15 @@
                                         <span ng-if="!comment.created_by.photo">
                                             {{comment.created_by.username}}
                                         </span>
-                                    </a>{{comment.created_by.username}} added comment:<b>{{comment.title}}: {{comment.comment}}</b>
-                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
+                                    </a>{{comment.created_by.username}} added comment:<b>{{comment.comment}}</b>
+                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-if="userPersonalData.id === comment.created_by.id" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a href="#" ng-if="userPersonalData.id === comment.created_by.id" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
                                     <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
                                 </p>
                             </md-list-item>
                          </md-list>
-                         <span></span>
-
-                        <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_2">
-                                <md-content layout-padding="">
-                                    <div>
-                                         <md-card class="md-padding">
-                                             <form ng-submit="saveComment()">
-                                                <md-card-title>
-                                                    <md-card-title-text>
-                                                        <span class="md-headline">Add comment</span>
-                                                    </md-card-title-text>
-                                                </md-card-title>
-                                                <md-card-content>
-                                                    <div>
-                                                        <md-input-container class="md-block">
-                                                            <label>Title</label>
-                                                            <input type="text" name="title" id="comment-title" required
-                                                                   ng-model="commentData.title">
-                                                        </md-input-container>
-                                                        <md-input-container class="md-block">
-                                                            <label>Comment</label>
-                                                            <input type="text" name="comment" id="comment-comment" required
-                                                                   ng-model="commentData.comment">
-                                                        </md-input-container>
-                                                    </div>
-                                                </md-card-content>
-                                                <md-card-actions layout="row" layout-align="end center">
-                                                    <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
-                                                </md-card-actions>
-                                            </form>
-                                         </md-card>
-                                    </div>
-                                </md-content>
-                        </md-dialog-content>
-                        <span></span>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit" ng-click="showAddCommentDialog($event)">Add comment</md-button>
+                        </md-card-actions>
                     </md-content>
                 </md-tab>
                 <md-tab label="Statuses">
@@ -420,6 +388,52 @@
                                 <label>Status Name</label>
                                 <input type="text" name="status_name" id="status_name" ng-model="status_name" md-autofocus required>
                                 <div ng-messages="addStatusForm.status_name.$error">
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+                    <md-button type="submit" style="margin-right:20px;">
+                        Add
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
+
+    <script type="text/ng-template" id="add_comment.tmpl.html">
+        <md-dialog aria-label="Add comment form" flex="100" flex-xs="100" fkex-sm="100" flex-md="70" flex-lg="40" flex-gt-lg="40" id="change_pwd_view">
+           <form role="form" name="addCommentForm" ng-submit="saveComment()">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Add comment</h2>
+                        <span flex="" class="flex"></span>
+                        <button class="md-icon-button md-button md-ink-ripple" type="button"
+                                ng-click="cancel()">
+                            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                     class="ng-scope ng-isolate-scope" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                     fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                </svg>
+                            </md-icon>
+                        </button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                    <md-content layout-padding="">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Comment</label>
+                                <input type="text" name="comment" ng-model="comment_text" md-autofocus required>
+                                <div ng-messages="addCommentForm.comment_name.$error">
                                     <div ng-message="required">This field is required.</div>
                                 </div>
                                 <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
