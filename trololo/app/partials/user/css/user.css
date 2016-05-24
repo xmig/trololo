@@ -238,3 +238,7 @@ a:hover {
     color: #363636;
     text-decoration: underline;
 }
+
+.listdemoBasicUsage md-divider {
+  margin-top: 10px;
+  margin-bottom: 10px; }
