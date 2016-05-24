@@ -29,9 +29,9 @@
                             </p>
                         </div>
 
-                        <ul ng-repeat="pr in task">
+                        <ul ng-repeat="t in task">
                             <li>
-                                <a ng-href="#/user/tasks/{{ task.id }}">{{ task.name }}</a> - {{ task.description }} {{ task.label }}
+                                <a ng-href="#/user/tasks/{{ t.id }}">{{ t.name }}</a> - {{ t.description }} {{ t.label }}
                             </li>
                         </ul>
                     </md-content>
