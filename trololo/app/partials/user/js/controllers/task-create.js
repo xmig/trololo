@@ -117,6 +117,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 //            response.project = response.project_obj.id
             $scope.taskData = response;
                         console.log('[[[$scope.taskData]]]', $scope.taskData)
+                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
@@ -172,7 +173,8 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
         if ($scope.task_id) {
             var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info);
-            //        console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
+//                    console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
+
 
             if ($scope.taskDataCopy.name !== $scope.taskData.name ||
                 $scope.taskDataCopy.description !== $scope.taskData.description ||
@@ -186,7 +188,10 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
-                console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
+                                    console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
+                                    console.log('$scope.taskDataCopy.members_data, $scope.taskData.members_data', $scope.taskDataCopy.members_data, $scope.taskData.members_data);
+
+
 
                 taskSelectedService.update(
                     {id: $scope.task_id},
@@ -198,9 +203,8 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
                         $scope.statusSaveToast('Saved!');
                     },
                     function (response){
-//                        console.log('response', response)
-
-                        console.log('taskDataCopy.project', $scope.taskDataCopy.project_obj.id, $scope.taskData.project_obj.id)
+                                console.log('response', response)
+                                console.log('taskDataCopy.project', $scope.taskDataCopy.project_obj.id, $scope.taskData.project_obj.id)
                         var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
                         $log.debug(err_message);
                         $scope.statusSaveToast('Some error, contact admin.');
