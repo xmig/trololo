@@ -48,6 +48,15 @@
                                                 <md-option ng-repeat="status in taskStatuses" ng-value="status.id">{{ status.title }}</md-option>
                                             </md-select>
                                 </md-input-container>
+
+                                <!--<md-input-container class="md-block">-->
+                                        <!--<label>Status</label>-->
+                                    <!--<pre>{{taskData.project}}</pre>-->
+                                            <!--<md-select ng-model="taskData.project.status" name="status" id="status">-->
+                                                <!--<md-option ng-repeat="status in task.project.status" ng-value="status.id">{{ status.title }}</md-option>-->
+                                            <!--</md-select>-->
+                                <!--</md-input-container>-->
+
 <!--<Set Task label>-->
                                 <md-input-container class="md-block">
                                         <label>Set Task label:</label>
@@ -84,31 +93,24 @@
                                         placeholder="Members">
                                     </md-contact-chips>
                                 </div>
-                                <!--<pre>{{taskData.members_info}}</pre>-->
+                                <div style="height:5px"></div>
+                                <div>
+                                    <md-input-container class="md-block">
+                                        <label>Assigned member</label>
+                                        <md-select ng-model="taskData.assigned_member">
+                                            <md-option ng-repeat="member in taskData.members_info" ng-value="member.id">{{ member.username }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
 
                             </div>
                         </md-card-content>
+
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
                         </md-card-actions>
 
-                                <!--<md-input-container class="md-block">-->
-                                    <!--<label>Visible By</label>-->
-                                    <!--<md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">-->
-                                        <!--<md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>-->
-                                    <!--</md-select>-->
-                                <!--</md-input-container>-->
-                                <!--<md-datepicker ng-model="taskData.date_started" md-placeholder="Date Started"></md-datepicker>-->
-                                <!--<md-datepicker ng-model="taskData.date_finished" md-placeholder="Date Finished"></md-datepicker>-->
-                                <!--<md-input-container class="md-block">-->
-                                    <!--<label>Description</label>-->
-                                    <!--<textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>-->
-                                <!--</md-input-container>-->
-                            <!--</div>-->
-                        <!--</md-card-content>-->
-                        <!--<md-card-actions layout="row" layout-align="end center">-->
-                            <!--<md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>-->
-                        <!--</md-card-actions>-->
+
                     </form>
                 </md-card>
         </md-card>

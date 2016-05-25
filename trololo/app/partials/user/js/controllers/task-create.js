@@ -121,7 +121,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
-
 //            $scope.taskData.project
 //            console.log('EDIT', response.project)
         });
@@ -130,42 +129,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
     $scope.taskData = {members_info: []};
 
-//    $scope.saveTask = function() {
-//        $scope.taskData.tags = [];
-//
-//        if ($scope.task_id) {
-//            // EDIT
-//            $scope.taskData.id = $scope.task_id;
-//            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
-//
-//            $scope.taskData.project = $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/projects/' + $scope.taskData.project + '/';
-//
-//            taskSelectedService.update($scope.taskData, function(response) {
-//                response.deadline_date = new Date(response.deadline_date);
-//                $scope.taskData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/tasks/' + $scope.taskData.id;
-//                }
-//            });
-//        } else {
-//            $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
-//                return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
-//            });
-//            taskService.create($scope.taskData, function(response) {
-//                response.deadline_date = new Date(response.deadline_date);
-//                $scope.taskData = response;
-//                if (typeof response.id !== 'undefined' && response.id > 0) {
-//                    $window.location.href = '#/user/tasks/' + response.id;
-//                }
-//
-//            }, function(error){
-////                console.log("++error++", error)
-//            });
-//
-//        }
-//    };
 
 
     $scope.saveTask = function(){
@@ -178,6 +141,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 
             if ($scope.taskDataCopy.name !== $scope.taskData.name ||
                 $scope.taskDataCopy.description !== $scope.taskData.description ||
+                $scope.taskDataCopy.assigned_member !== $scope.taskData.assigned_member ||
                 $scope.taskDataCopy.project !== $scope.taskData.project ||
                 $scope.taskDataCopy.status !== $scope.taskData.status ||
                 $scope.taskDataCopy.type !== $scope.taskData.type ||

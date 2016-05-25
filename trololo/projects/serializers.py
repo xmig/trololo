@@ -31,6 +31,9 @@ class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
         )
 
 
+# class ShortAssignedMemberInfoSerializer(serializers.OnlyUserInfoSerializer)
+
+
 class ProjectCommentSerializer(serializers.ModelSerializer):
     project = serializers.HyperlinkedRelatedField(
         view_name='projects:projects_detail',
@@ -293,6 +296,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=True,
         # lookup_field='pk'
     )
+
     files = UploadFileSerializer( many=True, read_only=True)
 
     # project = serializers.HyperlinkedRelatedField(  #url
@@ -302,7 +306,18 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     lookup_field='pk'
     # )
 
-    # members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
+
+    # assigned_member = OnlyUserInfoSerializer(read_only=True, many=False)
+
+    assigned_member = serializers.PrimaryKeyRelatedField(  #id
+        # view_name='users:single_user',
+        queryset=get_user_model().objects.all(),
+        required=False
+        # lookup_field='pk'
+    )
+
+    assigned_member_info=OnlyUserInfoSerializer(source='assigned_member', read_only=True, many=False)
+
     members = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='users:single_user',
@@ -343,7 +358,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members_info', 'type', 'label',
+            'name', 'id', 'description', 'status', 'assigned_member', 'assigned_member_info', 'members_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members',
             'files'
@@ -403,7 +418,7 @@ class TaskCreateSerializer(TaskSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members', 'type', 'label', 'members_info',
+            'name', 'id', 'description', 'status', 'assigned_member', 'assigned_member_info', 'members', 'type', 'label', 'members_info',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )

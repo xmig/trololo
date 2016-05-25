@@ -22,6 +22,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 //         console.log($scope.task);
 //    })
 
+
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
          $scope.task = response;
          console.log("DDDDD", $scope.task);
@@ -209,7 +210,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     reloadComment();
 
 
-    /* NOTIFICATION INFO */
+/* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
     $scope.notificationPageSize = 10;
@@ -266,8 +267,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},
-        //{"title": "Progress", "link": "progress"},
-        //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
     ];
 
@@ -317,11 +316,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     }
 
 
-//// TASK CALCULATE
-//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
-//        $scope.task = data;
-//    });
-
 
 /* for popup */
     $scope.popRegistr = function (ev) {
@@ -356,58 +350,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
 /* end - for popup */
 
-
-//    $scope.editComment = function (event, dessert) {
-//        event.stopPropagation(); // in case autoselect is enabled
-//
-//        var editDialog = {
-//            modelValue: dessert.comment,
-//            placeholder: 'Add a comment',
-//            save: function (input) {
-//                if(input.$modelValue === 'Donald Trump') {
-//                    return $q.reject();
-//                }
-//                if(input.$modelValue === 'Bernie Sanders') {
-//                    return dessert.comment = 'FEEL THE BERN!'
-//                }
-//                dessert.comment = input.$modelValue;
-//            },
-//            targetEvent: event,
-//            title: 'Add a comment',
-//            validators: {
-//                'md-maxlength': 30
-//            }
-//        };
-//
-//        var promise;
-//
-//        if($scope.options.largeEditDialog) {
-//            promise = $mdEditDialog.large(editDialog);
-//        } else {
-//            promise = $mdEditDialog.small(editDialog);
-//        }
-//
-//        promise.then(function (ctrl) {
-//            var input = ctrl.getInput();
-//
-//            input.$viewChangeListeners.push(function () {
-//                input.$setValidity('task_test', input.$modelValue !== 'task_test');
-//            });
-//        });
-//    };
-
-
-//    $scope.sortVariants = [
-//          {value: "created_at",
-//           option: "by Date"
-//          },
-//          {value: "created_by",
-//           option: "by User"
-//          },
-////          {value: "comment",
-////           option: "by Type"
-////          },
-//      ];
 
 
     $scope.viewVariants = [
@@ -469,7 +411,17 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     };
 
 
+
+
+//// TASK CALCULATE
+//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
+//        $scope.task = data;
+//    });
+
+
+
 //** ADD/DELETE USERS in TASK MEMBERS TAB **//
+
 //get authorized user
     $scope.user = personalInfoService.update($scope.userAdditionData, function(response) {
             $scope.userData = response;
@@ -478,8 +430,15 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 // TASK CALCULATE
     $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
         $scope.taskData = response;
+        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
+
+
                         console.log('----$scope.taskData----', $scope.taskData)
+                        console.log('----response----', response)
+
                         console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
+                        console.log('----$scope.taskData.assigned_member---', $scope.taskData.assigned_member)
+
 
         $scope.taskCopy = JSON.parse(JSON.stringify(response));
                         console.log('----$scope.taskCopy----', $scope.taskCopy)
@@ -509,7 +468,9 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
+
                                             console.log('$scope.taskData.members', $scope.taskData.members)
+                                            console.log('$scope.taskData.assigned_member', $scope.taskData.assigned_member)
 
 
                 taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {

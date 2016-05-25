@@ -23,7 +23,7 @@ admin.site.register(ProjectComment, ProjectCommentAdmin)
 
 class TaskAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'project', 'status', 'type', 'label', 'deadline_date', 'estimate_minutes', 'created_at', 'created_by', 'updated_at', 'updated_by')
-    fields = ('name', 'description', 'project', 'members', 'status', 'type', 'label', 'deadline_date', 'estimate_minutes')
+    fields = ('name', 'description', 'project', 'assigned_member', 'members', 'status', 'type', 'label', 'deadline_date', 'estimate_minutes')
     list_filter = ('name', 'project', 'status', 'type', 'label', 'deadline_date', 'estimate_minutes', 'created_at', 'created_by', 'updated_at', 'updated_by')
 
 admin.site.register(Task, TaskAdmin)
