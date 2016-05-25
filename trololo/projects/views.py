@@ -12,7 +12,7 @@ from django.db.models import Q
 
 from rest_framework import filters
 from rest_framework import generics
-from django_filters import FilterSet, NumberFilter, CharFilter, IsoDateTimeFilter
+from django_filters import FilterSet, NumberFilter, CharFilter, IsoDateTimeFilter, DateTimeFromToRangeFilter
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -430,10 +430,11 @@ class ProjectCommentFilter(FilterSet):
      title = CharFilter(name='title', lookup_expr='exact')
      comment = CharFilter(name='comment', lookup_expr='icontains')
      project = NumberFilter(name='project__id')
+     date = DateTimeFromToRangeFilter(name='created_at')
 
      class Meta:
          model = ProjectComment
-         fields = ['title', 'comment', 'project']
+         fields = ['title', 'comment', 'project', 'date']
 
 class ProjectCommentList(generics.ListCreateAPIView):
     serializer_class = ProjectCommentSerializer
@@ -441,10 +442,9 @@ class ProjectCommentList(generics.ListCreateAPIView):
     filter_class = ProjectCommentFilter
     search_fields = ('title', 'comment')
     ordering_fields = ('title', 'id')
-
+    pagination_class = StandardResultsSetPagination
 
     def get_queryset(self):
-
         return ProjectComment.objects.filter(project__id__in=get_my_proj(self.request.user))
 
     def post(self, request):
