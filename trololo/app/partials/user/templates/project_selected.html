@@ -230,6 +230,26 @@
                         <span></span>
                     </md-content>
                 </md-tab>
+                <md-tab label="all activity">
+                    <md-content class="md-padding">
+                        <div layout="row">
+                            <md-datepicker ng-model="allActivitiesParams.startDate" md-placeholder="From date"></md-datepicker>
+                            <md-datepicker ng-model="allActivitiesParams.endDate" md-placeholder="End date"></md-datepicker>
+                            <md-button class="md-primary" ng-click="reloadAllActivities()">Filter</md-button>
+                        </div>
+                        <md-list>
+                            <md-list-item ng-repeat="activity in allActivities | orderBy: '-created_at'">
+                                <p>
+                                    <a ng-href="#" ng-click="changeUserLocation($event,activity.created_by_id)" class="user-link-name">
+                                    {{ activity.created_by_username }}
+                                    </a><b>{{activity.message}}</b>
+                                    <span style="color:grey"> ({{activity.created_at | date : 'medium'}}) <a ng-if="userPersonalData.id === activity.created_by_id && activity.link" ng-href="{{activity.link}}">Edit</a></span>
+                                </p>
+                            </md-list-item>
+                        </md-list>
+                        <span></span>
+                    </md-content>
+                </md-tab>
             </md-tabs>
         </md-card>
     </div>
