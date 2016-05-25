@@ -23,7 +23,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
 
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
          $scope.task = response;
-         console.log("DDDDD", $scope.task.files);
     }, function(error){
 //        console.log("ERROR"); // if task doesn't exist - go to main page
         $window.location.href = "#/"
@@ -91,7 +90,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
-            console.log($scope.activities.data);
         });
     };
 
@@ -147,24 +145,19 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
             'for_cu':1,
             'task': $routeParams.taskid
         }
-        console.log("params", params);
         taskCommentService.get(params, function (data) {
             if ($scope.task == undefined) {
                 $scope.task = {};
             };
-            console.log("DATA", data);
             $scope.task.comments = data.results;
             $scope.task.comments.count = $scope.task.comments.length;
-            console.log('data.results', data.results,'-----', $scope.task.comments.count);
         });
     };
 
     $scope.commentSort = function(sortInfo) {
-    console.log("sortInfo", sortInfo)
         $scope.commentSortType = sortInfo.value;
         $scope.commentSortDirection = sortInfo.direction;
         $scope.commentPage = 1;
-        console.log("11111", $scope.commentSortType)
         reloadComment();
     };
 
@@ -439,7 +432,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
     });
 
     $scope.changeUserLocation = function(e, id){
-    console.log("-----")
     e.preventDefault();
         if($scope.userPersonalData.id !== id){
             $window.location.href = '#/user/profile/' + id;
@@ -452,7 +444,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
     $scope.savetaskComment = function() {
         $scope.taskCommentData.tags = [];
         $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
-        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
         if ($scope.comment_id) {
             // EDIT
             $scope.commentData.id = $scope.comment_id;

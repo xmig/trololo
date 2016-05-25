@@ -14,8 +14,6 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
 
     $scope.partialPath = '/static/user/templates/' + $routeParams.userLocation + '.html';
     $scope.location = $routeParams.userLocation;
-    console.log("$routeParams.userLocation", $routeParams.userLocation);
-    console.log("$routeParams", $routeParams.id);
     $scope.userPersonalData = {};
     $scope.userAdditionData = {};
     $scope.leftSidebarList = [
@@ -85,7 +83,6 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
 
         $scope.checkSocial = function(provider) {
             var val = false;
-            console.log("User acc: " + $scope.userAdditionData.social_accounts);
             if ($scope.userPersonalData.social_accounts) {
                 val = $scope.userPersonalData.social_accounts.indexOf(provider) > -1;
             }

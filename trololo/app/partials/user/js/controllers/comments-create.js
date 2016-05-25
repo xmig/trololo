@@ -2,7 +2,6 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
     function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, $mdSidenav, commentService,commentSelectedService)
 {
 
- console.log("----");
     $scope.comment_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/comment_selected.html';
 
@@ -97,7 +96,6 @@ angular.module('userApp').controller('commentCreateCtrl', ['$scope', '$rootScope
         // PROJECT CALCULATE
         commentSelectedService.get({ id: $scope.comment_id }, function (data) {
             $scope.commentData = data;
-            console.log("commentData:::", $scope.commentData)
         });
     }
 
@@ -168,9 +166,7 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
     function($scope, $rootScope, $http, $window, $mdDialog, $mdMedia, $routeParams, $mdSidenav, $log, taskCommentService, taskCommentSelectedService)
 {
 
- console.log("----");
     $scope.comment_id = $routeParams.id;
-    console.log("$routeParams.id", $routeParams.id)
     $scope.partialPath = '/static/user/templates/comment_task_selected.html';
 
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -265,7 +261,6 @@ angular.module('userApp').controller('taskCommentCreateCtrl', ['$scope', '$rootS
         // PROJECT CALCULATE
         taskCommentSelectedService.get({ id: $scope.comment_id }, function (data) {
             $scope.taskCommentData = data;
-            console.log("taskCommentData:::", $scope.taskCommentData)
         });
     }
 
