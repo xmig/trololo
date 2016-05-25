@@ -249,3 +249,5 @@ SPHINX_SEARCH_PARAMS = {
     'index':    '*',
     'weights':  [10, 1],
 }
+
+SEND_EMAIL_NOTIFICATION = True
