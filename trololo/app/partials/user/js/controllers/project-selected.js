@@ -551,4 +551,56 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         });
     };
 
+
+    /* ALL ACTIVITY INFO */
+    $scope.allActivities = []; // set the default sort type
+    $scope.allActivitiesParams = {};
+    $scope.allActivitiesParams.startDate = new Date(); // start date
+    $scope.allActivitiesParams.endDate = new Date(); // end date
+
+    $scope.reloadAllActivities = function() {
+        $scope.allActivities = [];
+        var params = {};
+
+        if ($scope.allActivitiesParams.startDate) {
+            params.date_0 = moment($scope.allActivitiesParams.startDate).format('YYYY-MM-DD');
+        }
+
+        if ($scope.allActivitiesParams.endDate) {
+            params.date_1 = moment($scope.allActivitiesParams.endDate).format('YYYY-MM-DD');
+        }
+
+        activityListService.getAll(params, function (data) {
+            if (data.length > 0) {
+                data.forEach(function(item, i, arr) {
+                    var activity = {};
+                    activity.created_by_id = item.owner.id;
+                    activity.created_by_username = item.owner.username;
+                    activity.message = 'activity: ' + item.message;
+                    activity.created_at = item.created_at;
+                    activity.link = '';
+
+                    $scope.allActivities.push(activity);
+                });
+            }
+        });
+
+        commentService.getAll(params, function (data) {
+            if (data.length > 0) {
+                data.forEach(function(item, i, arr) {
+                    var comment = {};
+                    comment.created_by_id = item.created_by.id;
+                    comment.created_by_username = item.created_by.username;
+                    comment.message = 'add comment: ' + item.comment;
+                    comment.created_at = item.created_at;
+                    comment.link = '#/user/projects/comments/' + item.id;
+
+                    $scope.allActivities.push(comment);
+                });
+            }
+        });
+    };
+
+    $scope.reloadAllActivities();
+
 }]);
