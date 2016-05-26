@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('activity', '0003_activity_activity_model'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('projects', '0018_auto_20160520_0911'),
+        ('projects', '0020_task_assigned_member'),
     ]
 
     operations = [
