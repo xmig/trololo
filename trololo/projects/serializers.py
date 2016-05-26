@@ -383,7 +383,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     def save_tags(self, instance, tags):
         if tags is not None:
             instance.tags.set(*[tag['name'] for tag in tags])
-            instance.save()
         return instance
 
     def create(self, validated_data):

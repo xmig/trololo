@@ -516,7 +516,6 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     });
 
     $scope.changeUserLocation = function(e, id){
-    console.log("-----")
     e.preventDefault();
         if($scope.userPersonalData.id !== id){
             $window.location.href = '#/user/profile/' + id;
@@ -525,29 +524,83 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         }
     }
 
-    $scope.commentData = {};
-    $scope.saveComment = function() {
-//        $scope.commentData.tags = [];
-        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
-//        console.log('iii',$routeParams.id)
-        if ($scope.comment_id) {
-            // EDIT
-            $scope.commentData.id = $scope.comment_id;
-
-            commentSelectedService.update($scope.commentData, function(response) {
-                $scope.commentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
-                }
-            });
-        } else {
-            commentService.create($scope.commentData, function(response) {
-                $scope.commentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
-                }
-            });
-        }
+    $scope.showAddCommentDialog = function(event) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'add_comment.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose: true,
+            fullscreen: false
+        });
     };
+
+    $scope.saveComment = function() {
+        $scope.commentData = {};
+        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
+        $scope.commentData.comment = $scope.comment_text;
+
+        commentService.create($scope.commentData, function(response) {
+            $scope.commentData = response;
+            if (typeof response.id !== 'undefined' && response.id > 0) {
+                $window.location.href = '#/user/projects/' + $routeParams.id + '/';
+                $scope.statusSaveToast('Saved!');
+            }
+        });
+    };
+
+
+    /* ALL ACTIVITY INFO */
+    $scope.allActivities = []; // set the default sort type
+    $scope.allActivitiesParams = {};
+    $scope.allActivitiesParams.startDate = new Date(); // start date
+    $scope.allActivitiesParams.endDate = new Date(); // end date
+
+    $scope.reloadAllActivities = function() {
+        $scope.allActivities = [];
+        var params = {};
+
+        if ($scope.allActivitiesParams.startDate) {
+            params.date_0 = moment($scope.allActivitiesParams.startDate).format('YYYY-MM-DD');
+        }
+
+        if ($scope.allActivitiesParams.endDate) {
+            params.date_1 = moment($scope.allActivitiesParams.endDate).format('YYYY-MM-DD');
+        }
+
+        activityListService.getAll(params, function (data) {
+            if (data.length > 0) {
+                data.forEach(function(item, i, arr) {
+                    var activity = {};
+                    activity.created_by_id = item.owner.id;
+                    activity.created_by_username = item.owner.username;
+                    activity.message = 'activity: ' + item.message;
+                    activity.created_at = item.created_at;
+                    activity.link = '';
+
+                    $scope.allActivities.push(activity);
+                });
+            }
+        });
+
+        commentService.getAll(params, function (data) {
+            if (data.length > 0) {
+                data.forEach(function(item, i, arr) {
+                    var comment = {};
+                    comment.created_by_id = item.created_by.id;
+                    comment.created_by_username = item.created_by.username;
+                    comment.message = 'add comment: ' + item.comment;
+                    comment.created_at = item.created_at;
+                    comment.link = '#/user/projects/comments/' + item.id;
+
+                    $scope.allActivities.push(comment);
+                });
+            }
+        });
+    };
+
+    $scope.reloadAllActivities();
 
 }]);

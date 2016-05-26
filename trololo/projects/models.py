@@ -5,7 +5,6 @@ from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
 from taggit.managers import TaggableManager
 from django.utils import timezone
-from chi_django_base.storage import OverwriteStorage
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -174,13 +173,13 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new comment' + self.title + 'for task' + self.task.name
+        return 'create new comment "' + self.title + '" for task "' + self.task.name + '"'
 
     def get_activity_message_on_update(self, **kwargs):
         message = 'edit comment'
         old_data = self.get_original_object()
         if old_data.comment != self.comment:
-            message = message + 'Comment:' + old_data.comment + ' ==> ' + self.comment
+            message = message + ' Comment: "' + old_data.comment + '" ==> "' + self.comment + '"'
         return message
 
     def __str__(self):
@@ -190,8 +189,7 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
         return self.title
 
 
-class Status(AbstractModel):
-    # TODO: add created_by/created_at, updated_by/updated_at fields from AbstractTimestampable, AbstractSignable
+class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
     project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
     name = models.CharField(max_length=30)
     order_number = models.IntegerField()
