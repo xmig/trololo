@@ -16,6 +16,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Project
         fields = (
@@ -29,6 +30,7 @@ class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
             'date_started', 'date_finished',
             'visible_by'
         )
+
 
 
 # class ShortAssignedMemberInfoSerializer(serializers.OnlyUserInfoSerializer)
@@ -97,6 +99,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     # activity = ActivitySerializer(source='task_comments', many=True)
     comments = ProjectCommentSerializer(source='project_comments', many=True, required=False, read_only=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
+
 
     tasks = serializers.HyperlinkedRelatedField(
         many=True,
