@@ -11,6 +11,9 @@ angular.module('mainApp', [
         'userApp',
         'xeditable',
         'lfNgMdFileInput'
+
+//        ,'ngAnimate', 'ngAria'
+
     ])
     .config(function ($routeProvider) {
         $routeProvider

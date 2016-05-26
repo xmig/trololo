@@ -16,6 +16,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 
 class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+
     class Meta:
         model = Project
         fields = (
@@ -29,6 +30,10 @@ class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
             'date_started', 'date_finished',
             'visible_by'
         )
+
+
+
+# class ShortAssignedMemberInfoSerializer(serializers.OnlyUserInfoSerializer)
 
 
 class ProjectCommentSerializer(serializers.ModelSerializer):
@@ -94,6 +99,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     # activity = ActivitySerializer(source='task_comments', many=True)
     comments = ProjectCommentSerializer(source='project_comments', many=True, required=False, read_only=True) # display dicts of comments
     project_obj = ShortProjectInfoSerializer(source='project', read_only=True)
+
 
     tasks = serializers.HyperlinkedRelatedField(
         many=True,
@@ -293,6 +299,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         required=True,
         # lookup_field='pk'
     )
+
     files = UploadFileSerializer( many=True, read_only=True)
 
     # project = serializers.HyperlinkedRelatedField(  #url
@@ -302,7 +309,18 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     lookup_field='pk'
     # )
 
-    # members_info = OnlyUserInfoSerializer(source='members', many=True, read_only=True) # to display names instead of urls
+
+    # assigned_member = OnlyUserInfoSerializer(read_only=True, many=False)
+
+    assigned_member = serializers.PrimaryKeyRelatedField(  #id
+        # view_name='users:single_user',
+        queryset=get_user_model().objects.all(),
+        required=False
+        # lookup_field='pk'
+    )
+
+    assigned_member_info=OnlyUserInfoSerializer(source='assigned_member', read_only=True, many=False)
+
     members = serializers.HyperlinkedRelatedField(
         many=True,
         view_name='users:single_user',
@@ -343,7 +361,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members_info', 'type', 'label',
+            'name', 'id', 'description', 'status', 'assigned_member', 'assigned_member_info', 'members_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members',
             'files'
@@ -365,7 +383,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     def save_tags(self, instance, tags):
         if tags is not None:
             instance.tags.set(*[tag['name'] for tag in tags])
-            instance.save()
         return instance
 
     def create(self, validated_data):
@@ -403,7 +420,7 @@ class TaskCreateSerializer(TaskSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'members', 'type', 'label', 'members_info',
+            'name', 'id', 'description', 'status', 'assigned_member', 'assigned_member_info', 'members', 'type', 'label', 'members_info',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )
