@@ -3,6 +3,7 @@ from django.conf import settings
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, AbstractAddOldObject
 import logging
 from activity import tasks
+from django.contrib.sites.models import Site
 
 _logger = logging.getLogger('app')
 
@@ -47,13 +48,18 @@ class HasActivity(models.Model, AbstractAddOldObject):
                 activity_massage, task_name
             )
 
+            site = Site.objects.filter(id=settings.SITE_ID).first()
+
+            email_subject = "[{}] Changed task #{} {}".format(
+                site.name if site else '', task_id, task_name
+            )
             recipients = task_members
             created_by_email = task_obj.created_by.email
 
             if created_by_email not in recipients:
                 recipients.append(created_by_email)
             sender = settings.EMAIL_HOST_USER
-            tasks.send_activity_emails.delay(recipients, email_body, sender, task_id, task_name)
+            tasks.send_emails.delay(recipients, email_subject, email_body, sender)
 
         self.activity.create(message=activity_massage, activity_model=activity_model_name)
 

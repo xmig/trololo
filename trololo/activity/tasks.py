@@ -5,10 +5,10 @@ from django.core.mail import send_mail
 
 
 @shared_task
-def send_activity_emails(recipients, email_body, sender, task_id, task_name):
+def send_emails(recipients, email_subject, email_body, sender):
     for email_addr in recipients:
         send_mail(
-            "Changed task #{} {}".format(task_id, task_name),
+            email_subject,
             email_body,
             sender,
             [email_addr],
