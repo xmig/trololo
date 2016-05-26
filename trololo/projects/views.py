@@ -207,6 +207,28 @@ class TaskFileList(generics.ListCreateAPIView):
     serializer_class = UploadFileSerializer
     queryset = TaskPicture.objects.all()
 
+    def post(self, request):
+        serializer = self.get_serializer_class()(data=request.data, context={'request': request})
+        user = request.user
+
+        tas = [
+            t.id for t in Task.objects.filter(Q(members=user) | Q(created_by=user)).all()
+        ]
+
+        if serializer.is_valid():
+            task = serializer.validated_data['task'].id
+
+            if task not in tas:
+                return Response(
+                    {'detail':"You don't have access permissions for task with id {}".format(task)},
+                    status.HTTP_403_FORBIDDEN
+                )
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response({"detail":serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class TaskFileDetail(generics.GenericAPIView):
     serializer_class = UploadFileSerializer
@@ -215,9 +237,14 @@ class TaskFileDetail(generics.GenericAPIView):
     def get_object(self, pk):
         try:
             files = TaskPicture.objects.select_related("task").get(pk=pk)
-        except Task.DoesNotExist:
+        except TaskPicture.DoesNotExist:
             raise exceptions.NotFound(
-                detail="Task with id {} does not exist.".format(pk)
+                detail="File with id {} does not exist.".format(pk)
+            )
+        user = self.request.user
+        if files.created_by != user and user not in TaskPicture.objects.all():
+            raise exceptions.PermissionDenied(
+                detail="You don't have access permissions for file with id {}".format(pk)
             )
         return files
 
@@ -533,9 +560,9 @@ class TaskCommentList(generics.ListCreateAPIView):
 
     def get_queryset(self):
         current_user = self.request.user
-        tas = [
-            t.id for t in Task.objects.filter(Q(members=current_user) | Q(created_by=current_user)).all()
-        ]
+        tas = Task.objects.select_related('project', "created_by", "updated_by") \
+                  .prefetch_related("activity", "tags", "members", "task_comments")\
+                  .filter(project__id__in=get_my_proj(current_user))
 
         return TaskComment.objects.filter(task__id__in=tas)
 
@@ -544,7 +571,9 @@ class TaskCommentList(generics.ListCreateAPIView):
         user = request.user
 
         tas = [
-            t.id for t in Task.objects.filter(Q(members=user) | Q(created_by=user)).all()
+            t.id for t in Task.objects.select_related('project', "created_by", "updated_by") \
+                              .prefetch_related("activity", "tags", "members", "task_comments")\
+                              .filter(project__id__in=get_my_proj(user))
         ]
 
         if serializer.is_valid():

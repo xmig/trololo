@@ -432,7 +432,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     reloadTask();
 
     /* COMMENT */
-    $scope.commentSortType = 'created_at'; // set the default sort type
+    $scope.commentSortType = 'created_by.username'; // set the default sort type
     $scope.commentSortDirection = true;  // set the default sort order
     $scope.commentPageSize = 10;
     $scope.commentPage = 1;

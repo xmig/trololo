@@ -1,12 +1,13 @@
 angular.module('userApp').controller('userChipsCtrl', userChipsCtrl);
 
-function userChipsCtrl ($timeout, $q, usersService) {
+function userChipsCtrl ($timeout, $q, usersService, projectSelectedService, $scope) {
     var self = this;
     var pendingSearch, cancelSearch = angular.noop;
     var cachedQuery, lastSearch;
     self.allContacts = [];
     self.filterSelected = true;
     self.querySearch = querySearch;
+    self.queryTaskSearch = queryTaskSearch;
     self.delayedQuerySearch = delayedQuerySearch;
 
     /**
@@ -20,10 +21,33 @@ function userChipsCtrl ($timeout, $q, usersService) {
         return cachedQuery ? self.allContacts.filter(createFilterFor(cachedQuery)) : [];
     }
 
+    function queryTaskSearch (criteria) {
+        projectSelectedService.get({ id: $scope.taskData.project }, function (data) {
+            self.allContacts = data.members_data;
+
+            var present = false;
+            for (var i=0; i<self.allContacts.length; i++) {
+                if (self.allContacts[i].id === data.created_by.id) {
+                    present = true;
+                    break;
+                }
+            }
+
+            if (!present) {
+                self.allContacts.push(data.owner)
+            }
+
+            self.allContacts = getFormatedUserData(self.allContacts);
+        });
+
+        return cachedQuery ? self.allContacts.filter(createFilterFor(cachedQuery)) : [];
+    }
+
     /**
      * Async search for contacts
      * Also debounce the queries; since the md-contact-chips does not support this
      */
+
     function delayedQuerySearch(criteria) {
       cachedQuery = criteria;
       if ( !pendingSearch || !debounceSearch() )  {
@@ -32,7 +56,11 @@ function userChipsCtrl ($timeout, $q, usersService) {
           // Simulate async search... (after debouncing)
           cancelSearch = reject;
           $timeout(function() {
-            resolve( self.querySearch(criteria) );
+            if ($scope.taskData != undefined) {
+                resolve( self.queryTaskSearch(criteria) );
+            } else {
+                resolve( self.querySearch(criteria) );
+            }
             refreshDebounce();
           }, 5, true)
         });
@@ -68,6 +96,7 @@ function userChipsCtrl ($timeout, $q, usersService) {
     function getFormatedUserData(users) {
       return users.map(function (user, index) {
         var contact = user;
+        console.log("contact:", contact);
         contact._lowerusername = contact.username.toLowerCase();
         return contact;
       });

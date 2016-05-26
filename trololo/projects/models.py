@@ -159,9 +159,9 @@ def task_directory_path(instance, filename):
     return 'task_{0}/{1}'.format(instance.task.id, filename)
 
 
-class TaskPicture(models.Model):
-    task = models.ForeignKey(Task, related_name='files')
-    file_upload = models.FileField(upload_to=task_directory_path, blank=True)
+class TaskPicture(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    task = models.ForeignKey(Task, null=True, blank=True, related_name='files')
+    file_upload = models.FileField(upload_to=task_directory_path, blank=False)
 
     def save(self, *args, **kwargs):
         super(TaskPicture, self).save(*args, **kwargs)

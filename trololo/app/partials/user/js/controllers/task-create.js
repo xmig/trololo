@@ -117,7 +117,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
 //            response.project = response.project_obj.id
             $scope.taskData = response;
                         console.log('[[[$scope.taskData]]]', $scope.taskData)
-                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
+                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.owner)
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
