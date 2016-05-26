@@ -174,7 +174,7 @@ class TaskList(generics.ListCreateAPIView):
     def get_queryset(self):
 
         return Task.objects.select_related('project', "created_by", "updated_by") \
-                   .prefetch_related("activity", "tags", "members", "task_comments")\
+                   .prefetch_related("activity", "tags", "assigned_member", "members", "task_comments")\
                    .filter(project__id__in=get_my_proj(self.request.user))
 
 
