@@ -35,7 +35,7 @@ class HasActivity(models.Model, AbstractAddOldObject):
         if settings.SEND_EMAIL_NOTIFICATION:
             if self.__class__.__name__ == 'Task':
                 task_obj = self
-            elif self.__class__.__name__ in ['TaskComment']:
+            elif self.__class__.__name__ in ['TaskComment', 'TaskPicture']:
                 task_obj = self.task
             task_name = task_obj.name
             task_id = task_obj.id
