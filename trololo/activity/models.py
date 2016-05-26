@@ -1,8 +1,8 @@
 from django.db import models
 from django.conf import settings
-from django.core.mail import send_mail
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, AbstractAddOldObject
 import logging
+from activity import tasks
 
 _logger = logging.getLogger('app')
 
@@ -32,6 +32,8 @@ class HasActivity(models.Model, AbstractAddOldObject):
         activity_massage = self.__get_activity_message(**kwargs)
         activity_model_name = self.__get_activity_model_name(**kwargs)
 
+        super(HasActivity, self).save(*args, **kwargs)
+
         if settings.SEND_EMAIL_NOTIFICATION:
             if self.__class__.__name__ == 'Task':
                 task_obj = self
@@ -44,19 +46,15 @@ class HasActivity(models.Model, AbstractAddOldObject):
             email_body = '<b>{0}</b><br /><br />You receive this mail because of you are member of the task "{1}"'.format(
                 activity_massage, task_name
             )
-            for email_addr in [task_obj.created_by.email] + task_members:
-                try:
-                    send_mail(
-                        "Changed task #{} {}".format(task_id, task_name),
-                        email_body,
-                        settings.EMAIL_HOST_USER,
-                        [email_addr],
-                        html_message=email_body
-                    )
-                except Exception as e:
-                    _logger("Email sending error: {}".format(e))
 
-        super(HasActivity, self).save(*args, **kwargs)
+            recipients = task_members
+            created_by_email = task_obj.created_by.email
+
+            if created_by_email not in recipients:
+                recipients.append(created_by_email)
+            sender = settings.EMAIL_HOST_USER
+            tasks.send_activity_emails.delay(recipients, email_body, sender, task_id, task_name)
+
         self.activity.create(message=activity_massage, activity_model=activity_model_name)
 
 
