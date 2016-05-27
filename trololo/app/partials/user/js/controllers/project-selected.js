@@ -39,7 +39,6 @@ angular.module('mainApp')
             }, function(resp) {
                 $scope.hide();
 
-                console.log("Status: " + resp.status);
                 if(resp.status !== 200) {
                     var err = $mdDialog.alert()
                         .title('Failure')
@@ -289,7 +288,6 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
-            console.log($scope.activities.data);
         });
     };
 
@@ -449,11 +447,9 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
             'project': $routeParams.id
 
         }
-        console.log("---", params);
         commentService.get(params, function (data) {
             $scope.comments = data.results;
             $scope.comments.count = $scope.comments.length;
-            console.log('data.results', data.results,'-----', $scope.comments.count);
         });
     };
 
