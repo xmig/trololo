@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 'personalInfoService', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
-                                                 function(taskCommentService, personalInfoService, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
+angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService', 'projectSelectedService', 'taskCommentService', 'personalInfoService', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
+                                                 function(projectStatusService, projectSelectedService, taskCommentService, personalInfoService, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
 
 
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -430,11 +430,73 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 // TASK CALCULATE
     $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
         $scope.taskData = response;
-        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
+//        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
+
+    $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
+                    $scope.taskProjectStatuses = resp;
+                    console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+                })
+
+// $scope.reloadStatuses = function() {
+//        var params = {
+//            'limit': $scope.statusLimit,
+//            'offset': $scope.statusOffset,
+//            'ordering': $scope.statusSortType,
+//            'project': $routeParams.id,
+//        }
+//
+//        var error_func = function (resp) {console.log(resp);};
+//
+//        if (!$scope.statusLimit) {
+//            projectStatusService.get_all(
+//                params,
+//                function(resp) {
+//                    $scope.statuses = resp;
+//                },
+//                error_func
+//            )
+//        } else {
+//            projectStatusService.get(
+//                params,
+//                function(resp) {
+//                    $scope.statuses = resp.results;
+//                },
+//                error_func
+//            )
+//        }
+//    };
+//
+//
+
+//        $scope.projj=projectSelectedService.get({ "id": $scope.taskData.project }, function (data) {
+//            $scope.projj = data // data.id;
+//
+//            $scope.statuses = projectStatusService.query($scope.stat, function (data){  //({"id": $scope.status_id}, function (data) {
+//                $scope.stat = data;
+//
+//console.log('----data----', $scope.stat)
+//console.log('----$scope.projj----', $scope.projj)
+//console.log('----$scope.projj.id----', $scope.projj.id)
+//
+//            if ($scope.projj.id == $scope.statuses.project_id) {
+//                return $scope.statuses
+//                 console.log("$scope.statuses",$scope.statuses )
+//
+//                }
+//
+//
+//            });
+//        });
+//
+//console.log("$scope.stat",$scope.stat )
+
+
 
 
                         console.log('----$scope.taskData----', $scope.taskData)
                         console.log('----response----', response)
+
+
 
                         console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
                         console.log('----$scope.taskData.assigned_member---', $scope.taskData.assigned_member)

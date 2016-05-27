@@ -48,21 +48,15 @@
                                                 <md-option ng-repeat="type in taskTypes" ng-value="type.id">{{ type.title }}</md-option>
                                             </md-select>
                                 </md-input-container>
+
 <!--<Set Task Status>-->
                                 <md-input-container class="md-block">
-                                        <label>Status</label>
-                                            <md-select ng-model="taskData.status" name="status" id="status">
-                                                <md-option ng-repeat="status in taskStatuses" ng-value="status.id">{{ status.title }}</md-option>
+                                        <label>Status2</label>
+                                            <md-select ng-model="taskProjectStatuses" name="status" id="status">
+                                                <md-option ng-repeat="status in taskProjectStatuses" ng-value="status.id">{{ status.name }}</md-option>
                                             </md-select>
                                 </md-input-container>
 
-                                <!--<md-input-container class="md-block">-->
-                                        <!--<label>Status</label>-->
-                                    <!--<pre>{{taskData.project}}</pre>-->
-                                            <!--<md-select ng-model="taskData.project.status" name="status" id="status">-->
-                                                <!--<md-option ng-repeat="status in task.project.status" ng-value="status.id">{{ status.title }}</md-option>-->
-                                            <!--</md-select>-->
-                                <!--</md-input-container>-->
 
 <!--<Set Task label>-->
                                 <md-input-container class="md-block">

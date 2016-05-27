@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectService', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'taskService', 'taskSelectedService', '$timeout', '$mdSidenav', '$log',
-    function($scope, projectService, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, taskService, taskSelectedService, $timeout, $mdSidenav, $log)
+angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', '$scope', 'projectService', '$rootScope', '$http', '$window', '$mdDialog', '$mdMedia', '$location', '$routeParams', 'taskService', 'taskSelectedService', '$timeout', '$mdSidenav', '$log',
+                                               function(projectStatusService, $scope, projectService, $rootScope, $http, $window, $mdDialog, $mdMedia, $location, $routeParams, taskService, taskSelectedService, $timeout, $mdSidenav, $log)
 {
     $scope.task_id = $routeParams.id;
     $scope.partialPath = '/static/user/templates/task_create.html';
@@ -118,6 +118,15 @@ angular.module('userApp').controller('taskCreateCtrl', ['$scope', 'projectServic
             $scope.taskData = response;
                         console.log('[[[$scope.taskData]]]', $scope.taskData)
                                             console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
+
+
+            $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
+                    $scope.taskProjectStatuses = resp;
+                    console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+                })
+
+
+
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)

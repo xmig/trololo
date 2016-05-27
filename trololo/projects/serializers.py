@@ -15,21 +15,21 @@ class TagSerializer(serializers.ModelSerializer):
         fields = ['name']
 
 
-class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
-
-    class Meta:
-        model = Project
-        fields = (
-            'id', 'name', 'status',
-            'date_started', 'date_finished',
-            'visible_by'
-        )
-
-        read_only_fields = (
-            'id', 'name', 'status',
-            'date_started', 'date_finished',
-            'visible_by'
-        )
+# class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+#
+#     class Meta:
+#         model = Project
+#         fields = (
+#             'id', 'name', 'status',
+#             'date_started', 'date_finished',
+#             'visible_by'
+#         )
+#
+#         read_only_fields = (
+#             'id', 'name', 'status',
+#             'date_started', 'date_finished',
+#             'visible_by'
+#         )
 
 
 
@@ -93,6 +93,23 @@ class StatusSerializer(serializers.ModelSerializer):
         model = Status
         fields = ('name', 'order_number', 'url', 'project', 'id', 'project_id')
 
+
+class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
+    statuses = StatusSerializer(source='project', read_only=True)
+
+    class Meta:
+        model = Project
+        fields = (
+            'id', 'name', 'status', 'statuses',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
+
+        read_only_fields = (
+            'id', 'name', 'status', 'statuses',
+            'date_started', 'date_finished',
+            'visible_by'
+        )
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     activity = serializers.SerializerMethodField('take_activity')
