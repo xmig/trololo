@@ -125,6 +125,7 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     name = models.CharField(max_length=150, null=True, default='', blank=True)
     description = models.TextField(blank=True, null=True, default='')
     project = models.ForeignKey(Project, default='', null=True, blank=True, related_name='tasks')
+    assigned_member = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
@@ -158,9 +159,9 @@ def task_directory_path(instance, filename):
     return 'task_{0}/{1}'.format(instance.task.id, filename)
 
 
-class TaskPicture(models.Model):
-    task = models.ForeignKey(Task, related_name='files')
-    file_upload = models.FileField(upload_to=task_directory_path, blank=True)
+class TaskPicture(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    task = models.ForeignKey(Task, null=True, blank=True, related_name='files')
+    file_upload = models.FileField(upload_to=task_directory_path, blank=False)
 
     def save(self, *args, **kwargs):
         super(TaskPicture, self).save(*args, **kwargs)
