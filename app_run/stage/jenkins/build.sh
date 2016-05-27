@@ -31,4 +31,6 @@ echo "*** Restart supervisorctl and nginx ***"
 sudo supervisorctl start trololo
 sudo supervisorctl update
 
+sudo supervisorctl restart celery
+
 sudo service nginx restart

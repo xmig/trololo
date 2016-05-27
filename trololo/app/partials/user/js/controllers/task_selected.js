@@ -1,5 +1,6 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', 'taskCommentService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
-                                                 function($window, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, taskCommentService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
+angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 'personalInfoService', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
+                                                 function(taskCommentService, personalInfoService, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
+
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -21,8 +22,12 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
 //         console.log($scope.task);
 //    })
 
+
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
          $scope.task = response;
+         console.log("DDDDD", $scope.task);
+         console.log("DDDDD", $scope.task.files);
+         
     }, function(error){
 //        console.log("ERROR"); // if task doesn't exist - go to main page
         $window.location.href = "#/"
@@ -63,7 +68,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
 
 
 
-    /* ACTIVITY INFO */  //- sorting, view, pagination
+/* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
     $scope.activitySortDirection = true;  // set the default sort order
     $scope.activityPageSize = 10;
@@ -86,10 +91,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
             'ordering': sorting
         }
 
-        activityListService.get(params, function (data) {
+        activityListService.get(params, function (data) { //{"created_by": $routeParams.taskid.created_by},
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
+            console.log("$scope.activities.data", $scope.activities.data);
         });
     };
 
@@ -145,19 +151,24 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
             'for_cu':1,
             'task': $routeParams.taskid
         }
+        console.log("params", params);
         taskCommentService.get(params, function (data) {
             if ($scope.task == undefined) {
                 $scope.task = {};
             };
+            console.log("DATA", data);
             $scope.task.comments = data.results;
             $scope.task.comments.count = $scope.task.comments.length;
+            console.log('data.results', data.results,'-----', $scope.task.comments.count);
         });
     };
 
     $scope.commentSort = function(sortInfo) {
+    console.log("sortInfo", sortInfo)
         $scope.commentSortType = sortInfo.value;
         $scope.commentSortDirection = sortInfo.direction;
         $scope.commentPage = 1;
+        console.log("11111", $scope.commentSortType)
         reloadComment();
     };
 
@@ -199,7 +210,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
     reloadComment();
 
 
-    /* NOTIFICATION INFO */
+/* NOTIFICATION INFO */
     $scope.notificationSortType = 'created_at'; // set the default sort type
     $scope.notificationSortDirection = true;  // set the default sort order
     $scope.notificationPageSize = 10;
@@ -256,8 +267,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},
-        //{"title": "Progress", "link": "progress"},
-        //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
     ];
 
@@ -307,11 +316,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
     }
 
 
-//// TASK CALCULATE
-//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
-//        $scope.task = data;
-//    });
-
 
 /* for popup */
     $scope.popRegistr = function (ev) {
@@ -344,68 +348,8 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
         };
 
 
-
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
 /* end - for popup */
 
-
-    $scope.editComment = function (event, dessert) {
-        event.stopPropagation(); // in case autoselect is enabled
-
-        var editDialog = {
-            modelValue: dessert.comment,
-            placeholder: 'Add a comment',
-            save: function (input) {
-                if(input.$modelValue === 'Donald Trump') {
-                    return $q.reject();
-                }
-                if(input.$modelValue === 'Bernie Sanders') {
-                    return dessert.comment = 'FEEL THE BERN!'
-                }
-                dessert.comment = input.$modelValue;
-            },
-            targetEvent: event,
-            title: 'Add a comment',
-            validators: {
-                'md-maxlength': 30
-            }
-        };
-
-        var promise;
-
-        if($scope.options.largeEditDialog) {
-            promise = $mdEditDialog.large(editDialog);
-        } else {
-            promise = $mdEditDialog.small(editDialog);
-        }
-
-        promise.then(function (ctrl) {
-            var input = ctrl.getInput();
-
-            input.$viewChangeListeners.push(function () {
-                input.$setValidity('task_test', input.$modelValue !== 'task_test');
-            });
-        });
-    };
-
-
-//    $scope.sortVariants = [
-//          {value: "created_at",
-//           option: "by Date"
-//          },
-//          {value: "created_by",
-//           option: "by User"
-//          },
-////          {value: "comment",
-////           option: "by Type"
-////          },
-//      ];
 
 
     $scope.viewVariants = [
@@ -432,6 +376,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
     });
 
     $scope.changeUserLocation = function(e, id){
+    console.log("-----")
     e.preventDefault();
         if($scope.userPersonalData.id !== id){
             $window.location.href = '#/user/profile/' + id;
@@ -444,6 +389,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
     $scope.savetaskComment = function() {
         $scope.taskCommentData.tags = [];
         $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
+        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
         if ($scope.comment_id) {
             // EDIT
             $scope.commentData.id = $scope.comment_id;
@@ -464,7 +410,91 @@ angular.module('userApp').controller('taskSelectedCtrl', ['$window', 'taskFilesS
         }
     };
 
-    //File upload
+
+
+
+//// TASK CALCULATE
+//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
+//        $scope.task = data;
+//    });
+
+
+
+//** ADD/DELETE USERS in TASK MEMBERS TAB **//
+
+//get authorized user
+    $scope.user = personalInfoService.update($scope.userAdditionData, function(response) {
+            $scope.userData = response;
+            });
+
+// TASK CALCULATE
+    $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
+        $scope.taskData = response;
+        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
+
+
+                        console.log('----$scope.taskData----', $scope.taskData)
+                        console.log('----response----', response)
+
+                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
+                        console.log('----$scope.taskData.assigned_member---', $scope.taskData.assigned_member)
+
+
+        $scope.taskCopy = JSON.parse(JSON.stringify(response));
+                        console.log('----$scope.taskCopy----', $scope.taskCopy)
+        });
+
+// TASK SAVE
+
+    $scope.taskData = {members_info: []};
+    console.log('TESTING TASK', $scope.taskData)
+
+    $scope.saveTask = function(){
+        $scope.saveTask.tags = [];
+
+//        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
+//            $scope.taskData = response;
+//                            console.log('[[[ response ]]]', response)
+//            $scope.taskCopy = JSON.parse(JSON.stringify(response));
+//                            console.log('[[[ taskData ]]]', $scope.taskData)
+//                            console.log('[[[ taskCopy ]]]', $scope.taskCopy)
+
+            if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
+                            console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
+
+                $scope.taskData.id = $routeParams.taskid;
+                                console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
+
+                $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
+                    return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
+                });
+
+                                            console.log('$scope.taskData.members', $scope.taskData.members)
+                                            console.log('$scope.taskData.assigned_member', $scope.taskData.assigned_member)
+
+
+                taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {
+                    $scope.taskData = response;
+                            console.log('$scope.taskData', $scope.taskData)
+                    $window.location = '#/user/tasks/' + $scope.taskCopy.id;
+                    $scope.statusSaveToast('Saved!');
+                },
+
+                    function (response){
+                        console.log('response', response)
+                        var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
+                        $log.debug(err_message);
+                        $scope.statusSaveToast('Some error, contact admin.');
+                    }
+                )
+            } else {
+                $scope.statusSaveToast('Any change!');
+            };
+        };
+
+
+
+//File upload
     $scope.$on(
         'filesAdded', function(event, files) {
             $scope.files = files;

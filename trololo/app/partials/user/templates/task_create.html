@@ -10,7 +10,7 @@
 
 
                 <md-card class="md-padding">
-                    <form name="save_task" ng-submit="save_task.$valid && saveTask()">
+                    <form name="save_task" ng-submit="save_task.$valid && saveTask()" novalidate>
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline">Task Info</span>
@@ -18,19 +18,27 @@
                         </md-card-title>
                         <md-card-content>
                             <div>
-                                <md-input-container class="md-block">
+                                <md-input-container class="md-block" md-is-error="save_task.name.$invalid && (save_task.$submitted || save_task.name.$dirty)">
                                     <label>Name</label>
-                                    <input type="text" name="name" id="name" required ng-model="taskData.name">
+                                    <input type="text" name="name" id="name" ng-model="taskData.name" ng-required="true">
+
+                                                    <div ng-messages="save_task.name.$error" ng-if="save_task.$submitted || save_task.name.$touched">
+                                                        <div ng-message="required">This field is required.</div>
+                                                    </div>
+
                                 </md-input-container>
 
 <!--<Choose Project>-->
-                                <md-input-container class="md-block">
-
+                                <md-input-container class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)">
                                     <label>Choose Project:</label>
-                                            <md-select ng-model="taskData.project">
-                                                <md-option ng-repeat="proj in projects" ng-value="proj.id" required ng-model="taskData.project">{{ proj.name }}</md-option>
+                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true">
+                                                <md-option ng-repeat="proj in projects" ng-value="proj.id" ng-model="taskData.project" ng-required="true">{{ proj.name }}</md-option>
                                             </md-select>
-                                            <!--<pre>{{proj}}</pre>-->
+
+                                                    <div ng-messages="save_task.project.$error" ng-if="save_task.$submitted || save_task.project.$touched">
+                                                        <div ng-message="required">This field is required.</div>
+                                                    </div>
+
                                 </md-input-container>
                                 <div style="height:5px"></div>
 <!--<Set Task type>-->
@@ -41,13 +49,21 @@
                                             </md-select>
                                 </md-input-container>
 <!--<Set Task Status>-->
-
                                 <md-input-container class="md-block">
                                         <label>Status</label>
                                             <md-select ng-model="taskData.status" name="status" id="status">
                                                 <md-option ng-repeat="status in taskStatuses" ng-value="status.id">{{ status.title }}</md-option>
                                             </md-select>
                                 </md-input-container>
+
+                                <!--<md-input-container class="md-block">-->
+                                        <!--<label>Status</label>-->
+                                    <!--<pre>{{taskData.project}}</pre>-->
+                                            <!--<md-select ng-model="taskData.project.status" name="status" id="status">-->
+                                                <!--<md-option ng-repeat="status in task.project.status" ng-value="status.id">{{ status.title }}</md-option>-->
+                                            <!--</md-select>-->
+                                <!--</md-input-container>-->
+
 <!--<Set Task label>-->
                                 <md-input-container class="md-block">
                                         <label>Set Task label:</label>
@@ -55,58 +71,72 @@
                                                 <md-option ng-repeat="label in taskLabels" ng-value="label.id">ico+{{ label.title }}</md-option>
                                             </md-select>
                                 </md-input-container>
-<!--<Enter estimation date>-->
-                                <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date"></md-datepicker>
-                            <!--<span class="alert" ng-show="save_task.$submitted && save_task.dt_start.$invalid">This field is required</span>-->
+
+<!--<Deadline date>-->
+<!--aria-live="assertive">-->
+
+
+
+                                <div class="md-block" md-is-error="save_task.deadline.$invalid && (save_task.$submitted || save_task.deadline.$dirty)">
+                                        <!--<label>Deadline date</label>-->
+                                <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date" name="deadline" id="deadline" ng-required="true"></md-datepicker>
+                                                        <div ng-messages="save_task.assigned_member.$error" ng-if="save_task.$submitted || save_task.assigned_member.$touched">
+                                                            <div ng-message="required">This field is required.</div>
+                                                        </div>
+                                </div>
 
 <!--<Task description>-->
                                 <md-input-container class="md-block">
                                         <label>Description</label>
                                         <textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>
                                 </md-input-container>
+
+ <!--Estimate minutes-->
                                 <md-input-container class="md-block">
                                     <label>Estimate minutes</label>
                                     <input type="number" name="estimate_minutes" id="estimate_minutes"
                                            ng-model="taskData.estimate_minutes" rows="5" />
                                 </md-input-container>
-<!--<Members>-->
 
-                        <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                            <pre>{{taskData}}</pre>
-                                    <md-contact-chips
-                                        ng-model="taskData.members_info"
-                                        md-contacts="ctrl.delayedQuerySearch($query)"
-                                        md-contact-name="username"
-                                        md-contact-email="email"
-                                        md-require-match="true"
-                                        md-highlight-flags="i"
-                                        filter-selected="ctrl.filterSelected"
-                                        placeholder="Members">
-                                    </md-contact-chips>
+<!--<Members>-->
+                                <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak="">
+                                    <md-content class="md-padding autocomplete" layout="column">
+                                        <md-contact-chips
+                                            ng-model="taskData.members_info"
+                                            md-contacts="ctrl.delayedQuerySearch($query)"
+                                            md-contact-name="username"
+                                            md-contact-image="photo"
+                                            md-contact-email="email"
+                                            md-require-match="true"
+                                            md-highlight-flags="i"
+                                            filter-selected="ctrl.filterSelected"
+                                            placeholder="Members">
+                                        </md-contact-chips>
+                                    </md-content>
                                 </div>
+                                <div style="height:5px"></div>
+                                <div>
+                                    <md-input-container class="md-block" md-is-error="save_task.assigned_member.$invalid && (save_task.$submitted || save_task.assigned_member.$dirty)">
+                                        <label>Assigned member</label>
+                                        <md-select ng-model="taskData.assigned_member" name="assigned_member" id="assigned_member" ng-required="true">
+                                            <md-option ng-repeat="member in taskData.members_info" ng-value="member.id" ng-required="true">{{ member.username }}</md-option>
+                                        </md-select>
+
+                                                    <div ng-messages="save_task.assigned_member.$error" ng-if="save_task.$submitted || save_task.assigned_member.$touched">
+                                                        <div ng-message="required">This field is required.</div>
+                                                    </div>
+
+                                    </md-input-container>
+                                </div>
+
                             </div>
                         </md-card-content>
+
                         <md-card-actions layout="row" layout-align="end center">
                             <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
                         </md-card-actions>
 
-                                <!--<md-input-container class="md-block">-->
-                                    <!--<label>Visible By</label>-->
-                                    <!--<md-select ng-model="taskData.visible_by" name="visible_by" id="visible_by">-->
-                                        <!--<md-option ng-value="visibleBy.id" ng-repeat="visibleBy in visibleByList">{{ visibleBy.title }}</md-option>-->
-                                    <!--</md-select>-->
-                                <!--</md-input-container>-->
-                                <!--<md-datepicker ng-model="taskData.date_started" md-placeholder="Date Started"></md-datepicker>-->
-                                <!--<md-datepicker ng-model="taskData.date_finished" md-placeholder="Date Finished"></md-datepicker>-->
-                                <!--<md-input-container class="md-block">-->
-                                    <!--<label>Description</label>-->
-                                    <!--<textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>-->
-                                <!--</md-input-container>-->
-                            <!--</div>-->
-                        <!--</md-card-content>-->
-                        <!--<md-card-actions layout="row" layout-align="end center">-->
-                            <!--<md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>-->
-                        <!--</md-card-actions>-->
+
                     </form>
                 </md-card>
         </md-card>

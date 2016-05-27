@@ -179,6 +179,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+# social auth config
 SOCIALACCOUNT_PROVIDERS = {
     'facebook':
        {'METHOD': 'oauth2',
@@ -218,10 +219,13 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+SOCIALACCOUNT_EMAIL_VERIFICATION = False
+
+# caching config
 REST_FRAMEWORK_EXTENSIONS = {
     'DEFAULT_CACHE_ERRORS': False,
     'DEFAULT_CACHE_KEY_FUNC': 'chi_django_base.helpers.calculate_cache_key',
-    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 15
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 60 * 15  # 15 minutes
 }
 
 CACHES = {
@@ -234,8 +238,11 @@ CACHES = {
     }
 }
 
-SOCIALACCOUNT_EMAIL_VERIFICATION = False
+###################
+## SPHINX CONFIG ##
+###################
 
+# deprecated
 GLOBAL_SEARCH_URL = 'http://127.0.0.1:8005/find/'
 
 # from sphinxapi
@@ -249,3 +256,14 @@ SPHINX_SEARCH_PARAMS = {
     'index':    '*',
     'weights':  [10, 1],
 }
+
+# enable sending of activity email notifications
+SEND_EMAIL_NOTIFICATION = True
+
+# celery config
+BROKER_URL = 'redis://'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT=['json']
+CELERY_TIMEZONE = 'Europe/Kiev'
+CELERY_ENABLE_UTC = True

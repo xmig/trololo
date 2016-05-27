@@ -430,7 +430,7 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     reloadTask();
 
     /* COMMENT */
-    $scope.commentSortType = 'created_at'; // set the default sort type
+    $scope.commentSortType = 'created_by.username'; // set the default sort type
     $scope.commentSortDirection = true;  // set the default sort order
     $scope.commentPageSize = 10;
     $scope.commentPage = 1;
@@ -520,29 +520,31 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         }
     }
 
-    $scope.commentData = {};
-    $scope.saveComment = function() {
-//        $scope.commentData.tags = [];
-        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
-//        console.log('iii',$routeParams.id)
-        if ($scope.comment_id) {
-            // EDIT
-            $scope.commentData.id = $scope.comment_id;
+    $scope.showAddCommentDialog = function(event) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'add_comment.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose: true,
+            fullscreen: false
+        });
+    };
 
-            commentSelectedService.update($scope.commentData, function(response) {
-                $scope.commentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
-                }
-            });
-        } else {
-            commentService.create($scope.commentData, function(response) {
-                $scope.commentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/projects/' + $routeParams.id + '/';
-                }
-            });
-        }
+    $scope.saveComment = function() {
+        $scope.commentData = {};
+        $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
+        $scope.commentData.comment = $scope.comment_text;
+
+        commentService.create($scope.commentData, function(response) {
+            $scope.commentData = response;
+            if (typeof response.id !== 'undefined' && response.id > 0) {
+                $window.location.href = '#/user/projects/' + $routeParams.id + '/';
+                $scope.statusSaveToast('Saved!');
+            }
+        });
     };
 
 

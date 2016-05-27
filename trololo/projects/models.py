@@ -5,7 +5,6 @@ from activity.models import HasActivity
 from chi_django_base.models import AbstractModel, AbstractTimestampable, AbstractSignable, HasStatus
 from taggit.managers import TaggableManager
 from django.utils import timezone
-from chi_django_base.storage import OverwriteStorage
 
 
 class Project(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
@@ -126,6 +125,7 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     name = models.CharField(max_length=150, null=True, default='', blank=True)
     description = models.TextField(blank=True, null=True, default='')
     project = models.ForeignKey(Project, default='', null=True, blank=True, related_name='tasks')
+    assigned_member = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
     status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
@@ -159,9 +159,9 @@ def task_directory_path(instance, filename):
     return 'task_{0}/{1}'.format(instance.task.id, filename)
 
 
-class TaskPicture(models.Model):
-    task = models.ForeignKey(Task, related_name='files')
-    file_upload = models.FileField(upload_to=task_directory_path, blank=True)
+class TaskPicture(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    task = models.ForeignKey(Task, null=True, blank=True, related_name='files')
+    file_upload = models.FileField(upload_to=task_directory_path, blank=False)
 
     def save(self, *args, **kwargs):
         super(TaskPicture, self).save(*args, **kwargs)
@@ -173,13 +173,13 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
     comment = models.TextField(blank=True, null=True, default='')
 
     def get_activity_message_on_create(self, **kwargs):
-        return 'create new comment' + self.title + 'for task' + self.task.name
+        return 'create new comment "' + self.title + '" for task "' + self.task.name + '"'
 
     def get_activity_message_on_update(self, **kwargs):
         message = 'edit comment'
         old_data = self.get_original_object()
         if old_data.comment != self.comment:
-            message = message + 'Comment:' + old_data.comment + ' ==> ' + self.comment
+            message = message + ' Comment: "' + old_data.comment + '" ==> "' + self.comment + '"'
         return message
 
     def __str__(self):
@@ -189,8 +189,7 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
         return self.title
 
 
-class Status(AbstractModel):
-    # TODO: add created_by/created_at, updated_by/updated_at fields from AbstractTimestampable, AbstractSignable
+class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
     project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
     name = models.CharField(max_length=30)
     order_number = models.IntegerField()

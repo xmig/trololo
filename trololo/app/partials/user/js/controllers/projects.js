@@ -14,6 +14,7 @@ function($scope, $http, projectService, activityListService, taskService, $route
             $scope.projects = {}
             $scope.projects.data = data.results;
             $scope.projects.count = $scope.projects.data.length;
+            console.log("DATA RESULTS:::", data.results)
         });
     };
 
