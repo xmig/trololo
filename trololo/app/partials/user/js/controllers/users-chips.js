@@ -27,7 +27,7 @@ function userChipsCtrl ($timeout, $q, usersService, projectSelectedService, $sco
 
             var present = false;
             for (var i=0; i<self.allContacts.length; i++) {
-                if (self.allContacts[i].id === data.created_by.id) {
+                if (self.allContacts[i].id === data.owner.id) {
                     present = true;
                     break;
                 }
@@ -93,11 +93,24 @@ function userChipsCtrl ($timeout, $q, usersService, projectSelectedService, $sco
       };
     }
 
-    function getFormatedUserData(users) {
+//    function getFormatedUserData(users) {
+//      return users.map(function (user, index) {
+//        var contact = user;
+//        console.log("contact:", contact);
+//        contact._lowerusername = contact.username.toLowerCase();
+//        return contact;
+//      });
+//    }
+
+     function getFormatedUserData(users) {
       return users.map(function (user, index) {
-        var contact = user;
-        console.log("contact:", contact);
-        contact._lowerusername = contact.username.toLowerCase();
+        var contact = {
+            name: user.username,
+            email: user.email,
+            photo: user.photo,
+            id: user.id
+        };
+        contact._lowerusername = contact.name.toLowerCase();
         return contact;
       });
     }
