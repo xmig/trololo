@@ -105,12 +105,12 @@ function userChipsCtrl ($timeout, $q, usersService, projectSelectedService, $sco
      function getFormatedUserData(users) {
       return users.map(function (user, index) {
         var contact = {
-            name: user.username,
+            username: user.username,
             email: user.email,
             photo: user.photo,
             id: user.id
         };
-        contact._lowerusername = contact.name.toLowerCase();
+        contact._lowerusername = contact.username.toLowerCase();
         return contact;
       });
     }
