@@ -85,6 +85,21 @@ class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, Abstract
         return self.title
 
 
+class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
+    name = models.CharField(max_length=30)
+    order_number = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-order_number', 'pk']
+
+
 
 class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, HasStatus):
 
@@ -127,7 +142,8 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     project = models.ForeignKey(Project, default='', null=True, blank=True, related_name='tasks')
     assigned_member = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
-    status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
+    # status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
+    status = models.ForeignKey(Status, default='', null=True, blank=True) #, related_name='project_statuses')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')
     deadline_date = models.DateTimeField(null=True, blank=True) #, default=''
@@ -189,16 +205,4 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
         return self.title
 
 
-class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
-    project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
-    name = models.CharField(max_length=30)
-    order_number = models.IntegerField()
 
-    def __str__(self):
-        return self.name
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['-order_number', 'pk']
