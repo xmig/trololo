@@ -65,6 +65,15 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class OnlyUserInfoSerializer(serializers.HyperlinkedModelSerializer):
+
+    def to_representation(self, obj):
+        data = super(OnlyUserInfoSerializer, self).to_representation(obj)
+        if not data['photo']:
+            data['photo'] = 'http://www.curiousinkling.com/img/trololo/trololo-t-shirts-005DES.gif'
+
+        return data
+
+
     class Meta:
         model = get_user_model()
         fields = (
