@@ -36,30 +36,33 @@ class HasActivity(models.Model, AbstractAddOldObject):
         super(HasActivity, self).save(*args, **kwargs)
 
         if settings.SEND_EMAIL_NOTIFICATION:
+            task_obj = None
             if self.__class__.__name__ == 'Task':
                 task_obj = self
             elif self.__class__.__name__ in ['TaskComment', 'TaskPicture']:
                 task_obj = self.task
-            task_name = task_obj.name
-            task_id = task_obj.id
-            task_members = [t.email for t in task_obj.members.all()]
 
-            email_body = '<b>{0}</b><br /><br />You receive this mail because of you are member of the task "{1}"'.format(
-                activity_massage, task_name
-            )
+            if task_obj:
+                task_name = task_obj.name
+                task_id = task_obj.id
+                task_members = [t.email for t in task_obj.members.all()]
 
-            site = Site.objects.filter(id=settings.SITE_ID).first()
+                email_body = '<b>{0}</b><br /><br />You receive this mail because of you are member of the task "{1}"'.format(
+                    activity_massage, task_name
+                )
 
-            email_subject = "[{}] Changed task #{} {}".format(
-                site.name if site else '', task_id, task_name
-            )
-            recipients = task_members
-            created_by_email = task_obj.created_by.email
+                site = Site.objects.filter(id=settings.SITE_ID).first()
 
-            if created_by_email not in recipients:
-                recipients.append(created_by_email)
-            sender = settings.EMAIL_HOST_USER
-            tasks.send_emails.delay(recipients, email_subject, email_body, sender)
+                email_subject = "[{}] Changed task #{} {}".format(
+                    site.name if site else '', task_id, task_name
+                )
+                recipients = task_members
+                created_by_email = task_obj.created_by.email
+
+                if created_by_email not in recipients:
+                    recipients.append(created_by_email)
+                sender = settings.EMAIL_HOST_USER
+                tasks.send_emails.delay(recipients, email_subject, email_body, sender)
 
         self.activity.create(message=activity_massage, activity_model=activity_model_name)
 
