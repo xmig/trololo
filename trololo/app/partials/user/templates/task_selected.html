@@ -260,17 +260,20 @@
                                     </md-card-title>
                                     <md-card-content>
                                         <div>
-                                            <div ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                                                <md-contact-chips
-                                                    ng-model="taskData.members_info"
-                                                    md-contacts="ctrl.delayedQuerySearch($query)"
-                                                    md-contact-name="username"
-                                                    md-contact-email="email"
-                                                    md-require-match="true"
-                                                    md-highlight-flags="i"
-                                                    filter-selected="ctrl.filterSelected"
-                                                    placeholder="Members">
-                                                </md-contact-chips>
+                                            <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
+                                                <md-content class="md-padding autocomplete" layout="column">
+                                                    <md-contact-chips
+                                                        ng-model="taskData.members_info"
+                                                        md-contacts="ctrl.delayedQuerySearch($query)"
+                                                        md-contact-name="username"
+                                                        md-contact-email="email"
+                                                        md-contact-image="photo"
+                                                        md-require-match="true"
+                                                        md-highlight-flags="i"
+                                                        filter-selected="ctrl.filterSelected"
+                                                        placeholder="Members">
+                                                    </md-contact-chips>
+                                                </md-content>
                                             </div>
                                             <div>
                                                 <md-input-container class="md-block">
