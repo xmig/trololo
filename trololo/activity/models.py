@@ -48,7 +48,7 @@ class HasActivity(models.Model, AbstractAddOldObject):
                 task_members = [t.email for t in task_obj.members.all()]
 
                 email_body = '<b>{0}</b><br /><br />You receive this mail because of you are member of the task "{1}"'.format(
-                    activity_massage, task_name
+                    activity_massage.replace("\n", "<br />"), task_name
                 )
 
                 site = Site.objects.filter(id=settings.SITE_ID).first()
