@@ -82,17 +82,10 @@ angular.module('userApp').controller('userinfoCtrl', ['$scope', '$rootScope', '$
         }
     }
 
-
-
-
     // CODE
-    console.log($routeParams.username)
     userService.get({"id": $routeParams.id}, function(data) {
-    console.log('DATA', data);
         $scope.user = data;
-        console.log("$scope.user", $scope.user1);
     }, function(error){
-        console.log('DATA', error);
         window.location = '/#/404';
     });
 

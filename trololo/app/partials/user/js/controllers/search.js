@@ -14,7 +14,6 @@ angular.module('userApp').controller('searchCtrl', ['$scope', '$mdDialog', '$mdM
                 $scope.project = data.project;
                 $scope.task = data.task;
                 $scope.task_comment = data.task_comment;
-
             },
             function(resp) {
                 console.log("RESPONSE: ", resp);

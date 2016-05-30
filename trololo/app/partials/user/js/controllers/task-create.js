@@ -117,7 +117,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 //            response.project = response.project_obj.id
             $scope.taskData = response;
                         console.log('[[[$scope.taskData]]]', $scope.taskData)
-                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
+                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.owner)
 
 
             $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {

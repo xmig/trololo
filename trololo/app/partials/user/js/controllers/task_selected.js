@@ -151,12 +151,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
             'for_cu':1,
             'task': $routeParams.taskid
         }
-        console.log("params", params);
         taskCommentService.get(params, function (data) {
-            if ($scope.task == undefined) {
-                $scope.task = {};
-            };
-            console.log("DATA", data);
             $scope.task.comments = data.results;
             $scope.task.comments.count = $scope.task.comments.length;
             console.log('data.results', data.results,'-----', $scope.task.comments.count);
@@ -207,6 +202,57 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
         );
       };
 
+    $scope.showAddCommentDialog = function(event) {
+        $mdDialog.show({
+            controller: DialogController,
+            templateUrl: 'add_comment.tmpl.html',
+            parent: angular.element(document.body),
+            targetEvent: event,
+            scope: $scope,
+            preserveScope: true,
+            clickOutsideToClose: true,
+            fullscreen: false
+        });
+    };
+
+
+ personalInfoService.get(function (data) {
+        $scope.userAdditionData = {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            department: data.department,
+            specialization: data.specialization,
+            detailed_info: data.detailed_info,
+            use_gravatar: data.use_gravatar,
+            social_accounts: data.social_accounts
+        };
+        $scope.userPersonalData = data;
+    });
+
+    $scope.changeUserLocation = function(e, id){
+    console.log("-----")
+    e.preventDefault();
+        if($scope.userPersonalData.id !== id){
+            $window.location.href = '#/user/profile/' + id;
+        } else {
+            $window.location.href = '#/user/personal/';
+        }
+    };
+
+    $scope.savetaskComment = function() {
+        $scope.taskCommentData = {};
+        $scope.taskCommentData.tags = [];
+        $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
+        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
+        $scope.taskCommentData.comment = $scope.comment_text;
+        taskCommentService.create($scope.taskCommentData, function(response) {
+            $scope.taskCommentData = response;
+            if (typeof response.id !== 'undefined' && response.id > 0) {
+                $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
+                $scope.statusSaveToast('Saved!');
+            }
+        });
+    };
     reloadComment();
 
 
@@ -359,58 +405,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
           "50",
           "All"
       ];
-
-
-
-    personalInfoService.get(function (data) {
-        $scope.userAdditionData = {
-            first_name: data.first_name,
-            last_name: data.last_name,
-            department: data.department,
-            specialization: data.specialization,
-            detailed_info: data.detailed_info,
-            use_gravatar: data.use_gravatar,
-            social_accounts: data.social_accounts
-        };
-        $scope.userPersonalData = data;
-    });
-
-    $scope.changeUserLocation = function(e, id){
-    console.log("-----")
-    e.preventDefault();
-        if($scope.userPersonalData.id !== id){
-            $window.location.href = '#/user/profile/' + id;
-        } else {
-            $window.location.href = '#/user/personal/';
-        }
-    };
-
-    $scope.taskCommentData = {};
-    $scope.savetaskComment = function() {
-        $scope.taskCommentData.tags = [];
-        $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
-        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
-        if ($scope.comment_id) {
-            // EDIT
-            $scope.commentData.id = $scope.comment_id;
-
-            taskCommentSelectedService.update($scope.taskCommentData, function(response) {
-                $scope.taskCommentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
-                }
-            });
-        } else {
-            taskCommentService.create($scope.taskCommentData, function(response) {
-                $scope.taskCommentData = response;
-                if (typeof response.id !== 'undefined' && response.id > 0) {
-                    $window.location.href = '#/user/tasks/' + $routeParams.taskid + '/';
-                }
-            });
-        }
-    };
-
-
 
 
 //// TASK CALCULATE

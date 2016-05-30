@@ -87,7 +87,7 @@
                         <md-list class="project-tabs-list">
                             <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding">
                                 <span class="status-ico" ng-class="task.status"></span>
-                                <p><b><a ng-href="#/user/tasks/{{task.name}}"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a> <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>
+                                <p><b><a ng-href="#/user/tasks/{{task.id}}/"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a> <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>
                             </md-list-item>
                         </md-list>
                         <span></span>
@@ -171,7 +171,6 @@
                             <!--<span></span>-->
                              
                             <md-list-item ng-repeat="comment in comments | orderBy: tabSort.comments" class="secondary-button-padding" >
-                                <p>
                                     <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">
                                         <span ng-if="comment.created_by.photo">
                                             <img ng-src="{{ comment.created_by.photo }}" class="resize" title="{{comment.created_by.username}}" />
@@ -179,10 +178,9 @@
                                         <span ng-if="!comment.created_by.photo">
                                             {{comment.created_by.username}}
                                         </span>
-                                    </a>{{comment.created_by.username}} added comment:<b>{{comment.comment}}</b>
-                                    <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-if="userPersonalData.id === comment.created_by.id" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a href="#" ng-if="userPersonalData.id === comment.created_by.id" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
+                                        </a>{{comment.created_by.username}} added comment:<b>{{comment.comment}}</b>
+                                        <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-if="userPersonalData.id === comment.created_by.id" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a href="#" ng-if="userPersonalData.id === comment.created_by.id" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
                                     <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
-                                </p>
                             </md-list-item>
                          </md-list>
                         <md-card-actions layout="row" layout-align="end center">

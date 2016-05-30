@@ -291,12 +291,12 @@ class UploadFileSerializer(serializers.ModelSerializer):
     task = serializers.PrimaryKeyRelatedField(
         queryset=Task.objects.all()
     )
-
+    created_by = OnlyUserInfoSerializer(read_only=True)
 
     class Meta:
         model = TaskPicture
         fields = (
-            'id','task', 'file_upload'
+            'id','task', 'file_upload', 'created_by'
         )
 
         read_only_fields = (

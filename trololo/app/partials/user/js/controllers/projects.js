@@ -14,6 +14,7 @@ function($scope, $http, projectService, activityListService, taskService, $route
             $scope.projects = {}
             $scope.projects.data = data.results;
             $scope.projects.count = $scope.projects.data.length;
+            console.log("DATA RESULTS:::", data.results)
         });
     };
 
@@ -35,7 +36,6 @@ function($scope, $http, projectService, activityListService, taskService, $route
     ];
 
     var reloadActivity = function() {
-    console.log();
         var sorting = ($scope.activitySortDirection ? '' : '-') + $scope.activitySortType;
         var params = {
             'page': $scope.activityPage,
@@ -47,7 +47,6 @@ function($scope, $http, projectService, activityListService, taskService, $route
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
-            console.log($scope.activities.data);
         });
     };
 
