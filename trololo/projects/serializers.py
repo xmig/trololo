@@ -320,12 +320,15 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     )
 
 
-    status = serializers.HyperlinkedRelatedField(
-        view_name='statuses:status_detail',
+    status = serializers.PrimaryKeyRelatedField(  #id
+        # view_name='users:single_user',
         queryset=Status.objects.all(),
-        required=True,
-        lookup_field='pk'
+        required=False
+        # lookup_field='pk'
     )
+
+    status_info = StatusSerializer(source='status', read_only=True, many=False)
+
 
     files = UploadFileSerializer( many=True, read_only=True)
 
@@ -403,7 +406,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members_info', 'status', 'type', 'label',
+            'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members_info', 'status', 'status_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members',
             'files'
