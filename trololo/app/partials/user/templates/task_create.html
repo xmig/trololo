@@ -51,9 +51,9 @@
 
 <!--<Set Task Status>-->
                                 <md-input-container class="md-block">
-                                        <label>Status2</label>
-                                            <md-select ng-model="taskProjectStatuses" name="status" id="status">
-                                                <md-option ng-repeat="status in taskProjectStatuses" ng-value="status.id">{{ status.name }}</md-option>
+                                        <label>Status:</label>
+                                            <md-select ng-model="taskData.status" name="status" id="status">
+                                                <md-option ng-repeat="stat in taskProjectStatuses" ng-value="stat.id" ng-model="taskData.status">{{ stat.name }}</md-option>
                                             </md-select>
                                 </md-input-container>
 
@@ -127,7 +127,6 @@
                             <md-button class="md-secondary md-button" ng-href="#/user/tasks/{{ taskData.id}}">Go to Task</md-button>
                             <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>
                         </md-card-actions>
-
 
                     </form>
                 </md-card>

@@ -375,19 +375,13 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
-    group = GroupRelatedField(
-        required=False,
-        write_only=True,
-        queryset=Status.objects.all()
-    )
-
-    # group = serializers.PrimaryKeyRelatedField(
-    #     read_only=False,
-    #     required=False,
-    #     queryset=Status.objects.all()
+    # group = GroupRelatedField(
+    #     source='status',
+    #     queryset=Status.objects.all(),
+    #     required=False
     # )
-
-    group_data = StatusSerializer(source='group', read_only=True)
+    #
+    # group_data = StatusSerializer(source='group', read_only=True, many=False)
 
     # group_data = StatusSerializer(source='group', read_only=True)
     #     view_name='statuses:status_detail',
@@ -408,7 +402,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members_info', 'status', 'status_info', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members',
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'members', # 'group', 'group_data',
             'files'
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')
@@ -465,8 +459,8 @@ class TaskCreateSerializer(TaskSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members', 'status', 'type', 'label', 'members_info',
+            'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members', 'status', 'status_info', 'type', 'label', 'members_info',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
-            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
+            'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', #'group', 'group_data',
         )
         read_only_fields =('created_by', 'created_at', 'updated_by', 'updated_at', 'group_data')

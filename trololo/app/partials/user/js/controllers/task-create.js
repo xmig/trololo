@@ -8,7 +8,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
     $scope.projects = {}
     projectService.get(function(data) {
         $scope.projects = data.results;
-        console.log("---------------", $scope.projects)
+//        console.log("---------------", $scope.projects)
     })
 
 
@@ -109,13 +109,16 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
             response.deadline_date = new Date(response.deadline_date);
 //            response.project = response.project_obj.id
             $scope.taskData = response;
-                        console.log('[[[$scope.taskData]]]', $scope.taskData)
-                                            console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.owner)
+//                        console.log('[[[$scope.taskData]]]', $scope.taskData)
+//                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.owner)
+
+//console.log('STATUS', $scope.taskData.status_info.name)
 
 
             $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
                     $scope.taskProjectStatuses = resp;
-                    console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+//                    console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+
                 })
 
 
@@ -140,12 +143,12 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
             var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info);
 //                    console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
 
-
             if ($scope.taskDataCopy.name !== $scope.taskData.name ||
                 $scope.taskDataCopy.description !== $scope.taskData.description ||
                 $scope.taskDataCopy.assigned_member !== $scope.taskData.assigned_member ||
                 $scope.taskDataCopy.project !== $scope.taskData.project ||
                 $scope.taskDataCopy.status !== $scope.taskData.status ||
+                $scope.taskDataCopy.status_info !== $scope.taskData.status_info ||
                 $scope.taskDataCopy.type !== $scope.taskData.type ||
                 $scope.taskDataCopy.label !== $scope.taskData.label ||
                 $scope.taskDataCopy.estimate_minutes !== $scope.taskData.estimate_minutes ||
@@ -154,23 +157,32 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
-                                    console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
-                                    console.log('$scope.taskDataCopy.members_data, $scope.taskData.members_data', $scope.taskDataCopy.members_data, $scope.taskData.members_data);
+//                                    console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
+//                                    console.log('$scope.taskDataCopy.members_data, $scope.taskData.members_data', $scope.taskDataCopy.members_data, $scope.taskData.members_data);
 
+//                                console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
 
+                                        alert();
 
                 taskSelectedService.update(
                     {id: $scope.task_id},
                     $scope.taskData,
                     function (response){
                         response.deadline_date = new Date(response.deadline_date);
+                                                        console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
+
                         $scope.taskDataCopy = response;
+                                                        console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
+
                         $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
                         $scope.statusSaveToast('Saved!');
                     },
+
                     function (response){
                                 console.log('response', response)
                                 console.log('taskDataCopy.project', $scope.taskDataCopy.project_obj.id, $scope.taskData.project_obj.id)
+                                console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
+
                         var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
                         $log.debug(err_message);
                         $scope.statusSaveToast('Some error, contact admin.');
