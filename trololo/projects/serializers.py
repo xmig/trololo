@@ -368,6 +368,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     #     required=False,
     #     queryset=Status.objects.all()
     # )
+
     group_data = StatusSerializer(source='group', read_only=True)
 
     tags = TagSerializer(many=True, read_only=False, required=False)

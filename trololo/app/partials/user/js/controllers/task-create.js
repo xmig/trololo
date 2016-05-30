@@ -77,15 +77,8 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
     $scope.taskData = {};
 
-    // set project_id
+// set project_id
     $scope.taskData.project = $routeParams.project_id;
-
-    $scope.taskStatuses = [
-        {'title': 'Breakthrough', 'id':'breakthrough'},
-        {'title': 'In_progress', 'id':'in_progress'},
-        {'title': 'Finished', 'id':'finished'},
-        {'title': 'Undefined', 'id':'undefined'}
-    ];
 
     $scope.visibleByList = [
         {'title': 'Members', 'id':'members'},

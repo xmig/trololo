@@ -103,18 +103,6 @@ class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable
 
 class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, HasStatus):
 
-    BREAKTHROUGH = "breakthrough"
-    IN_PROGRESS = "in_progress"
-    FINISHED = "finished"
-    UNDEFINED = "undefined"
-
-    STATUSES = (
-        (BREAKTHROUGH, "Breakthrough"),
-        (IN_PROGRESS, "In_progress"),
-        (FINISHED, "Finished"),
-        (UNDEFINED, "Undefined"),
-    )
-
     BUG = "bug"
     FEATURE = "feature"
     UNDEFINED = "undefined"

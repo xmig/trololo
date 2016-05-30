@@ -67,14 +67,11 @@
                                 </md-input-container>
 
 <!--<Deadline date>-->
-<!--aria-live="assertive">-->
-
-
 
                                 <div class="md-block" md-is-error="save_task.deadline.$invalid && (save_task.$submitted || save_task.deadline.$dirty)">
-                                        <!--<label>Deadline date</label>-->
                                 <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date" name="deadline" id="deadline" ng-required="true"></md-datepicker>
-                                                        <div ng-messages="save_task.assigned_member.$error" ng-if="save_task.$submitted || save_task.assigned_member.$touched">
+                                                        <div ng-messages="save_task.assigned_member.$error" ng-if="save_task.$submitted || save_task.assigned_member.$touched"
+                                                             style="color:rgb(221,44,0); font-size: 12px; line-height: 14px; overflow: hidden; transition: all .3s cubic-bezier(.55,0,.55,.2); padding-top: 5px;">
                                                             <div ng-message="required">This field is required.</div>
                                                         </div>
                                 </div>
