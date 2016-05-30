@@ -84,7 +84,9 @@ class StatusSerializer(serializers.ModelSerializer):
     )
 
     url = serializers.HyperlinkedIdentityField(
-        view_name='statuses:status_detail', read_only=True ,lookup_field='pk'
+        view_name='statuses:status_detail',
+        read_only=True,
+        lookup_field='pk'
     )
 
     order_number = serializers.IntegerField(required=False)
@@ -95,7 +97,7 @@ class StatusSerializer(serializers.ModelSerializer):
 
 
 class ShortProjectInfoSerializer(serializers.HyperlinkedModelSerializer):
-    statuses = StatusSerializer(source='project', read_only=True)
+    statuses = StatusSerializer(source='project', read_only=True, many=True)
 
     class Meta:
         model = Project
@@ -317,6 +319,14 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         # lookup_field='pk'
     )
 
+
+    status = serializers.HyperlinkedRelatedField(
+        view_name='statuses:status_detail',
+        queryset=Status.objects.all(),
+        required=True,
+        lookup_field='pk'
+    )
+
     files = UploadFileSerializer( many=True, read_only=True)
 
     # project = serializers.HyperlinkedRelatedField(  #url
@@ -362,7 +372,12 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
     )
 
-    group = GroupRelatedField(required=False, write_only=True, queryset=Status.objects.all())
+    group = GroupRelatedField(
+        required=False,
+        write_only=True,
+        queryset=Status.objects.all()
+    )
+
     # group = serializers.PrimaryKeyRelatedField(
     #     read_only=False,
     #     required=False,
@@ -370,6 +385,15 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     # )
 
     group_data = StatusSerializer(source='group', read_only=True)
+
+    # group_data = StatusSerializer(source='group', read_only=True)
+    #     view_name='statuses:status_detail',
+    #     queryset=Status.objects.all(),
+    #     required=True,
+    #     lookup_field='pk'
+    # )
+
+
 
     tags = TagSerializer(many=True, read_only=False, required=False)
 
@@ -379,7 +403,7 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'assigned_member', 'assigned_member_info', 'members_info', 'type', 'label',
+            'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members_info', 'status', 'type', 'label',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data', 'members',
             'files'
@@ -438,7 +462,7 @@ class TaskCreateSerializer(TaskSerializer):
     class Meta:
         model = Task
         fields = (
-            'name', 'id', 'description', 'status', 'assigned_member', 'assigned_member_info', 'members', 'type', 'label', 'members_info',
+            'name', 'id', 'description', 'assigned_member', 'assigned_member_info', 'members', 'status', 'type', 'label', 'members_info',
             'project', 'comments', 'activity', 'deadline_date', 'estimate_minutes', 'created_by',
             'created_at', 'updated_by', 'updated_at', 'tags', 'owner', 'project_obj', 'group', 'group_data'
         )
