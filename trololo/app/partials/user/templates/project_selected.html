@@ -87,7 +87,7 @@
                         <md-list class="project-tabs-list">
                             <md-list-item ng-repeat="task in tasks.data" class="secondary-button-padding">
                                 <span class="status-ico" ng-class="task.status"></span>
-                                <p><b><a ng-href="#/user/tasks/{{task.name}}"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a> <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>
+                                <p><b><a ng-href="#/user/tasks/{{task.id}}/"  class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b> - <a ng-href="#"  ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a> <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">{{task.project_obj.name}}</a></p>
                             </md-list-item>
                         </md-list>
                         <span></span>
