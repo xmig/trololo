@@ -11,7 +11,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 //        console.log("---------------", $scope.projects)
     })
 
-
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -126,6 +125,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
+
 //            $scope.taskData.project
 //            console.log('EDIT', response.project)
         });
@@ -134,7 +134,10 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
     $scope.taskData = {members_info: []};
 
-
+    var selectedProject = $location.search();
+    if (Object.keys(selectedProject).length) {
+        $scope.taskData.project = +selectedProject['project_id']
+    }
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
