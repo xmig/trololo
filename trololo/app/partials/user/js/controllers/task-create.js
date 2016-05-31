@@ -161,7 +161,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
 //                                console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
 
-                                        alert();
 
                 taskSelectedService.update(
                     {id: $scope.task_id},
