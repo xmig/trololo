@@ -1,5 +1,5 @@
-angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 'personalInfoService', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
-                                                 function(taskCommentService, personalInfoService, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
+angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService', 'projectSelectedService', 'taskCommentService', 'personalInfoService', 'taskFilesSelectedService', '$cookies', 'taskSelectedFileUploadService', '$scope', '$rootScope', '$http', 'taskSelectedService', 'activityListService', '$mdDialog', '$mdMedia', '$routeParams', '$timeout', '$mdSidenav', 'task_tagService', '$log', 'personalInfoService', '$window', '$location','taskCommentSelectedService',
+                                                 function(projectStatusService, projectSelectedService, taskCommentService, personalInfoService, taskFilesSelectedService, $cookies, taskSelectedFileUploadService, $scope, $rootScope, $http, taskSelectedService, activityListService, $mdDialog, $mdMedia, $routeParams, $timeout, $mdSidenav, task_tagService, $log, personalInfoService, $window, $location, taskCommentSelectedService){
 
 
     $scope.toggleLeft = buildDelayedToggler('left');
@@ -19,14 +19,12 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
 
 //    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
-//         console.log($scope.task);
 //    })
 
 
     taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
          $scope.task = response;
-         console.log("DDDDD", $scope.task);
-         console.log("DDDDD", $scope.task.files);
+//         console.log("DDDDD", $scope.task.files);
          
     }, function(error){
 //        console.log("ERROR"); // if task doesn't exist - go to main page
@@ -95,7 +93,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
-            console.log("$scope.activities.data", $scope.activities.data);
         });
     };
 
@@ -154,16 +151,16 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         taskCommentService.get(params, function (data) {
             $scope.task.comments = data.results;
             $scope.task.comments.count = $scope.task.comments.length;
-            console.log('data.results', data.results,'-----', $scope.task.comments.count);
+//                                  console.log('data.results', data.results,'-----', $scope.task.comments.count);
         });
     };
 
     $scope.commentSort = function(sortInfo) {
-    console.log("sortInfo", sortInfo)
+//                                  console.log("sortInfo", sortInfo)
         $scope.commentSortType = sortInfo.value;
         $scope.commentSortDirection = sortInfo.direction;
         $scope.commentPage = 1;
-        console.log("11111", $scope.commentSortType)
+//                                  console.log("11111", $scope.commentSortType)
         reloadComment();
     };
 
@@ -230,7 +227,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     });
 
     $scope.changeUserLocation = function(e, id){
-    console.log("-----")
     e.preventDefault();
         if($scope.userPersonalData.id !== id){
             $window.location.href = '#/user/profile/' + id;
@@ -243,7 +239,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
         $scope.taskCommentData = {};
         $scope.taskCommentData.tags = [];
         $scope.taskCommentData.task = 'http://' + $window.location.host + '/tasks/' + $routeParams.taskid + '/';
-        console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
+//                                    console.log('+++ $routeParams.id  +++', $window.location.host, $routeParams.taskid, $routeParams.taskid)
         $scope.taskCommentData.comment = $scope.comment_text;
         taskCommentService.create($scope.taskCommentData, function(response) {
             $scope.taskCommentData = response;
@@ -414,6 +410,10 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 
 
 
+
+
+
+
 //** ADD/DELETE USERS in TASK MEMBERS TAB **//
 
 //get authorized user
@@ -424,7 +424,100 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
 // TASK CALCULATE
     $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
         $scope.taskData = response;
-        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
+//        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
+
+    $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
+                    $scope.taskProjectStatuses = resp;
+//                                              console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+                })
+
+
+    $scope.showAddDeleteMembersDialog = function(event) {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'add_delete_members.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                scope: $scope,
+                preserveScope: true,
+                clickOutsideToClose: true,
+                fullscreen: false
+            });
+//            $mdDialog.cancel('Cancel');
+    };
+
+    $scope.showEditDescriptionDialog = function(event) {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'edit_description.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                scope: $scope,
+                preserveScope: true,
+                clickOutsideToClose: true,
+                fullscreen: false
+            });
+    };
+
+
+
+// $scope.reloadStatuses = function() {
+//        var params = {
+//            'limit': $scope.statusLimit,
+//            'offset': $scope.statusOffset,
+//            'ordering': $scope.statusSortType,
+//            'project': $routeParams.id,
+//        }
+//
+//        var error_func = function (resp) {console.log(resp);};
+//
+//        if (!$scope.statusLimit) {
+//            projectStatusService.get_all(
+//                params,
+//                function(resp) {
+//                    $scope.statuses = resp;
+//                },
+//                error_func
+//            )
+//        } else {
+//            projectStatusService.get(
+//                params,
+//                function(resp) {
+//                    $scope.statuses = resp.results;
+//                },
+//                error_func
+//            )
+//        }
+//    };
+//
+//
+
+
+
+
+//        $scope.projj=projectSelectedService.get({ "id": $scope.taskData.project }, function (data) {
+//            $scope.projj = data // data.id;
+//
+//            $scope.statuses = projectStatusService.query($scope.stat, function (data){  //({"id": $scope.status_id}, function (data) {
+//                $scope.stat = data;
+//
+//console.log('----data----', $scope.stat)
+//console.log('----$scope.projj----', $scope.projj)
+//console.log('----$scope.projj.id----', $scope.projj.id)
+//
+//            if ($scope.projj.id == $scope.statuses.project_id) {
+//                return $scope.statuses
+//                 console.log("$scope.statuses",$scope.statuses )
+//
+//                }
+//
+//
+//            });
+//        });
+//
+//console.log("$scope.stat",$scope.stat )
+
+
 
 
                         console.log('----$scope.taskData----', $scope.taskData)
@@ -446,36 +539,27 @@ angular.module('userApp').controller('taskSelectedCtrl', ['taskCommentService', 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-//        taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-//            $scope.taskData = response;
-//                            console.log('[[[ response ]]]', response)
-//            $scope.taskCopy = JSON.parse(JSON.stringify(response));
-//                            console.log('[[[ taskData ]]]', $scope.taskData)
-//                            console.log('[[[ taskCopy ]]]', $scope.taskCopy)
-
             if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
-                            console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
+//                                  console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
 
                 $scope.taskData.id = $routeParams.taskid;
-                                console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
+//                                  console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
 
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
-
-                                            console.log('$scope.taskData.members', $scope.taskData.members)
-                                            console.log('$scope.taskData.assigned_member', $scope.taskData.assigned_member)
+//                                  console.log('$scope.taskData.members', $scope.taskData.members)
+//                                  console.log('$scope.taskData.assigned_member', $scope.taskData.assigned_member)
 
 
                 taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {
                     $scope.taskData = response;
-                            console.log('$scope.taskData', $scope.taskData)
+//                                  console.log('$scope.taskData', $scope.taskData)
                     $window.location = '#/user/tasks/' + $scope.taskCopy.id;
                     $scope.statusSaveToast('Saved!');
                 },
 
                     function (response){
-                        console.log('response', response)
                         var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
                         $log.debug(err_message);
                         $scope.statusSaveToast('Some error, contact admin.');
