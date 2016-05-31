@@ -31,7 +31,7 @@
 <!--<Choose Project>-->
                                 <md-input-container class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)">
                                     <label>Choose Project:</label>
-                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true">
+                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true" >
                                                 <md-option ng-repeat="proj in projects" ng-value="proj.id" ng-model="taskData.project" ng-required="true">{{ proj.name }}</md-option>
                                             </md-select>
 
