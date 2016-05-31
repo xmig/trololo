@@ -164,47 +164,24 @@
                     </md-content>
                 </md-tab>
 
-                <!--<md-tab label="description">-->
-                    <!--<md-content class="md-padding">-->
-                        <!--<md-list class="project-tabs-list">-->
-                                <!--<p><b>Task description</b></p>-->
-                                <!--<p>{{task.description}}</p>-->
-                        <!--</md-list>-->
-                        <!--<div class="md-toolbar-tools">-->
-                            <!--<div flex></div>-->
-                            <!--<md-button ng-click="">edit description (test)</md-button>-->
-                        <!--</div>-->
-                    <!--</md-content>-->
-                <!--</md-tab>-->
-                
                 <md-tab label="description">
                     <div class="md-toolbar-tools">
                         <span>Description for {{task.name}} </span>
                         <div flex></div>
-                            <md-button class="md-primary" ng-click="showAddStatusDialog($event)">Edit description</md-button>
-                            <md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">Edit description</md-button>
+
+<!-- display BUTTON only for task creator -->
+                        <div ng-show="user.url == task.created_by">
+                                <md-card-actions layout="row" layout-align="end center">
+                                        <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit" ng-click="showEditDescriptionDialog($event)">Edit description</md-button>
+                                </md-card-actions>
+                            <!--<md-button class="md-primary" ng-click="showEditDescriptionDialog($event)">Edit description</md-button>-->
+                        </div>
                     </div>
 
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                                <!--<p><b>Task description</b></p>-->
-
-                            <!--<button class="md-primary md-button md-ink-ripple md-raised md-button" type="submit" ng-transclude=""><span class="ng-scope">Save</span><div class="md-ripple-container"></div></button>-->
-
-                                    <div ng-controller="TextBtnCtrl" class="ng-scope">
-                                          <span editable-text="task.description" e-form="textBtnForm" class="ng-scope ng-binding editable">
-                                            {{ task.description || 'empty' }}
-                                          </span>
-                                          <button class="btn btn-default" ng-click="textBtnForm.$show()" ng-hide="textBtnForm.$visible">
-                                              <!--md-primary md-button md-ink-ripple md-raised md-button-->
-                                            edit
-                                          </button>
-                                    </div>
+                                <p>{{task.description}}</p>
                         </md-list>
-                        <!--<div class="md-toolbar-tools">-->
-                            <!--<div flex></div>-->
-                            <!--<md-button ng-click="">edit description (test)</md-button>-->
-                        <!--</div>-->
                     </md-content>
                 </md-tab>                
                 
@@ -378,6 +355,62 @@
             </form>
         </md-dialog>
     </script>
+
+
+    <script type="text/ng-template" id="edit_description.tmpl.html">
+        <md-dialog aria-label="edit_description" flex="100" flex-xs="100" fkex-sm="100" flex-md="70" flex-lg="40" flex-gt-lg="40" id="change_pwd_view">
+           <form role="form" name="save_task" ng-submit="save_task.$valid && saveTask()">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Edit description</h2>
+                        <span flex="" class="flex"></span>
+                        <button class="md-icon-button md-button md-ink-ripple" type="button"
+                                ng-click="cancel()">
+                            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                     class="ng-scope ng-isolate-scope" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                     fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                </svg>
+                            </md-icon>
+                        </button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                    <md-content layout-padding="">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Description</label>
+                                <input type="text" name="description" ng-model="task.description" md-autofocus required>
+                                <div ng-messages="addCommentForm.comment_name.$error">                                       <!---->
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+
+
+                            <!--&lt;!&ndash;<Task description>&ndash;&gt;-->
+                                <!--<md-input-container class="md-block">-->
+                                        <!--<label>Description</label>-->
+                                        <!--<textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>-->
+                                <!--</md-input-container>-->
+
+                        </div>
+                    </md-content>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+                    <md-button type="submit" style="margin-right:20px;">
+                        Save
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
+
 
 
 <!--display only for task creator -->
