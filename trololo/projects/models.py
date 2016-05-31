@@ -145,7 +145,13 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
         message = 'edit task'
         old_data = self.get_original_object()
         if old_data.name != self.name:
-            message = message + ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+            message += ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+        if old_data.group != self.group:
+            old_group = old_data.group.name if old_data.group.name else ''
+            message += '\n\nGroup: "' + old_group + '" ==> "' + self.group.name + '"'
+        if old_data.assigned_member != self.assigned_member:
+            old_member = old_data.assigned_member.username if old_data.assigned_member.username else ''
+            message += '\n\nAssigned to: "' + old_member + '" ==> "' + self.assigned_member.username + '"'
         return message
 
     def __str__(self):
