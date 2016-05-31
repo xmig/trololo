@@ -58,7 +58,7 @@
                             <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
                         </td>
                         <td md-cell>{{task.type}}</td>
-                        <td md-cell>{{task.status_info.name}}</td>
+                        <td md-cell>{{task.status.name}}</td>
 
                         <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.owner.id)" class="user-link-name">{{task.owner.username}}</a></td>
                         <td md-cell>

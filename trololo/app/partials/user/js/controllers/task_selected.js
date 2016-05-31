@@ -414,6 +414,8 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
 
 
+
+
 //** ADD/DELETE USERS in TASK MEMBERS TAB **//
 
 //get authorized user
@@ -430,6 +432,26 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                     $scope.taskProjectStatuses = resp;
                     console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
                 })
+
+
+    $scope.showAddDeleteMembersDialog = function(event) {
+            $mdDialog.show({
+                controller: DialogController,
+                templateUrl: 'add_delete_members.tmpl.html',
+                parent: angular.element(document.body),
+                targetEvent: event,
+                scope: $scope,
+                preserveScope: true,
+                clickOutsideToClose: true,
+                fullscreen: false
+            });
+//            $mdDialog.cancel('Cancel');
+    };
+
+
+
+
+
 
 // $scope.reloadStatuses = function() {
 //        var params = {

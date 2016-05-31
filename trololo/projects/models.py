@@ -130,7 +130,6 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     project = models.ForeignKey(Project, default='', null=True, blank=True, related_name='tasks')
     assigned_member = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
-    # status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
     status = models.ForeignKey(Status, default='', null=True, blank=True) #, related_name='project_statuses')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')

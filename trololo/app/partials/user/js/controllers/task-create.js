@@ -147,8 +147,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
                 $scope.taskDataCopy.description !== $scope.taskData.description ||
                 $scope.taskDataCopy.assigned_member !== $scope.taskData.assigned_member ||
                 $scope.taskDataCopy.project !== $scope.taskData.project ||
-                $scope.taskDataCopy.status !== $scope.taskData.status ||
-                $scope.taskDataCopy.status_info !== $scope.taskData.status_info ||
+                !angular.equals($scope.taskDataCopy.status, $scope.taskData.status) ||   // compare objects
                 $scope.taskDataCopy.type !== $scope.taskData.type ||
                 $scope.taskDataCopy.label !== $scope.taskData.label ||
                 $scope.taskDataCopy.estimate_minutes !== $scope.taskData.estimate_minutes ||
