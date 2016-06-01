@@ -6,18 +6,43 @@
 
 {% block content %}
 
+<script>
+    function changeLang () {
+        var langForm = document.getElementById("lang_form").elements;
 
+        var body = [];
+        for (var i=0; i<langForm.length; i++) {
+            body.push(langForm[i].name + '=' + encodeURIComponent(langForm[i].value));
+        }
+
+        var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", '/i18n/setlang/', true)
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+
+        xhr.onreadystatechange = function(resp) {
+            location.reload();
+        }
+
+        xhr.send(body.join("&"));
+    }
+
+</script>
 <div>
     <p>{% blocktrans %}Change your locale{% endblocktrans %}</p>
-    <form action="/i18n/setlang/" method="POST">
-      {% csrf_token %}
+    <form action="/i18n/setlang/" method="POST" id="lang_form">
+      {% csrf_token %}{% get_current_language as LANGUAGE_CODE %}
       <input name="next" type="hidden" value="" /><br/>
-      <select name="language">
+      <select name="language" onchange="changeLang()">
         {% for lang in LANGUAGES %}
-          <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+          {% if lang.0 == LANGUAGE_CODE %}
+            <option selected value="{{ lang.0 }}">{{ lang.1 }}</option>
+          {% else %}
+            <option value="{{ lang.0 }}">{{ lang.1 }}</option>
+          {% endif %}
         {% endfor %}
       </select><br/>
-      <input type="submit" value='{% trans "change" %}' />
+      <!--<input type="submit" value='{% trans "change" %}' />-->
     </form>
 </div>
 
