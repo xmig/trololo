@@ -85,20 +85,23 @@ class ProjectComment(AbstractModel, HasActivity, AbstractTimestampable, Abstract
         return self.title
 
 
+class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
+    project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
+    name = models.CharField(max_length=30)
+    order_number = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        ordering = ['-order_number', 'pk']
+
+
 
 class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, HasStatus):
-
-    BREAKTHROUGH = "breakthrough"
-    IN_PROGRESS = "in_progress"
-    FINISHED = "finished"
-    UNDEFINED = "undefined"
-
-    STATUSES = (
-        (BREAKTHROUGH, "Breakthrough"),
-        (IN_PROGRESS, "In_progress"),
-        (FINISHED, "Finished"),
-        (UNDEFINED, "Undefined"),
-    )
 
     BUG = "bug"
     FEATURE = "feature"
@@ -127,7 +130,7 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
     project = models.ForeignKey(Project, default='', null=True, blank=True, related_name='tasks')
     assigned_member = models.ForeignKey(settings.AUTH_USER_MODEL, default='', null=True, blank=True)
     members = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='tasks_added')
-    status = models.CharField(max_length=30, choices=STATUSES, default=UNDEFINED, help_text='choose status')
+    status = models.ForeignKey(Status, default='', null=True, blank=True) #, related_name='project_statuses')
     type = models.CharField(max_length=30, choices=TYPES, default=UNDEFINED, help_text='choose type')
     label = models.CharField(max_length=50, choices=LABELS, default=UNDEFINED, help_text='choose label')
     deadline_date = models.DateTimeField(null=True, blank=True) #, default=''
@@ -142,7 +145,13 @@ class Task(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable, 
         message = 'edit task'
         old_data = self.get_original_object()
         if old_data.name != self.name:
-            message = message + ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+            message += ' Name: "' + old_data.name + '" ==> "' + self.name + '"'
+        if old_data.group != self.group:
+            old_group = old_data.group.name if old_data.group else ''
+            message += '\n\nGroup: "' + old_group + '" ==> "' + self.group.name + '"'
+        if old_data.assigned_member != self.assigned_member:
+            old_member = old_data.assigned_member.username if old_data.assigned_member else ''
+            message += '\n\nAssigned to: "' + old_member + '" ==> "' + self.assigned_member.username + '"'
         return message
 
     def __str__(self):
@@ -189,16 +198,4 @@ class TaskComment(AbstractModel, HasActivity, AbstractTimestampable, AbstractSig
         return self.title
 
 
-class Status(AbstractModel, HasActivity, AbstractTimestampable, AbstractSignable):
-    project = models.ForeignKey(Project, blank=True, related_name='project_statuses')
-    name = models.CharField(max_length=30)
-    order_number = models.IntegerField()
 
-    def __str__(self):
-        return self.name
-
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        ordering = ['-order_number', 'pk']
