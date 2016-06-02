@@ -599,9 +599,8 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     };
 
     $scope.reloadAllActivities();
-//
-//
-//     app.filter('htmlrender', function(){
+
+//    app.filter('htmlrender', function(){
 //        return function(value) {
 //            console.log("value", value);
 //            var urlRegex = /(https?:\/\/[^\s]+)/g;   /(\s|^)(?:http:\/\/www\.|https:\/\/www\.|www\.)?youtube.com\/watch\?\S*v=(\S*?)(?:\s|&\S*|$)/g;

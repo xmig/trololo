@@ -123,7 +123,7 @@
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
                                             <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>
-                                            user(s) assigned: <span ng-repeat="member in task.members_info"><a ng-href="#" class="project-tabs-name">{{member.username}}</a></span>
+                                            user(s) assigned: <span ng-repeat="member in task.members_info"><a ng-href="#" ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}</a></span>
                                             (created by <a ng-href="#" ng-click="changeUserLocation($event, task.owner.id)" class="project-tabs-name">{{ task.owner.username }}</a>)
                                             - <span style="color:grey">({{task.created_at | date : 'medium' }})</span></p>
                         </md-list-item>
