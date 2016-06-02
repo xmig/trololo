@@ -1,4 +1,4 @@
-angular.module('userApp', ['md.data.table', 'ngMaterial', 'lfNgMdFileInput']);
+angular.module('userApp', ['md.data.table', 'ngMaterial', 'lfNgMdFileInput', 'ngAnimate', 'ui.bootstrap']);
 
 angular.module('userApp').config(['$mdThemingProvider', function ($mdThemingProvider) {
     'use strict';
@@ -11,6 +11,5 @@ angular.module('userApp').config(['$mdThemingProvider', function ($mdThemingProv
 angular.module('userApp').config(function($resourceProvider) {
   $resourceProvider.defaults.stripTrailingSlashes = false;
 });
-
 
 

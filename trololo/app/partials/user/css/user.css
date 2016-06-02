@@ -60,7 +60,7 @@
 }
 .user-link-name {
     color: #2196F3;
-    text-decoration: underline;
+    text-decoration: none;
 }
 .project-link-name {
     font-weight: bold;
@@ -283,3 +283,5 @@ a:hover {
 .chipsdemoContactChips .fixedRows {
   height: 250px;
   overflow: hidden; }
+
+

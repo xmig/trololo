@@ -44,8 +44,9 @@
                         <th md-column md-order-by="status"><span>Status</span></th>
                         <th md-column><span>Created by</span></th>
                         <th md-column><span>Assigned member</span></th>
-                        <th md-column md-order-by="members.length" md-desc><span>Members</span></th>
+                        <!--<th md-column md-order-by="members.length" md-desc><span>Members</span></th>-->
                         <th md-column md-order-by="project_obj.name" md-desc><span>Project</span></th>
+                        <th md-column><span>Date created</span></th>
                         <th md-column md-order-by="deadline_date"><span>Deadline date</span></th>
                         <th md-column md-numeric md-order-by="estimate_minutes"><span>Estimate minutes</span></th>
                     </tr>
@@ -59,17 +60,35 @@
                         </td>
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status.name}}</td>
-
                         <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.owner.id)" class="user-link-name">{{task.owner.username}}</a></td>
                         <td md-cell>
                                 <a ng-href="#" ng-click="changeUserLocation($event,task.assigned_member_info.id)" class="user-link-name">{{task.assigned_member_info.username}}</a>
-                        <td md-cell>
-                            <div ng-repeat="member in task.members_info" class="member-cell">
-                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
-                                ({{member.email}})
+
+<!--button and popover for task members-->
+                            <div ng-controller="PopoverDemoCtrl">
+                                <button uib-popover-template="bsPopover.templateUrl" popover-title="{{bsPopover.title}}" popover-placement="right-center"
+                                        type="button" class="btn btn-primary btn-xs pull-center"> see all members </button> <!--btn btn-default btn-xs-->
+
+                                        <script type="text/ng-template" id="myPopoverTemplate.html">
+                                            <div>
+                                                <p ng-repeat="member in task.members_info">{{ $index + 1 }}.
+                                                    <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
+                                                    ({{member.email}})
+                                                </p>
+                                            </div>
+                                        </script>
                             </div>
+<!--end-->
+
                         </td>
+                        <!--<td md-cell>-->
+                            <!--<div ng-repeat="member in task.members_info" class="member-cell">-->
+                                <!--<a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>-->
+                                <!--({{member.email}})-->
+                            <!--</div>-->
+                        <!--</td>-->
                         <td md-cell><a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-tabs-name">{{task.project_obj.name}}</a></td>
+                        <td md-cell>{{task.created_at | date : 'medium'}}</td>
                         <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>

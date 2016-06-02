@@ -9,11 +9,10 @@ angular.module('mainApp', [
         'ngMessages',
         'material.svgAssetsCache',
         'userApp',
-        'xeditable',
-        'lfNgMdFileInput'
-
-//        ,'ngAnimate', 'ngAria'
-
+//        'xeditable',
+        'lfNgMdFileInput',
+        'ngAnimate',
+        'ui.bootstrap'
     ])
     .config(function ($routeProvider) {
         $routeProvider

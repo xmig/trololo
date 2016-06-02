@@ -32,7 +32,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
     })
 
 
-
 // TAG manipulations
     // TAG manipulations
     $scope.searchTag = function(tag) {
@@ -534,13 +533,16 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 // TASK SAVE
 
     $scope.taskData = {members_info: []};
-    console.log('TESTING TASK', $scope.taskData)
+//    console.log('TESTING TASK', $scope.taskData)
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-            if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
+            if ($scope.taskCopy.members_info !== $scope.taskData.members_info ||
+                $scope.taskCopy.description !== $scope.taskData.description){
 //                                  console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
+//                                  console.log('[[[ $scope.taskData.description ]]]', $scope.taskData.description, $scope.taskDataCopy.description)
+
 
                 $scope.taskData.id = $routeParams.taskid;
 //                                  console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
@@ -553,10 +555,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
 
                 taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {
-                    $scope.taskData = response;
-//                                  console.log('$scope.taskData', $scope.taskData)
+                    $scope.task = response;
+                                  console.log('$scope.taskData', $scope.taskData, '---', $scope.task)
                     $window.location = '#/user/tasks/' + $scope.taskCopy.id;
                     $scope.statusSaveToast('Saved!');
+
                 },
 
                     function (response){
@@ -628,5 +631,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
     $scope.getFileName = function(file_address) {
         return file_address.substring(file_address.lastIndexOf('/') + 1);
-    }
+    };
+
+
+
 }]);
+
+
+

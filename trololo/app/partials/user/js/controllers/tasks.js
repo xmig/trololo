@@ -60,8 +60,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         };
 
 
-
-
     /* ACTIVITY INFO */  //- sorting, view, pagination
     $scope.activitySortType = 'created_at'; // set the default sort type
     $scope.activitySortDirection = true;  // set the default sort order
@@ -526,49 +524,49 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
 
 
 
-    $scope.editComment = function (event, dessert) {
-        event.stopPropagation(); // in case autoselect is enabled
-
-        var editDialog = {
-            modelValue: dessert.comment,
-            placeholder: 'Add a comment',
-            save: function (input) {
-                if(input.$modelValue === 'Donald Trump') {
-                    return $q.reject();
-                }
-                if(input.$modelValue === 'Bernie Sanders') {
-                    return dessert.comment = 'FEEL THE BERN!'
-                }
-                dessert.comment = input.$modelValue;
-            },
-            targetEvent: event,
-            title: 'Add a comment',
-            validators: {
-                'md-maxlength': 30
-            }
-        };
-
-        var promise;
-
-        if($scope.options.largeEditDialog) {
-            promise = $mdEditDialog.large(editDialog);
-        } else {
-            promise = $mdEditDialog.small(editDialog);
-        }
-
-        promise.then(function (ctrl) {
-            var input = ctrl.getInput();
-
-            input.$viewChangeListeners.push(function () {
-                input.$setValidity('task_test', input.$modelValue !== 'task_test');
-            });
-        });
-    };
-
-    $scope.getTypes = function () {
-        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
-    };
-    /* Test table data end */
+//    $scope.editComment = function (event, dessert) {
+//        event.stopPropagation(); // in case autoselect is enabled
+//
+//        var editDialog = {
+//            modelValue: dessert.comment,
+//            placeholder: 'Add a comment',
+//            save: function (input) {
+//                if(input.$modelValue === 'Donald Trump') {
+//                    return $q.reject();
+//                }
+//                if(input.$modelValue === 'Bernie Sanders') {
+//                    return dessert.comment = 'FEEL THE BERN!'
+//                }
+//                dessert.comment = input.$modelValue;
+//            },
+//            targetEvent: event,
+//            title: 'Add a comment',
+//            validators: {
+//                'md-maxlength': 30
+//            }
+//        };
+//
+//        var promise;
+//
+//        if($scope.options.largeEditDialog) {
+//            promise = $mdEditDialog.large(editDialog);
+//        } else {
+//            promise = $mdEditDialog.small(editDialog);
+//        }
+//
+//        promise.then(function (ctrl) {
+//            var input = ctrl.getInput();
+//
+//            input.$viewChangeListeners.push(function () {
+//                input.$setValidity('task_test', input.$modelValue !== 'task_test');
+//            });
+//        });
+//    };
+//
+//    $scope.getTypes = function () {
+//        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
+//    };
+//    /* Test table data end */
 
 }]);
 

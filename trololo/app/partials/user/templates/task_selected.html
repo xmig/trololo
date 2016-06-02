@@ -20,7 +20,8 @@
                         <th md-column><span>Status</span></th>
                         <th md-column><span>Created by</span></th>
                         <th md-column><span>Assigned member</span></th>
-                        <th md-column><span>Members</span></th>
+                        <!--<th md-column><span>Members</span></th>-->
+                        <th md-column><span>Date created</span></th>
                         <th md-column><span>Deadline date</span></th>
                         <th md-column><span>Estimate minutes</span></th>
                     </tr>
@@ -32,13 +33,32 @@
                         <td md-cell>{{task.type}}</td>
                         <td md-cell>{{task.status.name}}</td>
                         <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.owner.id)" class="user-link-name">{{task.owner.username}}</a></td>
-                        <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.assigned_member_info.id)" class="user-link-name">{{task.assigned_member_info.username}}</a></td>
-                        <td md-cell>
-                            <p ng-repeat="member in task.members_info">
-                            <a ng-href="#/user/profile/{{memeber.id}}" class="user-link-name">{{member.username}}</a> <br>
-                            ({{member.email}})
-                            </p>
+                        <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.assigned_member_info.id)" class="user-link-name">{{task.assigned_member_info.username}}</a>
+
+<!--button and popover for task members-->
+                            <div ng-controller="PopoverDemoCtrl">
+                                <button uib-popover-template="bsPopover.templateUrl" popover-title="{{bsPopover.title}}" popover-placement="right-center"
+                                        type="button" class="btn btn-primary btn-xs pull-center"> see all members </button> <!--btn btn-default btn-xs-->
+
+                                        <script type="text/ng-template" id="myPopoverTemplate.html">
+                                            <div>
+                                                <p ng-repeat="member in task.members_info">{{ $index + 1 }}.
+                                                    <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
+                                                    ({{member.email}})
+                                                </p>
+                                            </div>
+                                        </script>
+                            </div>
+<!--end-->
                         </td>
+                        <!--<td md-cell>-->
+                            <!--<p ng-repeat="member in task.members_info">-->
+                            <!--<a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>-->
+                            <!--({{member.email}})-->
+                            <!--</p>-->
+                        <!--</td>-->
+
+                        <td md-cell>{{task.created_at | date : 'medium'}}</td>
                         <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
                         <td md-cell>{{task.estimate_minutes}}</td>
                     </tr>
@@ -80,12 +100,6 @@
                         <md-list class="project-tabs-list">
 
                              <md-list-item ng-repeat="comment in task.comments | orderBy: tabSort.taskComments" class="secondary-button-padding"> <!--ng-click="action($event)"-->
-                                    <!--<p><a ng-href="#" ng-click="changeUserLocation($event, comment.created_by.id)" class="user-link-name">-->
-                                        <!--{{comment.created_by.username}}</a> added comment: <b>{{comment.title}}: {{comment.comment}}</b>-->
-                                        <!--<span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a>-->
-                                        <!--<a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span>-->
-                                    <!--</p>-->
-
                                     <a ng-href="#" ng-click="changeUserLocation($event,comment.created_by.id)" class="user-link-name">
                                         <span ng-if="comment.created_by.photo">
                                             <img ng-src="{{ comment.created_by.photo }}" class="resize" title="{{comment.created_by.username}}" />
@@ -213,9 +227,6 @@
                                 </div>
                                 -
                                 <a ng-href="#" class="project-tabs-name" ng-click="changeUserLocation($event, member.id)"> {{member.username}}</a>({{member.email}})<!--ng-click="changeUserLocation($event, member.id)"-->
-
-                                <!--<pre>{{taskCopy}}</pre>-->
-
                             </md-list-item>
                         </md-list>
                     </md-content>
@@ -282,7 +293,7 @@
                         <md-list class="project-tabs-list">
                              <md-list-item ng-repeat="file in task.files" class="secondary-button-padding"> <!--ng-click="action($event)"-->
                                  <img ng-src="{{file.file_upload}}" class="resize2" alt="{{getFileName(file.file_upload)}}" >
-                                 <p><a target="_self" class="user-link-name" ng-href="{{file.file_upload}}" download="{{getFileName(file.file_upload)}}"> {{getFileName(file.file_upload)}}</a><a href="#" ng-click="deleteFilePopup($event, file.id, file.file_upload, $index)"> Delete</a></p>
+                                 <p><a target="_self" class="user-link-name" ng-href="{{file.file_upload}}" download="{{getFileName(file.file_upload)}}"> {{getFileName(file.file_upload)}}</a><a href="#" ng-click="deleteFilePopup($event, file.id, file.file_upload, $index)">Delete</a></p>
                                         <!--<span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-href="#/user/tasks/comments/{{comment.id}}">Edit</a> <a href="#" ng-click="deleteTaskCommentPopup($event, comment.id, comment.title)">Delete</a></span></p>-->
                                 <!--<img ng-src="{{file.file_upload}}" class="resize2" alt="{{getFileName(file.file_upload)}}">-->
                              </md-list-item>
@@ -292,7 +303,6 @@
 
                                 <!--</div>-->
                               <!--</md-list-item>-->
-                            <!--<pre>{{task.files | json}}</pre>-->
                         </md-list>
                         <lf-ng-md-file-input lf-files="files" multiple preview></lf-ng-md-file-input>
                         <md-button type="button"  class="md-raised md-primary" ng-click="onSubmit()">Submit</md-button>
@@ -352,7 +362,7 @@
                         Add
                     </md-button>
                 </md-dialog-actions>
-            </form>
+           </form>
         </md-dialog>
     </script>
 
@@ -381,21 +391,13 @@
                         <div>
                             <md-input-container class="md-block">
                                 <label>Description</label>
-                                <input type="text" name="description" ng-model="task.description" md-autofocus required>
+                                <input type="text" name="description" ng-model="taskData.description" md-autofocus required>
                                 <div ng-messages="addCommentForm.comment_name.$error">                                       <!---->
                                     <div ng-message="required">This field is required.</div>
                                 </div>
                                 <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
                                 <span class="alert" ng-if="error">{{error}}</span>
                             </md-input-container>
-
-
-                            <!--&lt;!&ndash;<Task description>&ndash;&gt;-->
-                                <!--<md-input-container class="md-block">-->
-                                        <!--<label>Description</label>-->
-                                        <!--<textarea name="description" id="description" ng-model="taskData.description" rows="5"></textarea>-->
-                                <!--</md-input-container>-->
-
                         </div>
                     </md-content>
                 </md-dialog-content>
@@ -407,7 +409,7 @@
                         Save
                     </md-button>
                 </md-dialog-actions>
-            </form>
+           </form>
         </md-dialog>
     </script>
 
