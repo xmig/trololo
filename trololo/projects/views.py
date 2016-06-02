@@ -122,6 +122,9 @@ class ProjectDetail(generics.GenericAPIView):
         return project
 
     def get(self, request, pk):
+        from datadog import statsd
+        statsd.increment('project_views', value=10)
+
         project = self.get_object(pk)
         serializer = ProjectSerializer(project, context={'request': request})
         return Response(serializer.data)
