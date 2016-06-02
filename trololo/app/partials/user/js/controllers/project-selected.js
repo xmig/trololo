@@ -537,12 +537,13 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         $scope.commentData = {};
         $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
         $scope.commentData.comment = $scope.comment_text;
-
+//        console.log("$scope.comments", $scope.comments)
         commentService.create($scope.commentData, function(response) {
-            $scope.commentData = response;
+            $scope.comments.push(response);
+//            console.log("response", $scope.comments);
             if (typeof response.id !== 'undefined' && response.id > 0) {
-                $window.location.href = '#/user/projects/' + $routeParams.id + '/';
                 $scope.statusSaveToast('Saved!');
+                $mdDialog.hide();
             }
         });
     };
@@ -598,5 +599,19 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     };
 
     $scope.reloadAllActivities();
+//
+//
+//     app.filter('htmlrender', function(){
+//        return function(value) {
+//            console.log("value", value);
+//            var urlRegex = /(https?:\/\/[^\s]+)/g;   /(\s|^)(?:http:\/\/www\.|https:\/\/www\.|www\.)?youtube.com\/watch\?\S*v=(\S*?)(?:\s|&\S*|$)/g;
+//            return value.replace(urlRegex, function (url) {
+//                return '<a target="_blank" href="' + url + '">' + url + '</a>';
+//                return '<iframe width="420" height="315" src="'  + url + '">' + url + 'frameborder="0" allowfullscreen</iframe>'
+//                <iframe width="420" height="315" src="https://www.youtube.com/embed/G3vBZ-lTdUA" frameborder="0" allowfullscreen></iframe>
+//                var reg = /(\s|^)(?:http:\/\/www\.|https:\/\/www\.|www\.)?youtube.com\/watch\?\S*v=(\S*?)(?:\s|&\S*|$)/g
+//            })
+//        }
+//    });
 
 }]);

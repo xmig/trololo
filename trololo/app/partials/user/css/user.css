@@ -283,3 +283,9 @@ a:hover {
 .chipsdemoContactChips .fixedRows {
   height: 250px;
   overflow: hidden; }
+
+.chipsdemoContactChips .md-contact-chips .md-chips .md-chip .md-contact-avatar img {
+    height: 32px;
+    border-radius: 16px;
+    width: 32px;
+}
