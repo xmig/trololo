@@ -178,7 +178,7 @@
                                         <span ng-if="!comment.created_by.photo">
                                             {{comment.created_by.username}}
                                         </span>
-                                        </a>{{comment.created_by.username}} added comment:<b>{{comment.comment}}</b>
+                                        </a>{{comment.created_by.username}} added comment:<b><div style="display: inline-block;" ng-bind-html="renderHtml(comment.comment)"></div></b>
                                         <span style="color:grey"> ({{comment.created_at | date : 'medium'}}) <a ng-if="userPersonalData.id === comment.created_by.id" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a> <a href="#" ng-if="userPersonalData.id === comment.created_by.id" ng-click="deleteCommentPopup($event, comment.id, comment.title)">Delete</a></span>
                                     <!--<a class="md-secondary" ng-href="#/user/projects/comments/{{comment.id}}">Edit</a>-->
                             </md-list-item>

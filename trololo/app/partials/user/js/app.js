@@ -14,3 +14,12 @@ angular.module('userApp').config(function($resourceProvider) {
 
 
 
+angular.module('userApp').filter('htmlrender', function(){
+        return function(value) {
+            var urlRegex = /(\s|^)(?:http:\/\/www\.|https:\/\/www\.|www\.)?youtube.com\/watch\?\S*v=(\S*?)(?:\s|&\S*|$)/g;
+            return value.replace(urlRegex, function (url) {
+                url = url.replace('watch?v=', 'embed/');
+                return '<iframe width="130" height="80" src="'  + url + '" frameborder="0" allowfullscreen="true"</iframe>'
+            })
+        }
+    });
