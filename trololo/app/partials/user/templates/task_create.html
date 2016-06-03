@@ -29,15 +29,26 @@
                                 </md-input-container>
 
 <!--<Choose Project>-->
-                                <md-input-container class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)">
-                                    <label>Choose Project:</label>
-                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true">
+                                <pre>{{taskProjectStatuses|json}}</pre>
+
+                                <md-input-container ng-if="task_id" class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)">
+                                    <label>Choose Project: 1</label>
+                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true" md-on-close="changeProject(taskData.project)">
                                                 <md-option ng-repeat="proj in projects" ng-value="proj.id" ng-model="taskData.project" ng-required="true">{{ proj.name }}</md-option>
                                             </md-select>
+                                            <div ng-messages="save_task.project.$error" ng-if="save_task.$submitted || save_task.project.$touched">
+                                                <div ng-message="required">This field is required.</div>
+                                            </div>
 
-                                                    <div ng-messages="save_task.project.$error" ng-if="save_task.$submitted || save_task.project.$touched">
-                                                        <div ng-message="required">This field is required.</div>
-                                                    </div>
+                                </md-input-container>
+                                <md-input-container ng-if="!task_id" class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)">
+                                    <label>Choose Project: 2</label>
+                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true" md-on-close="changeProject(taskData.project)">
+                                                <md-option ng-repeat="proj in projects" ng-value="proj.id" ng-model="taskData.project" ng-required="true">{{ proj.name }}</md-option>
+                                            </md-select>
+                                            <div ng-messages="save_task.project.$error" ng-if="save_task.$submitted || save_task.project.$touched">
+                                                <div ng-message="required">This field is required.</div>
+                                            </div>
 
                                 </md-input-container>
                                 <div style="height:5px"></div>
@@ -53,7 +64,7 @@
                                 <md-input-container class="md-block" md-is-error="save_task.status.$invalid && (save_task.$submitted || save_task.status.$dirty)">
                                         <label>Status:</label>
                                             <md-select ng-model="taskData.status.id" name="status" id="status" ng-required="true">
-                                                <md-option ng-repeat="stat in taskProjectStatuses" ng-value="stat.id" ng-model="taskData.status.id">{{ stat.name }}</md-option>
+                                                <md-option ng-repeat="stat in taskProjectStatuses" ng-value="stat.id">{{ stat.name }}</md-option>
                                             </md-select>
 
                                                     <div ng-messages="save_task.status.$error" ng-if="save_task.$submitted || save_task.status.$touched">
@@ -61,7 +72,6 @@
                                                     </div>
 
                                 </md-input-container>
-
 
 <!--<Set Task label>-->
                                 <md-input-container class="md-block">

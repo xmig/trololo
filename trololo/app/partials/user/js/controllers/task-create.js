@@ -100,32 +100,35 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
         {'title': 'Feature', 'id':'feature'}
     ];
 
-
+    $scope.gettaskProjectStatuses = function(response){
+        $scope.taskProjectStatuses = projectStatusService.get_all({'project': response.project}, function (resp) {
+            $scope.taskProjectStatuses = resp;
+            $scope.taskData = response;
+         })
+    }
 
     if ($scope.task_id) {
         // EDIT
         // TASK CALCULATE
-        $scope.taskData = taskSelectedService.get({ id: $scope.task_id }, function (response) {
+        taskSelectedService.get({ id: $scope.task_id }, function (response) {
+            //$scope.taskData = response;
+        console.log("Current task", response);
             response.deadline_date = new Date(response.deadline_date);
+
 //            response.project = response.project_obj.id
-            $scope.taskData = response;
+
 //                        console.log('[[[$scope.taskData]]]', $scope.taskData)
 //                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.owner)
 
 //console.log('STATUS', $scope.taskData.status_info.name)
-
-
-            $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
-                    $scope.taskProjectStatuses = resp;
-//                    console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
-
-                })
+            $scope.gettaskProjectStatuses(response)
 
 
 
 
-            $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
-                        console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
+
+//            $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
+//                        console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
 //            $scope.taskData.project
 //            console.log('EDIT', response.project)
         });
@@ -133,8 +136,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
 
     $scope.taskData = {members_info: []};
-
-
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
@@ -203,8 +204,15 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
         }
     };
 
-
-
+    $scope.changeProject = function(id){
+    console.log('id', id)
+        $scope.taskProjectStatuses = projectStatusService.get_all({'project': id}, function (resp) {
+            $scope.taskProjectStatuses = resp;
+            if(resp[0].id){
+                $scope.taskData.status.id = resp[0].id
+            }
+         })
+    }
 
 }])
 .config(function($mdDateLocaleProvider) {
