@@ -53,15 +53,14 @@ LOGGING = {
             'formatter': 'simple',
             'filters': ['db_query_filter'],
         },
-        'file': {
-            #'level': 'INFO',
-            'level': 'DEBUG',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': '/home/user/django_request.log',
-            'maxBytes': 1024*1024*50, # 50 MB
-            'backupCount': 10,
-            'formatter': 'verbose'
-            }
+        # 'file': {
+        #     'level': 'DEBUG',
+        #     'class': 'logging.handlers.RotatingFileHandler',
+        #     'filename': '/home/user/django_request.log',
+        #     'maxBytes': 1024*1024*50, # 50 MB
+        #     'backupCount': 10,
+        #     'formatter': 'verbose'
+        #     }
         },
     'loggers': {
         # 'django.db.backends': {
@@ -80,7 +79,7 @@ LOGGING = {
             'propagate': True,
         },
         'app': {
-            'handlers': ['console', 'file'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
