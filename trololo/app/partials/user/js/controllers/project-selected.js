@@ -55,8 +55,8 @@ angular.module('mainApp')
   });
 
 
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService', 'projectSelectedStatusService', '$location',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService, projectSelectedStatusService, $location) {
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService', 'projectSelectedStatusService', '$location', '$filter', '$sce',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService, projectSelectedStatusService, $location, $filter, $sce) {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
     // patch for tags
@@ -600,17 +600,13 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
 
     $scope.reloadAllActivities();
 
-//    app.filter('htmlrender', function(){
-//        return function(value) {
-//            console.log("value", value);
-//            var urlRegex = /(https?:\/\/[^\s]+)/g;   /(\s|^)(?:http:\/\/www\.|https:\/\/www\.|www\.)?youtube.com\/watch\?\S*v=(\S*?)(?:\s|&\S*|$)/g;
-//            return value.replace(urlRegex, function (url) {
-//                return '<a target="_blank" href="' + url + '">' + url + '</a>';
-//                return '<iframe width="420" height="315" src="'  + url + '">' + url + 'frameborder="0" allowfullscreen</iframe>'
-//                <iframe width="420" height="315" src="https://www.youtube.com/embed/G3vBZ-lTdUA" frameborder="0" allowfullscreen></iframe>
-//                var reg = /(\s|^)(?:http:\/\/www\.|https:\/\/www\.|www\.)?youtube.com\/watch\?\S*v=(\S*?)(?:\s|&\S*|$)/g
-//            })
-//        }
-//    });
+    $scope.renderHtml = function(html_code){
+        console.log('html_code', html_code);
+        if(!html_code){
+            return false;
+        }
+        $scope.filteredText = $filter('htmlrender')(html_code);
+        return $sce.trustAsHtml($scope.filteredText);
+    };
 
 }]);
