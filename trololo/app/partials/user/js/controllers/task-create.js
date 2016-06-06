@@ -205,16 +205,22 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
     };
 
     $scope.changeProject = function(id){
-    console.log('id', id)
         $scope.taskProjectStatuses = projectStatusService.get_all({'project': id}, function (resp) {
             $scope.taskProjectStatuses = resp;
             if(resp[0].id){
                 $scope.taskData.status.id = resp[0].id
+
+                console.log('!!!!resp', resp)
+
+                console.log('!!!!', $scope.taskData.status.id)
             }
          })
     }
 
 }])
+
+
+
 .config(function($mdDateLocaleProvider) {
   $mdDateLocaleProvider.formatDate = function(date) {
     return date ? moment(date).format('DD-MM-YYYY') : '';
