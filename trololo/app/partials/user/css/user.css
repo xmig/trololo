@@ -289,3 +289,19 @@ a:hover {
     border-radius: 16px;
     width: 32px;
 }
+.overlay{
+  display:none;
+  position: absolute;
+}
+a:hover .overlay{
+	display: block;
+}
+md-icon {
+    margin: auto;
+    background-repeat: no-repeat no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    fill: currentColor;
+    height: 14px;
+    width: 14px;
+}
