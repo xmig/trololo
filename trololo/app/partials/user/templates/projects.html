@@ -54,27 +54,11 @@
 
                         </td>
                         <td md-cell>
-                            <div>{{project.task_count}} - all tasks</div>
-                            <div>{{project.my_task_count}} - my tasks</div>
+                            <span title="all tasks">{{project.task_count}}</span>
+                            /<span title="my tasks">{{project.my_task_count}}</span>
                         </td>
                         <td md-cell>
-                            <!--<div ng-repeat="member in project.members_data">-->
-                                <!--<pre>{{project.members_data[0].id}}</pre>-->
-                                <!--<a ng-href="#"  ng-click="changeUserLocation($event, project.members_data[0].id)" class="project-tabs-name">{{project.members_data[0].username}}({{project.members_data[0].email}})</a>-->
-                                <!--<md-button class="md-icon-button" aria-label="More">-->
-                                    <!--<md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>-->
-                                <!--</md-button>-->
-                            <!--<md-menu>-->
-                            <!--<md-menu-content width="6">-->
-                                <!--<md-menu-item ng-repeat="members in project.members_data">-->
-                                  <!--<md-button ng-click="console.log('1111')">-->
-                                    <!--<md-icon md-menu-align-target="" md-svg-icon="call:no-sim"></md-icon>-->
-                                    <!--members {{members.id}}-->
-                                  <!--</md-button>-->
-                                <!--</md-menu-item>-->
-                              <!--</md-menu-content>-->
-                            <!--</md-menu>-->
-                            <a ng-href="#"  ng-click="changeUserLocation($event, project.members_data[0].id)" class="project-tabs-name">{{project.members_data[0].username}}({{project.members_data[0].email}})</a>
+                            <a ng-href="#"  ng-click="changeUserLocation($event, project.members_data[0].id)" class="project-tabs-name">{{project.members_data[0].username}}</a>
 
                             <md-menu>
                              <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open some menu">
@@ -83,7 +67,7 @@
 
                              <md-menu-content>
                                <md-menu-item ng-repeat="member in project.members_data">
-                                <md-button ng-click="changeUserLocation($event, member.id)">{{ $index+1}}.{{member.username}}({{member.email}})
+                                <md-button ng-click="changeUserLocation($event, member.id)">{{member.username}}( {{member.email}} )
                                  </md-button>
                                </md-menu-item>
                              </md-menu-content>
