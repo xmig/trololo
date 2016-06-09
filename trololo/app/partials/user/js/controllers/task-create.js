@@ -116,23 +116,12 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
             //$scope.taskData = response;
         console.log("Current task", response);
             response.deadline_date = new Date(response.deadline_date);
-
-//            response.project = response.project_obj.id
-
-//                        console.log('[[[$scope.taskData]]]', $scope.taskData)
-//                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.owner)
-
-//console.log('STATUS', $scope.taskData.status_info.name)
             $scope.gettaskProjectStatuses(response)
-
-
-
 
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
 //            $scope.taskData.project
-//            console.log('EDIT', response.project)
         });
     }
 
@@ -157,31 +146,19 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
                 $scope.taskDataCopy.label !== $scope.taskData.label ||
                 $scope.taskDataCopy.estimate_minutes !== $scope.taskData.estimate_minutes ||
                 (new Date($scope.taskDataCopy.deadline_date) - $scope.taskData.deadline_date) !== 0 || mem !== true){
-//                                    console.log("$scope.projectDataCopy.name", $scope.projectData.name, $scope.projectDataCopy.date_started)
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
-//                                    console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
-//                                    console.log('$scope.taskDataCopy.members_data, $scope.taskData.members_data', $scope.taskDataCopy.members_data, $scope.taskData.members_data);
-//                                    console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
 
 
                 taskSelectedService.update({'id': $scope.task_id}, $scope.taskData, function (response){
                         response.deadline_date = new Date(response.deadline_date);
-//                                                        console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
-
                         $scope.taskDataCopy = response;
-//                                                        console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
-
                         $window.location = '#/user/tasks/' + $scope.taskDataCopy.id;
                         $scope.statusSaveToast('Saved!');
                     },
 
                     function (response){
-                        //                                console.log('response', response)
-                        //                                console.log('taskDataCopy.project', $scope.taskDataCopy.project_obj.id, $scope.taskData.project_obj.id)
-                        //                                console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
-
                         var err_message = "Error status: " + response.statusText + " StatusText: " + response.statusText;
                         $log.debug(err_message);
                         $scope.statusSaveToast('Some error, contact admin.');

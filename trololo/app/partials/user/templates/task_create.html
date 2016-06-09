@@ -29,8 +29,6 @@
                                 </md-input-container>
 
 <!--<Choose Project>-->
-                                <!--<pre>{{taskProjectStatuses|json}}</pre>-->
-                                <!--<pre>taskData {{taskData}}</pre>-->
                                 <md-input-container class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)"> <!-- ng-if="task_id"  -->
                                     <label>Choose Project:</label>
                                             <md-select ng-model="taskData.project" name="project" id="project" ng-required="true" md-on-close="changeProject(taskData.project)">

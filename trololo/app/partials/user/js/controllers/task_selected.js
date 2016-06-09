@@ -427,7 +427,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
     $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
                     $scope.taskProjectStatuses = resp;
-//                                              console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+                                              console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
                 })
 
 
@@ -442,7 +442,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                 clickOutsideToClose: true,
                 fullscreen: false
             });
-//            $mdDialog.cancel('Cancel');
     };
 
     $scope.showEditDescriptionDialog = function(event) {
@@ -518,14 +517,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
 
 
-
-                        console.log('----$scope.taskData----', $scope.taskData)
-                        console.log('----response----', response)
-
-                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
-                        console.log('----$scope.taskData.assigned_member---', $scope.taskData.assigned_member)
-
-
         $scope.taskCopy = JSON.parse(JSON.stringify(response));
                         console.log('----$scope.taskCopy----', $scope.taskCopy)
         });
@@ -533,33 +524,24 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 // TASK SAVE
 
     $scope.taskData = {members_info: []};
-//    console.log('TESTING TASK', $scope.taskData)
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-            if ($scope.taskCopy.members_info !== $scope.taskData.members_info ||
+            if (angular.equals(!$scope.taskCopy.members_info, $scope.taskData.members_info) ||
                 $scope.taskCopy.description !== $scope.taskData.description){
-//                                  console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
-//                                  console.log('[[[ $scope.taskData.description ]]]', $scope.taskData.description, $scope.taskDataCopy.description)
-
-
                 $scope.taskData.id = $routeParams.taskid;
-//                                  console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
-
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
-//                                  console.log('$scope.taskData.members', $scope.taskData.members)
-//                                  console.log('$scope.taskData.assigned_member', $scope.taskData.assigned_member)
-
 
                 taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {
                     $scope.task = response;
                                   console.log('$scope.taskData', $scope.taskData, '---', $scope.task)
                     $window.location = '#/user/tasks/' + $scope.taskCopy.id;
                     $scope.statusSaveToast('Saved!');
-
+                    $scope.taskCopy = $scope.taskData;
+                    $mdDialog.hide();
                 },
 
                     function (response){
@@ -570,6 +552,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                 )
             } else {
                 $scope.statusSaveToast('Any change!');
+                $mdDialog.hide();
             };
         };
 
