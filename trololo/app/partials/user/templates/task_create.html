@@ -74,7 +74,7 @@
 
                                 <div class="md-block" md-is-error="save_task.deadline.$invalid && (save_task.$submitted || save_task.deadline.$dirty)">
                                 <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date" name="deadline" id="deadline" ng-required="true"></md-datepicker>
-                                                        <div ng-messages="save_task.assigned_member.$error" ng-if="save_task.$submitted || save_task.assigned_member.$touched"
+                                                        <div ng-messages="save_task.deadline.$error" ng-if="save_task.$submitted || save_task.deadline.$touched"
                                                              style="color:rgb(221,44,0); font-size: 12px; line-height: 14px; overflow: hidden; transition: all .3s cubic-bezier(.55,0,.55,.2); padding-top: 5px;">
                                                             <div ng-message="required">This field is required.</div>
                                                         </div>
@@ -94,8 +94,8 @@
                                 </md-input-container>
 
 <!--<Members>-->
-                                <div class="md-block" md-is-error="save_task.members_info && (save_task.$submitted || save_task.members_info.$dirty)">
-                                    <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak="" ng-required="true">
+                                <div class="md-block">
+                                    <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak="">
                                         <md-content layout="column"> <!-- class="md-padding autocomplete" -->
                                             <md-contact-chips
                                                 ng-model="taskData.members_info"
@@ -107,13 +107,11 @@
                                                 md-highlight-flags="i"
                                                 filter-selected="ctrl.filterSelected"
                                                 placeholder="Members">
-                                                <!--name="members_info" id="members_info" ng-required="true"-->
-
                                             </md-contact-chips>
+                                                <div ng-messages="save_task.members_info.$error" ng-if="save_task.$submitted || save_task.members_info.$touched">
+                                                    <div ng-show="taskData.members_info.length == 0" style="color:rgb(221,44,0); font-size: 12px; line-height: 14px; overflow: hidden; transition: all .3s cubic-bezier(.55,0,.55,.2);">This field is required.</div>
+                                                </div>
                                         </md-content>
-                                                            <div ng-messages="save_task.members_info.$error" ng-if="save_task.$submitted || save_task.members_info.$touched">
-                                                                <div ng-message="required">This field is required.</div>
-                                                            </div>
                                     </div>
                                 </div>
                                 <div>
