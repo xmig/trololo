@@ -284,4 +284,7 @@ a:hover {
   height: 250px;
   overflow: hidden; }
 
-
+.md-table-pagination .label {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
+}

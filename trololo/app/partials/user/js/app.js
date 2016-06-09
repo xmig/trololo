@@ -1,4 +1,4 @@
-angular.module('userApp', ['md.data.table', 'ngMaterial', 'lfNgMdFileInput', 'ngAnimate', 'ui.bootstrap']);
+angular.module('userApp', ['md.data.table', 'ngMaterial', 'lfNgMdFileInput']); //        'ngAnimate', 'ui.bootstrap'
 
 angular.module('userApp').config(['$mdThemingProvider', function ($mdThemingProvider) {
     'use strict';

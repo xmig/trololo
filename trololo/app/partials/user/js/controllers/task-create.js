@@ -104,7 +104,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
     $scope.gettaskProjectStatuses = function(response){
         $scope.taskProjectStatuses = projectStatusService.get_all({'project': response.project}, function (resp) {
-            $scope.taskProjectStatuses = resp;
+            $scope.taskProjectStatuses = resp;    // resp - array of project statuses
             $scope.taskData = response;
          })
     }
@@ -145,7 +145,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
         if ($scope.task_id) {
 
             var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info);
-//                                              console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
+//                                    console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
                 console.log('$scope.taskDataCopy.members_info, $scope.taskData.members_info', $scope.taskDataCopy.members_info, $scope.taskData.members_info)
 
             if ($scope.taskDataCopy.name !== $scope.taskData.name ||
@@ -157,14 +157,13 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
                 $scope.taskDataCopy.label !== $scope.taskData.label ||
                 $scope.taskDataCopy.estimate_minutes !== $scope.taskData.estimate_minutes ||
                 (new Date($scope.taskDataCopy.deadline_date) - $scope.taskData.deadline_date) !== 0 || mem !== true){
-//                console.log("$scope.projectDataCopy.name", $scope.projectData.name, $scope.projectDataCopy.date_started)
+//                                    console.log("$scope.projectDataCopy.name", $scope.projectData.name, $scope.projectDataCopy.date_started)
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
 //                                    console.log('PROJECTS', $scope.taskDataCopy.project, $scope.taskData.project)
 //                                    console.log('$scope.taskDataCopy.members_data, $scope.taskData.members_data', $scope.taskDataCopy.members_data, $scope.taskData.members_data);
-
-//                                console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
+//                                    console.log('taskDataCopy.status', $scope.taskDataCopy.status, $scope.taskData.status)
 
 
                 taskSelectedService.update({'id': $scope.task_id}, $scope.taskData, function (response){
@@ -194,7 +193,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
         } else {
 
 
-
             $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                 return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
             });
@@ -202,6 +200,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
             taskService.create($scope.taskData, function(response) {
                 response.deadline_date = new Date(response.deadline_date);
                 $scope.taskData = response;
+
                 if (typeof response.id !== 'undefined' && response.id > 0) {
                     $window.location.href = '#/user/tasks/' + response.id + '/';
                 }
@@ -212,16 +211,17 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
     $scope.changeProject = function(id){
         $scope.taskProjectStatuses = projectStatusService.get_all({'project': id}, function (resp) {
             $scope.taskProjectStatuses = resp;
-//            if(resp[0].id){
-//                $scope.taskData.status.id = resp[0].id
-            if(resp !== []){
-                return $scope.taskData.status.id = resp.slice(0).id;
-
-//                                        console.log('!!!!resp', resp)
-//                                        console.log('!!!!', $scope.taskData.status.id)
+                console.log('$scope.taskProjectStatuses!!!', $scope.taskProjectStatuses)
+            if(resp[0].id){
+                try {
+                        $scope.taskData.status.id = resp[0].id
+                    }
+                catch(err) {
+                    }
             }
          })
     }
+
 
 }])
 

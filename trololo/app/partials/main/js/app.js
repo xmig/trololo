@@ -9,10 +9,12 @@ angular.module('mainApp', [
         'ngMessages',
         'material.svgAssetsCache',
         'userApp',
-//        'xeditable',
         'lfNgMdFileInput',
+
+//ui bootstrap popover
         'ngAnimate',
         'ui.bootstrap'
+
     ])
     .config(function ($routeProvider) {
         $routeProvider
@@ -317,11 +319,10 @@ angular.module('mainApp', [
     })
     .run(function (djangoAuth, $window) {
         djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
-    },
-        function(editableOptions) {
-        editableOptions.theme = 'bs3';
+
     });
 
 angular.module('mainApp').config(function($resourceProvider) {
   $resourceProvider.defaults.stripTrailingSlashes = false;
 });
+

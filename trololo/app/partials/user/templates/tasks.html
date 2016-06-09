@@ -79,6 +79,41 @@
                                 </div>
     <!--end-->
 
+
+
+
+<!--<div class="bs-docs-section" ng-controller="PopoverDemoCtrl">-->
+
+  <!--<div class="bs-example" style="padding-bottom: 24px;" append-source>-->
+    <!--&lt;!&ndash; Button to trigger a default popover with a scope as an object {title:'', content:'', etc.} &ndash;&gt;-->
+    <!--<button type="button" class="btn btn-lg btn-primary" data-placement="bottom" data-animation="am-flip-x" bs-popover="popover">Click to toggle popover-->
+      <!--<br />-->
+      <!--<small>(using an object)</small>-->
+    <!--</button>-->
+
+    <!--&lt;!&ndash; You can also use data-attrs to assign scope variables &ndash;&gt;-->
+    <!--<button type="button" class="btn btn-lg btn-primary" data-placement="top-right" title="{{popover.title}}" data-content="{{popover.content}}" data-trigger="focus" bs-popover>Click to toggle popover-->
+      <!--<br />-->
+      <!--<small>(using data-attrs)</small>-->
+    <!--</button>-->
+
+    <!--&lt;!&ndash; You can use a custom html template with the `data-template` attr &ndash;&gt;-->
+    <!--<button type="button" class="btn btn-lg btn-danger" title="{{popover.title}}" data-content="{{popover.content}}" data-template-url="popover/docs/popover.demo.tpl.html" data-animation="am-flip-x" data-auto-close="1" bs-popover>Custom Popover-->
+      <!--<br />-->
+      <!--<small>(using data-template)</small>-->
+    <!--</button>-->
+
+    <!--&lt;!&ndash; A popover can also be triggered programmatically using the $popover service &ndash;&gt;-->
+    <!--<button type="button" id="popover-as-service" class="btn btn-lg btn-primary" title="{{popover.title}}" ng-click="togglePopover()">Click to toggle popover-->
+      <!--<br />-->
+      <!--<small>(using $popover service)</small>-->
+    <!--</button>-->
+  <!--</div>-->
+
+<!--</div>-->
+
+
+
                             </td>
                             <!--<td md-cell>-->
                                 <!--<div ng-repeat="member in task.members_info" class="member-cell">-->
@@ -95,17 +130,10 @@
                 </table>
             </md-table-container>
 
-
-                            <!--<pre>!!!{{tasks.count}}</pre>-->
-                            <!--<pre>!!!{{query.limit}}</pre>-->
-
-
                         <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(tasks.data | filter: filter.search).length}}"
                             md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
                                     <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}" -->
 
-
-                            <!--<pre>!!!erer{{tasks.data}}</pre>-->
         </md-card>
 
         <md-card>
