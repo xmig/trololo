@@ -65,16 +65,6 @@
                     </tbody>
                 </table>
             </md-table-container>
-
-<!-- for popup button-->
-            <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
-                <!--<div class="md-toolbar-tools">-->
-                    <!--<div flex></div>-->
-                    <!--<md-button ng-click="popRegistr($event)">POPUP__open in popup</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
-                    <!--<md-button ng-click="popRegistr($event)">POPUP__create new task</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
-                <!--</div>-->
-            <!--</md-toolbar>-->
-<!-- for popup end button-->
         </md-card>
 
 
@@ -212,16 +202,12 @@
                                 <md-card-actions layout="row" layout-align="end center">
                                         <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit" ng-click="showAddDeleteMembersDialog($event)">Add/delete members</md-button>
                                 </md-card-actions>
-
-                            <!--<md-button class="md-primary" ng-click="showAddStatusDialog($event)">Add/delete members</md-button>-->
-                            <!--<md-button class="md-primary" ng-href="#/user/tasks/{{task.id}}/edit">edit task</md-button>-->
                         </div>
-
                     </div>
 
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">
-                            <md-list-item ng-repeat="member in taskData.members_info" class="secondary-button-padding">
+                            <md-list-item ng-repeat="member in taskCopy.members_info" class="secondary-button-padding">
                                 <div>
                                     <img ng-src='{{member.photo}}' class='resize' alt="User avatar" />
                                 </div>
@@ -405,7 +391,7 @@
                     <md-button ng-click="cancel()">
                         Cancel
                     </md-button>
-                    <md-button type="submit" style="margin-right:20px;">
+                    <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit" style="margin-right:20px;">
                         Save
                     </md-button>
                 </md-dialog-actions>
@@ -437,12 +423,14 @@
  <!--display only for task creator -->
                         <div ng-show="user.url == taskData.created_by">
 
-                            <md-card class="md-padding">
+                            <div class="md-padding">
+                            <!--<md-card class="md-padding">-->
+
                                 <form name="save_task" ng-submit="save_task.$valid && saveTask()">
                                     <md-card-content>
                                         <div>
                                             <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>
-                                                <md-content class="md-padding autocomplete" layout="column">
+                                                <md-content layout="column"> <!--class="md-padding autocomplete" -->
                                                     <md-contact-chips
                                                         ng-model="taskData.members_info"
                                                         md-contacts="ctrl.delayedQuerySearch($query)"
@@ -458,7 +446,7 @@
                                             </div>
                                             <div>
                                                 <md-input-container class="md-block">
-                                                <label>Assigned member</label>
+                                                    <label>Assigned member</label>
                                                     <md-select ng-model="taskData.assigned_member">
                                                         <md-option ng-repeat="member in taskData.members_info" ng-value="member.id">{{ member.username }}</md-option>
                                                     </md-select>
@@ -468,13 +456,12 @@
                                     </md-card-content>
 
                                     <md-card-actions layout="row" layout-align="end center">
-                                        <md-button ng-click="cancel()">
-                                            Cancel
-                                        </md-button>
+                                        <md-button ng-click="cancel()">Cancel</md-button>
                                         <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit" style="margin-right:20px;">Save</md-button>
                                     </md-card-actions>
                                 </form>
-                            </md-card>
+                            </div>
+                            <!--</md-card>-->
 
                         </div>
         </md-dialog>

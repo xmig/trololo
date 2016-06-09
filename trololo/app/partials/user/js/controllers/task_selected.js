@@ -532,7 +532,8 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-            if (angular.equals(!$scope.taskCopy.members_info, $scope.taskData.members_info) ||
+            if (!angular.equals($scope.taskCopy.members_info, $scope.taskData.members_info) ||
+                $scope.taskCopy.assigned_member !== $scope.taskData.assigned_member ||
                 $scope.taskCopy.description !== $scope.taskData.description){
                 $scope.taskData.id = $routeParams.taskid;
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
