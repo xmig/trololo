@@ -22,15 +22,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 //    })
 
 
-//    taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-//         $scope.taskData = response;
-////         console.log("DDDDD", $scope.task.files);
-//
-//    }, function(error){
-////        console.log("ERROR"); // if task doesn't exist - go to main page
-//        $window.location.href = "#/"
-//    })
-
 
 // TAG manipulations
     // TAG manipulations
@@ -88,7 +79,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
             'ordering': sorting
         }
 
-        activityListService.get(params, function (data) { //{"created_by": $routeParams.taskid.created_by},
+        activityListService.get(params, function (data) {  //{"created_by": $routeParams.taskid.created_by},
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
@@ -402,15 +393,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
       ];
 
 
-//// TASK CALCULATE
-//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
-//        $scope.task = data;
-//    });
-
-
-
-
-
 
 
 //** ADD/DELETE USERS in TASK MEMBERS TAB **//
@@ -423,8 +405,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 // TASK CALCULATE
     $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
         $scope.taskData = response;
-
-//        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
 
     $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
                     $scope.taskProjectStatuses = resp;
@@ -460,68 +440,10 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
 
 
-// $scope.reloadStatuses = function() {
-//        var params = {
-//            'limit': $scope.statusLimit,
-//            'offset': $scope.statusOffset,
-//            'ordering': $scope.statusSortType,
-//            'project': $routeParams.id,
-//        }
-//
-//        var error_func = function (resp) {console.log(resp);};
-//
-//        if (!$scope.statusLimit) {
-//            projectStatusService.get_all(
-//                params,
-//                function(resp) {
-//                    $scope.statuses = resp;
-//                },
-//                error_func
-//            )
-//        } else {
-//            projectStatusService.get(
-//                params,
-//                function(resp) {
-//                    $scope.statuses = resp.results;
-//                },
-//                error_func
-//            )
-//        }
-//    };
-//
-//
-
-
-
-
-//        $scope.projj=projectSelectedService.get({ "id": $scope.taskData.project }, function (data) {
-//            $scope.projj = data // data.id;
-//
-//            $scope.statuses = projectStatusService.query($scope.stat, function (data){  //({"id": $scope.status_id}, function (data) {
-//                $scope.stat = data;
-//
-//console.log('----data----', $scope.stat)
-//console.log('----$scope.projj----', $scope.projj)
-//console.log('----$scope.projj.id----', $scope.projj.id)
-//
-//            if ($scope.projj.id == $scope.statuses.project_id) {
-//                return $scope.statuses
-//                 console.log("$scope.statuses",$scope.statuses )
-//
-//                }
-//
-//
-//            });
-//        });
-//
-//console.log("$scope.stat",$scope.stat )
-
-
-
         $scope.taskCopy = JSON.parse(JSON.stringify(response));
            console.log('----$scope.taskCopy----', $scope.taskCopy)
         }, function(error){
-            $window.location.href = "#/"
+            $window.location.href = "#/" //if task doesn't exist - go to main page
         });
 
 

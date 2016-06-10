@@ -10,8 +10,6 @@ angular.module('mainApp', [
         'material.svgAssetsCache',
         'userApp',
         'lfNgMdFileInput',
-
-//ui bootstrap popover
         'ngAnimate',
         'ui.bootstrap'
 
@@ -216,20 +214,6 @@ angular.module('mainApp', [
                     }]
                 }
             })
-//            .when('/user/tasks/:id', {
-//                templateUrl: '/static/user/templates/user.html',
-//                controller: 'taskSelectedCtrl',
-//                resolve: {
-//                    authenticated: ['djangoAuth', function (djangoAuth) {
-//                        return djangoAuth.authenticationStatus(true);
-//                    }]
-//                }
-//            })
-
-
-
-
-
 
              .when('/user/projects/comments/create', {
                 templateUrl: '/static/user/templates/user.html',

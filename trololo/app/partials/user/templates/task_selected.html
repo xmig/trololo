@@ -158,11 +158,6 @@
                                 <p><b> {{ activity.message }} </b> - <a ng-href="#" class="project-tabs-name">{{ activity.owner.username }}</a><span style="color:grey">({{ activity.created_at | date : 'medium' }})</span></p>
                                 <md-button class="md-secondary" ng-href="{{getTaskProject(activity)}}">View</md-button>
                             </md-list-item>
-                            <!--<md-list-item class="project-tabs-list" ng-repeat="activity in task.activity">-->
-                                <!--&lt;!&ndash;<span class="status-ico" ng-class="activity.activity_model"></span>&ndash;&gt;-->
-                                <!--<p><b> {{ activity }} </b>-->
-                                <!--&lt;!&ndash;<md-button class="md-secondary" ng-href="{{getTaskProject(activity)}}">View</md-button>&ndash;&gt;-->
-                            <!--</md-list-item>-->
                         </md-list>
                         <span></span>
                     </md-content>
@@ -179,7 +174,6 @@
                                 <md-card-actions layout="row" layout-align="end center">
                                         <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit" ng-click="showEditDescriptionDialog($event)">Edit description</md-button>
                                 </md-card-actions>
-                            <!--<md-button class="md-primary" ng-click="showEditDescriptionDialog($event)">Edit description</md-button>-->
                         </div>
                     </div>
 
@@ -227,56 +221,10 @@
                                 <a ng-href="#" ng-click="changeUserLocation($event,taskData.assigned_member_info.id)" class="user-link-name">{{taskData.assigned_member_info.username}}</a>
                             </div>
                     </md-content>
-
-
-
-<!-- display only for task creator -->
-                        <!--<div ng-show="user.url == task.created_by">-->
-
-                            <!--<md-card class="md-padding">-->
-                                <!--<form name="save_task" ng-submit="save_task.$valid && saveTask()">-->
-                                    <!--<md-card-title>-->
-                                        <!--<md-card-title-text>-->
-                                            <!--<span class="md-headline">Add/delete members</span>-->
-                                        <!--</md-card-title-text>-->
-                                    <!--</md-card-title>-->
-                                    <!--<md-card-content>-->
-                                        <!--<div>-->
-                                            <!--<div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak>-->
-                                                <!--<md-content class="md-padding autocomplete" layout="column">-->
-                                                    <!--<md-contact-chips-->
-                                                        <!--ng-model="taskData.members_info"-->
-                                                        <!--md-contacts="ctrl.delayedQuerySearch($query)"-->
-                                                        <!--md-contact-name="username"-->
-                                                        <!--md-contact-email="email"-->
-                                                        <!--md-contact-image="photo"-->
-                                                        <!--md-require-match="true"-->
-                                                        <!--md-highlight-flags="i"-->
-                                                        <!--filter-selected="ctrl.filterSelected"-->
-                                                        <!--placeholder="Members">-->
-                                                    <!--</md-contact-chips>-->
-                                                <!--</md-content>-->
-                                            <!--</div>-->
-                                            <!--<div>-->
-                                                <!--<md-input-container class="md-block">-->
-                                                <!--<label>Assigned member</label>-->
-                                                    <!--<md-select ng-model="taskData.assigned_member">-->
-                                                        <!--<md-option ng-repeat="member in taskData.members_info" ng-value="member.id">{{ member.username }}</md-option>-->
-                                                    <!--</md-select>-->
-                                                <!--</md-input-container>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</md-card-content>-->
-                                    <!--<md-card-actions layout="row" layout-align="end center">-->
-                                        <!--<md-button class="md-primary md-button md-ink-ripple md-raised" type="submit">Save</md-button>-->
-                                    <!--</md-card-actions>-->
-                                <!--</form>-->
-                            <!--</md-card>-->
-
-                        <!--</div>-->
-
                  </md-tab>
-                
+
+
+
                 <md-tab label="upload files">
                     <md-content class="md-padding">
                         <md-list class="project-tabs-list">

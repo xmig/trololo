@@ -289,26 +289,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
     $scope.reloadTask();
 
 
-
-
-//    taskService.get(params, function (data) {
-//            $scope.tasks = {}
-//            $scope.tasks.data = data.results;
-//            $scope.tasks.count = $scope.tasks.data.length;
-//
-//            $scope.my_tasks_ovner = {};
-//            var tasks_list_owner = [];
-//
-//            if (tasks_list_owner.members.indexOf($scope.userPersonalData.id) == -1) {
-//                tasks_list.push(task_i);
-//            }
-//          }
-//
-//            $scope.my_tasks_ovner.data = tasks_list;
-//            $scope.my_tasks.count = tasks_list.length;
-//        });
-
-
     $scope.all_members = [{'id': undefined, 'username': 'All'}];
     $scope.all_project = [{project_obj: {'id': undefined, 'name': 'All'}}];
 
@@ -327,17 +307,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         }
         return false;
     };
-
-//    $scope.onlyMyProjectTasks = function(value, index, array) {
-//        if (!$scope.showMyProjectTasks.project) {
-//            return true;
-//        } else if ($scope.showMyProjectTasks.project == value.project_obj.id) {
-//
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    };
 
 
     $scope.onlyMyProjectTasks = function(value, index, array) {
@@ -457,16 +426,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
         };
 
 
-//    $scope.getStatuses = function () {
-//        return ['breakthrough', 'in_progress', 'finished', 'undefined'];
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['bug', 'feature', 'undefined'];
-//    };
-
-/* end - for popup */
-
 
 //CHECKBOXES//
 
@@ -487,86 +446,6 @@ angular.module('userApp').controller('tasksCtrl', ['$scope', '$rootScope', '$htt
       $scope.exists = function (item, list) {
         return list.indexOf(item) > -1;
       };
-
-/* for standard checkboxes */
-//     $scope.items = [1,2,3,4,5];
-//          $scope.selected = [1];
-//          $scope.toggle = function (item, list) {
-//            var idx = list.indexOf(item);
-//            if (idx > -1) {
-//              list.splice(idx, 1);
-//            }
-//            else {
-//              list.push(item);
-//            }
-//          };
-//
-//          $scope.exists = function (item, list) {
-//            return list.indexOf(item) > -1;
-//          };
-//
-//          $scope.isIndeterminate = function() {
-//            return ($scope.selected.length !== 0 &&
-//                $scope.selected.length !== $scope.items.length);
-//          };
-//
-//          $scope.isChecked = function() {
-//            return $scope.selected.length === $scope.items.length;
-//          };
-//
-//          $scope.toggleAll = function() {
-//            if ($scope.selected.length === $scope.items.length) {
-//              $scope.selected = [];
-//            } else if ($scope.selected.length === 0 || $scope.selected.length > 0) {
-//              $scope.selected = $scope.items.slice(0);
-//            }
-
-
-
-
-//    $scope.editComment = function (event, dessert) {
-//        event.stopPropagation(); // in case autoselect is enabled
-//
-//        var editDialog = {
-//            modelValue: dessert.comment,
-//            placeholder: 'Add a comment',
-//            save: function (input) {
-//                if(input.$modelValue === 'Donald Trump') {
-//                    return $q.reject();
-//                }
-//                if(input.$modelValue === 'Bernie Sanders') {
-//                    return dessert.comment = 'FEEL THE BERN!'
-//                }
-//                dessert.comment = input.$modelValue;
-//            },
-//            targetEvent: event,
-//            title: 'Add a comment',
-//            validators: {
-//                'md-maxlength': 30
-//            }
-//        };
-//
-//        var promise;
-//
-//        if($scope.options.largeEditDialog) {
-//            promise = $mdEditDialog.large(editDialog);
-//        } else {
-//            promise = $mdEditDialog.small(editDialog);
-//        }
-//
-//        promise.then(function (ctrl) {
-//            var input = ctrl.getInput();
-//
-//            input.$viewChangeListeners.push(function () {
-//                input.$setValidity('task_test', input.$modelValue !== 'task_test');
-//            });
-//        });
-//    };
-//
-//    $scope.getTypes = function () {
-//        return ['Candy', 'Ice cream', 'Other', 'Pastry'];
-//    };
-//    /* Test table data end */
 
 }]);
 

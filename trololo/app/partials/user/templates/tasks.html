@@ -98,7 +98,7 @@
 
                         <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(tasks.data | filter: filter.search).length}}"
                             md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
-                                    <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}" -->
+
 
         </md-card>
 
@@ -123,7 +123,7 @@
                         </div>
 
                      <md-list>
-                        <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
+                        <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list">
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
                                             <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>

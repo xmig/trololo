@@ -8,7 +8,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
     $scope.projects = {}
     projectService.get(function(data) {
         $scope.projects = data.results;
-//        console.log("---------------", $scope.projects)
     })
 
 
@@ -114,7 +113,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
         // TASK CALCULATE
         taskSelectedService.get({ id: $scope.task_id }, function (response) {
             //$scope.taskData = response;
-        console.log("Current task", response);
             response.deadline_date = new Date(response.deadline_date);
             $scope.gettaskProjectStatuses(response)
 
@@ -134,8 +132,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
         if ($scope.task_id) {
 
             var mem = angular.equals($scope.taskDataCopy.members_info, $scope.taskData.members_info);
-//                                    console.log(angular.equals($scope.projectDataCopy.members_data, $scope.projectData.members_data));
-                console.log('$scope.taskDataCopy.members_info, $scope.taskData.members_info', $scope.taskDataCopy.members_info, $scope.taskData.members_info)
 
             if ($scope.taskDataCopy.name !== $scope.taskData.name ||
                 $scope.taskDataCopy.description !== $scope.taskData.description ||
