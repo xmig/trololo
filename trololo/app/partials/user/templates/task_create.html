@@ -31,16 +31,16 @@
 <!--<Choose Project>-->
                                 <md-input-container class="md-block" md-is-error="save_task.project.$invalid && (save_task.$submitted || save_task.project.$dirty)">
                                     <label>Choose Project:</label>
-                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true" >
+                                            <md-select ng-model="taskData.project" name="project" id="project" ng-required="true" md-on-close="changeProject(taskData.project)">
                                                 <md-option ng-repeat="proj in projects" ng-value="proj.id" ng-model="taskData.project" ng-required="true">{{ proj.name }}</md-option>
                                             </md-select>
 
-                                                    <div ng-messages="save_task.project.$error" ng-if="save_task.$submitted || save_task.project.$touched">
-                                                        <div ng-message="required">This field is required.</div>
-                                                    </div>
-
+                                            <div ng-messages="save_task.project.$error" ng-if="save_task.$submitted || save_task.project.$touched">
+                                                <div ng-message="required">This field is required.</div>
+                                            </div>
                                 </md-input-container>
                                 <div style="height:5px"></div>
+
 <!--<Set Task type>-->
                                 <md-input-container class="md-block">
                                     <label>Set Task type:</label>
@@ -53,7 +53,7 @@
                                 <md-input-container class="md-block" md-is-error="save_task.status.$invalid && (save_task.$submitted || save_task.status.$dirty)">
                                         <label>Status:</label>
                                             <md-select ng-model="taskData.status.id" name="status" id="status" ng-required="true">
-                                                <md-option ng-repeat="stat in taskProjectStatuses" ng-value="stat.id" ng-model="taskData.status.id">{{ stat.name }}</md-option>
+                                                <md-option ng-repeat="stat in taskProjectStatuses" ng-value="stat.id">{{ stat.name }}</md-option>
                                             </md-select>
 
                                                     <div ng-messages="save_task.status.$error" ng-if="save_task.$submitted || save_task.status.$touched">
@@ -61,7 +61,6 @@
                                                     </div>
 
                                 </md-input-container>
-
 
 <!--<Set Task label>-->
                                 <md-input-container class="md-block">
@@ -75,7 +74,7 @@
 
                                 <div class="md-block" md-is-error="save_task.deadline.$invalid && (save_task.$submitted || save_task.deadline.$dirty)">
                                 <md-datepicker ng-model="taskData.deadline_date" md-placeholder="Deadline date" name="deadline" id="deadline" ng-required="true"></md-datepicker>
-                                                        <div ng-messages="save_task.assigned_member.$error" ng-if="save_task.$submitted || save_task.assigned_member.$touched"
+                                                        <div ng-messages="save_task.deadline.$error" ng-if="save_task.$submitted || save_task.deadline.$touched"
                                                              style="color:rgb(221,44,0); font-size: 12px; line-height: 14px; overflow: hidden; transition: all .3s cubic-bezier(.55,0,.55,.2); padding-top: 5px;">
                                                             <div ng-message="required">This field is required.</div>
                                                         </div>
@@ -95,27 +94,25 @@
                                 </md-input-container>
 
 <!--<Members>-->
-                                <div class="md-block" md-is-error="save_task.members_info && (save_task.$submitted || save_task.members_info.$dirty)">
-                                <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak="" ng-required="true">
-                                    <md-content class="md-padding autocomplete" layout="column">
-                                        <md-contact-chips
-                                            ng-model="taskData.members_info"
-                                            md-contacts="ctrl.delayedQuerySearch($query)"
-                                            md-contact-name="username"
-                                            md-contact-image="photo"
-                                            md-contact-email="email"
-                                            md-require-match="true"
-                                            md-highlight-flags="i"
-                                            filter-selected="ctrl.filterSelected"
-                                            placeholder="Members"
-                                            <!--name="members_info" id="members_info" ng-required="true"-->
-                                            >
-                                        </md-contact-chips>
-                                    </md-content>
-                                                        <div ng-messages="save_task.members_info.$error" ng-if="save_task.$submitted || save_task.members_info.$touched">
-                                                            <div ng-message="required">This field is required.</div>
-                                                        </div>
-                                </div>
+                                <div class="md-block">
+                                    <div class="chipsdemoContactChips" ng-controller="userChipsCtrl as ctrl" layout="column" ng-cloak="">
+                                        <md-content layout="column">
+                                            <md-contact-chips
+                                                ng-model="taskData.members_info"
+                                                md-contacts="ctrl.delayedQuerySearch($query)"
+                                                md-contact-name="username"
+                                                md-contact-image="photo"
+                                                md-contact-email="email"
+                                                md-require-match="true"
+                                                md-highlight-flags="i"
+                                                filter-selected="ctrl.filterSelected"
+                                                placeholder="Members">
+                                            </md-contact-chips>
+                                                <div ng-messages="save_task.members_info.$error" ng-if="save_task.$submitted || save_task.members_info.$touched">
+                                                    <div ng-show="taskData.members_info.length == 0" style="color:rgb(221,44,0); font-size: 12px; line-height: 14px; overflow: hidden; transition: all .3s cubic-bezier(.55,0,.55,.2);">This field is required.</div>
+                                                </div>
+                                        </md-content>
+                                    </div>
                                 </div>
                                 <div>
                                     <md-input-container class="md-block" md-is-error="save_task.assigned_member.$invalid && (save_task.$submitted || save_task.assigned_member.$dirty)">

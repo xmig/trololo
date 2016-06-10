@@ -60,7 +60,7 @@
 }
 .user-link-name {
     color: #2196F3;
-    text-decoration: underline;
+    text-decoration: none;
 }
 .project-link-name {
     font-weight: bold;
@@ -283,7 +283,7 @@ a:hover {
 .chipsdemoContactChips .fixedRows {
   height: 250px;
   overflow: hidden; }
-
+  
 .chipsdemoContactChips .md-contact-chips .md-chips .md-chip .md-contact-avatar img {
     height: 32px;
     border-radius: 16px;
@@ -305,3 +305,9 @@ md-icon {
     height: 14px;
     width: 14px;
 }
+
+.md-table-pagination .label {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
+}
+
