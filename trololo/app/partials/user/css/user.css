@@ -283,8 +283,31 @@ a:hover {
 .chipsdemoContactChips .fixedRows {
   height: 250px;
   overflow: hidden; }
+  
+.chipsdemoContactChips .md-contact-chips .md-chips .md-chip .md-contact-avatar img {
+    height: 32px;
+    border-radius: 16px;
+    width: 32px;
+}
+.overlay{
+  display:none;
+  position: absolute;
+}
+a:hover .overlay{
+	display: block;
+}
+md-icon {
+    margin: auto;
+    background-repeat: no-repeat no-repeat;
+    display: inline-block;
+    vertical-align: middle;
+    fill: currentColor;
+    height: 14px;
+    width: 14px;
+}
 
 .md-table-pagination .label {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
 }
+

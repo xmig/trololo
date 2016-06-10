@@ -55,8 +55,8 @@ angular.module('mainApp')
   });
 
 
-angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService', 'projectSelectedStatusService', '$location',
-    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService, projectSelectedStatusService, $location) {
+angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootScope', '$http', '$mdDialog', '$mdMedia', '$routeParams', 'projectSelectedService', 'activityListService', 'taskService', 'project_tagService', '$timeout', '$mdSidenav', '$log', 'personalInfoService', '$window','commentSelectedService', 'commentService', 'projectStatusService', 'projectSelectedStatusService', '$location', '$filter', '$sce',
+    function($scope, $rootScope, $http, $mdDialog, $mdMedia, $routeParams, projectSelectedService, activityListService, taskService, project_tagService, $timeout, $mdSidenav, $log, personalInfoService, $window,commentSelectedService, commentService, projectStatusService, projectSelectedStatusService, $location, $filter, $sce) {
     $scope.partialPath = '/static/user/templates/project_selected.html';
 
     // patch for tags
@@ -537,12 +537,13 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
         $scope.commentData = {};
         $scope.commentData.project = 'http://' + $window.location.host + '/projects/' + $routeParams.id + '/';
         $scope.commentData.comment = $scope.comment_text;
-
+//        console.log("$scope.comments", $scope.comments)
         commentService.create($scope.commentData, function(response) {
-            $scope.commentData = response;
+            $scope.comments.push(response);
+//            console.log("response", $scope.comments);
             if (typeof response.id !== 'undefined' && response.id > 0) {
-                $window.location.href = '#/user/projects/' + $routeParams.id + '/';
                 $scope.statusSaveToast('Saved!');
+                $mdDialog.hide();
             }
         });
     };
@@ -598,5 +599,14 @@ angular.module('userApp').controller('projectSelectedCtrl', ['$scope', '$rootSco
     };
 
     $scope.reloadAllActivities();
+
+    $scope.renderHtml = function(html_code){
+        console.log('html_code', html_code);
+        if(!html_code){
+            return false;
+        }
+        $scope.filteredText = $filter('htmlrender')(html_code);
+        return $sce.trustAsHtml($scope.filteredText);
+    };
 
 }]);

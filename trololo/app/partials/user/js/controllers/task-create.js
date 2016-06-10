@@ -9,7 +9,7 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
     projectService.get(function(data) {
         $scope.projects = data.results;
     })
-
+    
 
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
@@ -119,12 +119,20 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
             $scope.taskDataCopy = JSON.parse(JSON.stringify(response));
                         console.log('[[[$scope.taskDataCopy]]]', $scope.taskDataCopy)
+
 //            $scope.taskData.project
         });
     }
 
 
     $scope.taskData = {members_info: []};
+
+
+//TRY
+//    var selectedProject = $location.search();
+//    if (Object.keys(selectedProject).length) {
+//        $scope.taskData.project = +selectedProject['project_id']
+//    }
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
@@ -164,8 +172,6 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
                 $scope.statusSaveToast('Any change!');
             }
         } else {
-
-
             $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                 return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
             });

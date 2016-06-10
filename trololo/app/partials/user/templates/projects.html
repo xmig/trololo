@@ -54,13 +54,27 @@
 
                         </td>
                         <td md-cell>
-                            <div>{{project.task_count}} - all tasks</div>
-                            <div>{{project.my_task_count}} - my tasks</div>
+                            <span title="all tasks">{{project.task_count}}</span>
+                            /<span title="my tasks">{{project.my_task_count}}</span>
                         </td>
                         <td md-cell>
-                            <div ng-repeat="member in project.members_data">
-                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="project-tabs-name">{{member.username}}({{member.email}})</a>
-                            </div>
+                            <a ng-href="#"  ng-click="changeUserLocation($event, project.members_data[0].id)" class="project-tabs-name">{{project.members_data[0].username}}</a>
+
+                            <md-menu>
+                             <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button" aria-label="Open some menu">
+                               <md-icon md-menu-origin md-svg-icon="img/icons/more_vert.svg"></md-icon>
+                             </md-button>
+
+                             <md-menu-content>
+                               <md-menu-item ng-repeat="member in project.members_data">
+                                <md-button ng-click="changeUserLocation($event, member.id)">{{member.username}}( {{member.email}} )
+                                 </md-button>
+                               </md-menu-item>
+                             </md-menu-content>
+                            </md-menu>
+
+
+                            <!--</div>-->
                         </td>
                         <td md-cell><a ng-href="#"  ng-click="changeUserLocation($event, project.owner.id)" class="project-tabs-name">{{project.owner.username}}({{project.owner.email}})</a>
                         <td md-cell>{{project.date_started | date : 'medium'}}</td>
