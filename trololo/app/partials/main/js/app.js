@@ -311,6 +311,24 @@ angular.module('mainApp', [
                     }]
                 }
             })
+            .when('/system/', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'clusterCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
+            .when('/system/:id', {
+                templateUrl: '/static/user/templates/user.html',
+                controller: 'hostCtrl',
+                resolve: {
+                    authenticated: ['djangoAuth', function (djangoAuth) {
+                        return djangoAuth.authenticationStatus(true);
+                    }]
+                }
+            })
 
             .otherwise({
                 redirectTo: '/'

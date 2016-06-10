@@ -1,0 +1,161 @@
+<md-content layout-xs="column" layout="row" class="md-padding gray-bg" ng-controller="clusterCtrl">
+    <div flex layout="column" ng-controller="nutritionController">
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <label>
+                        <span>Cluster</span>
+                    </label>
+                    <div flex></div>
+                </div>
+            </md-toolbar>
+            <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
+                <div class="md-toolbar-tools">
+                    <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
+                </div>
+            </md-toolbar>
+            <md-table-container>
+                <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
+                    <thead md-head md-order="query.order" md-on-reorder="logOrder">
+                    <tr md-row>
+                        <th md-column><span>Host IP</span></th>
+                        <th md-column><span>Hostname</span></th>
+                        <th md-column><span>Internal IP</span></th>
+                        <th md-column><span>In cluster</span></th>
+                        <th md-column><span>Enabled</span></th>
+                        <th md-column><span> </span></th>
+                        <th md-column><span> </span></th>
+                    </tr>
+                    </thead>
+                    <tbody md-body>
+                    <tr md-row md-select="cluster"
+                        ng-repeat="item in cluster.response track by $index  | limitTo: query.limit : (query.page -1) * query.limit">
+                        <td md-cell>
+                            {{item.host_ip}}
+                        </td>
+                        <td md-cell>
+                            {{item.hostname}}
+                        </td>
+                        <td md-cell>
+                            {{item.internal_ip}}
+                        </td>
+                        <td md-cell>
+                            {{item.in_cluster}}
+                        </td>
+                        <td md-cell>
+                            <md-switch ng-model="item.enabled" aria-label="Switch 2" ng-true-value="true"
+                                       ng-false-value="false" class="md-warn" ng-change="changeClusterStatus($index, item)">
+                            </md-switch>
+                        </td>
+                        <td md-cell>
+                            <md-button class="md-icon-button" ng-click="viewSelectedHost($event, item.id)">
+                                <i class="material-icons">comment</i>
+
+                            </md-button>
+                            <!--<pre>{{item.id}}</pre>-->
+
+                            <md-button class="md-icon-button" ng-click="deleteClusterPopup($event, item.id, item.hostname)">
+                                <i class="material-icons">remove_circle</i>
+                            </md-button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </md-table-container>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-primary md-button md-ink-ripple md-raised" type="submit"
+                           ng-click="showAddHostDialog($event)">
+                    Add Host
+                </md-button>
+            </md-card-actions>
+        </md-card>
+
+    </div>
+
+    <script type="text/ng-template" id="add_host.tmpl.html">
+        <md-dialog aria-label="Add host form" flex="4" flex-xs="70" flex-sm="30" flex-md="20" flex-lg="20"
+                   id="change_pwd_view">
+            <form role="form" name="addHostForm" novalidate ng-submit="addHost(addHostForm)">
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2>Add Host</h2>
+                        <span flex="" class="flex"></span>
+                        <button class="md-icon-button md-button md-ink-ripple" type="button"
+                                ng-click="cancel()">
+                            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"
+                                     class="ng-scope ng-isolate-scope" aria-hidden="true">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"
+                                     fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+                                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                                </svg>
+                            </md-icon>
+                        </button>
+                    </div>
+                </md-toolbar>
+                <md-dialog-content class="md-dialog-content" role="document" tabindex="-1" id="dialogContent_1">
+                    <md-content layout-padding="">
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Host IP</label>
+                                <input type="number" name="host_ip" id="host_ip" ng-model="host_ip" md-autofocus required>
+                                <div ng-messages="addHostForm.host_name.$error">
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Hostname</label>
+                                <input type="text" name="host_name" id="host_name" ng-model="host_name" md-autofocus
+                                       required>
+                                <div ng-messages="addHostForm.host_name.$error">
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                        <div>
+                            <md-input-container class="md-block">
+                                <label>Internal IP</label>
+                                <input type="number" name="host_internal" id="host_internal" ng-model="host_internal"
+                                       md-autofocus required>
+                                <div ng-messages="addHostForm.host_name.$error">
+                                    <div ng-message="required">This field is required.</div>
+                                </div>
+                                <span class="alert" ng-repeat="error in errors.non_field_errors">{{error}}</span>
+                                <span class="alert" ng-if="error">{{error}}</span>
+                            </md-input-container>
+                        </div>
+                        <div>
+                            <md-input-container class="md-block">
+                                <md-checkbox name="in_cluster" id="in_cluster" ng-model="host_incluster"
+                                             aria-label="In cluster">
+                                    In cluster
+                                </md-checkbox>
+                            </md-input-container>
+                        </div>
+                        <div>
+                            <md-input-container class="md-block">
+                                <md-checkbox name="enabled" id="enabled" ng-model="host_enabled" aria-label="Enabled">
+                                    Enabled
+                                </md-checkbox>
+                            </md-input-container>
+                        </div>
+                    </md-content>
+                </md-dialog-content>
+                <md-dialog-actions layout="row">
+                    <md-button ng-click="cancel()">
+                        Cancel
+                    </md-button>
+                    <md-button type="submit" style="margin-right:20px;">
+                        Add
+                    </md-button>
+                </md-dialog-actions>
+            </form>
+        </md-dialog>
+    </script>
+</md-content>
