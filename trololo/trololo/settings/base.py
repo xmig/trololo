@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'cuser',
     'chi_django_base',
     'activity',
+    'cluster',
     'projects.projects_app.ProjectsAppConfig',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
