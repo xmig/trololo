@@ -44,7 +44,8 @@
                         </td>
                         <td md-cell>
                             <md-switch ng-model="item.enabled" aria-label="Switch 2" ng-true-value="true"
-                                       ng-false-value="false" class="md-warn" ng-change="changeClusterStatus($index, item)">
+                                       ng-false-value="false" class="md-warn"
+                                       ng-change="changeClusterStatus($index, item)">
                             </md-switch>
                         </td>
                         <td md-cell>
@@ -54,7 +55,8 @@
                             </md-button>
                             <!--<pre>{{item.id}}</pre>-->
 
-                            <md-button class="md-icon-button" ng-click="deleteClusterPopup($event, item.id, item.hostname)">
+                            <md-button class="md-icon-button"
+                                       ng-click="deleteClusterPopup($event, item.id, item.hostname)">
                                 <i class="material-icons">remove_circle</i>
                             </md-button>
                         </td>
@@ -98,7 +100,8 @@
                         <div>
                             <md-input-container class="md-block">
                                 <label>Host IP</label>
-                                <input type="number" name="host_ip" id="host_ip" ng-model="host_ip" md-autofocus required>
+                                <input type="text" name="host_ip" id="host_ip" ng-model="host_ip" md-autofocus required
+                                       ng-pattern="/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/">
                                 <div ng-messages="addHostForm.host_name.$error">
                                     <div ng-message="required">This field is required.</div>
                                 </div>
@@ -121,8 +124,9 @@
                         <div>
                             <md-input-container class="md-block">
                                 <label>Internal IP</label>
-                                <input type="number" name="host_internal" id="host_internal" ng-model="host_internal"
-                                       md-autofocus required>
+                                <input type="text" name="host_internal" id="host_internal" ng-model="host_internal"
+                                       md-autofocus required
+                                       ng-pattern="/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/">
                                 <div ng-messages="addHostForm.host_name.$error">
                                     <div ng-message="required">This field is required.</div>
                                 </div>
