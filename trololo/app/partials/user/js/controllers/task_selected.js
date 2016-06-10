@@ -15,21 +15,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
 
 // TAGS - patch for tags
-    $scope.task = {tags: []};
+    $scope.taskData = {tags: []};
 
 
 //    $scope.task = taskSelectedService.get({"id": $routeParams.taskid}, function() {
 //    })
-
-
-    taskSelectedService.get({"id": $routeParams.taskid}, function(response) {
-         $scope.task = response;
-//         console.log("DDDDD", $scope.task.files);
-         
-    }, function(error){
-//        console.log("ERROR"); // if task doesn't exist - go to main page
-        $window.location.href = "#/"
-    })
 
 
 
@@ -43,7 +33,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
         task_tagService.add_tag(
             {'id': $routeParams.taskid, 'tag_name': tag.name}, {}, function(response) {
             }, function () {
-                $scope.task.tags.splice($scope.task.tags.length - 1, 1);
+                $scope.taskData.tags.splice($scope.taskData.tags.length - 1, 1);
             }
         );
     };
@@ -54,7 +44,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
         task_tagService.delete_tag(
             {'id': $routeParams.taskid, 'tag_name': tag_name}, {}, function(response) {
             }, function () {
-                $scope.task.tags.push(tag);
+                $scope.taskData.tags.push(tag);
             }
         );
     };
@@ -89,7 +79,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
             'ordering': sorting
         }
 
-        activityListService.get(params, function (data) { //{"created_by": $routeParams.taskid.created_by},
+        activityListService.get(params, function (data) {  //{"created_by": $routeParams.taskid.created_by},
             $scope.activities = {}
             $scope.activities.data = data.results;
             $scope.activities.count = $scope.activities.data.length;
@@ -149,8 +139,8 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
             'task': $routeParams.taskid
         }
         taskCommentService.get(params, function (data) {
-            $scope.task.comments = data.results;
-            $scope.task.comments.count = $scope.task.comments.length;
+            $scope.taskData.comments = data.results;
+            $scope.taskData.comments.count = $scope.taskData.comments.length;
 //                                  console.log('data.results', data.results,'-----', $scope.task.comments.count);
         });
     };
@@ -229,8 +219,8 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
     $scope.changeUserLocation = function(e, id){
     e.preventDefault();
         if($scope.userPersonalData.id !== id){
-            $window.location.href = '#/user/profile/' + id;
-        } else {
+            $window.location.href = '#/user/profile/' + id;}
+        else {
             $window.location.href = '#/user/personal/';
         }
     };
@@ -403,15 +393,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
       ];
 
 
-//// TASK CALCULATE
-//    taskSelectedService.get({ id: $routeParams.id }, function (data) {
-//        $scope.task = data;
-//    });
-
-
-
-
-
 
 
 //** ADD/DELETE USERS in TASK MEMBERS TAB **//
@@ -424,11 +405,10 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 // TASK CALCULATE
     $scope.taskData = taskSelectedService.get({"id": $routeParams.taskid}, function (response) {
         $scope.taskData = response;
-//        $scope.taskData.assigned_member = response.assigned_member;                                              ////  *******
 
     $scope.taskProjectStatuses = projectStatusService.get_all({'project': $scope.taskData.project}, function (resp) {
                     $scope.taskProjectStatuses = resp;
-//                                              console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
+                                              console.log('----$scope.taskProjectStatuses----', $scope.taskProjectStatuses)
                 })
 
 
@@ -443,7 +423,6 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                 clickOutsideToClose: true,
                 fullscreen: false
             });
-//            $mdDialog.cancel('Cancel');
     };
 
     $scope.showEditDescriptionDialog = function(event) {
@@ -461,102 +440,35 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
 
 
-// $scope.reloadStatuses = function() {
-//        var params = {
-//            'limit': $scope.statusLimit,
-//            'offset': $scope.statusOffset,
-//            'ordering': $scope.statusSortType,
-//            'project': $routeParams.id,
-//        }
-//
-//        var error_func = function (resp) {console.log(resp);};
-//
-//        if (!$scope.statusLimit) {
-//            projectStatusService.get_all(
-//                params,
-//                function(resp) {
-//                    $scope.statuses = resp;
-//                },
-//                error_func
-//            )
-//        } else {
-//            projectStatusService.get(
-//                params,
-//                function(resp) {
-//                    $scope.statuses = resp.results;
-//                },
-//                error_func
-//            )
-//        }
-//    };
-//
-//
-
-
-
-
-//        $scope.projj=projectSelectedService.get({ "id": $scope.taskData.project }, function (data) {
-//            $scope.projj = data // data.id;
-//
-//            $scope.statuses = projectStatusService.query($scope.stat, function (data){  //({"id": $scope.status_id}, function (data) {
-//                $scope.stat = data;
-//
-//console.log('----data----', $scope.stat)
-//console.log('----$scope.projj----', $scope.projj)
-//console.log('----$scope.projj.id----', $scope.projj.id)
-//
-//            if ($scope.projj.id == $scope.statuses.project_id) {
-//                return $scope.statuses
-//                 console.log("$scope.statuses",$scope.statuses )
-//
-//                }
-//
-//
-//            });
-//        });
-//
-//console.log("$scope.stat",$scope.stat )
-
-
-
-
-                        console.log('----$scope.taskData----', $scope.taskData)
-                        console.log('----response----', response)
-
-                        console.log('----$scope.taskData.members---', $scope.taskData.members, $scope.taskData.members_info)
-                        console.log('----$scope.taskData.assigned_member---', $scope.taskData.assigned_member)
-
-
         $scope.taskCopy = JSON.parse(JSON.stringify(response));
-                        console.log('----$scope.taskCopy----', $scope.taskCopy)
+           console.log('----$scope.taskCopy----', $scope.taskCopy)
+        }, function(error){
+            $window.location.href = "#/" //if task doesn't exist - go to main page
         });
+
 
 // TASK SAVE
 
     $scope.taskData = {members_info: []};
-    console.log('TESTING TASK', $scope.taskData)
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
 
-            if ($scope.taskCopy.members_info !== $scope.taskData.members_info) {
-//                                  console.log('[[[ $scope.taskData.members_info ]]]', $scope.taskData.members_info)
-
+            if (!angular.equals($scope.taskCopy.members_info, $scope.taskData.members_info) ||
+                $scope.taskCopy.assigned_member !== $scope.taskData.assigned_member ||
+                $scope.taskCopy.description !== $scope.taskData.description){
                 $scope.taskData.id = $routeParams.taskid;
-//                                  console.log('[[[ $scope.taskData.id ]]]', $scope.taskData.id)
-
                 $scope.taskData.members = $scope.taskData.members_info.map(function (user, index) {
                     return $location.protocol() + "://" + $location.host() + ":" + $location.port() + '/users/' + user.id + '/';
                 });
-//                                  console.log('$scope.taskData.members', $scope.taskData.members)
-//                                  console.log('$scope.taskData.assigned_member', $scope.taskData.assigned_member)
-
 
                 taskSelectedService.update({"id": $scope.taskData.id}, $scope.taskData, function(response) {
                     $scope.taskData = response;
-//                                  console.log('$scope.taskData', $scope.taskData)
+                                  console.log('$scope.taskData', $scope.taskData, '---', $scope.taskData)
                     $window.location = '#/user/tasks/' + $scope.taskCopy.id;
                     $scope.statusSaveToast('Saved!');
+                    $scope.taskCopy = $scope.taskData;
+                    $mdDialog.hide();
                 },
 
                     function (response){
@@ -567,6 +479,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                 )
             } else {
                 $scope.statusSaveToast('Any change!');
+                $mdDialog.hide();
             };
         };
 
@@ -591,7 +504,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                 {},
                 formData,
                 function(data) {
-                    $scope.task.files.push(data);
+                    $scope.taskData.files.push(data);
                     $scope.statusSaveToast('File added!');
                 },
                 function(err) {
@@ -619,7 +532,7 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
                 taskFilesSelectedService.delete_file(
                     {id: id},
                     function(resp) {
-                        $scope.task.files.splice(index, 1);
+                        $scope.taskData.files.splice(index, 1);
                     }
                 )
             }
@@ -628,5 +541,11 @@ angular.module('userApp').controller('taskSelectedCtrl', ['projectStatusService'
 
     $scope.getFileName = function(file_address) {
         return file_address.substring(file_address.lastIndexOf('/') + 1);
-    }
+    };
+
+
+
 }]);
+
+
+

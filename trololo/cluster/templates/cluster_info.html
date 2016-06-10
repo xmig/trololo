@@ -1,0 +1,38 @@
+<div ng-app="inventoriesApp" xmlns="http://www.w3.org/1999/html">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong class="panel-title">Cluster Info</strong>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th> Host IP</th>
+                <th> Hostname</th>
+                <th> Internal IP</th>
+                <th> In cluster</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for cluster in cluster_list %}
+            <tr>
+                <td> {{cluster.host_ip }}</td>
+                <td> {{cluster.hostname }}</td>
+                <td> {{cluster.internal_ip }}</td>
+                <td> {{cluster.in_cluster }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="panel-body">
+            <form action="/system/cluster_info_add/" method="get" class="clear-cashe-form">{% csrf_token %}
+                <input class="btn btn-success" type="submit" value="Add Host"/>
+                <div style="padding-top: 10px; color: #e74c3c;">{{ message }}</div>
+            </form>
+        </div>
+
+    </div>
+</div>
+

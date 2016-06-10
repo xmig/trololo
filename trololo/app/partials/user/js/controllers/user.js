@@ -20,6 +20,7 @@ angular.module('userApp').controller('userCtrl', ['$scope', '$timeout', '$mdSide
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},
+        {"title": "Cluster", "link": "system"},
         //{"title": "Progress", "link": "progress"},
         //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},

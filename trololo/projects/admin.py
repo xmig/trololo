@@ -1,5 +1,6 @@
 from django.contrib import admin
 from projects.models import *
+from cluster.models import *
 
 
 
@@ -37,5 +38,12 @@ class TaskCommentAdmin(admin.ModelAdmin):
 
 admin.site.register(TaskComment, TaskCommentAdmin)
 
+
+class ClusterAdmin(admin.ModelAdmin):
+    list_display = ('host_ip', 'internal_ip', 'hostname', 'in_cluster', 'enabled')
+    fields = ('host_ip', 'internal_ip', 'hostname', 'in_cluster', 'enabled')
+    # list_filter = ('title','task')
+
+admin.site.register(ClusterInfo, ClusterAdmin)
 
 
