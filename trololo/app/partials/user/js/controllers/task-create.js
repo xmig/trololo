@@ -129,10 +129,11 @@ angular.module('userApp').controller('taskCreateCtrl', ['projectStatusService', 
 
 
 //TRY
-//    var selectedProject = $location.search();
-//    if (Object.keys(selectedProject).length) {
-//        $scope.taskData.project = +selectedProject['project_id']
-//    }
+    var selectedProject = $location.search();
+    if (Object.keys(selectedProject).length) {
+        $scope.taskData.project = +selectedProject['project_id']
+    }
+///
 
     $scope.saveTask = function(){
         $scope.saveTask.tags = [];
