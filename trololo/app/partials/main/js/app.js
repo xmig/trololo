@@ -9,10 +9,9 @@ angular.module('mainApp', [
         'ngMessages',
         'material.svgAssetsCache',
         'userApp',
-        'xeditable',
-        'lfNgMdFileInput'
-
-//        ,'ngAnimate', 'ngAria'
+        'lfNgMdFileInput',
+        'ngAnimate',
+        'ui.bootstrap'
 
     ])
     .config(function ($routeProvider) {
@@ -215,20 +214,6 @@ angular.module('mainApp', [
                     }]
                 }
             })
-//            .when('/user/tasks/:id', {
-//                templateUrl: '/static/user/templates/user.html',
-//                controller: 'taskSelectedCtrl',
-//                resolve: {
-//                    authenticated: ['djangoAuth', function (djangoAuth) {
-//                        return djangoAuth.authenticationStatus(true);
-//                    }]
-//                }
-//            })
-
-
-
-
-
 
              .when('/user/projects/comments/create', {
                 templateUrl: '/static/user/templates/user.html',
@@ -318,11 +303,10 @@ angular.module('mainApp', [
     })
     .run(function (djangoAuth, $window) {
         djangoAuth.initialize('//' + $window.location.host + '/rest-auth', false);
-    },
-        function(editableOptions) {
-        editableOptions.theme = 'bs3';
+
     });
 
 angular.module('mainApp').config(function($resourceProvider) {
   $resourceProvider.defaults.stripTrailingSlashes = false;
 });
+

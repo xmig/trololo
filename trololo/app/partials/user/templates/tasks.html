@@ -5,29 +5,28 @@
 
             <md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
-                    <label>
-                    <span>Tasks</span>
-                        <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task">
-                        </label>
+                    <label>Tasks <input class="search-style" type='text' ng-model='filter.search' placeholder="Search task"></label>
                         <md-switch ng-model="showMyTasks.checked" aria-label="Switch 2" ng-true-value="true" ng-false-value="false" class="md-warn">
                             My tasks
                         </md-switch>
                         <md-select placeholder="select projects" ng-model="showMyProjectTasks.project">
-                        <md-option  ng-value="task.project_obj.id" ng-repeat="task in task_list = all_project.concat(tasks.data) | filter: onlyMyProjectTasks">{{task.project_obj.name}}</md-option>
+                            <md-option  ng-value="task.project_obj.id" ng-repeat="task in task_list = all_project.concat(tasks.data) | filter: onlyMyProjectTasks">{{task.project_obj.name}}</md-option>
                         </md-select>
 
-                         <md-select placeholder="select user" ng-model="showMyUserTasks.user">
-                        <md-option  ng-value="memb.id" ng-repeat="memb in all_members.concat(members)">{{memb.username}}</md-option>
+                        <md-select placeholder="select user" ng-model="showMyUserTasks.user">
+                            <md-option  ng-value="memb.id" ng-repeat="memb in all_members.concat(members)">{{memb.username}}</md-option>
                         </md-select>
 
                     <tbody>
                         <tr ng-repeat="task in tasks.data | filter:criteria"></tr>
                     </tbody>
+
                     <div flex></div>
                     <md-button ng-href="#/user/tasks/create">Create New Task</md-button>
                     <i onMouseOver="this.style.cursor='pointer'" class="material-icons" ng-click="loadStuff(); reloadTask()" title="Refresh">replay</i>
                 </div>
             </md-toolbar>
+
             <md-toolbar class="md-table-toolbar alternate" ng-show="options.rowSelection && selected.length">
                 <div class="md-toolbar-tools">
                     <span>{{selected.length}} {{selected.length > 1 ? 'items' : 'item'}} selected</span>
@@ -38,63 +37,68 @@
             <md-table-container>
                 <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
                     <thead md-head md-order="query.order" md-on-reorder="logOrder">
-                    <tr md-row>
-                        <th md-column md-order-by="name"><span>Task title</span></th>
-                        <th md-column md-order-by="type"><span>Type</span></th>
-                        <th md-column md-order-by="status"><span>Status</span></th>
-                        <th md-column><span>Created by</span></th>
-                        <th md-column><span>Assigned member</span></th>
-                        <th md-column md-order-by="members.length" md-desc><span>Members</span></th>
-                        <th md-column md-order-by="project_obj.name" md-desc><span>Project</span></th>
-                        <th md-column md-order-by="deadline_date"><span>Deadline date</span></th>
-                        <th md-column md-numeric md-order-by="estimate_minutes"><span>Estimate minutes</span></th>
-                    </tr>
+                        <tr md-row>
+                            <th md-column md-order-by="name"><span>Task title</span></th>
+                            <th md-column md-order-by="type"><span>Type</span></th>
+                            <th md-column md-order-by="status"><span>Status</span></th>
+                            <th md-column><span>Created by</span></th>
+                            <th md-column><span>Assigned member</span></th>
+                            <!--<th md-column md-order-by="members.length" md-desc><span>Members</span></th>-->
+                            <th md-column md-order-by="project_obj.name" md-desc><span>Project</span></th>
+                            <th md-column><span>Date created</span></th>
+                            <th md-column md-order-by="deadline_date"><span>Deadline date</span></th>
+                            <th md-column md-numeric md-order-by="estimate_minutes"><span>Estimate minutes</span></th>
+                        </tr>
                     </thead>
                     <tbody md-body>
-                    <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
-                        ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | filter: selectedUserTasks | filter:selectedProjectTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
-                        <td md-cell>
-                            <span class="status-ico" ng-class="task.label"></span>
-                            <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
-                        </td>
-                        <td md-cell>{{task.type}}</td>
-                        <td md-cell>{{task.status.name}}</td>
-
-                        <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.owner.id)" class="user-link-name">{{task.owner.username}}</a></td>
-                        <td md-cell>
+                        <tr md-row md-select="task" md-on-select="logItem" md-auto-select="options.autoSelect"
+                            ng-repeat="task in tasks.data | filter: filter.search | filter: onlyMyTasks | filter: selectedUserTasks | filter:selectedProjectTasks | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                            <td md-cell>
+                                <span class="status-ico" ng-class="task.label"></span>
+                                <a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a>
+                            </td>
+                            <td md-cell>{{task.type}}</td>
+                            <td md-cell>{{task.status.name}}</td>
+                            <td md-cell><a ng-href="#" ng-click="changeUserLocation($event,task.owner.id)" class="user-link-name">{{task.owner.username}}</a></td>
+                            <td md-cell>
                                 <a ng-href="#" ng-click="changeUserLocation($event,task.assigned_member_info.id)" class="user-link-name">{{task.assigned_member_info.username}}</a>
-                        <td md-cell>
-                            <div ng-repeat="member in task.members_info" class="member-cell">
-                                <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
-                                ({{member.email}})
-                            </div>
-                        </td>
-                        <td md-cell><a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-tabs-name">{{task.project_obj.name}}</a></td>
-                        <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
-                        <td md-cell>{{task.estimate_minutes}}</td>
-                    </tr>
+
+<!--button and popover for task members-->
+                                <div ng-controller="PopoverDemoCtrl">
+                                    <button uib-popover-template="bsPopover.templateUrl" popover-title="{{bsPopover.title}}" popover-placement="right-center"
+                                            type="button" class="btn btn-primary btn-xs pull-center"> see all members </button> <!--btn btn-default btn-xs-->
+
+                                            <script type="text/ng-template" id="myPopoverTemplate.html">
+                                                <div>
+                                                    <p ng-repeat="member in task.members_info">{{ $index + 1 }}.
+                                                        <a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>
+                                                        ({{member.email}})
+                                                    </p>
+                                                </div>
+                                            </script>
+                                </div>
+<!--end-->
+
+
+                            </td>
+                            <!--<td md-cell>-->
+                                <!--<div ng-repeat="member in task.members_info" class="member-cell">-->
+                                    <!--<a ng-href="#"  ng-click="changeUserLocation($event, member.id)" class="user-link-name">{{member.username}}</a> <br>-->
+                                    <!--({{member.email}})-->
+                                <!--</div>-->
+                            <!--</td>-->
+                            <td md-cell><a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-tabs-name">{{task.project_obj.name}}</a></td>
+                            <td md-cell>{{task.created_at | date : 'medium'}}</td>
+                            <td md-cell>{{task.deadline_date | date : 'medium'}}</td>
+                            <td md-cell>{{task.estimate_minutes}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </md-table-container>
 
-
-<!--&lt;!&ndash; for popup &ndash;&gt;-->
-
-            <!--<md-toolbar class="md-table-toolbar md-default" ng-hide="options.rowSelection && selected.length">-->
-                <!--<div class="md-toolbar-tools">-->
-
-                    <!--<div flex></div>-->
-                    <!--<md-button class="md-raised md-warn" ng-click="popRegistr($event)">TESTING POPUP</md-button>  &lt;!&ndash;ng-hide="authenticated"&ndash;&gt;-->
-                <!--</div>-->
-            <!--</md-toolbar>-->
-
-
-
-
                         <md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{(tasks.data | filter: filter.search).length}}"
-                        <!--<md-table-pagination md-limit="query.limit" md-page="query.page" md-total="{{tasks.count}}"                                             -->
-                                 md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks"
-                                 md-on-paginate="logPagination"></md-table-pagination>
+                            md-page-select="options.pageSelector" md-boundary-links="options.boundaryLinks" md-on-paginate="logPagination"></md-table-pagination>
+
 
         </md-card>
 
@@ -119,7 +123,7 @@
                         </div>
 
                      <md-list>
-                        <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list"> <!-- ng-click="action($event)"-->
+                        <md-list-item ng-repeat="task in tasks.data | orderBy: tabSort.tasks" class="project-tabs-list">
                                 <span class="status-ico" ng-class="task.label"></span>
                                 <p><b><a ng-href="#/user/tasks/{{task.id}}" class="project-tabs-name" ng-click="func(ev,$index)">{{task.name}}</a></b>
                                             <a ng-href="#/user/projects/{{task.project_obj.id}}" class="project-link-name">({{task.project_obj.name}})</a>
