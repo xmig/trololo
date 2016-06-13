@@ -253,41 +253,29 @@ angular.module('userApp').controller('hostCtrl', ['$rootScope', 'clusterInfoServ
             console.log("DataCopy:",$scope.statusHostCopy )
         }
     );
-    var expression = {
-            ip: /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
-        };
-//    clusterInfoService.get(
-//        {id: $scope.host_id},
-//        function (data) {
-//            data.internal_ip = parseFloat(data.internal_ip);
-//            data.host_ip = parseFloat(data.host_ip);
-//            $scope.hostData = data;
-//            $scope.statusHostCopy = JSON.parse(JSON.stringify(data));
-//            console.log("DataCopy:",$scope.statusHostCopy )
-//        }
-//    );
 
-    $scope.saveHost = function() {
-//        console.log('SCOPE',$scope.saveHostCopy.host_ip.$invalid)
-        if ($scope.statusHostCopy.host_ip !== $scope.hostData.host_ip || $scope.statusHostCopy.hostname !== $scope.hostData.hostname || $scope.statusHostCopy.internal_ip !== $scope.hostData.internal_ip || $scope.statusHostCopy.in_cluster !== $scope.hostData.in_cluster || $scope.statusHostCopy.enabled !== $scope.hostData.enabled) {
-//            console.log('SCOPE',$scope.saveHostForm.$invalid,$scope.statusHostCopy.host_ip)
-            clusterInfoService.update(
-                {id: $scope.host_id},
-                $scope.hostData,
-                function (resp) {
-                    $scope.statusHostCopy = resp;
-                    $window.location = '#/user/system/';
-                    $scope.statusSaveToast('Saved!');
-                },
-                function (resp) {
-                    var err_message = "Error status: " + resp.status + " StatusText: " + resp.statusText;
-                    $log.debug(err_message);
-                    $scope.statusSaveToast('Some error, contact admin.');
-                }
-            )
-
+    $scope.saveHost = function(elem) {
+        if (elem.$valid == true){
+            if (elem.$valid == true || $scope.statusHostCopy.host_ip !== $scope.hostData.host_ip || $scope.statusHostCopy.hostname !== $scope.hostData.hostname || $scope.statusHostCopy.internal_ip !== $scope.hostData.internal_ip || $scope.statusHostCopy.in_cluster !== $scope.hostData.in_cluster || $scope.statusHostCopy.enabled !== $scope.hostData.enabled) {
+                clusterInfoService.update(
+                    {id: $scope.host_id},
+                    $scope.hostData,
+                    function (resp) {
+                        $scope.statusHostCopy = resp;
+                        $window.location = '#/user/system/';
+                        $scope.statusSaveToast('Saved!');
+                    },
+                    function (resp) {
+                        var err_message = "Error status: " + resp.status + " StatusText: " + resp.statusText;
+                        $log.debug(err_message);
+                        $scope.statusSaveToast('Some error, contact admin.');
+                    }
+                )
+            } else {
+                $scope.statusSaveToast('Any change!');
+            }
         } else {
-            $scope.statusSaveToast('Any change!');
+            $scope.statusSaveToast('Error, enter the correct data!');
         }
     };
 
