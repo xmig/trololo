@@ -18,7 +18,7 @@ class ClusterInfo(ClusterBaseModel):
     internal_ip = models.CharField(max_length=100, null=True, blank=True)
     hostname = models.CharField(max_length=100, null=True, blank=True)
     description = models.CharField(max_length=100, null=True, blank=True, default="")
-    in_cluster = models.BooleanField()
+    in_cluster = models.BooleanField(default=True)
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
