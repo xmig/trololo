@@ -23,7 +23,7 @@ angular.module('userApp').controller('clusterCtrl', ['clusterInfoService', '$sco
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},
-        {"title": "Cluster", "link": "cluster"},
+        {"title": "Cluster", "link": "system"},
         //{"title": "Progress", "link": "progress"},
         //{"title": "Teams", "link": "teams"},
         //{"title": "Activity", "link": "activity"},
@@ -199,7 +199,7 @@ angular.module('userApp').controller('hostCtrl', ['$rootScope', 'clusterInfoServ
         {"title": "Personal Info", "link": "personal"},
         {"title": "Projects", "link": "projects"},
         {"title": "Tasks", "link": "tasks"},
-        {"title": "Cluster", "link": "cluster"},
+        {"title": "Cluster", "link": "system"},
     ];
     $scope.isSectionSelected = function(section){
         return section === $scope.location;
