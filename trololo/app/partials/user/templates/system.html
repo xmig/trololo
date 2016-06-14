@@ -18,13 +18,14 @@
                 <table md-table md-row-select="options.rowSelection" ng-model="selected" md-progress="promise">
                     <thead md-head md-order="query.order" md-on-reorder="logOrder">
                     <tr md-row>
-                        <th md-column><span>Host IP</span></th>
+                        <th md-column><span>Base Url</span></th>
                         <th md-column><span>Hostname</span></th>
                         <th md-column><span>Internal IP</span></th>
                         <th md-column><span>In cluster</span></th>
                         <th md-column><span>Enabled</span></th>
-                        <th md-column><span> </span></th>
-                        <th md-column><span> </span></th>
+                        <th md-column><span></span></th>
+                        <th md-column><span></span></th>
+                        <!--<th md-column><span>Test</span></th>-->
                     </tr>
                     </thead>
                     <tbody md-body>
@@ -44,7 +45,7 @@
                         </td>
                         <td md-cell>
                             <md-switch ng-model="item.enabled" aria-label="Switch 2" ng-true-value="true"
-                                       ng-false-value="false" class="md-warn"
+                                       ng-false-value="false" class="md-primary"
                                        ng-change="changeClusterStatus($index, item)">
                             </md-switch>
                         </td>
@@ -59,6 +60,12 @@
                                        ng-click="deleteClusterPopup($event, item.id, item.hostname)">
                                 <i class="material-icons">remove_circle</i>
                             </md-button>
+                        </td>
+                        <td md-cell>
+                                <md-button type="button"
+                                        class="btn test-btn"
+                                        ng-click="toggleActive($index, item.host_ip)">test</md-button>
+
                         </td>
                     </tr>
                     </tbody>
@@ -101,7 +108,7 @@
                             <md-input-container class="md-block">
                                 <label>Host IP</label>
                                 <input type="text" name="host_ip" id="host_ip" ng-model="host_ip" md-autofocus required
-                                       ng-pattern="/^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/">
+                                       ng-pattern="/^(https?:\/\/)?(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?):\d{2,5}$/">
                                 <div ng-messages="addHostForm.host_name.$error">
                                     <div ng-message="required">This field is required.</div>
                                 </div>
@@ -163,3 +170,41 @@
         </md-dialog>
     </script>
 </md-content>
+
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<body>-->
+
+<!--<div id="demo"><h2>Let AJAX change this text</h2></div>-->
+
+<!--<button type="button" onclick="loadDoc()">Change Content</button>-->
+
+<!--<script>-->
+<!--function loadDoc() {-->
+  <!--var xhttp = new XMLHttpRequest();-->
+  <!--xhttp.onreadystatechange = function() {-->
+    <!--if (xhttp.readyState == 4 && xhttp.status == 200) {-->
+      <!--document.getElementById("demo").innerHTML = xhttp.responseText;-->
+    <!--}-->
+  <!--};-->
+  <!--xhttp.open("POST", "http://217.20.180.90", true);-->
+  <!--xhttp.send();-->
+<!--}-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+
+<!--$.ajax({-->
+  <!--url: url,-->
+  <!--type: "POST",-->
+  <!--data: data,-->
+  <!--success: success,-->
+  <!--dataType: dataType,-->
+  <!--error:  error,-->
+  <!--complete: always-->
+<!--});-->
+
+
+

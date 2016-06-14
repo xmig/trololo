@@ -311,3 +311,9 @@ md-icon {
     color: rgba(0, 0, 0, 0.54);
 }
 
+.md-thumb {
+    background-color: rgb(4, 114, 64);
+}
+.red{
+    background-repeat: red;
+}
