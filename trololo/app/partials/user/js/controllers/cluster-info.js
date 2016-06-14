@@ -1,7 +1,7 @@
 angular.module('userApp').controller('clusterCtrl', ['clusterInfoService', '$scope', '$timeout', '$mdSidenav',
                                                      '$log', '$routeParams', 'clusterService', '$window', '$mdDialog',
-                                                     'Validate','$location',
- function(clusterInfoService, $scope, $timeout, $mdSidenav, $log, $routeParams, clusterService, $window, $mdDialog, Validate, $location){
+                                                     'Validate','$location','$http',
+ function(clusterInfoService, $scope, $timeout, $mdSidenav, $log, $routeParams, clusterService, $window, $mdDialog, Validate, $location, $http){
     $scope.toggleLeft = buildDelayedToggler('left');
     $scope.toggleRight = buildToggler('right');
     $scope.isOpenRight = function(){
@@ -155,6 +155,7 @@ angular.module('userApp').controller('clusterCtrl', ['clusterInfoService', '$sco
     }
 
     $scope.deleteClusterPopup = function(ev, id, name) {
+        console.log("Delete:::::",ev, id, name)
         var confirm = $mdDialog.confirm()
               .title('Would you like to delete host?')
               .textContent('Are you sure you mant to delete host ' + name + "?")
@@ -168,6 +169,7 @@ angular.module('userApp').controller('clusterCtrl', ['clusterInfoService', '$sco
                 clusterInfoService.delete(
                     {id: id}, {},
                     function(resp) {
+//                    console.log("resp::::",resp.id )
                         $scope.cluster.response.pop(resp);
                     },
                     function(resp) {
@@ -180,6 +182,19 @@ angular.module('userApp').controller('clusterCtrl', ['clusterInfoService', '$sco
         );
     }
 
+    $scope.toggleActive = function(index, check_url) {
+        console.log("index:::::", index, check_url)
+        $http({
+            method: 'GET',
+            url: check_url + '/system/health_check/',
+            timeout: 2500,
+        }).then(function successCallback(response) {
+            angular.element($(document.querySelectorAll(".test-btn")[index]).removeClass('btn-danger').addClass('btn-success'))
+        }, function errorCallback(response) {
+            console.log("timeout:::",$http.timeout)
+                angular.element($(document.querySelectorAll(".test-btn")[index]).removeClass('btn-success').addClass('btn-danger'))
+            }
+        )};
 }]);
 
 angular.module('userApp').controller('hostCtrl', ['$rootScope', 'clusterInfoService', '$scope', '$timeout', '$mdSidenav', '$log', '$routeParams', 'clusterService', '$window', '$mdDialog', 'Validate', '$filter', function($rootScope,clusterInfoService, $scope, $timeout, $mdSidenav, $log, $routeParams, clusterService, $window, $mdDialog, Validate, $filter){
@@ -256,7 +271,7 @@ angular.module('userApp').controller('hostCtrl', ['$rootScope', 'clusterInfoServ
 
     $scope.saveHost = function(elem) {
         if (elem.$valid == true){
-            if (elem.$valid == true || $scope.statusHostCopy.host_ip !== $scope.hostData.host_ip || $scope.statusHostCopy.hostname !== $scope.hostData.hostname || $scope.statusHostCopy.internal_ip !== $scope.hostData.internal_ip || $scope.statusHostCopy.in_cluster !== $scope.hostData.in_cluster || $scope.statusHostCopy.enabled !== $scope.hostData.enabled) {
+            if ($scope.statusHostCopy.host_ip !== $scope.hostData.host_ip || $scope.statusHostCopy.hostname !== $scope.hostData.hostname || $scope.statusHostCopy.internal_ip !== $scope.hostData.internal_ip || $scope.statusHostCopy.in_cluster !== $scope.hostData.in_cluster || $scope.statusHostCopy.enabled !== $scope.hostData.enabled) {
                 clusterInfoService.update(
                     {id: $scope.host_id},
                     $scope.hostData,
